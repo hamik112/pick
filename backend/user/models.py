@@ -21,6 +21,5 @@ class User(models.Model):
     gender = models.CharField(max_length=16, null=True, default=None)
     picture_url = models.CharField(max_length=255, blank=True, default='')
 
-
     class Meta:
         db_table = "users"

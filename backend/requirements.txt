@@ -1,4 +1,11 @@
 Django==1.11.5
+certifi==2017.11.5
+chardet==3.0.4
 djangorestframework==3.6.4
+facebookads==2.11.1
+idna==2.6
 mysqlclient==1.3.12
 pytz==2017.3
+requests==2.18.4
+six==1.11.0
+urllib3==1.22

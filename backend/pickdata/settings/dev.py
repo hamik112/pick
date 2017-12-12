@@ -1,6 +1,4 @@
-""" development """
-import os
-from a3tio_ad_fb_pickdata.settings.common import *
+from pickdata.settings.common import *
 
 DEBUG = True
 
@@ -35,4 +33,4 @@ FACEBOOK_APP_SECRET = 'e74075b09b2854a21a32c79cdad67c60'
 FACEBOOK_DEFAULT_SCOPE = ['email', 'user_about_me', 'user_birthday', 'user_website']
 FACEBOOK_APP_VERSION = 'v2.10'
 
-AD_IMAGE_PATH = 'static/image/ad/'
+AD_IMAGE_PATH = os.path.join(PROJECT_DIR, 'static/image/ad/')

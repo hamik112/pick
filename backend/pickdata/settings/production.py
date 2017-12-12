@@ -1,6 +1,6 @@
 """ production """
 import os
-from a3tio_ad_fb_pickdata.settings.common import *
+from pickdata.settings.common import *
 
 DEBUG = True
 
@@ -9,11 +9,10 @@ ALLOWED_HOSTS = ['*']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pickdata_v2_production',
+        'NAME': 'pickdata_production',
         'USER': 'pickdata',
         'PASSWORD': 'em4s1911',
-        # 'HOST': '192.168.100.136',   # Or an IP Address that your DB is hosted on
-        'HOST': '116.122.39.236',   # Or an IP Address that your DB is hosted on
+        'HOST': '211.249.60.9',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }

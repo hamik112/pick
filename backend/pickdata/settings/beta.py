@@ -1,6 +1,6 @@
 """ beta """
 import os
-from a3tio_ad_fb_pickdata.settings.common import *
+from pickdata.settings.common import *
 
 DEBUG = True
 
