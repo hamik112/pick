@@ -2,7 +2,7 @@ from facebookads.adobjects.adaccount import AdAccount
 from facebookads.adobjects.customaudience import CustomAudience
 from facebookads.exceptions import FacebookRequestError
 
-
+# 사이트방문 전체 고객
 def create_total_users(account_id, name='', retention_days=15, pixel_id=''):
     try:
         ad_account = AdAccount(fbid=account_id)
@@ -22,7 +22,7 @@ def create_total_users(account_id, name='', retention_days=15, pixel_id=''):
         msg['error'] = e._error
         raise Exception(msg)
 
-
+# 사이트방문 이용 시간 상위 고객
 def create_usage_time_top_customers (account_id, name='', retention_days=15, pixel_id='', percent=0):
     try:
         pass
@@ -34,7 +34,7 @@ def create_usage_time_top_customers (account_id, name='', retention_days=15, pix
         msg['error'] = e._error
         raise Exception(msg)
 
-
+# 사이트방문 특정일 동안 미방문 고객
 def create_non_visition_customers(account_id, name='', retention_days=15, pixel_id=''):
     try:
         pass
