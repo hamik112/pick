@@ -3,9 +3,19 @@ from facebookads.adobjects.customaudience import CustomAudience
 from facebookads.exceptions import FacebookRequestError
 
 # 사이트방문 전체고객 and 구매고객
-def create_visitor_and_purchase_customers(account_id, pixel_id='', name='', retention_days=15):
+def create_visitor_and_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True):
     try:
         pass
+        ad_account = AdAccount(fbid=account_id)
+
+        params = {}
+        params[CustomAudience.Field.name] = name
+        params[CustomAudience.Field.subtype] = CustomAudience.Subtype.website
+        params[CustomAudience.Field.pixel_id] = pixel_id
+        params[CustomAudience.Field.prefill] = prefill
+        params[CustomAudience.Field.retention_days] = retention_days
+        params[CustomAudience.Field.rule] = str(rule)
+        params[CustomAudience.Field.rule_aggregation] = str(rule_aggregation)
 
     except FacebookRequestError as e:
         print(e)
