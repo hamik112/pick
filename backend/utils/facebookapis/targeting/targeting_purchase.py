@@ -3,36 +3,12 @@ from facebookads.adobjects.customaudience import CustomAudience
 from facebookads.exceptions import FacebookRequestError
 
 
-# 사이트방문 전체 고객
-def create_total_users(account_id, name, pixel_id, retention_days=30, prefill=True):
-    try:
-        ad_account = AdAccount(fbid=account_id)
-        audience = ad_account.create_custom_audience(params={
-            CustomAudience.Field.name: name,
-            CustomAudience.Field.subtype: CustomAudience.Subtype.website,
-            CustomAudience.Field.pixel_id: pixel_id,
-            CustomAudience.Field.prefill: prefill,
-            CustomAudience.Field.retention_days: retention_days
-        })
-        # "rule": "{\"and\":[{\"url\":{\"i_contains\":\"\"}}]}"
-
-        return audience
-
-    except FacebookRequestError as e:
-        print(e)
-        msg = {}
-        msg['request_context'] = e._request_context
-        msg['error'] = e._error
-        raise Exception(msg)
-
-
-# 사이트방문 이용 시간 상위 고객
-# input_percent = [25, 10, 5]
-def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, retention_days=30, input_percent=25):
+# 구매고객 전체
+def create_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
+                              purchase_evnet_name="Purchase"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
-        max_percent = 100
         rule = {
             "inclusions": {
                 "operator": "or",
@@ -49,21 +25,11 @@ def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, re
                             "operator": "and",
                             "filters": [
                                 {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
+                                    "field": "event",
+                                    "operator": "eq",
+                                    "value": purchase_evnet_name
                                 }
                             ]
-                        },
-                        "template": "TOP_TIME_SPENDERS",
-                        "aggregation": {
-                            "type": "time_spent",
-                            "method": "percentile",
-                            "operator": "in_range",
-                            "value": {
-                                "from": max_percent - input_percent,
-                                "to": max_percent
-                            }
                         }
                     }
                 ]
@@ -87,39 +53,14 @@ def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, re
         raise Exception(msg)
 
 
-# 사이트방문 특정일 동안 미방문 고객
-def create_non_visition_customers(account_id, name, pixel_id, retention_days=30, prefill=True):
+# 특정 구매횟수 이상 구매 고객
+def create_more_than_x_timtes_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
+                                                 purchase_evnet_name="Purchase", purchase_cnt=5):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         rule = {
             "inclusions": {
-                "operator": "and",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                }
-                            ]
-                        },
-                        "template": "ALL_VISITORS"
-                    }
-                ]
-            },
-
-            "exclusions": {
                 "operator": "or",
                 "rules": [
                     {
@@ -129,19 +70,25 @@ def create_non_visition_customers(account_id, name, pixel_id, retention_days=30,
                                 "id": pixel_id
                             }
                         ],
-                        # "retention_seconds": 2592000,
+
                         "retention_seconds": retention_days * 24 * 60 * 60,
                         "filter": {
                             "operator": "and",
                             "filters": [
                                 {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
+                                    "field": "event",
+                                    "operator": "eq",
+                                    "value": purchase_evnet_name
                                 }
                             ]
                         },
-                        "template": "ALL_VISITORS"
+
+                        "aggregation": {
+                            "type": "count",
+                            "method": "absolute",
+                            "operator": ">=",
+                            "value": purchase_cnt
+                        }
                     }
                 ]
             }
@@ -149,8 +96,67 @@ def create_non_visition_customers(account_id, name, pixel_id, retention_days=30,
 
         params = {}
         params[CustomAudience.Field.name] = name
-        params[CustomAudience.Field.rule] = str(rule)
         params[CustomAudience.Field.prefill] = prefill
+        params[CustomAudience.Field.rule] = rule
+
+        audience = ad_account.create_custom_audience(params=params)
+
+        return audience
+
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
+
+
+# 특정 구매금액 이상 구매 고객
+def create_more_than_x_amount_purchjase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
+                                                  purchase_evnet_name="Purchase", minimum_val=5000):
+    try:
+
+        ad_account = AdAccount(fbid=account_id)
+
+        rule = {
+            "inclusions": {
+                "operator": "or",
+                "rules": [
+                    {
+                        "event_sources":
+                            [
+                                {
+                                    "type": "pixel",
+                                    "id": pixel_id
+                                }
+                            ],
+                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        "filter": {
+                            "operator": "and",
+                            "filters": [
+                                {
+                                    "field": "event",
+                                    "operator": "eq",
+                                    "value": purchase_evnet_name
+                                }
+                            ]
+                        },
+                        "aggregation": {
+                            "type": "min",
+                            "method": "absolute",
+                            "operator": ">=",
+                            "field": "value",
+                            "value": minimum_val
+                        }
+                    }
+                ]
+            }
+        }
+
+        params = {}
+        params[CustomAudience.Field.name] = name
+        params[CustomAudience.Field.prefill] = prefill
+        params[CustomAudience.Field.rule] = rule
 
         audience = ad_account.create_custom_audience(params=params)
 

@@ -13,7 +13,7 @@ try:
     FacebookAdsApi.init(FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, SYSTEM_USER_TOKEN)
 
     account_id = 'act_894360037304328'
-    name = 'test_test'
+    name = 'test_total_customers'
     pixel_id = '731124753680105'
     retention_days = 30
 
@@ -21,32 +21,6 @@ try:
 
     rule = {
         "inclusions": {
-            "operator": "and",
-            "rules": [
-                {
-                    "event_sources": [
-                        {
-                            "type": "pixel",
-                            "id": pixel_id
-                        }
-                    ],
-                    "retention_seconds": 15552000,
-                    "filter": {
-                        "operator": "and",
-                        "filters": [
-                            {
-                                "field": "url",
-                                "operator": "i_contains",
-                                "value": ""
-                            }
-                        ]
-                    },
-                    "template": "ALL_VISITORS"
-                }
-            ]
-        },
-
-        "exclusions": {
             "operator": "or",
             "rules": [
                 {
@@ -56,7 +30,6 @@ try:
                             "id": pixel_id
                         }
                     ],
-                    # "retention_seconds": 2592000,
                     "retention_seconds": retention_days * 24 * 60 * 60,
                     "filter": {
                         "operator": "and",
@@ -74,12 +47,11 @@ try:
         }
     }
 
-    params = {}
-    params[CustomAudience.Field.name] = name
-    params[CustomAudience.Field.prefill] = True
-    params[CustomAudience.Field.rule] = str(rule)
-
-    audience = ad_account.create_custom_audience(params=params)
+    audience = ad_account.create_custom_audience(params={
+        CustomAudience.Field.name: name,
+        CustomAudience.Field.prefill: True,
+        CustomAudience.Field.rule: rule
+    })
 
     print(audience)
 
