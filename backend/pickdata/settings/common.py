@@ -38,7 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'user',
     'ad_set',
-    'ad_set_insight'
+    'ad_set_insight',
+    'fb_ad_account',
+    'account_pixel_mapping'
 )
 
 MIDDLEWARE_CLASSES = (
