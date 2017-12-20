@@ -1,30 +1,4 @@
 @charset "UTF-8";
-.selectbox {
-  position: relative;
-  display: inline-block;
-  background: url("https://sccd.wooribank.com/img/ccd/cloan/cl_pc/selectbox_bg.gif") 0 0 no-repeat;
-  width: 120px;
-  height: 50px;
-  text-align: left; }
-  .selectbox label {
-    position: absolute;
-    font-weight: bold;
-    top: 18px;
-    width: 100%;
-    white-space: nowrap;
-    line-height: 1;
-    padding-left: 17px;
-    font-size: 16px; }
-  .selectbox select {
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-    width: 100%;
-    height: 100%; }
-
 html {
   width: 100%;
   height: 100%;
@@ -222,12 +196,14 @@ input[type="radio"]:checked + label:before {
 /* 로그인 페이지*/
 .login_wrap {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 411px;
   margin: 0 auto;
-  text-align: center; }
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
   .login_wrap .login_logo {
     padding-bottom: 50px; }
   .login_wrap .login_prologue {
@@ -235,13 +211,16 @@ input[type="radio"]:checked + label:before {
     border-top: 1px solid #dee1e6;
     padding-top: 15px;
     font-size: 20px; }
-    .login_wrap .login_prologue:hover {
-      color: #5384c6;
-      text-decoration: underline;
-      cursor: pointer; }
+    .login_wrap .login_prologue a {
+      color: #000; }
+      .login_wrap .login_prologue a:hover {
+        color: #5384c6;
+        text-decoration: underline;
+        cursor: pointer; }
 
 #main_wrap {
   width: 100%;
+  height: 100%;
   display: table;
   background: #f2f2f2;
   position: relative; }
@@ -327,6 +306,7 @@ header {
 
 /* 메인 */
 #container {
+  position: relative;
   /* 사이드 바 */ }
   #container #container_wrap {
     padding-left: 165px;
@@ -408,6 +388,7 @@ header {
             min-height: 325px;
             background: #fff;
             float: left;
+            -webkit-box-shadow: 5px 10px 8px #ececec;
             box-shadow: 5px 10px 8px #ececec;
             margin-right: 15px;
             padding: 12px 23px;
@@ -463,10 +444,12 @@ header {
     #container #container_wrap #section_list_2 .target_contents_wrap {
       padding: 33px 28px; }
       #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap {
+        width: 1699px;
         background: #fff;
         border: 1px solid #dadedf;
         padding: 14px 15px;
         letter-spacing: -4px;
+        -webkit-box-shadow: 5px 10px 8px #ececec;
         box-shadow: 5px 10px 8px #ececec;
         margin-bottom: 26px; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap > div {
@@ -477,24 +460,21 @@ header {
           #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap > div .select_contents {
             position: relative; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .cate_select {
-          display: inline-block;
-          vertical-align: middle; }
+          float: left; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .cate_select .select_btn {
             width: 196px;
             height: 40px;
             line-height: 38px;
             cursor: pointer; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .admin_select {
-          display: inline-block;
-          vertical-align: middle; }
+          float: left; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .admin_select .select_btn {
             width: 615px;
             height: 40px;
             line-height: 38px;
             cursor: pointer; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .data_select {
-          display: inline-block;
-          vertical-align: middle; }
+          float: left; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .data_select .select_btn {
             width: 663px;
             height: 40px;
@@ -527,9 +507,8 @@ header {
           color: #fff;
           height: 40px;
           line-height: 40px;
-          display: inline-block;
-          vertical-align: middle;
-          margin-top: 24px; }
+          margin-top: 24px;
+          float: left; }
       #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap {
         border: 1px solid #dadedf;
         background: #fff; }
@@ -626,7 +605,7 @@ header {
           border: 1px solid #375b96; }
   #container aside {
     position: absolute;
-    top: 66px;
+    top: 0px;
     left: 0px;
     width: 165px;
     background: #222933;
@@ -778,6 +757,8 @@ header {
     top: 50%;
     z-index: 200;
     background-color: #fff;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     border-radius: 10px; }
   .layer-pop-widget .pop_title {
@@ -804,6 +785,20 @@ header {
     text-align: center;
     font-size: 25px;
     color: #fff; }
+  .layer-pop-widget .chart_close_btn {
+    width: 191px;
+    height: 43px;
+    line-height: 43px;
+    margin: 0 auto;
+    text-align: center;
+    background: #333;
+    color: #fff;
+    border-radius: 2px;
+    margin-top: 18px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold; }
   .layer-pop-widget .pop_tab_wrap {
     margin: 30px 48px;
     overflow: hidden; }
@@ -1535,29 +1530,99 @@ header {
 
 #target_chart {
   background: #f5f5f5; }
-  #target_chart .target_contents_wrap {
-    padding: 30px 25px; }
-    #target_chart .target_contents_wrap .target_chart_select {
+  #target_chart .target_chart_graph_wrap {
+    padding: 30px 25px;
+    padding-bottom: 0px; }
+    #target_chart .target_chart_graph_wrap .target_chart_select {
       margin-bottom: 12px; }
-      #target_chart .target_contents_wrap .target_chart_select .select_btn {
+      #target_chart .target_chart_graph_wrap .target_chart_select .select_btn {
         float: right; }
-        #target_chart .target_contents_wrap .target_chart_select .select_btn .select {
+        #target_chart .target_chart_graph_wrap .target_chart_select .select_btn .select {
           width: 350px;
           height: 40px;
           line-height: 40px; }
-    #target_chart .target_contents_wrap .target_chart_top > div {
+          #target_chart .target_chart_graph_wrap .target_chart_select .select_btn .select p {
+            background: url(../images/icon/calendar.png) center right no-repeat; }
+    #target_chart .target_chart_graph_wrap .target_chart_top .use_limit {
+      position: relative; }
+    #target_chart .target_chart_graph_wrap .target_chart_top .prologue_area .prologue_view {
+      display: none;
+      width: 329px;
+      padding-bottom: 4px;
+      color: #fff;
+      background: url(../images/target/prologue_type01.png) center bottom no-repeat;
+      position: absolute;
+      top: -67px;
+      left: 44px;
+      z-index: 1; }
+      #target_chart .target_chart_graph_wrap .target_chart_top .prologue_area .prologue_view p {
+        background: #222933;
+        padding: 15px 10px;
+        color: #fff;
+        font-size: 12px;
+        line-height: 1.4;
+        font-weight: normal; }
+    #target_chart .target_chart_graph_wrap .target_chart_top > div {
       width: 186px;
       height: 186px;
       float: left;
       background: #fff;
-      margin-left: 18px; }
-      #target_chart .target_contents_wrap .target_chart_top > div:first-child {
+      margin-left: 18px;
+      padding-top: 108px; }
+      #target_chart .target_chart_graph_wrap .target_chart_top > div p {
+        font-size: 17px;
+        text-align: center; }
+        #target_chart .target_chart_graph_wrap .target_chart_top > div p:last-child {
+          font-size: 24px;
+          font-weight: bold;
+          color: #375b96; }
+      #target_chart .target_chart_graph_wrap .target_chart_top > div:first-child {
         width: 233px;
         height: 186px;
         background: #375b96;
         color: #fff;
-        margin-left: 0px; }
-    #target_chart .target_contents_wrap .target_chart_wrap {
-      clear: both; }
-
-/*# sourceMappingURL=main.css.map */
+        margin-left: 0px;
+        padding: 20px 16px;
+        clear: both; }
+        #target_chart .target_chart_graph_wrap .target_chart_top > div:first-child p {
+          text-align: left;
+          clear: both; }
+        #target_chart .target_chart_graph_wrap .target_chart_top > div:first-child span {
+          float: left; }
+          #target_chart .target_chart_graph_wrap .target_chart_top > div:first-child span:last-child {
+            padding-left: 4px;
+            cursor: pointer; }
+    #target_chart .target_chart_graph_wrap .target_chart_top .use_limit {
+      font-size: 17px;
+      color: #fff; }
+      #target_chart .target_chart_graph_wrap .target_chart_top .use_limit strong {
+        font-size: 38px;
+        line-height: 2; }
+    #target_chart .target_chart_graph_wrap .target_chart_top .expense_price {
+      background: #fff url(../images/target/chart_01.jpg) center 28px no-repeat; }
+      #target_chart .target_chart_graph_wrap .target_chart_top .expense_price p {
+        line-height: 1.4; }
+    #target_chart .target_chart_graph_wrap .target_chart_top .all_switch {
+      background: #fff url(../images/target/chart_02.jpg) center 28px no-repeat; }
+      #target_chart .target_chart_graph_wrap .target_chart_top .all_switch p {
+        line-height: 1.4; }
+    #target_chart .target_chart_graph_wrap .target_chart_top .cpa_chart {
+      background: #fff url(../images/target/chart_03.jpg) center 28px no-repeat; }
+      #target_chart .target_chart_graph_wrap .target_chart_top .cpa_chart p {
+        line-height: 1.4; }
+    #target_chart .target_chart_graph_wrap .target_chart_wrap {
+      background: #fff;
+      clear: both;
+      margin-top: 12px;
+      border: 1px solid #ebeef3;
+      border-top: 0px; }
+      #target_chart .target_chart_graph_wrap .target_chart_wrap h2 {
+        height: 38px;
+        font-size: 18px;
+        line-height: 38px;
+        font-weight: bold;
+        border-top: 1px solid #ebeef3;
+        border-bottom: 1px solid #ebeef3;
+        padding-left: 23px;
+        background: url(../images/common/select_bg.jpg) 0 0 repeat;
+        background-size: 100% 100%; }

@@ -56,7 +56,7 @@ function popupActions(obj, layer, type, callLayer) {
 function layerPopCallBack() {
 	var obj = $('.layer-pop-widget');
 	var widget = $('.popup-widget');
-	var closeBtn = $('#close-btn');
+	var closeBtn = $('.close_pop');
 
 	var onOffDelay = 200;
 
@@ -104,6 +104,7 @@ function layerPopCallBack() {
 	CheckAll();
 	ToggleClass();
 	checkToggle();
+	prologueView();
 }
 
 //팝업창 스크롤 자동 적용
@@ -264,5 +265,15 @@ function ToggleClass(){
 function checkToggle(){
 	$(".advertiser_search_result .result_check label").click(function(){
 		$(this).parent().parent().toggleClass("result_on");
+	});
+}
+
+function prologueView(){
+	$(".prologue_area").on({
+		mouseenter:function(){
+			$(this).find(".prologue_view").show();
+		},mouseleave:function(){
+			$(this).find(".prologue_view").hide();
+		}
 	});
 }

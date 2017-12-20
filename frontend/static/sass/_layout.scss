@@ -30,13 +30,15 @@ label:before{content:''; display:inline-block; width:15px; height:15px; backgrou
 input[type='checkbox']:checked + label:before,
 input[type="radio"]:checked + label:before{background: url(../images/icon/input_check.png) 0 0 no-repeat;}
 /* 로그인 페이지*/
-.login_wrap{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);width:411px; margin:0 auto; text-align:center;
+.login_wrap{position:absolute; width:411px; margin:0 auto; text-align:center; top:50%; left:50%; transform:translate(-50% , -50%);
 	.login_logo{padding-bottom:50px;}
 	.login_prologue{margin-top:30px; border-top:1px solid #dee1e6; padding-top:15px; font-size:20px;
-		&:hover{color:#5384c6; text-decoration:underline; cursor:pointer;}
+		a{color:#000;
+			&:hover{color:#5384c6; text-decoration:underline; cursor:pointer;}
+		}
 	}
 }
-#main_wrap{width:100%; display:table; background:#f2f2f2; position:relative;}
+#main_wrap{width:100%; height:100%; display:table; background:#f2f2f2; position:relative;}
 /* 상단 */
 header{width:100%; display:table; padding:0 30px; height:66px; background:$basic_type01; padding-top:17px;
 	.left_area{float:left;}
@@ -67,7 +69,7 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 /* 셀렉트 박스 */
 .select{ text-indent:12px; font-weight:bold; border-radius:2px; background: url(../images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%;}
 /* 메인 */
-#container{
+#container{position:relative;
 	#container_wrap{padding-left:165px; width:100%; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box;
 		/* 타겟 버튼 */
 		.target_setup{float:right; display:table;margin-bottom:15px;
@@ -121,18 +123,18 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 		}
 		#section_list_2{
 			.target_contents_wrap{padding:33px 28px;
-				.target_search_wrap{background:$basic_type01; border:$Border_type01; padding:14px 15px; letter-spacing:-4px; box-shadow:$Bshadow_type01; margin-bottom:26px;
+				.target_search_wrap{width:1699px; background:$basic_type01; border:$Border_type01; padding:14px 15px; letter-spacing:-4px; box-shadow:$Bshadow_type01; margin-bottom:26px;
 					> div{letter-spacing: 0px; margin-right:9px;
 						> p{padding-bottom:8px;}
 						.select_contents{position:relative;}
 					}
-					.cate_select{display:inline-block; vertical-align:middle;
+					.cate_select{float:left;
 						.select_btn{width:196px; height:40px; line-height:38px;  cursor:pointer;}
 					}
-					.admin_select{display:inline-block; vertical-align:middle;
+					.admin_select{float:left;
 						.select_btn{width:615px; height:40px; line-height:38px;  cursor:pointer;}
 					}
-					.data_select{display:inline-block; vertical-align:middle;
+					.data_select{float:left;
 						.select_btn{width:663px; height:40px; line-height:38px;  cursor:pointer;}
 						.select_contents{
 							p{background:url(../images/icon/calendar.png) center right no-repeat!important;}
@@ -145,7 +147,7 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 					.select_view{position:absolute; display:none; top: 37px; left: 0px; background: #f9f9f9; border: 1px solid #d0d0d0; text-indent: 12px; height:122px; overflow-y:scroll; z-index:1;
 						li:hover{background:#375b96; color:#fff;}
 					}
-					button{width:166px; background:#375b96; color:$basic_type01; height:40px; line-height:40px; display:inline-block; vertical-align:middle; margin-top:24px;}
+					button{width:166px; background:#375b96; color:$basic_type01; height:40px; line-height:40px; margin-top:24px; float:left;}
 				}
 				.target_report_wrap{border:$Border_type01; background:$basic_type01;
 					.target_setup{width:353px; margin-top:15px; margin-right:15px;
@@ -189,7 +191,7 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 		}
 	}
 	/* 사이드 바 */
-	aside{position:absolute; top:66px; left:0px; width: 165px;  background:#222933; z-index:15; color:$basic_type01;
+	aside{position:absolute; top:0px; left:0px; width: 165px;  background:#222933; z-index:15; color:$basic_type01;
 		a{color:$basic_type01;}
 		ul{
 			.aside_section.active{

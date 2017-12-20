@@ -6,6 +6,7 @@
 	.pop_title {font-weight:bold; font-size:16px; background:#222933; color:#fff; height:55px; line-height:55px; padding:0px 25px; border-radius:10px 10px 0px 0px;}
 	.ok-btn { display:block; margin:20px auto 0; color:#fff; }
 	.close-btn { display:block; position:absolute; right:9px; top:14px; width:26px; height:26px; line-height:26px; text-align:center; font-size:25px; color:#fff;}
+	.chart_close_btn{width: 191px; height: 43px; line-height: 43px; margin: 0 auto; text-align: center; background: #333; color: #fff; border-radius: 2px; margin-top: 18px; margin-bottom: 15px; cursor:pointer; font-size:16px; font-weight:bold;}
 	.pop_tab_wrap{margin:30px 48px; overflow:hidden;}
 	.popup-contents{width:895px;}
 	.sticker_btn{background:#e7e7e7; height: 28px; line-height: 28px; border-radius: 20px; text-align: center; font-size: 15px; color: #666; margin-bottom: 10px; padding: 0px 10px;
@@ -392,21 +393,49 @@
 	}
 }
 #target_chart{background:#f5f5f5;
-	.target_contents_wrap{padding:30px 25px;
+	.target_chart_graph_wrap{padding:30px 25px; padding-bottom:0px;
 		.target_chart_select{margin-bottom:12px;
 			.select_btn{float:right;
-				.select{width:350px; height:40px; line-height:40px;}
+				.select{width:350px; height:40px; line-height:40px;
+					p{ background:url(../images/icon/calendar.png) center right no-repeat;}
+				}
 			}
 		}
 		.target_chart_top{
-			> div{width:186px; height:186px; float:left; background:#fff; margin-left:18px;
-				&:first-child{width:233px; height:186px; background:#375b96; color:#fff; margin-left:0px;}
-
+			.use_limit{position:relative;}
+			.prologue_area{
+				.prologue_view{display:none; width:329px; padding-bottom:4px; color:#fff; background:url(../images/target/prologue_type01.png) center bottom no-repeat; position:absolute; top:-67px; left:44px; z-index:1;
+					p{background: #222933; padding: 15px 10px; color:#fff; font-size:12px; line-height:1.4; font-weight:normal;}
+				}
 			}
-			.expense_price{}
-			.all_switch{}
-			.cpa_chart{}
+			> div{width:186px; height:186px; float:left; background:#fff; margin-left:18px; padding-top:108px;
+				p{font-size:17px; text-align:center;
+					&:last-child{font-size:24px; font-weight:bold; color:#375b96;}
+				}
+				&:first-child{width:233px; height:186px; background:#375b96; color:#fff; margin-left:0px; padding:20px 16px; clear:both;
+					p{text-align:left; clear:both;}
+					span{float:left;
+						&:last-child{padding-left:4px; cursor:pointer;}
+					}
+				}
+			}
+			.use_limit{font-size:17px; color:#fff;
+				strong{font-size:38px; line-height:2;}
+			}
+			.expense_price{background:#fff url(../images/target/chart_01.jpg) center 28px no-repeat;
+				p{line-height:1.4;}
+			}
+			.all_switch{background:#fff url(../images/target/chart_02.jpg) center 28px no-repeat;
+				p{line-height:1.4;}
+			}
+			.cpa_chart{background:#fff url(../images/target/chart_03.jpg) center 28px no-repeat;
+				p{line-height:1.4;}
+			}
 		}
-		.target_chart_wrap{clear:both;}
+		.target_chart_wrap{background:#fff; clear:both; margin-top:12px; border:1px solid #ebeef3; border-top:0px;
+			h2{height: 38px; font-size: 18px; line-height: 38px; font-weight: bold; border-top:1px solid #ebeef3; border-bottom:1px solid #ebeef3; padding-left:23px; background:url(../images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%;}
+		}
 	}
 }
+
+
