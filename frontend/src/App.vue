@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="vue_wrap">
     <router-view/>
   </div>
 </template>
@@ -11,4 +11,5 @@ export default {
 </script>
 
 <style>
+#vue_wrap{height:100%;}
 </style>
