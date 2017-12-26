@@ -1,0 +1,336 @@
+<template>
+<div class="layer-pop-widget">
+	<div class="pop-bg" onclick="layerClose(this ,false);"></div>
+	<div class="popup-widget" id="ad_set_pop_1">
+		<div class="popup-contents">
+			<div class="pop_title">광고계정 설정하기</div>
+			<div class="ad_info_wrap">
+				<div class="ad_image"></div>
+				<div class="ad_info">
+					<strong>프리메라 NEW</strong>
+					<div>계정번호:1059484622123515</div>
+				</div>
+			</div>
+			<div class="list-tab-widget">
+				<div class="tab-nav-widget">
+					<ul>
+						<li rel="tab-list-1" class="active">
+							<p></p>
+							<a href="javascript:void(0);"><span>1</span>카테고리 설정</a>
+						</li>
+						<li rel="tab-list-2">
+							<p></p>
+							<a href="javascript:void(0);"><span>2</span>네오 계정 연동</a>
+						</li>
+						<li rel="tab-list-3">
+							<p></p>
+							<a href="javascript:void(0);"><span>3</span>픽셀 이벤트 매핑</a>
+						</li>
+					</ul>
+				</div>
+				<div class="pop_tab_wrap">
+					<div class="tab-contents-widget">
+						<div id="tab-list-1" class="basic-tab-contents category_setup clearfix">
+							<div class="cate_prologue">
+								<strong>현재 선택된 광고 계정의 카테고리를 지정해주세요</strong>
+								<p>통계 및 계정 유형 분석을 위해 반드시 선택하셔야 합니다.</p>
+							</div>
+							<div class="cate_contents_widget">
+								<ul class="target_pick_01">
+									<li>
+										<span>보험</span>
+									</li>
+									<li>
+										<span>대출</span>
+									</li>
+									<li>
+										<span>카드</span>
+									</li>
+									<li>
+										<span>NGO</span>
+									</li>
+								</ul>
+								<ul class="target_pick_02">
+									<li>
+										<span>쇼핑몰</span>
+									</li>
+									<li>
+										<span>여행</span>
+									</li>
+									<li>
+										<span>뷰티</span>
+									</li>
+									<li>
+										<span>기타</span>
+									</li>
+								</ul>
+							</div>
+							<div class="btn_wrap">
+								<button href="" class="next_btn">다음</button>
+							</div>
+						</div>
+						<div id="tab-list-2" class="basic-tab-contents hide clearfix">
+							<div class="cate_prologue">
+								<strong>연결될 네오 계정을 선택해 주세요.</strong>
+								<p>연결 가능한 네오 계정이 없다면 다음을 클릭해 주세요.</p>
+							</div>
+							<div class="cate_contents">
+								<div class="account_wrap">
+									<div class="advertiser_search">
+										<div class="search_title">광고주검색</div>
+										<div><input type="text"></div>
+										<div><button>조회</button></div>
+									</div>
+									<div class="advertiser_search_result pop-scroll">
+										<div>
+											<div class="result_thead">
+												<ul>
+													<li>
+														<div class="result_check"><input type="checkbox" id="all_check"><label for="all_check"></label></div>
+														<div class="result_advertiser">광고주</div>
+														<div class="result_account">계정명</div>
+													</li>
+												</ul>
+											</div>
+											<div class="result_tbody">
+												<ul>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check01"><label for="check01"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check02"><label for="check02"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check03"><label for="check03"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check04"><label for="check04"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check05"><label for="check05"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check06"><label for="check06"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check07"><label for="check07"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check08"><label for="check08"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check09"><label for="check09"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check10"><label for="check10"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check11"><label for="check11"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+													<li>
+														<div class="result_check"><input type="checkbox" id="check12"><label for="check12"></label></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="interlock_btn">
+									<button><img src="images/icon/account_left.jpg" alt=""></button>
+									<button><img src="images/icon/account_right.jpg" alt=""></button>
+								</div>
+								<div class="account_wrap">
+									<div class="advertiser_search">
+										<div class="search_title">연결계정 <span>2</span></div>
+									</div>
+									<div class="advertiser_search_result pop-scroll">
+										<div>
+											<div class="result_thead">
+												<ul>
+													<li>
+														<div class="result_check"><input type="checkbox"></div>
+														<div class="result_advertiser">광고주</div>
+														<div class="result_account">계정명</div>
+													</li>
+												</ul>
+											</div>
+											<div class="result_tbody">
+												<ul>
+													<li>
+														<div class="result_check"><input type="checkbox"></div>
+														<div class="result_advertiser">LF몰</div>
+														<div class="result_account">LF_M_구글</div>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="btn_wrap">
+								<button class="before_btn">이전</button>
+								<button class="next_btn">다음</button>
+							</div>
+						</div>
+						<div id="tab-list-3" class="basic-tab-contents hide clearfix">
+							<div class="cate_prologue">
+								<strong>광고 계정에 사용된 픽셀 이벤트를 매핑해 주세요.</strong>
+								<p>픽셀 이벤트를 매핑해 주시면, 좀 더 편리한 맞춤 타겟팅을 사용할 수 있습니다.</p>
+							</div>
+							<div class="event_mapping_wrap">
+								<ul>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+									<li class="select_btn">
+										<div class="select_title">구매</div>
+										<div class="select_contents">
+											<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
+											<ul class="select_view">
+												<li>이벤트1</li>
+												<li>이벤트2</li>
+												<li>이벤트3</li>
+											</ul>
+										</div>
+									</li>
+								</ul>
+								<div class="btn_wrap">
+									<button class="before_btn">이전</button>
+									<button class="next_btn">다음</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop">X</button></p>
+		</div>
+	</div>
+</div>
+
+</template>
+
+<script>
+export default {
+
+  name: 'AdSetPop',
+
+  data () {
+    return {
+
+    }
+  }
+}
+</script>
+
+<style lang="css" scoped>
+</style>

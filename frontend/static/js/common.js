@@ -3,7 +3,7 @@ $(function(){
 	asideHeight();
 	selectView();
 	selectToggle();
-	MaintabAction('.section_tab_widget', '.section_tab_contents', 'active');
+	// MaintabAction('.section_tab_widget', '.section_tab_contents', 'active');
 	datePicker();
 })
 
@@ -186,16 +186,16 @@ function tabAction(obj, contents, active) {
 	});
 }
 
-function MaintabAction(obj, contents, active) {
-	$(obj).find("li").click(function() {
-		var $this = $(this);
-		var activeTab = $this.attr("rel");
-		$(obj).find('li').removeClass(active);
-		$this.addClass(active);
-		$(contents).hide();
-		$("#" + activeTab).show();
-	});
-}
+// function MaintabAction(obj, contents, active) {
+// 	$(obj).find("li").click(function() {
+// 		var $this = $(this);
+// 		var activeTab = $this.attr("rel");
+// 		$(obj).find('li').removeClass(active);
+// 		$this.addClass(active);
+// 		$(contents).hide();
+// 		$("#" + activeTab).show();
+// 	});
+// }
 
 function googleTabAction(obj, contents, active) {
 	$(obj).find("li").click(function() {
