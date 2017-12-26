@@ -10,6 +10,6 @@ export default {
 }
 </script>
 
-<style>
-#vue_wrap{height:100%;}
+<style lang="scss">
+	@import 'assets/sass/main.scss'
 </style>

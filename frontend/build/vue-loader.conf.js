@@ -8,6 +8,8 @@ const sourceMapEnabled = isProduction
 
 module.exports = {
   loaders: utils.cssLoaders({
+    'scss': 'vue-style-loader!css-loader!sass-loader',
+    'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax?sourceMap',
     sourceMap: sourceMapEnabled,
     extract: isProduction
   }),
