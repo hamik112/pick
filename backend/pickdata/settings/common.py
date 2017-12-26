@@ -40,7 +40,12 @@ INSTALLED_APPS = (
     'ad_set',
     'ad_set_insight',
     'fb_ad_account',
-    'account_pixel_mapping'
+    'account_category',
+    'account_pixel_mapping',
+    'neo_account',
+    'pickdata_account_target',
+    'pixel_mapping',
+    'pixel_mapping_category'
 )
 
 MIDDLEWARE_CLASSES = (
