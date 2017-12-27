@@ -43,9 +43,10 @@ INSTALLED_APPS = (
     'account_category',
     'account_pixel_mapping',
     'neo_account',
+    'neo_db',
     'pickdata_account_target',
     'pixel_mapping',
-    'pixel_mapping_category'
+    'pixel_mapping_category',
 )
 
 MIDDLEWARE_CLASSES = (
