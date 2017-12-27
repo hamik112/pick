@@ -14,6 +14,14 @@ DATABASES = {
         'PASSWORD': 'em4s1911',
         'HOST': '211.249.60.9',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
+    },
+    'neo_v1_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'neo_v1',
+        'USER': 'neo',
+        'PASSWORD': 'em4s1905',
+        'HOST': '211.215.18.252',  # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 
