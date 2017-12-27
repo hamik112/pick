@@ -1,10 +1,13 @@
+import $ from 'jquery';
+
+
+
+
 $(function(){
 	ImageHover();
 	asideHeight();
 	selectView();
 	selectToggle();
-	MaintabAction('.section_tab_widget', '.section_tab_contents', 'active');
-	datePicker();
 })
 
 function asideHeight(){
@@ -278,8 +281,3 @@ function prologueView(){
 		}
 	});
 }
-function datePicker(){
-	$( "#datepicker1" ).datepicker({
-		dateFormat: 'yy-mm-dd'
-	});
-};

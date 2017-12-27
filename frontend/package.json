@@ -14,6 +14,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "jquery": "^3.2.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
@@ -50,23 +51,29 @@
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
-    "jQuery": "^1.7.4",
     "jest": "^21.2.0",
     "jest-serializer-vue": "^0.3.0",
+    "jquery": "^3.2.1",
+    "location": "0.0.1",
+    "navigator": "^1.0.1",
     "nightwatch": "^0.9.12",
     "node-notifier": "^5.1.2",
     "node-sass": "^4.7.2",
+    "npm-install-webpack-plugin": "^4.0.5",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
+    "request": "^2.79.0",
+    "resolve-path-webpack-plugin": "^1.1.0",
     "rimraf": "^2.6.0",
     "sass-loader": "^6.0.6",
     "selenium-server": "^3.0.1",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
+    "underscore": "^1.8.3",
     "url-loader": "^0.5.8",
     "vue-jest": "^1.0.2",
     "vue-loader": "^13.3.0",
@@ -75,7 +82,8 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "xmlhttprequest": "^1.8.0"
   },
   "engines": {
     "node": ">= 4.0.0",

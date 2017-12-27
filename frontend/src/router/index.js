@@ -15,9 +15,9 @@ function routeFrame() {
   //ROUTING GRUP
   let routesArray = []
 
-  let paths = ['/','/Main','/TargetPick','/TargetReport','/CreativeLibrary'] //URL
+  let paths = ['/','/TargetPick','/TargetPick','/TargetReport','/CreativeLibrary'] //URL
   let names = ['Intro','Main','TargetPick','TargetReport','CreativeLibrary'] //PAGE NAME
-  let components = [Intro,Main,TargetPick,TargetReport,CreativeLibrary] //COMPONENTS NAME
+  let components = [Intro,TargetPick,TargetPick,TargetReport,CreativeLibrary] //COMPONENTS NAME
 
 
   for(var i = 0; i < components.length; i++) {
