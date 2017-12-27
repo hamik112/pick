@@ -29,6 +29,7 @@ input[type="radio"] { display:none; opacity: 0; filter: alpha(opacity=0); width:
 label:before{content:''; display:inline-block; width:15px; height:15px; background: url(../images/icon/input.png) 0 0 no-repeat; background-size:15px; vertical-align:middle; cursor:pointer;}
 input[type='checkbox']:checked + label:before,
 input[type="radio"]:checked + label:before{background: url(../images/icon/input_check.png) 0 0 no-repeat;}
+
 /* 로그인 페이지*/
 .login_wrap{position:absolute; width:411px; margin:0 auto; text-align:center; top:50%; left:50%; transform:translate(-50% , -50%);
 	.login_logo{padding-bottom:50px;}
@@ -39,6 +40,7 @@ input[type="radio"]:checked + label:before{background: url(../images/icon/input_
 	}
 }
 #main_wrap{width:100%; height:100%; display:table; background:#f2f2f2; position:relative;}
+
 /* 상단 */
 header{width:100%; display:table; padding:0 30px; height:66px; background:$basic_type01; padding-top:17px;
 	.left_area{float:left;}
@@ -66,8 +68,13 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 		}
 	}
 }
+
 /* 셀렉트 박스 */
 .select{ text-indent:12px; font-weight:bold; border-radius:2px; background: url(../images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%;}
+
+/* 정렬 버튼 */
+.sort_btn{width:10px; height:6px; background:url(../images/icon/target_up.png) center right no-repeat; position:absolute; top:14px; right:10px; z-index:1; cursor:pointer;}
+
 /* 메인 */
 #container{position:relative;
 	#container_wrap{padding-left:165px; width:100%; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box;
@@ -136,12 +143,14 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 					.admin_select{width: 37%; float:left;
 						.select_btn{width:100%; height:40px; line-height:38px;  cursor:pointer;}
 					}
+					/* 달력 */
 					.data_select{width:39.5%; float:left;
 						.select_btn{width:100%; height:40px; line-height:38px;  cursor:pointer;}
 						.select_contents{
 							p{background:url(../images/icon/calendar.png) center right no-repeat!important;}
 						}
 					}
+					/* // 달력 */
 					.select_contents{
 						p{background: url(../images/icon/target_down.png) center right no-repeat; margin-right: 10px;}
 						p.arrow_up{background: url(../images/icon/target_up.png) center right no-repeat}
@@ -168,15 +177,22 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 					}
 					.target_report_contents{width:1680px; clear:both;
 						.report_contents_inner_wrap{overflow-x:scroll;
-							table{width:3000px; border-top:2px solid #333;
-								th{text-align:center; background:url(../images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%; border-right:1px solid #ededed; border-bottom:1px solid #ededed; font-weight:bold;
-									&:last-child{border-right:0px;}
-								}
-								tr{
-									&:nth-child(odd){background:#fff;}
-									&:nth-child(even){background:#f9fafc;}
-									td{text-align:center; height:43px; line-height:43px; border-right:1px solid #ededed; border-bottom:1px solid #ededed;
+							table{width:5000px; border-top:2px solid #333;
+								thead{
+									th{position:relative; padding:10px 20px; text-align:center; background:#fefefe; border-right:1px solid #ededed; border-bottom:1px solid #ededed; font-weight:bold;
 										&:last-child{border-right:0px;}
+									}
+									td{position:relative; padding:10px 20px; text-align:center; font-weight:bold; background:#fefefe; border-right:1px solid #ededed; border-bottom:1px solid #ededed;
+										&:last-child{border-right:0px;}
+									}
+								}
+								tbody{
+									tr{
+										&:nth-child(odd){background:#fff;}
+										&:nth-child(even){background:#f9fafc;}
+										td{padding:10px; text-align:center; border-right:1px solid #ededed; border-bottom:1px solid #ededed;
+											&:last-child{border-right:0px;}
+										}
 									}
 								}
 							}
@@ -249,3 +265,6 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 		}
 	}
 }
+
+/* 달력 */
+#thedate{width:100%; height:38px; line-height:38px;}

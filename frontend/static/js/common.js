@@ -3,7 +3,7 @@ $(function(){
 	asideHeight();
 	selectView();
 	selectToggle();
-	// MaintabAction('.section_tab_widget', '.section_tab_contents', 'active');
+	MaintabAction('.section_tab_widget', '.section_tab_contents', 'active');
 	datePicker();
 })
 
@@ -106,6 +106,7 @@ function layerPopCallBack() {
 	ToggleClass();
 	checkToggle();
 	prologueView();
+	datePicker();
 }
 
 //팝업창 스크롤 자동 적용
@@ -186,16 +187,16 @@ function tabAction(obj, contents, active) {
 	});
 }
 
-// function MaintabAction(obj, contents, active) {
-// 	$(obj).find("li").click(function() {
-// 		var $this = $(this);
-// 		var activeTab = $this.attr("rel");
-// 		$(obj).find('li').removeClass(active);
-// 		$this.addClass(active);
-// 		$(contents).hide();
-// 		$("#" + activeTab).show();
-// 	});
-// }
+function MaintabAction(obj, contents, active) {
+	$(obj).find("li").click(function() {
+		var $this = $(this);
+		var activeTab = $this.attr("rel");
+		$(obj).find('li').removeClass(active);
+		$this.addClass(active);
+		$(contents).hide();
+		$("#" + activeTab).show();
+	});
+}
 
 function googleTabAction(obj, contents, active) {
 	$(obj).find("li").click(function() {
@@ -278,8 +279,12 @@ function prologueView(){
 		}
 	});
 }
+
 function datePicker(){
-	$( "#datepicker1" ).datepicker({
-		dateFormat: 'yy-mm-dd'
+	$('#thedate').datepicker({
+		dateFormat: 'dd-mm-yy',
+		altField: '#thealtdate',
+		altFormat: 'yy-mm-dd'
 	});
 };
+
