@@ -76,3 +76,38 @@ class McCenterAccount(models.Model):
         managed = False
         db_table = 'MC_CENTER_ACCOUNT'
         unique_together = (('accounttype', 'advertiserid', 'status', 'accountnickname'),)
+
+
+class McRoiReport(models.Model):
+    roireportid = models.BigAutoField(db_column='roiReportId', primary_key=True)  # Field name made lowercase.
+    reg_date = models.DateTimeField(blank=True, null=True)
+    mod_date = models.DateTimeField(blank=True, null=True)
+    mod_user = models.CharField(max_length=50, blank=True, null=True)
+    centerroiid = models.BigIntegerField(db_column='centerRoiId')  # Field name made lowercase.
+    centerpageid = models.CharField(db_column='centerPageId', max_length=255)  # Field name made lowercase.
+    centeraccountid = models.IntegerField(db_column='centerAccountId', blank=True, null=True)  # Field name made lowercase.
+    accounttype = models.CharField(db_column='accountType', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    keywordid = models.BigIntegerField(db_column='keywordId', blank=True, null=True)  # Field name made lowercase.
+    roireportday = models.CharField(db_column='roiReportDay', max_length=10)  # Field name made lowercase.
+    roireporttime = models.CharField(db_column='roiReportTime', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    campaignid = models.BigIntegerField(db_column='campaignId', blank=True, null=True)  # Field name made lowercase.
+    adgroupid = models.BigIntegerField(db_column='adGroupId', blank=True, null=True)  # Field name made lowercase.
+    mediaid = models.CharField(db_column='mediaId', max_length=64, blank=True, null=True)  # Field name made lowercase.
+    directory = models.CharField(max_length=255, blank=True, null=True)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    views = models.BigIntegerField(blank=True, null=True)
+    purchaseprice = models.FloatField(db_column='purchasePrice', blank=True, null=True)  # Field name made lowercase.
+    returnfulldata = models.TextField(db_column='returnFullData', blank=True, null=True)  # Field name made lowercase.
+    accountname = models.CharField(db_column='accountName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    adgroupname = models.CharField(db_column='adGroupName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    campaignname = models.CharField(db_column='campaignName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    keywordname = models.CharField(db_column='keywordName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    reg_user = models.CharField(max_length=50, blank=True, null=True)
+    searchkeyword = models.CharField(db_column='searchKeyword', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    landingtime = models.DateTimeField(db_column='landingTime', blank=True, null=True)  # Field name made lowercase.
+    assistantkeywordname = models.CharField(db_column='assistantKeywordName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    assistantaccounttype = models.CharField(db_column='assistantAccountType', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    centerroiname = models.CharField(db_column='centerRoiName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
