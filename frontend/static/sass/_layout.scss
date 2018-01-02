@@ -58,7 +58,7 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 .select_btn{float:left; cursor:pointer;
 	.select_contents{position:relative;
 		.select{border: $Border_type01;
-			p{background:url(../images/icon/target_down.png) center right no-repeat; margin-right:10px;}
+			p{background:url(../images/icon/target_down.png) center right no-repeat; margin-right:10px; font-weight:normal;}
 			p.arrow_up{background:url(../images/icon/target_up.png) center right no-repeat;}
 		}
 		.select_view{width:100%; position: absolute; top:37px; display: none; background: #f9f9f9; border:$Border_type01; z-index:1; height:122px; overflow-y:scroll;
@@ -73,7 +73,7 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 .select{ text-indent:12px; font-weight:bold; border-radius:2px; background: url(../images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%;}
 
 /* 정렬 버튼 */
-.sort_btn{width:10px; height:6px; background:url(../images/icon/target_up.png) center right no-repeat; position:absolute; top:14px; right:10px; z-index:1; cursor:pointer;}
+.sort_btn{width:10px; height:6px; background:url(../images/icon/target_up.png) center right no-repeat; position:absolute; top:45%; right:10px; z-index:1; cursor:pointer;}
 
 /* 메인 */
 #container{position:relative;
@@ -148,6 +148,30 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 						.select_btn{width:100%; height:40px; line-height:38px;  cursor:pointer;}
 						.select_contents{
 							p{background:url(../images/icon/calendar.png) center right no-repeat!important;}
+							.create-date-td{position:relative;
+								.date-rang-layer{background:#fff; position:absolute; top:38px; left:0px; z-index:10; border:2px solid #d0d0d0;
+									.calendaer_navi{width: 134px; float: left; border-right: 1px solid #d0d0d0;
+										ul{
+											li{ color: #666; font-weight: normal;
+												&:hover{background:#375b96; color:#fff;}
+											}
+										}
+									}
+									.calendar{width:491px; float:left;}
+									.calendar_bottom{width:100%; border:1px solid #d0d0d0; clear:both; overflow:hidden; padding:0px 10px;
+										.calendar_inner{float:right;
+											.calendar_date{float:left; font-size:12px;}
+											.calendar_btn{float:left;
+												div{float:left; text-align:center; text-indent:0px; margin:9px 0px; margin-left:10px; font-size:12px; font-weight:normal;}
+												.calender_close_btn{
+													a{width:48px; height:20px; line-height:20px; color:#666; border:1px solid #666; display:block;}
+												}
+												.calender_update{width:80px; height:20px; line-height:20px; background:#375b96; color:#fff;}
+											}
+										}
+									}
+ 								}
+							}
 						}
 					}
 					/* // 달력 */
@@ -254,7 +278,7 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 		}
 		.ad_search_list{text-align:left; height: 302px; overflow-y: scroll;
 			ul{
-				li{padding:10px 0px 10px 20px;
+				li{padding:10px 0px 10px 20px; cursor:pointer;
 					.list_image{display:inline-block; vertical-align:middle; margin-right:15px; width:40px; height:40px;  background:#c5ccdf; border-radius:50%;}
 					.list_info{display:inline-block; vertical-align:middle; line-height:1.4;
 						div{font-size:12px;}

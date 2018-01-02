@@ -8,10 +8,10 @@
 	<link  rel="stylesheet" href="css/main.css" type="text/css" />
 
 	<script type="text/javascript" src="js/libs/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="js/libs/datePicker.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/libs/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
-
+	<script type="text/javascript" src="js/libs/datePicker.js"></script>
+	<!-- <script type="text/javascript" src="js/libs/jquery.daterangepicker.min.js"></script> -->
 </head>
 <body>
 	<div id="main_wrap" class="clearfix">
@@ -306,7 +306,35 @@
 										<div class="select_btn">
 											<div class="select_contents">
 												<div class="select">
-													<p><input id="thedate" type="text" /></p>
+													<div class="create-date-td">
+														<input type="text" id="create-date" class="create-date" value="" placeholder="날짜를 입력해주세요.">
+														<div class="date-rang-layer clearfix">
+															<div class="calendaer_navi">
+																<ul>
+																	<li>전체기간</li>
+																	<li>오늘</li>
+																	<li>어제</li>
+																	<li>최근 7일</li>
+																	<li>최근 14일</li>
+																	<li>최근 30일</li>
+																	<li>이번주</li>
+																	<li>이번달</li>
+																	<li>지난달</li>
+																	<li>직접 설정</li>
+																</ul>
+															</div>
+															<div class="calendar"></div>
+															<div class="calendar_bottom clearfix">
+																<div class="calendar_inner clearfix">
+																	<div class="calendar_date">2017년 12월1일 ~ 2017년 12월11일</div>
+																	<div class="calendar_btn clearfix">
+																		<div class="calender_close_btn"><a href="#" class="close">취소</a></div>
+																		<div class="calender_update">업데이트</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -348,10 +376,22 @@
 														<th rowspan="2">성별</th>
 														<th rowspan="2">관심사 개수</th>
 														<th rowspan="2">맞춤타겟 이름</th>
-														<th rowspan="2">광고비</th>
-														<th rowspan="2">노출</th>
-														<th rowspan="2">도달</th>
-														<th rowspan="2">도달빈도</th>
+														<th rowspan="2">
+															<span>광고비</span>
+															<span class="sort_btn"></span>
+														</th>
+														<th rowspan="2">
+															<span>노출</span>
+															<span class="sort_btn"></span>
+														</th>
+														<th rowspan="2">
+															<span>도달</span>
+															<span class="sort_btn"></span>
+														</th>
+														<th rowspan="2">
+															<span>도달빈도</span>
+															<span class="sort_btn"></span>
+														</th>
 														<th colspan="3">사이트 유입 지표</th>
 														<th colspan="6">슬라이드 소재 클릭 지표</th>
 														<th colspan="6">영상캠페인 지표</th>

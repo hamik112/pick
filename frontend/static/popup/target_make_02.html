@@ -46,23 +46,23 @@
 							<div class="contents_title">Neo 유형</div>
 							<ul>
 								<li>
-									<div class="result_check"><input type="radio" id="target_type01"><label for="target_type01">매체</label></div>
+									<div class="result_check"><input type="radio" id="target_type01" name="result"><label for="target_type01">매체</label></div>
 								</li>
 								<li>
-									<div class="result_check"><input type="radio" id="target_type02"><label for="target_type02">그룹</label></div>
+									<div class="result_check"><input type="radio" id="target_type02" name="result"><label for="target_type02">그룹</label></div>
 								</li>
 								<li>
-									<div class="result_check"><input type="radio" id="target_type03"><label for="target_type03">키워드</label></div>
+									<div class="result_check"><input type="radio" id="target_type03" name="result"><label for="target_type03">키워드</label></div>
 								</li>
 								<li>
-									<div class="result_check"><input type="radio" id="target_type04"><label for="target_type04">엑셀업로드</label></div>
+									<div class="result_check"><input type="radio" id="target_type04" name="result"><label for="target_type04">엑셀업로드</label></div>
 								</li>
 							</ul>
 						</div>
 					</div>
 					<div class="target_tbody">
 						<div class="target_inner_tbody clearfix">
-							<div class="cate_contents">
+							<!-- <div class="cate_contents">
 								<div class="account_info">
 									<div class="account_title">"아래 그룹로 유입된 사람"중</div>
 									<div>
@@ -177,9 +177,9 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<!-- 엑셀 업로드-->
-							<!-- <div class="cate_contents target_excel">
+							<div class="cate_contents target_excel">
 								<div class="account_info">
 									<div class="account_title">"아래 그룹로 유입된 사람"중</div>
 									<div>
@@ -215,7 +215,7 @@
 													</div>
 													<button></button>
 												</div>
-												<button class="upload_btn"><strong>업로드</strong></button>
+												<button class="upload_btn view_alert"><strong>업로드</strong></button>
 											</div>
 										</div>
 										<div class="account_right clearfix">
@@ -234,7 +234,7 @@
 										</div>
 									</div>
 								</div>
-							</div> -->
+							</div>
 							<!-- 엑셀 업로드-->
 							<!-- 타겟만들기 미연동시 -->
 							<!-- <div class="account_interlock">
@@ -281,7 +281,7 @@
 									<div class="account_date">
 										<div class="select_btn">
 											<div class="select_contents">
-												<div class="select"><p>선택</p></div>
+												<div class="select"><p>%</p></div>
 												<ul class="select_view">
 													<li>10%</li>
 													<li>20%</li>
@@ -296,7 +296,7 @@
 										<div class="url_select clearfix">
 											<div class="select_btn">
 												<div class="select_contents">
-													<div class="select"><p>선택</p></div>
+													<div class="select"><p>부분 URL</p></div>
 													<ul class="select_view">
 														<li>10%</li>
 														<li>20%</li>
@@ -307,13 +307,17 @@
 										</div>
 										<div class="url_input">
 											<input type="text">
+										</div>
+										<div class="url_btn clearfix">
+											<div>+</div>
+											<div>-</div>
 										</div>
 									</div>
 									<div class="url_list clearfix">
 										<div class="url_select clearfix">
 											<div class="select_btn">
 												<div class="select_contents">
-													<div class="select"><p>선택</p></div>
+													<div class="select"><p>전체 URL</p></div>
 													<ul class="select_view">
 														<li>10%</li>
 														<li>20%</li>
@@ -324,13 +328,16 @@
 										</div>
 										<div class="url_input">
 											<input type="text">
+										</div>
+										<div class="url_btn clearfix">
+											<div>-</div>
 										</div>
 									</div>
 									<div class="url_list clearfix">
 										<div class="url_select clearfix">
 											<div class="select_btn">
 												<div class="select_contents">
-													<div class="select"><p>선택</p></div>
+													<div class="select"><p>전체 URL</p></div>
 													<ul class="select_view">
 														<li>10%</li>
 														<li>20%</li>
@@ -341,6 +348,9 @@
 										</div>
 										<div class="url_input">
 											<input type="text">
+										</div>
+										<div class="url_btn clearfix">
+											<div>+</div>
 										</div>
 									</div>
 								</div>
@@ -415,6 +425,7 @@
 										<li class="sticker_btn"><span>daum</span></li>
 										<li class="sticker_btn"><span>google</span></li>
 									</ul>
+									<div class="analytics_all_close"><img src="images/target/target_close_btn.png" alt=""></div>
 								</div>
 								<div id="tab_list_2" class="analytics_tab_contents clearfix"></div>
 								<div id="tab_list_3" class="analytics_tab_contents clearfix"></div>
@@ -436,7 +447,16 @@
 					<button class="adjust_btn">타겟 수정</button>
 				</div>
 			</div>
-			<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop">X</button></p>
+			<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop"><img src="images/icon/popup_close_i.png" alt=""></button></p>
+		</div>
+	</div>
+	<div class="check_alert">
+		<div class="alert_top">
+			<p>해당 형식의 파일은 지원하지 않습니다.</p>
+			<p>파일선택 버튼을 눌러 다시 선택해 주세요.</p>
+		</div>
+		<div class="alert_bottom">
+			<div class="alert_complete complete_v2">확인</div>
 		</div>
 	</div>
 </div>

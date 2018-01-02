@@ -4,9 +4,8 @@ $(function(){
 	selectView();
 	selectToggle();
 	MaintabAction('.section_tab_widget', '.section_tab_contents', 'active');
-	datePicker();
+	// datePicker();
 })
-
 function asideHeight(){
 	var _hei = $("body").height() -66;
 	$("aside, .target_aside").css({height:_hei});
@@ -106,7 +105,7 @@ function layerPopCallBack() {
 	ToggleClass();
 	checkToggle();
 	prologueView();
-	datePicker();
+	checkAlert();
 }
 
 //팝업창 스크롤 자동 적용
@@ -196,6 +195,7 @@ function MaintabAction(obj, contents, active) {
 		$(contents).hide();
 		$("#" + activeTab).show();
 	});
+	// datePicker();
 }
 
 function googleTabAction(obj, contents, active) {
@@ -280,11 +280,16 @@ function prologueView(){
 	});
 }
 
-function datePicker(){
-	$('#thedate').datepicker({
-		dateFormat: 'dd-mm-yy',
-		altField: '#thealtdate',
-		altFormat: 'yy-mm-dd'
-	});
-};
+// function datePicker(){
+// 	$(".create-date-td").dateRangeCustomPicker({single: false, autoClose:false});
+// }
 
+function checkAlert(){
+	$(".view_alert").click(function(){
+		$(".check_alert").show();
+	});
+
+	$(".alert_close").click(function(){
+		$(".check_alert").hide();
+	});
+}
