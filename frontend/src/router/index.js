@@ -1,40 +1,34 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Intro from '@/components/Intro'
-import Main from '@/components/Main'
-//Page Import
+// Page Import
 import TargetPick from '@/components/pages/TargetPick'
 import TargetReport from '@/components/pages/TargetReport'
 import CreativeLibrary from '@/components/pages/CreativeLibrary'
 
-
 Vue.use(Router)
 
-const routes = routeFrame();
-
-function routeFrame() {
-  //ROUTING GRUP
-  let routesArray = []
-
-  let paths = ['/','/TargetPick','/TargetPick','/TargetReport','/CreativeLibrary'] //URL
-  let names = ['Intro','Main','TargetPick','TargetReport','CreativeLibrary'] //PAGE NAME
-  let components = [Intro,TargetPick,TargetPick,TargetReport,CreativeLibrary] //COMPONENTS NAME
-
-
-  for(var i = 0; i < components.length; i++) {
-    var routeObj = {
-      path: paths[i],
-      name: names[i],
-      component: components[i]
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'Intro',
+      component: Intro
+    },
+    {
+      path: '/pick',
+      name: 'TargetPick',
+      component: TargetPick
+    },
+    {
+      path: '/report',
+      name: 'TargetReport',
+      component: TargetReport
+    },
+    {
+      path: '/library',
+      name: 'CreativeLibrary',
+      component: CreativeLibrary
     }
-    routesArray.push(routeObj)
-  }
-  return routesArray;
-}
-
-//라우팅 정보
-export const router = new Router({
-  routes:routes
+  ]
 })
-
-export default router
