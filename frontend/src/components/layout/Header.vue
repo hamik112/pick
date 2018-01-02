@@ -19,11 +19,10 @@
 
 <script>
 export default {
-
   name: 'header',
   methods:{
   	allCategory:function() {
-  		this.settingDes = true;
+  		this.settingDes = !this.settingDes;
   	}
   },
   data () {
