@@ -7,8 +7,8 @@
 				<p>임준수</p>
 			</div>
 			<div class="user_setup">
-				<a id="set_up" href="javascript:void(0);" onclick="allCategory(this);"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></a>
-				<div class="setup_list hide">
+				<a id="set_up" href="javascript:void(0);" v-on:click="allCategory()"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></a>
+				<div class="setup_list" v-if="settingDes">
 					<p>설정</p>
 					<p>로그아웃</p>
 				</div>
@@ -21,10 +21,14 @@
 export default {
 
   name: 'header',
-
+  methods:{
+  	allCategory:function() {
+  		this.settingDes = true;
+  	}
+  },
   data () {
     return {
-
+    	settingDes:false
     }
   }
 }

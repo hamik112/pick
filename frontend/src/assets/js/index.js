@@ -1,14 +1,13 @@
 import $ from 'jquery';
 
 
-
-
-$(function(){
+export default function init() {
 	ImageHover();
 	asideHeight();
 	selectView();
 	selectToggle();
-})
+}
+
 
 function asideHeight(){
 	var _hei = $("body").height() -66;

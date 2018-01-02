@@ -3,8 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import jqueryHelper from './assets/js'
-
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

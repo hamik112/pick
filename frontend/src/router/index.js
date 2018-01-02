@@ -7,6 +7,7 @@ import TargetPick from '@/components/pages/TargetPick'
 import TargetReport from '@/components/pages/TargetReport'
 import CreativeLibrary from '@/components/pages/CreativeLibrary'
 
+
 Vue.use(Router)
 
 const routes = routeFrame();
