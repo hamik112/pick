@@ -1,0 +1,98 @@
+[
+  {
+    "model": "account_category.accountcategory",
+    "pk": 1,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\ub300\ucd9c",
+      "category_label_en": "loan"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 2,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "NGO",
+      "category_label_en": "ngo"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 3,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\uce74\ub4dc",
+      "category_label_en": "card"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 4,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\uc5ec\ud589",
+      "category_label_en": "travel"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 5,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\uc1fc\ud551\ubab0",
+      "category_label_en": "shoppingmall"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 6,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\uae30\ud0c0",
+      "category_label_en": "etc"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 7,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\ubcf4\ud5d8",
+      "category_label_en": "insurance"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 8,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\ubdf0\ud2f0",
+      "category_label_en": "beauty"
+    }
+  }
+]

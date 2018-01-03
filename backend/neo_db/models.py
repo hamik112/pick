@@ -8,7 +8,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+from django.db.models import Count
+from utils.common import date_formatter
 
 class McCenterAdvertiser(models.Model):
     advertiserid = models.AutoField(db_column='advertiserId', primary_key=True)  # Field name made lowercase.
@@ -39,6 +40,15 @@ class McCenterAdvertiser(models.Model):
     enablescheduling = models.CharField(db_column='enableScheduling', max_length=6, blank=True, null=True)  # Field name made lowercase.
     enablecaos = models.CharField(db_column='enableCaos', max_length=6, blank=True, null=True)  # Field name made lowercase.
     bingoadvser = models.CharField(db_column='bingoAdvSer', max_length=16, blank=True, null=True)  # Field name made lowercase.
+
+    def get_all_advertisers(self):
+        advs = McCenterAdvertiser.objects.using('neo_v1_db').all()
+
+        return advs
+
+    def get_search_advertisers(self, search_text):
+        advs = McCenterAdvertiser.objects.using('neo_v1_db').filter(advertisername__contains=search_text)
+        return advs
 
     class Meta:
         managed = False
@@ -108,6 +118,67 @@ class McRoiReport(models.Model):
     assistantkeywordname = models.CharField(db_column='assistantKeywordName', max_length=255, blank=True, null=True)  # Field name made lowercase.
     assistantaccounttype = models.CharField(db_column='assistantAccountType', max_length=255, blank=True, null=True)  # Field name made lowercase.
     centerroiname = models.CharField(db_column='centerRoiName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+
+    def get_media_roi_report(self, adv_id, day=30):
+
+        McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
+        # roi_report = McRoiReport.objects.using('neo_v1_db').all()
+        roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day)).values('centeraccountid', 'accountname').annotate(count=Count('roireportid')).order_by('-count')[:200]
+        # print(roi_report.query)
+        # print(roi_report)
+
+        return_data = []
+
+        for roi_obj in roi_report:
+            return_data.append({
+                "centeraccountid":roi_obj.get('centeraccountid'),
+                "accountname": roi_obj.get('accountname'),
+                "count": roi_obj.get('count'),
+                "param" : str(adv_id) + "." + str(roi_obj.get('centeraccountid'))
+            })
+
+        return return_data
+
+    def get_campaign_roi_report(self, adv_id, day=30):
+        McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
+        roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day)).values('centeraccountid', 'accountname', 'campaignid', 'campaignname').annotate(count=Count('roireportid')).order_by('-count')[:200]
+        # print(roi_report.query)
+        # print(roi_report)
+
+        return_data = []
+
+        for roi_obj in roi_report:
+            return_data.append({
+                "centeraccountid":roi_obj.get('centeraccountid'),
+                "accountname": roi_obj.get('accountname'),
+                "campaignid": roi_obj.get('campaignid'),
+                "campaignname": roi_obj.get('campaignname'),
+                "count": roi_obj.get('count'),
+                "param": str(adv_id) + "." + str(roi_obj.get('centeraccountid')) + "." + str(roi_obj.get('campaignid'))
+            })
+
+        return return_data
+
+
+    def get_keyword_roi_report(self, adv_id, day=30):
+        McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
+        roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day)).values('centeraccountid', 'accountname', 'campaignid', 'campaignname', 'keywordid', 'keywordname').annotate(count=Count('roireportid')).order_by('-count')[:200]
+        return_data = []
+
+        for roi_obj in roi_report:
+            return_data.append({
+                "centeraccountid":roi_obj.get('centeraccountid'),
+                "accountname": roi_obj.get('accountname'),
+                "campaignid": roi_obj.get('campaignid'),
+                "campaignname": roi_obj.get('campaignname'),
+                "keywordid": roi_obj.get('keywordid'),
+                "keywordname": roi_obj.get('keywordname'),
+                "count": roi_obj.get('count'),
+                "param": str(adv_id) + "." + str(roi_obj.get('centeraccountid')) + "." + str(roi_obj.get('campaignid')) + "." + str(roi_obj.get('keywordid'))
+            })
+
+        return return_data
+
 
     class Meta:
         managed = False

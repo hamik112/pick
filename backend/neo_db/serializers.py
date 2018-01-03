@@ -12,7 +12,6 @@ class McCenterAdvertiserSerializer(serializers.ModelSerializer):
             'enablelpmonitor', 'enablerankmonitor', 'enabledrfadmin', 'enabledrfnotice', 'enabledrfreporting',
             'enableadmin', 'enablescheduling', 'enablecaos', 'bingoadvser')
 
-
 class McCenterAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = McCenterAccount

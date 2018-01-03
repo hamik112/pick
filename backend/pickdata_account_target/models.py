@@ -14,6 +14,7 @@ class PickdataAccountTarget(models.Model):
     rentention_days = models.IntegerField()
     target_status = models.IntegerField()
     extra_pixel_mapping_id = models.IntegerField(null=True)
+    # description = models.TextField() #View에 표시하기 위한 용도?
 
     class Meta:
         db_table = "pickdata_account_targets"
