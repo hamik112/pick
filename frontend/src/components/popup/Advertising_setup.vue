@@ -160,8 +160,8 @@
 									</div>
 								</div>
 								<div class="interlock_btn">
-									<button><img src="images/icon/account_left.jpg" alt=""></button>
-									<button><img src="images/icon/account_right.jpg" alt=""></button>
+									<button><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
+									<button><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
 								</div>
 								<div class="account_wrap">
 									<div class="advertiser_search">

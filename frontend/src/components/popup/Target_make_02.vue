@@ -4,11 +4,11 @@
 			<div class="modal-container">
 				<div class="layer-pop-widget">
 					<div class="pop-bg"></div>
-					<div class="popup-widget" id="target_pop_02">
+					<div class="popup-widget pop-scroll" id="target_pop_02">
 						<div class="popup-contents">
 							<div class="pop_title">타겟 만들기 (2/2)</div>
 							<div class="target_contents_wrap clearfix">
-								<div>
+								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
 											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
@@ -89,28 +89,7 @@
 													<div class="account_inner_wrap clearfix">
 														<div class="account_left">
 															<div class="advertiser_search_result pop-scroll">
-																<div>
-																	<div class="result_thead">
-																		<ul>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="all_check"><label for="all_check"></label></div>
-																				<div class="result_account">계정명</div>
-																				<div class="result_group">그룹명</div>
-																				<div class="result_switch">전환 수</div>
-																			</li>
-																		</ul>
-																	</div>
-																	<div class="result_tbody">
-																		<ul>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result01"><label for="target_result01"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
+
 															</div>
 															<div class="account_add_wrap">
 																<div>*최근 한달 기준</div>
@@ -142,12 +121,12 @@
 									<button class="next_btn">타겟 만들기</button>
 								</div>
 								<div class="btn_wrap">
-									<button class="before_btn close_pop">취소</button>
+									<button class="before_btn close_pop" @click="$emit('close')">취소</button>
 									<button class="delete_btn">타겟 삭제</button>
 									<button class="adjust_btn">타겟 수정</button>
 								</div>
 							</div>
-							<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop">X</button></p>
+							<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')">X</button></p>
 						</div>
 					</div>
 				</div>
@@ -169,6 +148,3 @@ export default {
   }
 }
 </script>
-
-<style lang="css" scoped>
-</style>

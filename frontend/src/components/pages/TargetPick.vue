@@ -3,6 +3,7 @@
 		<transition name='modal'>
 			<TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
 			<TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
+			<TargetMake2 v-if="makeModal2" @close="makeModal2 = false"></TargetMake2>
 		</transition>
 		<Header></Header>
 		<div id="container">
@@ -36,7 +37,7 @@
 											</ul>
 										</div>
 									</div>
-									<button onclick="popupActions(this,'layer-pop-widget','popup','static/popup/target_make_01');">타겟만들기</button>
+									<button type="button" @click="makeModal2 = true">타겟만들기</button>
 								</div>
 								<div class="target_contents">
 									<ul>
@@ -189,11 +190,12 @@
 	//팝업
 	import TargetChartPop from '@/components/popup/Target_chart'
 	import TargetMake1 from '@/components/popup/Target_make_01'
+	import TargetMake2 from '@/components/popup/Target_make_02'
 
 	export default {
 
 	  name: 'TargetPick',
-	  components: {'Header': Header,'Footer': Footer,'Aside': Aside,'TargetChartPop':TargetChartPop,'TargetMake1':TargetMake1},
+	  components: {'Header': Header,'Footer': Footer,'Aside': Aside,'TargetChartPop':TargetChartPop,'TargetMake1':TargetMake1, 'TargetMake2':TargetMake2},
 
 	  data () {
 	    return {
