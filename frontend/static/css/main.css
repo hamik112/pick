@@ -468,7 +468,8 @@ header {
           letter-spacing: 0px;
           margin-right: 0.5%; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap > div > p {
-            padding-bottom: 8px; }
+            padding-bottom: 8px;
+            height: 24px; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap > div .select_contents {
             position: relative; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .cate_select {
@@ -505,7 +506,8 @@ header {
               top: 38px;
               left: 0px;
               z-index: 10;
-              border: 2px solid #d0d0d0; }
+              border: 2px solid #d0d0d0;
+              display: none; }
               #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .data_select .select_contents .create-date-td .date-rang-layer .calendaer_navi {
                 width: 134px;
                 float: left;
@@ -587,7 +589,8 @@ header {
         #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup {
           width: 353px;
           margin-top: 15px;
-          margin-right: 15px; }
+          margin-right: 15px;
+          float: right; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .select {
             width: 193px;
             height: 40px;
@@ -619,7 +622,7 @@ header {
               background: url(../images/icon/target_down.png) center right no-repeat;
               margin-right: 10px; }
             #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .test01 p.arrow_up {
-              background: url(../images/icon/target_up.png) center right no-repeat; }
+              background: url(../images/icon/target_up.png) centeftarget_search_wrapr right no-repeat; }
             #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .test01 .test01_view {
               display: none;
               position: absolute;
@@ -629,14 +632,15 @@ header {
               border: 1px solid #d0d0d0;
               z-index: 1; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents {
-          width: 1680px;
+          width: 100%;
           clear: both; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap {
             overflow-x: scroll; }
-            #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table {
-              width: 5000px;
+            #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table {
+              width: 100%;
+              display: table;
               border-top: 2px solid #333; }
-              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table thead th {
+              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table thead th {
                 position: relative;
                 padding: 10px 20px;
                 text-align: center;
@@ -644,9 +648,9 @@ header {
                 border-right: 1px solid #ededed;
                 border-bottom: 1px solid #ededed;
                 font-weight: bold; }
-                #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table thead th:last-child {
+                #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table thead th:last-child {
                   border-right: 0px; }
-              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table thead td {
+              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table thead td {
                 position: relative;
                 padding: 10px 20px;
                 text-align: center;
@@ -654,18 +658,18 @@ header {
                 background: #fefefe;
                 border-right: 1px solid #ededed;
                 border-bottom: 1px solid #ededed; }
-                #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table thead td:last-child {
+                #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table thead td:last-child {
                   border-right: 0px; }
-              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table tbody tr:nth-child(odd) {
+              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table tbody tr:nth-child(odd) {
                 background: #fff; }
-              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table tbody tr:nth-child(even) {
+              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table tbody tr:nth-child(even) {
                 background: #f9fafc; }
-              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table tbody tr td {
+              #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table tbody tr td {
                 padding: 10px;
                 text-align: center;
                 border-right: 1px solid #ededed;
                 border-bottom: 1px solid #ededed; }
-                #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap table tbody tr td:last-child {
+                #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_report_contents .report_contents_inner_wrap .table tbody tr td:last-child {
                   border-right: 0px; }
       #container #container_wrap #section_list_2 .target_contents_wrap .pagination {
         margin-top: 19px;

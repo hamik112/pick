@@ -66,7 +66,7 @@
 									</div>
 									<div class="target_report_contents">
 										<div class="report_contents_inner_wrap">
-											<table>
+											<table class="contents_inner">
 												<thead>
 													<tr>
 														<th rowspan="2">광고주</th>
@@ -77,29 +77,296 @@
 														<th rowspan="2">성별</th>
 														<th rowspan="2">관심사 개수</th>
 														<th rowspan="2">맞춤타겟 이름</th>
-														<th rowspan="2">광고비</th>
-														<th rowspan="2">노출</th>
-														<th rowspan="2">도달</th>
-														<th rowspan="2">도달빈도</th>
-														<th rowspan="2" colspan="3">사이트 유입 지표</th>
-														<th rowspan="2" colspan="6">슬라이드 소재 클릭 지표</th>
-														<th rowspan="2" colspan="6">영상캠페인 지표</th>
-														<th rowspan="2" colspan="7">전환 지표</th>
-														<th rowspan="2" colspan="4">페이지 참여 지표</th>
+														<th rowspan="2">
+															<span>광고비</span>
+															<span class="sort_btn"></span>
+														</th>
+														<th rowspan="2">
+															<span>노출</span>
+															<span class="sort_btn"></span>
+														</th>
+														<th rowspan="2">
+															<span>도달</span>
+															<span class="sort_btn"></span>
+														</th>
+														<th rowspan="2">
+															<span>도달빈도</span>
+															<span class="sort_btn"></span>
+														</th>
+														<th colspan="3">사이트 유입 지표</th>
+														<th colspan="6">슬라이드 소재 클릭 지표</th>
+														<th colspan="6">영상캠페인 지표</th>
+														<th colspan="7">전환 지표</th>
+														<th colspan="4">페이지 참여 지표</th>
 													</tr>
-													<tr>
-														<td>123</td>
-														<td>123</td>
-														<td>123</td>
-														<td>123</td>
-														<td>123</td>
-														<td>123</td>
-														<td>123</td>
-														<td>123</td>
-														<td>123</td>
+													<tr class="tbody_th">
+														<td>
+															<span>링크클릭</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>CTR</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>CPC</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>1번</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>2번</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>13번</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>4번</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>5번</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>6번</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>3초 이상 View</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>3초 이상 VTR</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>3초 이상 CPV</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>10초 이상 View</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>10초 이상 VTR</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>10초 이상 CPV</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>전환 완료</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>전환 완료 가치</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>1단계 완료</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>2단계 완료</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>3단계 완료</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>4단계 완료</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>5단계 완료</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>공유</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>좋아요</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>댓글</span>
+															<span class="sort_btn"></span>
+														</td>
+														<td>
+															<span>공감</span>
+															<span class="sort_btn"></span>
+														</td>
 													</tr>
 												</thead>
 												<tbody>
+													<tr>
+														<td>광고주</td>
+														<td>CTR</td>
+														<td>CPC</td>
+														<td>1번</td>
+														<td>2번</td>
+														<td>3번</td>
+														<td>4번</td>
+														<td>5번</td>
+														<td>6번</td>
+														<td>3초 이상 View</td>
+														<td>3초 이상 VTR</td>
+														<td>3초 이상 CPV</td>
+														<td>10초 이상 View</td>
+														<td>10초 이상 VTR</td>
+														<td>10초 이상 CPV</td>
+														<td>전환 완료</td>
+														<td>전환 완료 가치</td>
+														<td>1단계 완료</td>
+														<td>2단계 완료</td>
+														<td>3단계 완료</td>
+														<td>4단계 완료</td>
+														<td>5단계 완료</td>
+														<td>공유</td>
+														<td>좋아요</td>
+														<td>댓글</td>
+														<td>공감</td>
+														<td>10초 이상 CPV</td>
+														<td>전환 완료</td>
+														<td>전환 완료 가치</td>
+														<td>1단계 완료</td>
+														<td>2단계 완료</td>
+														<td>3단계 완료</td>
+														<td>4단계 완료</td>
+														<td>5단계 완료</td>
+														<td>공유</td>
+														<td>좋아요</td>
+														<td>댓글</td>
+														<td>공감</td>
+													</tr>
+													<tr>
+														<td>광고주</td>
+														<td>CTR</td>
+														<td>CPC</td>
+														<td>1번</td>
+														<td>2번</td>
+														<td>3번</td>
+														<td>4번</td>
+														<td>5번</td>
+														<td>6번</td>
+														<td>3초 이상 View</td>
+														<td>3초 이상 VTR</td>
+														<td>3초 이상 CPV</td>
+														<td>10초 이상 View</td>
+														<td>10초 이상 VTR</td>
+														<td>10초 이상 CPV</td>
+														<td>전환 완료</td>
+														<td>전환 완료 가치</td>
+														<td>1단계 완료</td>
+														<td>2단계 완료</td>
+														<td>3단계 완료</td>
+														<td>4단계 완료</td>
+														<td>5단계 완료</td>
+														<td>공유</td>
+														<td>좋아요</td>
+														<td>댓글</td>
+														<td>공감</td>
+														<td>10초 이상 CPV</td>
+														<td>전환 완료</td>
+														<td>전환 완료 가치</td>
+														<td>1단계 완료</td>
+														<td>2단계 완료</td>
+														<td>3단계 완료</td>
+														<td>4단계 완료</td>
+														<td>5단계 완료</td>
+														<td>공유</td>
+														<td>좋아요</td>
+														<td>댓글</td>
+														<td>공감</td>
+													</tr>
+													<tr>
+														<td>광고주</td>
+														<td>CTR</td>
+														<td>CPC</td>
+														<td>1번</td>
+														<td>2번</td>
+														<td>3번</td>
+														<td>4번</td>
+														<td>5번</td>
+														<td>6번</td>
+														<td>3초 이상 View</td>
+														<td>3초 이상 VTR</td>
+														<td>3초 이상 CPV</td>
+														<td>10초 이상 View</td>
+														<td>10초 이상 VTR</td>
+														<td>10초 이상 CPV</td>
+														<td>전환 완료</td>
+														<td>전환 완료 가치</td>
+														<td>1단계 완료</td>
+														<td>2단계 완료</td>
+														<td>3단계 완료</td>
+														<td>4단계 완료</td>
+														<td>5단계 완료</td>
+														<td>공유</td>
+														<td>좋아요</td>
+														<td>댓글</td>
+														<td>공감</td>
+														<td>10초 이상 CPV</td>
+														<td>전환 완료</td>
+														<td>전환 완료 가치</td>
+														<td>1단계 완료</td>
+														<td>2단계 완료</td>
+														<td>3단계 완료</td>
+														<td>4단계 완료</td>
+														<td>5단계 완료</td>
+														<td>공유</td>
+														<td>좋아요</td>
+														<td>댓글</td>
+														<td>공감</td>
+													</tr>
+													<tr>
+														<td>광고주</td>
+														<td>CTR</td>
+														<td>CPC</td>
+														<td>1번</td>
+														<td>2번</td>
+														<td>3번</td>
+														<td>4번</td>
+														<td>5번</td>
+														<td>6번</td>
+														<td>3초 이상 View</td>
+														<td>3초 이상 VTR</td>
+														<td>3초 이상 CPV</td>
+														<td>10초 이상 View</td>
+														<td>10초 이상 VTR</td>
+														<td>10초 이상 CPV</td>
+														<td>전환 완료</td>
+														<td>전환 완료 가치</td>
+														<td>1단계 완료</td>
+														<td>2단계 완료</td>
+														<td>3단계 완료</td>
+														<td>4단계 완료</td>
+														<td>5단계 완료</td>
+														<td>공유</td>
+														<td>좋아요</td>
+														<td>댓글</td>
+														<td>공감</td>
+														<td>10초 이상 CPV</td>
+														<td>전환 완료</td>
+														<td>전환 완료 가치</td>
+														<td>1단계 완료</td>
+														<td>2단계 완료</td>
+														<td>3단계 완료</td>
+														<td>4단계 완료</td>
+														<td>5단계 완료</td>
+														<td>공유</td>
+														<td>좋아요</td>
+														<td>댓글</td>
+														<td>공감</td>
+													</tr>
 												</tbody>
 											</table>
 										</div>
