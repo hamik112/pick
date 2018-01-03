@@ -292,4 +292,8 @@ function checkAlert(){
 	$(".alert_close").click(function(){
 		$(".check_alert").hide();
 	});
+
+	$(".complete_v2").click(function(){
+		$(".check_alert").hide();
+	});
 }

@@ -79,7 +79,7 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 #container{position:relative;
 	#container_wrap{padding-left:165px; width:100%; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box;
 		/* 타겟 버튼 */
-		.target_setup{float:right; display:table; margin-bottom:15px;
+		.target_setup{display:table; margin-bottom:15px;
 			button{float:right;
 			 text-align:center; display:inline-block; border-radius:2px; font-size:15px;
 			 &:hover{font-weight:bold;}
@@ -101,11 +101,10 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 					}
 				}
 			}
-			.target_contents_wrap{width:1580px; padding-top:33px; padding-left:189px;
-				.target_contents{
-					ul{width: 1391px; display: table;
+			.target_contents_wrap{/*width:1580px;*/ padding-top:33px; padding-left:189px;
+				.target_contents{clear:both;
+					ul{/*width: 1391px;*/ display: table;
 						li{width:266px; min-height:325px; background:$basic_type01; float:left; box-shadow:$Bshadow_type01; margin-right:15px; padding:12px 23px; margin-bottom:15px; cursor:pointer;
-							&:nth-child(5n){margin-right:0px;}
 						}
 					 }
 					 .target_icon{
