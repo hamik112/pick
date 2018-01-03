@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'header',
+  name: 'appHeader',
   methods:{
   	allCategory:function() {
   		this.settingDes = !this.settingDes;
