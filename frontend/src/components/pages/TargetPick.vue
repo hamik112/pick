@@ -167,13 +167,13 @@
                     <li class="target_last"><a href="javascript:void(0);" @click="makeModal1 = true"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
                   </ul>
                 </div>
+                <ui-calender></ui-calender>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <ui-calender></ui-calender>
     <Footer></Footer>
   </div>
 </template>
