@@ -20,16 +20,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<div class="select_btn">
-													<div class="select_contents">
-														<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-														<ul class="select_view">
-															<li>12346</li>
-															<li>이벤43573457트2</li>
-															<li>34574a</li>
-														</ul>
-													</div>
-												</div>
+												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -70,16 +61,7 @@
 												<div class="account_info">
 													<div class="account_title">"아래 그룹로 유입된 사람"중</div>
 													<div>
-														<div class="select_btn">
-															<div class="select_contents">
-																<div class="select"><p>특정일 동안 미방문 고객</p></div>
-																<ul class="select_view">
-																	<li>이벤트1</li>
-																	<li>이벤트2</li>
-																	<li>이벤트3</li>
-																</ul>
-															</div>
-														</div>
+														<ui-select :selectData="this.selectData2" :onClick="selectTarget"></ui-select>
 													</div>
 													<div class="account_date">
 														<input type="text"><span>일</span>
@@ -137,14 +119,38 @@
 </template>
 
 <script>
+// UI
+import Select from '@/components/ui/Select'
+
 export default {
-
   name: 'TargetMake02',
-
+  components:{
+  	'ui-select': Select
+  },
   data () {
     return {
-
+    	selectData: {
+          emptyText: '전체보기',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        selectData2: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        }
     }
-  }
+  },
+	methods: {
+		selectTarget: function (item) {
+			this.selectData.emptyText = item
+		}
+	}
 }
 </script>

@@ -173,6 +173,7 @@
         </div>
       </div>
     </div>
+    <ui-calender></ui-calender>
     <Footer></Footer>
   </div>
 </template>
@@ -189,6 +190,7 @@
   import TargetMake2 from '@/components/popup/Target_make_02'
   // UI
   import Select from '@/components/ui/Select'
+  import Calender from '@/components/ui/Calender'
 
   export default {
     name: 'TargetPick',
@@ -200,7 +202,8 @@
       'TargetChartPop': TargetChartPop,
       'TargetMake1': TargetMake1,
       'TargetMake2': TargetMake2,
-      'ui-select': Select
+      'ui-select': Select,
+      'ui-calender':Calender
     },
 
     data () {
