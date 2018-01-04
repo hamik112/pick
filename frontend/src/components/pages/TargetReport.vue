@@ -31,11 +31,9 @@
                   <div class="target_setup">
                     <div class="select_btn">
                       <div class="select_contents test01">
-                        <div class="select"><p>열 맞춤 설정</p></div>
-                        <ul class="select_view test01_view">
-                          <li><input type="checkbox" id="sort01"><label for="sort01"></label>이벤트1</li>
-                          <li><input type="checkbox" id="sort02"><label for="sort02"></label>이벤트2</li>
-                          <li><input type="checkbox" id="sort03"><label for="sort03"></label>이벤트3</li>
+                        <div class="select" v-on:click="sortSelectOnOff()"><p>열 맞춤 설정</p></div>
+                        <ul class="select_view test01_view" v-if="this.sortSelectData.onShow">
+                          <li v-for="item in this.sortSelectData.textList"><input type="checkbox" id="sort01"><label for="sort01"></label>{{ item }}</li>
                         </ul>
                       </div>
                     </div>
@@ -409,7 +407,22 @@ export default {
           '광고계정2',
           '광고계정3'
         ]
+      },
+      sortSelectData: {
+        emptyText: '열 맞춤 설정',
+        onShow:false,
+        textList: [
+          '설정1',
+          '설정2',
+          '설정3'
+        ],
+        checkId:[
+          'sort1',
+          'sort2',
+          'sort3'
+        ]
       }
+
     }
   },
 
@@ -419,6 +432,9 @@ export default {
     },
     selectAccount: function (item) {
       this.accountSelectData.emptyText = item
+    },
+    sortSelectOnOff:function() {
+      this.sortSelectData.onShow = !this.sortSelectData.onShow
     }
   }
 }

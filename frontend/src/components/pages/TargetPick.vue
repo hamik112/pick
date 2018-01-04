@@ -1,10 +1,14 @@
 <template>
   <div id="main_wrap" class="clearfix">
+
+
     <transition name='modal'>
       <TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
       <TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
       <TargetMake2 v-if="makeModal2" @close="makeModal2 = false"></TargetMake2>
     </transition>
+
+
     <Header></Header>
     <div id="container">
       <Aside></Aside>
@@ -172,12 +176,7 @@
     <Footer></Footer>
   </div>
 </template>
-<!-- $(".select_view li").on("click",function(){
-  $(this).parent().prev().find('p').text($(this).text());
-  $(".select p").removeClass('arrow_up');
-  $(".select_btn ul").hide();
-  $('.select_view').removeClass('active');
-}); -->
+
 
 <script>
   // 레이아웃 호출
