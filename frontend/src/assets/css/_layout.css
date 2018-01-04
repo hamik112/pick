@@ -172,7 +172,6 @@ header {
       width: 100%;
       position: absolute;
       top: 37px;
-      display: none;
       background: #f9f9f9;
       border: 1px solid #dadedf;
       z-index: 1;
@@ -385,7 +384,6 @@ header {
           background: url(assets/images/icon/target_up.png) center right no-repeat; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .select_view {
           position: absolute;
-          display: none;
           top: 37px;
           left: 0px;
           background: #f9f9f9;
@@ -422,7 +420,7 @@ header {
             top: 37px;
             left: 0px; }
             #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .select_view li:hover {
-              background: #deeff5; }
+              background: #375b96; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup button {
             width: 150px;
             height: 40px;
