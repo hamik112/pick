@@ -1,7 +1,7 @@
 <template>
 	<div class="vue-calender">
 
-		<vue-datepicker-local v-model="range" clearable/>
+		<vue-datepicker-local v-model="range" rangeSeparator/>
 
 	</div>
 </template>
@@ -23,24 +23,28 @@
 	            emptyTime: '',
 	            emptyRange: [],
 	            local: {
-	              dow: 0, // Sunday is the first day of the week
-	              hourTip: 'Select Hour', // tip of select hour
-	              minuteTip: 'Select Minute', // tip of select minute
-	              secondTip: 'Select Second', // tip of select second
-	              yearSuffix: '', // suffix of head year
-	              monthsHead: 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'), // months of head
-	              months: 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'), // months of panel
-	              weeks: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_') // weeks
+	              type: Object,
+			      default () {
+			        return {
+			          dow: 0, // Sunday is the first day of the week
+			          hourTip: 'Select Hour', // tip of select hour
+			          minuteTip: 'Select Minute', // tip of select minute
+			          secondTip: 'Select Second', // tip of select second
+			          yearSuffix: '', // suffix of head year
+			          yearSuffix: '년', // format of head
+			          monthsHead: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of head
+			          months: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of panel
+			          weeks: '일_월_화_수_목_금_토'.split('_') // weeks
+			        }
+			      }
 	            }
 			}
 		},
-		methods: {
-			//disable the weekend
-			disabledDate (time) {
-			  var day = time.getDay();
-			  return day === 0 || day === 6;
-			}
-		}
+		  methods: {
+		    disabledDate (time) {
+		      return time < this.min || time > this.max
+		    }
+		  }
 	}
 </script>
 
