@@ -27,7 +27,7 @@
               </div>
               <div class="target_contents_wrap">
                 <div class="target_setup">
-                  <ui-select :selectData="this.selectData"></ui-select>
+                  <ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
                   <!-- <div class="select_btn">
                     <div class="select_contents">
                       <div class="select"><p>전체보기</p></div>
@@ -182,6 +182,12 @@
     <Footer></Footer>
   </div>
 </template>
+<!-- $(".select_view li").on("click",function(){
+  $(this).parent().prev().find('p').text($(this).text());
+  $(".select p").removeClass('arrow_up');
+  $(".select_btn ul").hide();
+  $('.select_view').removeClass('active');
+}); -->
 
 <script>
   // 레이아웃 호출
@@ -221,6 +227,12 @@
             '이벤트3'
           ]
         }
+      }
+    },
+
+    methods: {
+      selectTarget: function (item) {
+        this.selectData.emptyText = item
       }
     }
   }
