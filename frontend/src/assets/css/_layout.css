@@ -447,7 +447,6 @@ header {
             #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .test01 p.arrow_up {
               background: url(assets/images/icon/target_up.png) center right no-repeat; }
             #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .test01 .test01_view {
-              display: none;
               position: absolute;
               top: 39px;
               left: 0px;
