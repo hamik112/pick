@@ -12,30 +12,10 @@
                   <div class="cate_select">
                     <p>카테고리</p>
                     <ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select>
-                    <!-- <div class="select_btn">
-                      <div class="select_contents">
-                        <div class="select"><p>전체</p></div>
-                        <ul class="select_view">
-                          <li>이벤트1</li>
-                          <li>이벤트2</li>
-                          <li>이벤트3</li>
-                        </ul>
-                      </div>
-                    </div> -->
                   </div>
                   <div class="admin_select">
                     <p>광고계정</p>
                     <ui-select :selectData="this.accountSelectData" :onClick="selectAccount"></ui-select>
-                    <!-- <div class="select_btn">
-                      <div class="select_contents">
-                        <div class="select"><p>전체</p></div>
-                        <ul class="select_view">
-                          <li>이벤트1</li>
-                          <li>이벤트2</li>
-                          <li>이벤트3</li>
-                        </ul>
-                      </div>
-                    </div> -->
                   </div>
                   <div class="data_select">
                     <p>기간</p>
@@ -425,9 +405,9 @@ export default {
       accountSelectData: {
         emptyText: '전체',
         textList: [
-          '광고계졍1',
-          '광고계졍2',
-          '광고계졍3'
+          '광고계정1',
+          '광고계정2',
+          '광고계정3'
         ]
       }
     }

@@ -28,16 +28,6 @@
               <div class="target_contents_wrap">
                 <div class="target_setup">
                   <ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-                  <!-- <div class="select_btn">
-                    <div class="select_contents">
-                      <div class="select"><p>전체보기</p></div>
-                      <ul class="select_view">
-                        <li>이벤트1</li>
-                        <li>이벤트2</li>
-                        <li>이벤트3</li>
-                      </ul>
-                    </div>
-                  </div> -->
                   <button type="button" @click="makeModal2 = true">타겟만들기</button>
                 </div>
                 <div class="target_contents">
