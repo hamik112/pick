@@ -33,7 +33,7 @@
                       <div class="select_contents test01">
                         <div class="select" v-on:click="sortSelectOnOff()"><p>열 맞춤 설정</p></div>
                         <ul class="select_view test01_view" v-if="this.sortSelectData.onShow">
-                          <li v-for="item in this.sortSelectData.textList"><input type="checkbox" id="sort01"><label for="sort01"></label>{{ item }}</li>
+                          <li v-for="item in this.sortSelectData.listData"><input type="checkbox" v-bind:id="item.setting.checkId"><label v-bind:for="item.setting.checkId"></label>{{ item.setting.name }}</li>
                         </ul>
                       </div>
                     </div>
@@ -411,16 +411,26 @@ export default {
       sortSelectData: {
         emptyText: '열 맞춤 설정',
         onShow:false,
-        textList: [
-          '설정1',
-          '설정2',
-          '설정3'
+        listData: [
+          {
+            setting:{
+              name:'설정1',
+              checkId:'sort1'
+            }
+          },
+          {
+            setting:{
+              name:'설정2',
+              checkId:'sort2'
+            }
+          },
+          {
+            setting:{
+              name:'설정3',
+              checkId:'sort3'
+            }
+          }
         ],
-        checkId:[
-          'sort1',
-          'sort2',
-          'sort3'
-        ]
       }
 
     }
