@@ -5,6 +5,7 @@ import Intro from '@/components/Intro'
 import TargetPick from '@/components/pages/TargetPick'
 import TargetReport from '@/components/pages/TargetReport'
 import CreativeLibrary from '@/components/pages/CreativeLibrary'
+import { requireAuth } from '../utils/auth'
 
 Vue.use(Router)
 
@@ -17,16 +18,19 @@ export default new Router({
     },
     {
       path: '/pick',
+      beforeEnter: requireAuth,
       name: 'TargetPick',
       component: TargetPick
     },
     {
       path: '/report',
+      beforeEnter: requireAuth,
       name: 'TargetReport',
       component: TargetReport
     },
     {
       path: '/library',
+      beforeEnter: requireAuth,
       name: 'CreativeLibrary',
       component: CreativeLibrary
     }

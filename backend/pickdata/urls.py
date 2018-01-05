@@ -19,10 +19,12 @@ from django.contrib.staticfiles.views import serve
 
 from fb_ad_account import url as fb_ad_account_urls
 from neo_db import url as neo_db_urls
+from user import url as url_urls
 
 urlpatterns = [
     url(r'^$', serve, kwargs={'path': 'index.html'}),
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^fb_ad_accounts/', include(fb_ad_account_urls)),
-    url(r'^neo_db/', include(neo_db_urls))
+    url(r'^neo_db/', include(neo_db_urls)),
+    url(r'^users/', include(url_urls))
 ]
