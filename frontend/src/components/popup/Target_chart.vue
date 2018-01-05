@@ -1,9 +1,7 @@
 <template>
-	<div class="modal-mask">
-		<div class="modal-wrapper">
-			<div class="modal-container">
+
 				<div class="layer-pop-widget">
-					<div class="popup-widget" id="target_chart">
+					<div class="popup-widget pop-scroll" id="target_chart">
 						<div class="popup-contents">
 							<div class="pop_title">타겟 Chart</div>
 							<div class="target_chart_graph_wrap clearfix">
@@ -49,11 +47,15 @@
 								<div class="target_chart_wrap">
 									<div>
 										<h2>인구 통계학적 특성</h2>
-										<div class="graph_type01">그래프</div>
+										<div class="graph_type01">
+											<ui-charts></ui-charts>
+										</div>
 									</div>
 									<div>
 										<h2>노출위치</h2>
-										<div class="graph_type02">그래프</div>
+										<div class="graph_type02">
+											<ui-charts></ui-charts>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -62,17 +64,22 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+
 
 </template>
 
 <script>
+// UI
+import Select from '@/components/ui/Select'
+import Charts from '@/components/ui/Charts'
+
 export default {
 
   name: 'TargetChartPop',
-
+  components:{
+  	'ui-select': Select,
+  	'ui-charts':Charts
+  },
   data () {
     return {
 

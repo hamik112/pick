@@ -2,8 +2,8 @@
   <div id="main_wrap" class="clearfix">
 
 
-    <transition name='modal'>
       <TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
+    <transition name='modal'>
       <TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
       <TargetMake2 v-if="makeModal2" @close="makeModal2 = false"></TargetMake2>
     </transition>
@@ -167,7 +167,7 @@
                     <li class="target_last"><a href="javascript:void(0);" @click="makeModal1 = true"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
                   </ul>
                 </div>
-                <ui-calender></ui-calender>
+
               </div>
             </div>
           </div>
@@ -191,6 +191,7 @@
   // UI
   import Select from '@/components/ui/Select'
   import Calender from '@/components/ui/Calender'
+  import Charts from '@/components/ui/Charts'
 
   export default {
     name: 'TargetPick',
@@ -203,7 +204,8 @@
       'TargetMake1': TargetMake1,
       'TargetMake2': TargetMake2,
       'ui-select': Select,
-      'ui-calender':Calender
+      'ui-calender':Calender,
+      'ui-chart':Charts
     },
 
     data () {
@@ -231,4 +233,5 @@
 </script>
 
 <style lang="css" scoped>
+#test { width:500px; height:500px; }
 </style>
