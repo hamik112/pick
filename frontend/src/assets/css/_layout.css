@@ -117,7 +117,7 @@ input[type="radio"]:checked + label:before {
 /* 상단 */
 header {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: 100%;
   display: table;
   padding: 0 30px;
@@ -172,7 +172,6 @@ header {
       width: 100%;
       position: absolute;
       top: 37px;
-      display: none;
       background: #f9f9f9;
       border: 1px solid #dadedf;
       z-index: 1;
@@ -186,6 +185,9 @@ header {
         .select_btn .select_contents .select_view li label {
           cursor: pointer;
           margin-right: 10px; }
+        .select_btn .select_contents .select_view li:hover {
+          background: #375b96;
+          color: #fff; }
 
 /* 셀렉트 박스 */
 .select {
@@ -382,7 +384,6 @@ header {
           background: url(assets/images/icon/target_up.png) center right no-repeat; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap .select_view {
           position: absolute;
-          display: none;
           top: 37px;
           left: 0px;
           background: #f9f9f9;
@@ -419,7 +420,7 @@ header {
             top: 37px;
             left: 0px; }
             #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .select_view li:hover {
-              background: #deeff5; }
+              background: #375b96; }
           #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup button {
             width: 150px;
             height: 40px;
@@ -444,7 +445,6 @@ header {
             #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .test01 p.arrow_up {
               background: url(assets/images/icon/target_up.png) center right no-repeat; }
             #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup .test01 .test01_view {
-              display: none;
               position: absolute;
               top: 39px;
               left: 0px;
@@ -506,7 +506,7 @@ header {
     position: absolute;
     top: 0;
     left: 0px;
-    z-index: 0;
+    z-index: 2;
     width: 165px;
     height: 100%;
     padding: 66px 0 0 0; }
@@ -602,7 +602,7 @@ header {
     top: 0px;
     left: 20px;
     border: 1px solid #dadedf;
-    z-index: 9999; }
+    z-index: 2; }
     .user_ad_list .ad_list_category .ad_search_wrap {
       width: 100%;
       display: table;

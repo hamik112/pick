@@ -11,11 +11,11 @@
 									<div class="select_btn">
 										<div class="select_contents">
 											<div class="select"><p>오늘:2017/11/13</p></div>
-											<ul class="select_view">
+<!-- 											<ul class="select_view">
 												<li>이벤트1</li>
 												<li>이벤트2</li>
 												<li>이벤트3</li>
-											</ul>
+											</ul> -->
 										</div>
 									</div>
 								</div>

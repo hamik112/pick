@@ -1,10 +1,14 @@
 <template>
   <div id="main_wrap" class="clearfix">
+
+
     <transition name='modal'>
       <TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
       <TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
       <TargetMake2 v-if="makeModal2" @close="makeModal2 = false"></TargetMake2>
     </transition>
+
+
     <Header></Header>
     <div id="container">
       <Aside></Aside>
@@ -28,16 +32,6 @@
               <div class="target_contents_wrap">
                 <div class="target_setup">
                   <ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-                  <!-- <div class="select_btn">
-                    <div class="select_contents">
-                      <div class="select"><p>전체보기</p></div>
-                      <ul class="select_view">
-                        <li>이벤트1</li>
-                        <li>이벤트2</li>
-                        <li>이벤트3</li>
-                      </ul>
-                    </div>
-                  </div> -->
                   <button type="button" @click="makeModal2 = true">타겟만들기</button>
                 </div>
                 <div class="target_contents">
@@ -173,6 +167,7 @@
                     <li class="target_last"><a href="javascript:void(0);" @click="makeModal1 = true"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
                   </ul>
                 </div>
+                <ui-calender></ui-calender>
               </div>
             </div>
           </div>
@@ -182,12 +177,7 @@
     <Footer></Footer>
   </div>
 </template>
-<!-- $(".select_view li").on("click",function(){
-  $(this).parent().prev().find('p').text($(this).text());
-  $(".select p").removeClass('arrow_up');
-  $(".select_btn ul").hide();
-  $('.select_view').removeClass('active');
-}); -->
+
 
 <script>
   // 레이아웃 호출
@@ -200,6 +190,7 @@
   import TargetMake2 from '@/components/popup/Target_make_02'
   // UI
   import Select from '@/components/ui/Select'
+  import Calender from '@/components/ui/Calender'
 
   export default {
     name: 'TargetPick',
@@ -211,7 +202,8 @@
       'TargetChartPop': TargetChartPop,
       'TargetMake1': TargetMake1,
       'TargetMake2': TargetMake2,
-      'ui-select': Select
+      'ui-select': Select,
+      'ui-calender':Calender
     },
 
     data () {
