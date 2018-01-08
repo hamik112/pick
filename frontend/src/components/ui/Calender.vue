@@ -1,12 +1,18 @@
 <template>
 	<div class="vue-calender">
-		<div class="calender-list" v-if="calOn">
+		<div class="calender-list" v-if="show">
 			<ul>
-				<li>test</li>
+				<li>리스트1</li>
+				<li>리스트1</li>
+				<li>리스트1</li>
+				<li>리스트1</li>
 			</ul>
 		</div>
-		<vue-datepicker-local v-model="range" rangeSeparator/>
-
+		<vue-datepicker-local v-model="range" rangeSeparator></vue-datepicker-local>
+		<div class="calender-btn" v-if="show">
+			<button type="button">확인</button>
+			<button type="button">취소</button>
+		</div>
 	</div>
 </template>
 
@@ -22,7 +28,7 @@
 		},
 		data () {
 			return {
-				calOn:false,
+				show: false,
 				time: new Date(),
             	range: [new Date(),new Date()],
 	            emptyTime: '',
@@ -45,13 +51,52 @@
 	            }
 			}
 		},
-		  methods: {
-		    disabledDate (time) {
-		      return time < this.min || time > this.max
-		    }
-		  }
+		methods: {
+			disabledDate (time) {
+			  return time < this.min || time > this.max
+			},
+			dc (e) {
+				this.show = this.$el.contains(e.target) && !this.disabled
+			}
+		},
+		mounted () {
+			document.addEventListener('click', this.dc)
+		},
+		beforeDestroy () {
+			document.removeEventListener('click', this.dc)
+		}
 	}
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+.vue-calender { position:relative;
+	.calender-list { position:absolute; left:-200px; top:40px; width:200px; height:295px; background-color:#fff; }
+	.calender-btn { position:absolute; left:-200px; top:339px; width:100%;}
+}
+
+
+
+
+
+@keyframes datepicker-anim-in {
+    0% {
+        opacity: 0;
+        transform: scaleY(.8)
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1)
+    }
+}
+
+@keyframes datepicker-anim-out {
+    0% {
+        opacity: 1;
+        transform: scaleY(1)
+    }
+    to {
+        opacity: 0;
+        transform: scaleY(.8)
+    }
+}
 </style>
