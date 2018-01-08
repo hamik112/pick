@@ -21,7 +21,7 @@
                     <p>기간</p>
                     <div class="select_btn">
                       <div class="select_contents">
-                        <div class="select"><p class="calendar">오늘: 2017/11/13</p></div>
+                        <ui-calender></ui-calender>
                       </div>
                     </div>
                   </div>
@@ -379,6 +379,7 @@ import Footer from '@/components/layout/Footer'
 import Aside from '@/components/layout/Aside'
 // UI
 import Select from '@/components/ui/Select'
+import Calender from '@/components/ui/Calender'
 
 export default {
   name: 'TargetReport',
@@ -387,7 +388,8 @@ export default {
     'Header': Header,
     'Footer': Footer,
     'Aside': Aside,
-    'ui-select': Select
+    'ui-select': Select,
+    'ui-calender':Calender
   },
 
   data () {

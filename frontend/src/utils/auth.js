@@ -22,8 +22,8 @@ export function isLoggedIn () {
 export function requireAuth (to, from, next) {
   if (!isLoggedIn()) {
     next({
-      path: '/',
-      query: { redirect: to.fullPath }
+      // path: '/',
+      // query: { redirect: to.fullPath }
     })
   } else {
     next()
