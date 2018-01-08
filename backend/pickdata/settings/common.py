@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'account_pixel_mapping',
     'neo_account',
     'neo_db',
+    'pickdata',
     'pickdata_account_target',
     'pixel_mapping',
     'pixel_mapping_category',
