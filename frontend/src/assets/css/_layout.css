@@ -153,7 +153,7 @@ header {
         line-height: 1.4;
         z-index: 1;
         cursor: pointer;
-        border: 1px solid #dadedf; }
+        border: #fff; }
 
 /*타겟 메인 */
 .select_btn {
@@ -162,7 +162,7 @@ header {
   .select_btn .select_contents {
     position: relative; }
     .select_btn .select_contents .select {
-      border: 1px solid #dadedf; }
+      border: #fff; }
       .select_btn .select_contents .select p {
         background: url(assets/images/icon/target_down.png) center right no-repeat;
         margin-right: 10px; }
@@ -173,7 +173,7 @@ header {
       position: absolute;
       top: 37px;
       background: #f9f9f9;
-      border: 1px solid #dadedf;
+      border: #fff;
       z-index: 1;
       height: 122px;
       overflow-y: scroll; }
@@ -338,7 +338,7 @@ header {
       padding: 33px 28px; }
       #container #container_wrap #section_list_2 .target_contents_wrap .target_search_wrap {
         background: #fff;
-        border: 1px solid #dadedf;
+        border: #fff;
         padding: 14px 15px;
         letter-spacing: -4px;
         -webkit-box-shadow: 5px 10px 8px #ececec;
@@ -405,7 +405,7 @@ header {
           float: left;
           border-radius: 2px; }
       #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap {
-        border: 1px solid #dadedf;
+        border: #fff;
         background: #fff; }
         #container #container_wrap #section_list_2 .target_contents_wrap .target_report_wrap .target_setup {
           width: 353px;
@@ -601,12 +601,12 @@ header {
     position: absolute;
     top: 0px;
     left: 20px;
-    border: 1px solid #dadedf;
+    border: #fff;
     z-index: 2; }
     .user_ad_list .ad_list_category .ad_search_wrap {
       width: 100%;
       display: table;
-      border-bottom: 1px solid #dadedf;
+      border-bottom: #fff;
       background: #f8f8f8; }
       .user_ad_list .ad_list_category .ad_search_wrap .ad_search_box {
         width: 90%;

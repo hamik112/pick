@@ -1,9 +1,7 @@
 @charset "UTF-8";
 /* 팝업 */
 .layer-pop-widget {
-  position: fixed;
-  left: 0;
-  top: 0;
+  position: relative;
   z-index: 100; }
   .layer-pop-widget .result_on {
     background: #ecf7fc; }
@@ -16,14 +14,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5); }
   .layer-pop-widget .popup-widget {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    z-index: 200;
     background-color: #fff;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
     border-radius: 10px; }
   .layer-pop-widget .pop_title {
     font-weight: bold;
@@ -914,10 +905,9 @@
   vertical-align: middle; }
 
 .modal-container {
+  display: table;
   width: 300px;
   margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
   border-radius: 2px;
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
