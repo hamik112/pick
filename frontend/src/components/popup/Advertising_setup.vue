@@ -2,7 +2,7 @@
 <div class="layer-pop-widget">
 	<div class="pop-bg" onclick="layerClose(this ,false);"></div>
 	<div class="popup-widget" id="ad_set_pop_1">
-		<div class="popup-contents clearfix">
+		<div class="popup-contents">
 			<div class="pop_title">광고계정 설정하기</div>
 			<div class="ad_info_wrap">
 				<div class="ad_image"></div>
