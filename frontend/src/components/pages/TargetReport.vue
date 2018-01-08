@@ -18,7 +18,7 @@
                     <ui-select :selectData="this.accountSelectData" :onClick="selectAccount"></ui-select>
                   </div>
                   <div class="data_select">
-                    <p>기간</p>
+                    <p>간</p>
                     <div class="select_btn">
                       <div class="select_contents">
                         <ui-calender></ui-calender>
