@@ -6,7 +6,7 @@
 	.pop_title {font-weight:bold; font-size:16px; background:#222933; color:#fff; height:55px; line-height:55px; padding:0px 25px; border-radius:10px 10px 0px 0px;}
 	.ok-btn { display:block; margin:20px auto 0; color:#fff; }
 	.close-btn { display:block; position:absolute; right:9px; top:14px; width:26px; height:26px; line-height:26px; text-align:center; font-size:25px; color:#fff;}
-	.chart_close_btn{width: 191px; height: 43px; line-height: 43px; margin: 0 auto; text-align: center; background: #333; color: #fff; border-radius: 2px; margin-top: 18px; margin-bottom: 15px; cursor:pointer; font-size:16px; font-weight:bold;}
+	.chart_close_btn{width: 191px; height: 43px; line-height: 43px; margin: 0 auto; text-align: center; background: #333; color: #fff; border-radius: 2px; cursor:pointer; font-size:16px; font-weight:bold;}
 	.pop_tab_wrap{margin:30px 48px; overflow:hidden;}
 	.popup-contents{width:895px;}
 	.sticker_btn{background:#e7e7e7; height: 28px; line-height: 28px; border-radius: 20px; text-align: center; font-size: 15px; color: #666; margin-bottom: 10px; padding: 0px 10px;
@@ -432,7 +432,10 @@
 				p{line-height:1.4;}
 			}
 		}
-		.target_chart_wrap{background:#fff; clear:both; margin-top:12px; border:1px solid #ebeef3; border-top:0px;
+		.target_chart_wrap{clear:both; margin-top:12px; border:1px solid #ebeef3; border-top:0px;
+			> div{background:#fff;
+				&:first-child{margin-bottom:12px;}
+			}
 			h2{height: 38px; font-size: 18px; line-height: 38px; font-weight: bold; border-top:1px solid #ebeef3; border-bottom:1px solid #ebeef3; padding-left:23px; background:url(assets/images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%;}
 		}
 	}

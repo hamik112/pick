@@ -2,11 +2,11 @@
 	<div class="modal-mask">
 		<div class="modal-wrapper">
 			<div class="modal-container">
-				<div class="layer-pop-widget pop-scroll">
+				<div class="layer-pop-widget">
 					<div class="popup-widget" id="target_chart">
 						<div class="popup-contents clearfix">
 							<div class="pop_title">타겟 Chart</div>
-							<div class="target_chart_graph_wrap clearfix">
+							<div class="target_chart_graph_wrap clearfix pop-scroll">
 								<div class="target_chart_select clearfix">
 									<div class="select_btn">
 										<div class="select_contents">

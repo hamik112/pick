@@ -17,7 +17,7 @@ $Border_type01:1px solid #dadedf;
 }
 
 body.default{position:relative; overflow:hidden;}
-.pop-scroll { overflow-y:scroll; height:100%;
+.pop-scroll { overflow-y:scroll; height:700px;
 scrollbar-face-color:#ffffff;
 scrollbar-highlight-color: #ffffff;
 scrollbar-3dlight-color: #ffffff;
@@ -254,6 +254,8 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 					.list_info{display:inline-block; vertical-align:middle; line-height:1.4;
 						div{font-size:12px;}
 					}
+
+
 					&:hover{color:$basic_type01; background:#375b95;}
 				}
 			}
