@@ -1,6 +1,7 @@
 $Bshadow_type01:5px 10px 8px #ececec;
 $Border_type01:1px solid #dadedf;
 $basic_type01:#fff;
+$Border_type01:1px solid #dadedf;
 @font-face {
 	font-family: "NanumBarunGothic";
 	font-style: normal;
@@ -260,4 +261,18 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 	}
 }
 
-.vue-calender { float:left; height:500px; }
+.vue-calender{
+	.datepicker>input{height:40px!important; line-height:40px; background: url(assets/images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%; cursor:pointer; border:1px solid #dadedf;}
+	.datepicker-range{width:100%; height:40px; line-height:40px; min-width:auto;
+		.datepicker-popup{width:490px; padding:28px 20px;
+			.calendar{width:204px;
+				&:last-child{border:0px; margin:0px; padding:0px; border:0px; float:right;}
+				.calendar-head{border-bottom:1px solid #e7e7e7;}
+				.calendar-body{width:auto; height:auto;
+					.calendar-week,.calendar-date{width:29px; height:29px; line-height:30px;}
+				}
+			}
+		}
+	}
+}
+
