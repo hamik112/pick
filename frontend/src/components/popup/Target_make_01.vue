@@ -5,7 +5,10 @@
 				<div class="layer-pop-widget">
 					<div class="popup-widget" id="target_pop_01">
 						<div class="popup-contents clearfix">
-							<div class="pop_title">타겟 만들기 (1/2)</div>
+							<div class="pop_title_wrap">
+								<div class="pop_title">타겟 만들기 (1/2)</div>
+								<p class="popup-btn"><button type="button" id="close-btn" class="close_pop close-btn" @click="$emit('close')">X</button></p>
+							</div>
 							<div class="pop_tab_wrap clearboth">
 								<div class="cate_contents_widget">
 									<ul class="target_pick_01">
@@ -41,7 +44,6 @@
 									<button type="button" class="close_pop" @click="$emit('close')">취소</button>
 								</div>
 							</div>
-							<p class="popup-btn"><button type="button" id="close-btn" class="close_pop close-btn" @click="$emit('close')">X</button></p>
 						</div>
 					</div>
 				</div>
