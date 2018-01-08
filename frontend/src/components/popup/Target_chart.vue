@@ -4,9 +4,12 @@
 			<div class="modal-container">
 				<div class="layer-pop-widget">
 					<div class="popup-widget" id="target_chart">
-						<div class="popup-contents clearfix">
-							<div class="pop_title">타겟 Chart</div>
-							<div class="target_chart_graph_wrap clearfix pop-scroll">
+						<div class="popup-contents clearfix pop-scroll">
+							<div class="pop_title_wrap">
+								<div class="pop_title">타겟 Chart</div>
+								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')">X</button></p>
+							</div>
+							<div class="target_chart_graph_wrap clearfix">
 								<div class="target_chart_select clearfix">
 									<div class="select_btn">
 										<div class="select_contents">
@@ -57,7 +60,6 @@
 								</div>
 							</div>
 							<div class="chart_close_btn close_pop" @click="$emit('close')">닫기</div>
-							<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')">X</button></p>
 						</div>
 					</div>
 				</div>

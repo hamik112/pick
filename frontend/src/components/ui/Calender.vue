@@ -1,6 +1,10 @@
 <template>
 	<div class="vue-calender">
-
+		<div class="calender-list" v-if="calOn">
+			<ul>
+				<li>test</li>
+			</ul>
+		</div>
 		<vue-datepicker-local v-model="range" rangeSeparator/>
 
 	</div>
@@ -18,6 +22,7 @@
 		},
 		data () {
 			return {
+				calOn:false,
 				time: new Date(),
             	range: [new Date(),new Date()],
 	            emptyTime: '',
