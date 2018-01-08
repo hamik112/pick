@@ -1,11 +1,9 @@
 <template>
 	<div class="vue-calender">
-
+		<div class="date-list" v-if="dateList">test</div>
 		<vue-datepicker-local v-model="range" rangeSeparator/>
-
 	</div>
 </template>
-
 <script>
 	import VueDatepickerLocal from 'vue-datepicker-local'
 	const state = {
@@ -18,6 +16,7 @@
 		},
 		data () {
 			return {
+				r:false,
 				time: new Date(),
             	range: [new Date(),new Date()],
 	            emptyTime: '',

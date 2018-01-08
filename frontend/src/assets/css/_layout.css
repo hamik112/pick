@@ -643,3 +643,36 @@ header {
         .user_ad_list .ad_list_category .ad_search_list ul li:hover {
           color: #fff;
           background: #375b95; }
+
+.vue-calender .datepicker > input {
+  height: 40px !important;
+  line-height: 40px;
+  background: url(assets/images/common/select_bg.jpg) 0 0 repeat;
+  background-size: 100% 100%;
+  cursor: pointer; }
+
+.vue-calender .datepicker-range {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  min-width: auto; }
+  .vue-calender .datepicker-range .datepicker-popup {
+    width: 490px;
+    padding: 28px 20px; }
+    .vue-calender .datepicker-range .datepicker-popup .calendar {
+      width: 204px; }
+      .vue-calender .datepicker-range .datepicker-popup .calendar:last-child {
+        border: 0px;
+        margin: 0px;
+        padding: 0px;
+        border: 0px;
+        float: right; }
+      .vue-calender .datepicker-range .datepicker-popup .calendar .calendar-head {
+        border-bottom: 1px solid #e7e7e7; }
+      .vue-calender .datepicker-range .datepicker-popup .calendar .calendar-body {
+        width: auto;
+        height: auto; }
+        .vue-calender .datepicker-range .datepicker-popup .calendar .calendar-body .calendar-week, .vue-calender .datepicker-range .datepicker-popup .calendar .calendar-body .calendar-date {
+          width: 29px;
+          height: 29px;
+          line-height: 30px; }
