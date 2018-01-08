@@ -4,7 +4,7 @@
 			<div class="modal-container">
 				<div class="layer-pop-widget">
 					<div class="popup-widget" id="target_pop_01">
-						<div class="popup-contents">
+						<div class="popup-contents clearfix">
 							<div class="pop_title">타겟 만들기 (1/2)</div>
 							<div class="pop_tab_wrap clearboth">
 								<div class="cate_contents_widget">
