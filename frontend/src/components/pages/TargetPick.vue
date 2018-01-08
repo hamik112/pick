@@ -190,7 +190,7 @@
 	import TargetMake2 from '@/components/popup/Target_make_02'
 	// UI
 	import Select from '@/components/ui/Select'
-	import Calender from '@/components/ui/Calender'
+	import Calendar from '@/components/ui/Calendar'
 
 	export default {
 		name: 'TargetPick',
@@ -203,7 +203,7 @@
 			'TargetMake1': TargetMake1,
 			'TargetMake2': TargetMake2,
 			'ui-select': Select,
-			'ui-calender':Calender
+			'ui-calendar':Calendar
 		},
 
 		data () {

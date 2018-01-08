@@ -13,7 +13,8 @@
 								<div class="target_chart_select clearfix">
 									<div class="select_btn">
 										<div class="select_contents">
-											<div class="select"><p>오늘:2017/11/13</p></div>
+											<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
+											<ui-calendar></ui-calendar>
 										</div>
 									</div>
 								</div>
@@ -74,13 +75,15 @@
 // UI
 import Select from '@/components/ui/Select'
 import Charts from '@/components/ui/Charts'
+import Calendar from '@/components/ui/Calendar'
 
 export default {
 
   name: 'TargetChartPop',
   components:{
   	'ui-select': Select,
-  	'ui-charts':Charts
+  	'ui-charts':Charts,
+  	'ui-calendar':Calendar
   },
   data () {
     return {
