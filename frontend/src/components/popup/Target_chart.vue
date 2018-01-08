@@ -1,5 +1,7 @@
 <template>
-
+	<div class="modal-mask">
+		<div class="modal-wrapper">
+			<div class="modal-container">
 				<div class="layer-pop-widget">
 					<div class="popup-widget pop-scroll" id="target_chart">
 						<div class="popup-contents">
@@ -64,6 +66,9 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
 
 
 </template>

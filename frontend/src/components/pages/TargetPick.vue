@@ -2,8 +2,8 @@
   <div id="main_wrap" class="clearfix">
 
 
-      <TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
     <transition name='modal'>
+      <TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
       <TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
       <TargetMake2 v-if="makeModal2" @close="makeModal2 = false"></TargetMake2>
     </transition>
