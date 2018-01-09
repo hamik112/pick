@@ -120,8 +120,8 @@
 </template>
 
 <script>
-//UI Components Files
-import { Select, Calendar, Charts } from '@/components/componentsUI.js'
+// UI
+import Select from '@/components/ui/Select'
 
 export default {
   name: 'TargetMake02',
