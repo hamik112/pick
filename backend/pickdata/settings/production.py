@@ -9,7 +9,7 @@ ALLOWED_HOSTS = ['*']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pickdata_production',
+        'NAME': 'pickdata_v2_production',
         'USER': 'pickdata',
         'PASSWORD': 'em4s1911',
         'HOST': '211.249.60.9',   # Or an IP Address that your DB is hosted on

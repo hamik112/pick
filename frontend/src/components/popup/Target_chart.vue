@@ -4,18 +4,17 @@
 			<div class="modal-container">
 				<div class="layer-pop-widget">
 					<div class="popup-widget" id="target_chart">
-						<div class="popup-contents">
-							<div class="pop_title">타겟 Chart</div>
+						<div class="popup-contents clearfix pop-scroll">
+							<div class="pop_title_wrap">
+								<div class="pop_title">타겟 Chart</div>
+								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')">X</button></p>
+							</div>
 							<div class="target_chart_graph_wrap clearfix">
 								<div class="target_chart_select clearfix">
 									<div class="select_btn">
 										<div class="select_contents">
-											<div class="select"><p>오늘:2017/11/13</p></div>
-<!-- 											<ul class="select_view">
-												<li>이벤트1</li>
-												<li>이벤트2</li>
-												<li>이벤트3</li>
-											</ul> -->
+											<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
+											<ui-calendar></ui-calendar>
 										</div>
 									</div>
 								</div>
@@ -49,16 +48,19 @@
 								<div class="target_chart_wrap">
 									<div>
 										<h2>인구 통계학적 특성</h2>
-										<div class="graph_type01">그래프</div>
+										<div class="graph_type01">
+											<ui-charts></ui-charts>
+										</div>
 									</div>
 									<div>
 										<h2>노출위치</h2>
-										<div class="graph_type02">그래프</div>
+										<div class="graph_type02">
+											<ui-charts></ui-charts>
+										</div>
 									</div>
 								</div>
 							</div>
 							<div class="chart_close_btn close_pop" @click="$emit('close')">닫기</div>
-							<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')">X</button></p>
 						</div>
 					</div>
 				</div>
@@ -66,13 +68,23 @@
 		</div>
 	</div>
 
+
 </template>
 
 <script>
+// UI
+import Select from '@/components/ui/Select'
+import Charts from '@/components/ui/Charts'
+import Calendar from '@/components/ui/Calendar'
+
 export default {
 
   name: 'TargetChartPop',
-
+  components:{
+  	'ui-select': Select,
+  	'ui-charts':Charts,
+  	'ui-calendar':Calendar
+  },
   data () {
     return {
 

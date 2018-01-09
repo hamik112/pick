@@ -94,5 +94,113 @@
       "category_label_kr": "\ubdf0\ud2f0",
       "category_label_en": "beauty"
     }
+  },
+    {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 1,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uad6c\ub9e4",
+      "category_label_en": "purchase"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 2,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc7a5\ubc14\uad6c\ub2c8",
+      "category_label_en": "add to cart"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 3,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\ud68c\uc6d0\uac00\uc785",
+      "category_label_en": "sign up"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 4,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 \uc644\ub8cc",
+      "category_label_en": "conversion complete"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 5,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 1\ub2e8\uacc4",
+      "category_label_en": "conversion 1step"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 6,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 2\ub2e8\uacc4",
+      "category_label_en": "conversion 2step"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 7,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 3\ub2e8\uacc4",
+      "category_label_en": "conversion 3step"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 8,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 4\ub2e8\uacc4",
+      "category_label_en": "conversion 4step"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 9,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 5\ub2e8\uacc4",
+      "category_label_en": "conversion 5step"
+    }
   }
 ]

@@ -70,7 +70,8 @@ def create_addtocart_and_non_purchase_customers(account_id, name, pixel_id, rete
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        # "retention_seconds": retention_days * 24 * 60 * 60,
+                        "retention_seconds": 15552000,
                         "filter": {
                             "operator": "and",
                             "filters": [

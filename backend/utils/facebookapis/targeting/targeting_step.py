@@ -146,7 +146,7 @@ def create_non_conversion_customers(account_id, name, pixel_id, retention_days=3
 
 # 단계별 전환 전환 x단계 완료 고객
 def create_step_conversion_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                     purchase_evnet_name="Purchase"):
+                                     conversion_event_name="Purchase"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -168,7 +168,7 @@ def create_step_conversion_customers(account_id, name, pixel_id, retention_days=
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": purchase_evnet_name
+                                    "value": conversion_event_name
                                 }
                             ]
                         }

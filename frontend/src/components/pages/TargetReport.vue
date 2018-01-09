@@ -21,7 +21,7 @@
                     <p>기간</p>
                     <div class="select_btn">
                       <div class="select_contents">
-                        <div class="select"><p class="calendar">오늘: 2017/11/13</p></div>
+                         <ui-calendar v-model="range"></ui-calendar>
                       </div>
                     </div>
                   </div>
@@ -379,6 +379,7 @@ import Footer from '@/components/layout/Footer'
 import Aside from '@/components/layout/Aside'
 // UI
 import Select from '@/components/ui/Select'
+import Calendar from '@/components/ui/Calendar'
 
 export default {
   name: 'TargetReport',
@@ -387,7 +388,8 @@ export default {
     'Header': Header,
     'Footer': Footer,
     'Aside': Aside,
-    'ui-select': Select
+    'ui-select': Select,
+    'ui-calendar':Calendar
   },
 
   data () {
@@ -431,9 +433,34 @@ export default {
             }
           }
         ],
-      }
+      },
 
+
+
+      show: false,
+      time: new Date(),
+      range: [new Date(),new Date()],
+      emptyTime: '',
+      emptyRange: [],
+      local: {
+        type: Object,
+        default () {
+          return {
+            dow: 0, // Sunday is the first day of the week
+            hourTip: 'Select Hour', // tip of select hour
+            minuteTip: 'Select Minute', // tip of select minute
+            secondTip: 'Select Second', // tip of select second
+            yearSuffix: '', // suffix of head year
+            yearSuffix: '년', // format of head
+            monthsHead: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of head
+            months: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of panel
+            weeks: '일_월_화_수_목_금_토'.split('_') // weeks
+          }
+        }
+      }
     }
+
+
   },
 
   methods: {
@@ -445,6 +472,12 @@ export default {
     },
     sortSelectOnOff:function() {
       this.sortSelectData.onShow = !this.sortSelectData.onShow
+    },
+    disabledDate (time) {
+      return time < this.min || time > this.max
+    },
+    dc (e) {
+      this.show = this.$el.contains(e.target) && !this.disabled
     }
   }
 }

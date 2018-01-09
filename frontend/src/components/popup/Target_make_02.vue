@@ -3,10 +3,12 @@
 		<div class="modal-wrapper">
 			<div class="modal-container">
 				<div class="layer-pop-widget">
-					<div class="pop-bg"></div>
 					<div class="popup-widget pop-scroll" id="target_pop_02">
-						<div class="popup-contents">
-							<div class="pop_title">타겟 만들기 (2/2)</div>
+						<div class="popup-contents clearfix">
+							<div class="pop_title_wrap">
+								<div class="pop_title">타겟 만들기 (2/2)</div>
+								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')"><img src="../../assets/images/target/target_list_close.png" alt=""></button></p>
+							</div>
 							<div class="target_contents_wrap clearfix">
 								<div class="target_contents_inner">
 									<div class="target_thead">
@@ -108,7 +110,6 @@
 									<button class="adjust_btn">타겟 수정</button>
 								</div>
 							</div>
-							<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')">X</button></p>
 						</div>
 					</div>
 				</div>

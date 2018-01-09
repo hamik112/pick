@@ -71,7 +71,8 @@ def create_regestration_usage_time_top_customers(account_id, name, pixel_id, ret
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        # "retention_seconds": retention_days * 24 * 60 * 60,
+                        "retention_seconds": 15552000,
                         "filter": {
                             "operator": "and",
                             "filters": [
@@ -151,7 +152,8 @@ def create_regestration_and_non_purchase_customers(account_id, name, pixel_id, r
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        # "retention_seconds": retention_days * 24 * 60 * 60,
+                        "retention_seconds": 15552000,
                         "filter": {
                             "operator": "and",
                             "filters": [
@@ -226,7 +228,8 @@ def create_regestration_and_conversion_customers(account_id, name, pixel_id, ret
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        # "retention_seconds": retention_days * 24 * 60 * 60,
+                        "retention_seconds": 15552000,
                         "filter": {
                             "operator": "and",
                             "filters": [
@@ -296,7 +299,8 @@ def create_regestration_non_conversion_customers(account_id, name, pixel_id, ret
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        # "retention_seconds": retention_days * 24 * 60 * 60,
+                        "retention_seconds": 15552000,
                         "filter": {
                             "operator": "and",
                             "filters": [

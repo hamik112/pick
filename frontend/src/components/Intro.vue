@@ -15,6 +15,29 @@ import { setUserId } from '../utils/auth'
 
 export default {
   name: 'Intro',
+  created () {
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1456607077970548',
+        cookie     : true,  // enable cookies to allow the server to access
+        // the session
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.11' // use version 2.2
+      });
+
+      FB.getLoginStatus(function(response) {
+        fbCheckStatus(response);
+      });
+    };
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  },
   methods: {
     login () {
       fblogin()
@@ -24,31 +47,6 @@ export default {
 
 
 function fblogin() {
-  window.fbAsyncInit = function() {
-    FB.init({
-      // appId      : '{{ fb_app_id }}',
-      appId      : '1456607077970548',
-      cookie     : true,  // enable cookies to allow the server to access
-      // the session
-      xfbml      : true,  // parse social plugins on this page
-      // version    : '{{ fb_app_version }}' // use version 2.2
-      version    : 'v2.11' // use version 2.2
-    });
-
-    FB.getLoginStatus(function(response) {
-      fbCheckStatus(response);
-    });
-  };
-
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
   FB.login(function(response) {
     if (response.status === "connected") {
       snackLogin(response);
@@ -86,7 +84,7 @@ function snackLogin(res) {
     // location.href = "main";
 
     // axios.post('/users/signin', {
-    axios.post('users/signin', {
+    axios.post('api/users/signin', {
         fb_username: resp.email,
         fb_id: resp.id,
         fb_name: resp.name,

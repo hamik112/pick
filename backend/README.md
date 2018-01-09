@@ -6,6 +6,5 @@
 #loaddata
 python manage.py loaddata init_data --settings=pickdata.settings.dev
 
-
 #runserver
 python manage.py runserver --settings=pickdata.settings.dev
