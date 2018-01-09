@@ -313,17 +313,23 @@ export default {
 	},
 	tabMove:function(activeNumber) {
 		if(activeNumber == 'tabActive1') {
+
 			this.tabActive1 = true
 			this.tabActive2 = false
 			this.tabActive3 = false
+
 		}else if(activeNumber == 'tabActive2') {
+
 			this.tabActive1 = false
 			this.tabActive2 = true
 			this.tabActive3 = false
+
 		}else{
+
 			this.tabActive1 = false
 			this.tabActive2 = false
 			this.tabActive3 = true
+
 		}
 	},
 	success:function() {
