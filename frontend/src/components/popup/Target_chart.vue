@@ -72,10 +72,9 @@
 </template>
 
 <script>
-// UI
-import Select from '@/components/ui/Select'
-import Charts from '@/components/ui/Charts'
-import Calendar from '@/components/ui/Calendar'
+//UI Components Files
+import { Select, Calendar, Charts } from '@/components/componentsUI.js'
+
 
 export default {
 

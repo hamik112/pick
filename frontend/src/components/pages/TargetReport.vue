@@ -373,13 +373,9 @@
 </template>
 
 <script>
-// 레이아웃 호출
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
-import Aside from '@/components/layout/Aside'
-// UI
-import Select from '@/components/ui/Select'
-import Calendar from '@/components/ui/Calendar'
+
+//UI Components Files
+import { Header, Footer, Aside, TargetChartPop, TargetMake1, TargetMake2, Select, Calendar } from '@/components/componentsUI.js'
 
 export default {
   name: 'TargetReport',

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Intro from '@/components/Intro'
+
 // Page Import
 import TargetPick from '@/components/pages/TargetPick'
 import TargetReport from '@/components/pages/TargetReport'
