@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import PickdataAccountTarget
+from .serializers import PickdataAccountTargetSerializer
 
-# Create your views here.
+
+class PickdataAccountTargetViewSet(viewsets.ModelViewSet):
+    queryset = PickdataAccountTarget.objects.all()
+    serializer_class = PickdataAccountTargetSerializer

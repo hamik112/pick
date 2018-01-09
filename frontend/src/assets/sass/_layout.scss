@@ -17,7 +17,7 @@ $Border_type01:1px solid #dadedf;
 }
 
 body.default{position:relative; overflow:hidden;}
-.pop-scroll { overflow-y:scroll; height:700px;
+.pop-scroll { overflow-y:scroll; height:740px;
 scrollbar-face-color:#ffffff;
 scrollbar-highlight-color: #ffffff;
 scrollbar-3dlight-color: #ffffff;
@@ -148,18 +148,11 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 					}
 					.data_select{width:39.5%; float:left;
 						.select_btn{width:100%; height:40px; line-height:38px;  cursor:pointer;}
-						.select_contents{
-							p{background:url(assets/images/icon/calendar.png) center right no-repeat!important;}
-						}
-					}
-					.select_contents{
-						p{background: url(assets/images/icon/target_down.png) center right no-repeat; margin-right: 10px;}
-						p.arrow_up{background: url(assets/images/icon/target_up.png) center right no-repeat}
 					}
 					.select_view{position:absolute; top: 37px; left: 0px; background: #f9f9f9; border: 1px solid #d0d0d0; text-indent: 12px; height:122px; overflow-y:scroll; z-index:1;
 						li:hover{background:#375b96; color:#fff;}
 					}
-					button{width:10.5%; background:#375b96; color:$basic_type01; height:40px; line-height:40px; margin-top:24px; float:left; border-radius:2px;}
+					.report_search{width:10.5%; background:#375b96; color:$basic_type01; height:40px; line-height:40px; margin-top:24px; float:left; border-radius:2px;}
 				}
 				.target_report_wrap{border:$Border_type01; background:$basic_type01;
 					.target_setup{width:353px; margin-top:15px; margin-right:15px; float:right;
@@ -266,13 +259,32 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 
 .vue-calendar{ position:relative;
 	.datepicker>input{height:40px!important; line-height:40px; background: url(assets/images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%; cursor:pointer; border:1px solid #dadedf;}
-	.datepicker-range{width:100%; height:40px; line-height:40px; min-width:auto;
-		.datepicker-popup{width:652px; z-index:9;
-			.calendar{width:204px;
-				&:last-child{border:0px; margin:0px; padding:0px; border:0px; float:right;}
-				.calendar-head{border-bottom:1px solid #e7e7e7;}
-				.calendar-body{width:auto; height:auto;
-					.calendar-week,.calendar-date{width:29px; height:29px; line-height:30px;}
+	.datepicker-range{width:100%; min-width:auto;
+		.datepicker-popup{width:652px; z-index:9; padding:0px; margin:0px; top:39px; right:0px;
+			.calendar-list{width:134px; float:left; border-right:1px solid #d0d0d0;
+				ul{
+					li{height:auto; line-height:1.4; padding:10px;
+						&:hover{background:#375b96; color:#fff;}
+					}
+				}
+			}
+			.calender-view{float:left;
+				.calender-inner-view{width:516px; padding:20px 20px 0px 20px;
+					.calendar{width:220px; float:left;
+						.calendar-body{width:220px;}
+						.calendar-week, .calendar-date{line-height:14.28%;}
+					}
+					.calendar+.calendar{float:right; padding:0px; margin:0px; border:0px;}
+				}
+			}
+			.calender-btn-wrap{height:50px; line-height:50px; overflow:hidden; clear:both; border-top:1px solid #d0d0d0;
+				.calender-inner-wrap{float:right; padding-right:10px;
+					.calender-date{float:left;}
+					.calender-btn{float:left; letter-spacing: -4px;
+						button{height:22px; line-height: 22px; border-radius: 2px; vertical-align:middle; display:inline-block; margin-left:10px; letter-spacing: 0px;}
+						.close_btn{width:50px; border:1px solid #666; color:#666;}
+						.update_btn{width:80px; color: #fff; background: #375b96;}
+					}
 				}
 			}
 		}

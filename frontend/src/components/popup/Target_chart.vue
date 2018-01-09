@@ -7,14 +7,14 @@
 						<div class="popup-contents clearfix pop-scroll">
 							<div class="pop_title_wrap">
 								<div class="pop_title">타겟 Chart</div>
-								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')">X</button></p>
+								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 							</div>
 							<div class="target_chart_graph_wrap clearfix">
 								<div class="target_chart_select clearfix">
 									<div class="select_btn">
 										<div class="select_contents">
 											<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
-											<ui-calendar></ui-calendar>
+											<ui-calendar v-model="range"></ui-calendar>
 										</div>
 									</div>
 								</div>
@@ -81,14 +81,34 @@ export default {
 
   name: 'TargetChartPop',
   components:{
-  	'ui-select': Select,
-  	'ui-charts':Charts,
-  	'ui-calendar':Calendar
+	'ui-select': Select,
+	'ui-charts':Charts,
+	'ui-calendar':Calendar
   },
   data () {
-    return {
-
-    }
+	return {
+		show: false,
+			time: new Date(),
+			range: [new Date(),new Date()],
+			emptyTime: '',
+			emptyRange: [],
+			local: {
+				type: Object,
+				default () {
+					return {
+						dow: 0, // Sunday is the first day of the week
+						hourTip: 'Select Hour', // tip of select hour
+						minuteTip: 'Select Minute', // tip of select minute
+						secondTip: 'Select Second', // tip of select second
+						yearSuffix: '', // suffix of head year
+						yearSuffix: '년', // format of head
+						monthsHead: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of head
+						months: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of panel
+						weeks: '일_월_화_수_목_금_토'.split('_') // weeks
+					}
+				}
+			}
+	}
   }
 }
 </script>

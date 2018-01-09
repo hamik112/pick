@@ -26,6 +26,9 @@ from ad_set_insight import url as ad_set_insight_urls
 urlpatterns = [
     url(r'^$', serve, kwargs={'path': 'index.html'}),
     # url(r'^admin/', include(admin.site.urls)),
+    url(r'^account_pixel_mapping/', include('account_pixel_mapping.urls', namespace='account_pixel_mapping')),
+    url(r'^pickdata_account_target/', include('pickdata_account_target.urls', namespace='pickdata_account_target')),
+    url(r'^pixel_mapping/', include('pixel_mapping.urls', namespace='pixel_mapping')),
     url(r'^fb_ad_accounts/', include(fb_ad_account_urls)),
     url(r'^neo_db/', include(neo_db_urls)),
     url(r'^users/', include(url_urls)),

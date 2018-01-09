@@ -1,8 +1,8 @@
 <template>
   <div class="select_btn">
-    <div class="select_contents">
+    <div class="select_contents" tabindex="-1" @blur="hide">
       <div class="select" v-on:click="onShow"><p v-bind:class="this.pArrowUp">{{ selectData.emptyText }}</p></div>
-      <ul class="select_view" :style="this.selectViewStyle">
+      <ul class="select_view" :style="this.selectViewStyle" v-click-outside="hide">
         <li v-for="item in selectData.textList" @click="onClick(item)" v-on:click="onShow">{{ item }}</li>
       </ul>
     </div>
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -48,7 +49,6 @@ export default {
       }
     }
   },
-
   methods: {
     onShow: function () {
       if (this.selectViewStyle.display === 'none') {
@@ -58,6 +58,9 @@ export default {
         this.pArrowUp = ''
         this.selectViewStyle.display = 'none'
       }
+    },
+    hide:function() {
+      this.selectViewStyle.display = 'none'
     }
   }
 }
