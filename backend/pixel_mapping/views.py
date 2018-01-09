@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import PixelMapping
+from .serializers import PixelMappingSerializer
 
-# Create your views here.
+
+class PixelMappingViewSet(viewsets.ModelViewSet):
+    queryset = PixelMapping.objects.all()
+    serializer_class = PixelMappingSerializer
