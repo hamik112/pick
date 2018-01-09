@@ -148,18 +148,11 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 					}
 					.data_select{width:39.5%; float:left;
 						.select_btn{width:100%; height:40px; line-height:38px;  cursor:pointer;}
-						.select_contents{
-							p{background:url(assets/images/icon/calendar.png) center right no-repeat!important;}
-						}
-					}
-					.select_contents{
-						p{background: url(assets/images/icon/target_down.png) center right no-repeat; margin-right: 10px;}
-						p.arrow_up{background: url(assets/images/icon/target_up.png) center right no-repeat}
 					}
 					.select_view{position:absolute; top: 37px; left: 0px; background: #f9f9f9; border: 1px solid #d0d0d0; text-indent: 12px; height:122px; overflow-y:scroll; z-index:1;
 						li:hover{background:#375b96; color:#fff;}
 					}
-					button{width:10.5%; background:#375b96; color:$basic_type01; height:40px; line-height:40px; margin-top:24px; float:left; border-radius:2px;}
+					.report_search{width:10.5%; background:#375b96; color:$basic_type01; height:40px; line-height:40px; margin-top:24px; float:left; border-radius:2px;}
 				}
 				.target_report_wrap{border:$Border_type01; background:$basic_type01;
 					.target_setup{width:353px; margin-top:15px; margin-right:15px; float:right;
@@ -274,12 +267,17 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 				}
 			}
 			.calender-view{float:left;
-				.calender-inner-view{width:516px;
-					.calendar{float:left;}
+				.calender-inner-view{width:516px; padding:20px 20px 0px 20px;
+					.calendar{width:220px; float:left;
+						.calendar-body{width:220px;}
+						.calendar-week, .calendar-date{line-height:14.28%;}
+					}
 					.calendar+.calendar{float:right; padding:0px; margin:0px; border:0px;}
 				}
 			}
-			.calendar-btn{overflow:hidden; clear:both; border-top:1px solid #d0d0d0;}
+			.calendar-btn{overflow:hidden; clear:both; border-top:1px solid #d0d0d0;
+				.calender-inner{}
+			}
 		}
 	}
 

@@ -31,8 +31,11 @@
 						</div>
 					</div>
 					<div class="calendar-btn">
-						<button type="button">취소</button>
-						<button type="button">업데이트</button>
+						<p>2017년12월1일 ~ 2017년 12월11일</p>
+						<div class="calender-inner">
+							<button type="button" class="close_btn">취소</button>
+							<button type="button" class="update_btn">업데이트</button>
+						</div>
 					</div>
 				</div>
 			</transition>

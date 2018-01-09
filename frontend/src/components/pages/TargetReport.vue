@@ -25,7 +25,7 @@
                       </div>
                     </div>
                   </div>
-                  <button>검색</button>
+                  <button class="report_search">검색</button>
                 </div>
                 <div class="target_report_wrap">
                   <div class="target_setup">

@@ -5,7 +5,10 @@
 				<div class="layer-pop-widget">
 					<div class="popup-widget" id="ad_set_pop_1">
 						<div class="popup-contents">
-							<div class="pop_title">광고계정 설정하기</div>
+							<div class="pop_title_wrap">
+								<div class="pop_title">광고계정 설정하기</div>
+								<p class="popup-btn"><button type="button" id="close-btn" class="close_pop close-btn" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
+							</div>
 							<div class="ad_info_wrap">
 								<div class="ad_image"></div>
 								<div class="ad_info">
@@ -208,100 +211,55 @@
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 													<li class="select_btn">
 														<div class="select_title">구매</div>
 														<div class="select_contents">
-															<div class="select"><p>픽셀 이벤트를 선택해주세요</p></div>
-															<ul class="select_view">
-																<li>이벤트1</li>
-																<li>이벤트2</li>
-																<li>이벤트3</li>
-															</ul>
+															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
 														</div>
 													</li>
 												</ul>
@@ -325,35 +283,53 @@
 </template>
 
 <script>
+//UI
+import Select from '@/components/ui/Select'
+
 export default {
   name:'SetupPop',
+  components:{
+  	'ui-select':Select
+  },
   data () {
-    return {
-    	tabActive1:true,
-    	tabActive2:false,
-    	tabActive3:false,
-    }
+	return {
+		tabActive1:true,
+		tabActive2:false,
+		tabActive3:false,
+
+		categorySelectData: {
+		emptyText: '픽셀 이벤트를 선택해주세요',
+		textList: [
+		  '픽셀1',
+		  '픽셀2',
+		  '픽셀3'
+		]
+	  }
+	}
   },
   methods:{
-  	tabMove:function(activeNumber) {
-  		if(activeNumber == 'tabActive1') {
-  			this.tabActive1 = true
-  			this.tabActive2 = false
-  			this.tabActive3 = false
-  		}else if(activeNumber == 'tabActive2') {
-  			this.tabActive1 = false
-  			this.tabActive2 = true
-  			this.tabActive3 = false
-  		}else{
-  			this.tabActive1 = false
-  			this.tabActive2 = false
-  			this.tabActive3 = true
-  		}
-  	},
-  	success:function() {
-  		alert('설정이 완료되었습니다.');
-  		this.$emit('close')
-  	}
+  	selectCategory: function (item) {
+	  this.categorySelectData.emptyText = item
+	},
+	tabMove:function(activeNumber) {
+		if(activeNumber == 'tabActive1') {
+			this.tabActive1 = true
+			this.tabActive2 = false
+			this.tabActive3 = false
+		}else if(activeNumber == 'tabActive2') {
+			this.tabActive1 = false
+			this.tabActive2 = true
+			this.tabActive3 = false
+		}else{
+			this.tabActive1 = false
+			this.tabActive2 = false
+			this.tabActive3 = true
+		}
+	},
+	success:function() {
+		alert('설정이 완료되었습니다.');
+		this.$emit('close')
+	}
   }
 }
 </script>
