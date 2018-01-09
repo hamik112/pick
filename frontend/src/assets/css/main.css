@@ -1078,23 +1078,25 @@ header {
     border: 1px solid #dadedf; }
   .vue-calendar .datepicker-range {
     width: 100%;
-    height: 40px;
-    line-height: 40px;
     min-width: auto; }
     .vue-calendar .datepicker-range .datepicker-popup {
       width: 652px;
       z-index: 9;
       padding: 0px;
-      margin: 0px; }
+      margin: 0px;
+      top: 39px;
+      right: 0px; }
       .vue-calendar .datepicker-range .datepicker-popup .calendar-list {
         width: 134px;
         float: left;
         border-right: 1px solid #d0d0d0; }
-        .vue-calendar .datepicker-range .datepicker-popup .calendar-list ul {
-          padding: 10px 0px 10px 10px; }
-          .vue-calendar .datepicker-range .datepicker-popup .calendar-list ul li {
-            height: 28px;
-            line-height: 28px; }
+        .vue-calendar .datepicker-range .datepicker-popup .calendar-list ul li {
+          height: auto;
+          line-height: 1.4;
+          padding: 10px; }
+          .vue-calendar .datepicker-range .datepicker-popup .calendar-list ul li:hover {
+            background: #375b96;
+            color: #fff; }
       .vue-calendar .datepicker-range .datepicker-popup .calender-view {
         float: left; }
         .vue-calendar .datepicker-range .datepicker-popup .calender-view .calender-inner-view {
@@ -1112,10 +1114,36 @@ header {
             padding: 0px;
             margin: 0px;
             border: 0px; }
-      .vue-calendar .datepicker-range .datepicker-popup .calendar-btn {
+      .vue-calendar .datepicker-range .datepicker-popup .calender-btn-wrap {
+        height: 50px;
+        line-height: 50px;
         overflow: hidden;
         clear: both;
         border-top: 1px solid #d0d0d0; }
+        .vue-calendar .datepicker-range .datepicker-popup .calender-btn-wrap .calender-inner-wrap {
+          float: right;
+          padding-right: 10px; }
+          .vue-calendar .datepicker-range .datepicker-popup .calender-btn-wrap .calender-inner-wrap .calender-date {
+            float: left; }
+          .vue-calendar .datepicker-range .datepicker-popup .calender-btn-wrap .calender-inner-wrap .calender-btn {
+            float: left;
+            letter-spacing: -4px; }
+            .vue-calendar .datepicker-range .datepicker-popup .calender-btn-wrap .calender-inner-wrap .calender-btn button {
+              height: 22px;
+              line-height: 22px;
+              border-radius: 2px;
+              vertical-align: middle;
+              display: inline-block;
+              margin-left: 10px;
+              letter-spacing: 0px; }
+            .vue-calendar .datepicker-range .datepicker-popup .calender-btn-wrap .calender-inner-wrap .calender-btn .close_btn {
+              width: 50px;
+              border: 1px solid #666;
+              color: #666; }
+            .vue-calendar .datepicker-range .datepicker-popup .calender-btn-wrap .calender-inner-wrap .calender-btn .update_btn {
+              width: 80px;
+              color: #fff;
+              background: #375b96; }
 
 /* 팝업 */
 .layer-pop-widget {
@@ -1894,9 +1922,9 @@ header {
     #target_chart .target_chart_graph_wrap .target_chart_select {
       margin-bottom: 12px; }
       #target_chart .target_chart_graph_wrap .target_chart_select .select_btn {
+        width: 350px;
         float: right; }
         #target_chart .target_chart_graph_wrap .target_chart_select .select_btn .select {
-          width: 350px;
           height: 40px;
           line-height: 40px; }
           #target_chart .target_chart_graph_wrap .target_chart_select .select_btn .select p {
