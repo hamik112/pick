@@ -7,7 +7,7 @@
 						<div class="popup-contents clearfix pop-scroll">
 							<div class="pop_title_wrap">
 								<div class="pop_title">타겟 Chart</div>
-								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')">X</button></p>
+								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 							</div>
 							<div class="target_chart_graph_wrap clearfix">
 								<div class="target_chart_select clearfix">

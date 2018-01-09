@@ -312,7 +312,7 @@
 					</div>
 				</div>
 			</div>
-			<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop">X</button></p>
+			<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 		</div>
 	</div>
 </div>
