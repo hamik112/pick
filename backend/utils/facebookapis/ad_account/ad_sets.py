@@ -6,6 +6,11 @@ from facebookads.adobjects.adsinsights import AdsInsights as Insights
 from django.conf import settings
 from facebookads.exceptions import FacebookRequestError
 
+import logging
+import traceback
+
+logger = logging.getLogger('mod_pickdata')
+
 
 def remote_get_ad_set_by_account_id(account_id, fields = []):
     try:
@@ -27,7 +32,7 @@ def remote_get_ad_set_by_account_id(account_id, fields = []):
     raise Exception(msg)
 
 
-def get_insight_by_ad_set(ad_set_id, fields =[], params={}):
+def get_insight_by_ad_set(ad_set_id, params={}):
     try:
         ad_set = AdSet(ad_set_id)
         ad_insights = ad_set.get_insights(fields=insight_fields(), params=params)
@@ -38,7 +43,11 @@ def get_insight_by_ad_set(ad_set_id, fields =[], params={}):
         print(traceback.format_exc())
         logger.error(traceback.format_exc())
         msg = e._error
-    raise Exception(msg)
+        status_code = e._error['code']
+        if status_code == 1:
+            pass
+        else:
+            raise Exception(msg)
 
 
 def field_list():
@@ -68,8 +77,7 @@ def field_list():
         AdSet.Field.targeting,
         AdSet.Field.updated_time,
         AdSet.Field.attribution_spec,
-        AdSet.Field.is_average_price_pacing,
-        "campaign{id,name,objective}"
+        AdSet.Field.is_average_price_pacing
     ]
 
     return fields
