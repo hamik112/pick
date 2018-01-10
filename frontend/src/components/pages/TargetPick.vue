@@ -1,17 +1,13 @@
 <template>
 	<div id="main_wrap" class="clearfix">
 
-
 		<transition name='modal'>
 			<TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
 			<TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
 			<TargetMake2 v-if="makeModal2" @close="makeModal2 = false"></TargetMake2>
 		</transition>
 
-
-		<Header></Header>
 		<div id="container">
-			<Aside></Aside>
 			<div id="container_wrap">
 				<div class="list-tab-widget">
 					<div class="tab-contents-widget">
@@ -174,16 +170,11 @@
 				</div>
 			</div>
 		</div>
-		<Footer></Footer>
 	</div>
 </template>
 
 
 <script>
-	// 레이아웃 호출
-	import Header from '@/components/layout/Header'
-	import Footer from '@/components/layout/Footer'
-	import Aside from '@/components/layout/Aside'
 	// 팝업
 	import TargetChartPop from '@/components/popup/Target_chart'
 	import TargetMake1 from '@/components/popup/Target_make_01'
@@ -196,9 +187,6 @@
 		name: 'TargetPick',
 
 		components: {
-			'Header': Header,
-			'Footer': Footer,
-			'Aside': Aside,
 			'TargetChartPop': TargetChartPop,
 			'TargetMake1': TargetMake1,
 			'TargetMake2': TargetMake2,

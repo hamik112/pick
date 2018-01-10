@@ -54,7 +54,12 @@ export default {
     }
   },
 
+  created () {
+    this.$eventBus.$on('pickdataLogin', this.loadFbAdAccount)
+  },
+
   mounted () {
+    // DEBUG mounted
     this.loadFbAdAccount()
   },
 
@@ -79,7 +84,11 @@ export default {
       this.isShowList = !this.isShowList
     },
 
-    loadFbAdAccount: function () {
+    loadFbAdAccount: function (res) {
+      if (res == null) {
+        console.log('DEBUG Call')
+      }
+      console.log('loadFbAdAccount', res)
       this.$http.get('api/fb_ad_accounts/')
       .then(res => {
         const response = res.data

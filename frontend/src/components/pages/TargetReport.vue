@@ -1,8 +1,6 @@
 <template>
   <div id="main_wrap" class="clearfix">
-	<Header></Header>
 	<div id="container">
-	  <Aside></Aside>
 	  <div id="container_wrap">
 		<div class="list-tab-widget">
 		  <div class="tab-contents-widget">
@@ -368,15 +366,10 @@
 		</div>
 	  </div>
 	</div>
-	<Footer></Footer>
   </div>
 </template>
 
 <script>
-// 레이아웃 호출
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
-import Aside from '@/components/layout/Aside'
 // UI
 import Select from '@/components/ui/Select'
 import Calendar from '@/components/ui/Calendar'
@@ -385,9 +378,6 @@ export default {
   name: 'TargetReport',
 
   components: {
-	'Header': Header,
-	'Footer': Footer,
-	'Aside': Aside,
 	'ui-select': Select,
 	'ui-calendar':Calendar
   },

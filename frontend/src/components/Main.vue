@@ -20,7 +20,13 @@ import Aside from '@/components/layout/Aside'
 
 export default {
   name: 'Main',
-  components: {'Header': Header,'Footer': Footer,'Aside': Aside},
+
+  components: {
+    'Header': Header,
+    'Footer': Footer,
+    'Aside': Aside
+  },
+
   data () {
     return {
       data: false
