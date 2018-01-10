@@ -58,7 +58,11 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 			p{padding-left:5px; display:inline-block; *display:inline; vertical-align:middle;}
 		}
 		.user_setup{position:relative; padding-left:44px; display:inline-block; *display:inline; vertical-align:middle;
-			.setup_list{position: absolute; top: 40px; right: -30px; background: #fff; width: 100px; padding: 10px; text-align: center; line-height: 1.4; z-index: 1; cursor: pointer; border:$Border_type01;}
+			.setup_list{position: absolute; top: 40px; right: -30px; background: #fff; width: 100px; text-align: center; line-height: 1.4; z-index: 1; cursor: pointer; border:$Border_type01;
+				p{padding:5px;
+					&:hover{color:#fff; background:#375b96 }
+				}
+			}
 		}
 	}
 }
