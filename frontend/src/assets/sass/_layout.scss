@@ -54,8 +54,12 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 	.left_area{float:left;}
 	.right_area{float:right;
 		> div{display:inline-block; *display:inline;}
-		.user{
+		.user{position:relative;
 			p{padding-left:5px; display:inline-block; *display:inline; vertical-align:middle;}
+			.user_image{
+				img{width:40px; height:40px;}
+			}
+			.user_mask{width:40px; height:40px; position:absolute; top:0px; left:5px; background:url(assets/images/common/mask_type_03.png) 0 0 no-repeat; padding-left:0px;}
 		}
 		.user_setup{position:relative; padding-left:44px; display:inline-block; *display:inline; vertical-align:middle;
 			.setup_list{position: absolute; top: 40px; right: -30px; background: #fff; width: 100px; text-align: center; line-height: 1.4; z-index: 1; cursor: pointer; border:$Border_type01;
@@ -91,9 +95,11 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 		}
 		.first_section{height:163px; padding-top:23px; background:#2d3541;}
 	}
-	.user_info_wrap{padding:23px 0px; position:relative;
-		.u_mask{position:absolute; top:0px; left:0px; z-index:1;}
-		.u_logo{width: 72px; height: 72px; margin: 0 auto; margin-bottom:10px; background:$basic_type01;}
+	.user_info_wrap{background:#2d3541; padding:23px 0px; position:relative;
+		.u_mask{width:72px; height:72px; position:absolute; top:23px; left:47px; z-index:1; background:url(assets/images/common/mask_type_01.png) 0 0 no-repeat;}
+		.u_logo{width:72px; height:72px; margin: 0 auto; margin-bottom:10px; background:$basic_type01;
+			img{width:72px; height:72px;}
+		}
 		.u_info{
 			#ad_list_cate{width: 140px; margin:0 auto; padding-right: 10px; text-align:center; background:url(assets/images/icon/arrow_down.png) right 5px no-repeat; cursor:pointer;}
 			.active{background:url(assets/images/icon/arrow_up.png) right 5px no-repeat!important;}

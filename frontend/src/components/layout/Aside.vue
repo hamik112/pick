@@ -3,7 +3,8 @@
     <div class="aside-wrap">
       <div class="aside_section first_section">
         <div class="user_info_wrap">
-          <div class="u_logo"></div>
+          <div class="u_mask"></div>
+          <div class="u_logo"><img src="../../assets/images/common/test_img.jpg" alt=""></div>
           <div class="u_info">
             <pre id="ad_list_cate" href="javascript:void(0);" v-on:click="onClick" v-bind:class="{active: isActive}">{{ selectFbAdAccount.name }}</pre>
             <pre>{{ selectFbAdAccount.account_id }}</pre>
