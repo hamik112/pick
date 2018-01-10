@@ -22,12 +22,7 @@
 									<div class="use_limit clearfix">
 										<div>
 											<span>장바구니 이용고객_7일간</span>
-											<span class="prologue_area">
-												<div><img src="../../assets/images/target/chart_icon_01.jpg" alt=""></div>
-												<div class="prologue_view">
-													<p>해당 타겟이 사용된 캠페인을 토대로 리포트가 제공 됩니다. <br>광고 세트 설정에서 세부 구성 요소의 변경이 있을 수 있으므로, <br>참고용으로만 활용해주세요.</p>
-												</div>
-											</span>
+											<ui-hover></ui-hover>
 										</div>
 										<p>글자수제한</p>
 										<strong>6,500명</strong>
@@ -76,6 +71,7 @@
 import Select from '@/components/ui/Select'
 import Charts from '@/components/ui/Charts'
 import Calendar from '@/components/ui/Calendar'
+import Hover from '@/components/ui/Hover'
 
 export default {
 
@@ -83,31 +79,32 @@ export default {
   components:{
 	'ui-select': Select,
 	'ui-charts':Charts,
-	'ui-calendar':Calendar
+	'ui-calendar':Calendar,
+	'ui-hover':Hover
   },
   data () {
 	return {
 		show: false,
-			time: new Date(),
-			range: [new Date(),new Date()],
-			emptyTime: '',
-			emptyRange: [],
-			local: {
-				type: Object,
-				default () {
-					return {
-						dow: 0, // Sunday is the first day of the week
-						hourTip: 'Select Hour', // tip of select hour
-						minuteTip: 'Select Minute', // tip of select minute
-						secondTip: 'Select Second', // tip of select second
-						yearSuffix: '', // suffix of head year
-						yearSuffix: '년', // format of head
-						monthsHead: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of head
-						months: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of panel
-						weeks: '일_월_화_수_목_금_토'.split('_') // weeks
-					}
+		time: new Date(),
+		range: [new Date(),new Date()],
+		emptyTime: '',
+		emptyRange: [],
+		local: {
+			type: Object,
+			default () {
+				return {
+					dow: 0, // Sunday is the first day of the week
+					hourTip: 'Select Hour', // tip of select hour
+					minuteTip: 'Select Minute', // tip of select minute
+					secondTip: 'Select Second', // tip of select second
+					yearSuffix: '', // suffix of head year
+					yearSuffix: '년', // format of head
+					monthsHead: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of head
+					months: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of panel
+					weeks: '일_월_화_수_목_금_토'.split('_') // weeks
 				}
 			}
+		}
 	}
   }
 }
