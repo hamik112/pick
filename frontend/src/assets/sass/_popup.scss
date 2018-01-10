@@ -403,8 +403,11 @@
 		.target_chart_top{
 			.use_limit{position:relative;}
 			.prologue_area{
-				.prologue_view{display:none; width:329px; padding-bottom:4px; color:#fff; background:url(assets/images/target/prologue_type01.png) center bottom no-repeat; position:absolute; top:-67px; left:44px; z-index:1;
+				.prologue_view{ display:none; width:329px; padding-bottom:4px; color:#fff; background:url(assets/images/target/prologue_type01.png) center bottom no-repeat; position:absolute; top:-67px; left:36px; z-index:1;
 					p{background: #222933; padding: 15px 10px; color:#fff; font-size:12px; line-height:1.4; font-weight:normal;}
+				}
+				.icon:hover{
+					& + .prologue_view{display:block;}
 				}
 			}
 			> div{width:186px; height:186px; float:left; background:#fff; margin-left:18px; padding-top:108px;

@@ -5,58 +5,23 @@
         <div class="user_info_wrap">
           <div class="u_logo"></div>
           <div class="u_info">
-            <p id="ad_list_cate" href="javascript:void(0);" v-on:click="onClick" v-bind:class="{active: isActive}">프리메라프리메라</p>
-            <p>2138765478123468</p>
+            <pre id="ad_list_cate" href="javascript:void(0);" v-on:click="onClick" v-bind:class="{active: isActive}">{{ selectFbAdAccount.name }}</pre>
+            <pre>{{ selectFbAdAccount.account_id }}</pre>
           </div>
         </div>
         <div class="user_ad_list">
           <div class="ad_list_category" v-show="isShowList">
             <div class="ad_search_wrap">
-              <input type="text" placeholder="광고주명을 입력하세요" class="ad_search_box">
+              <input type="text" placeholder="광고주명을 입력하세요" class="ad_search_box" v-model="searchName">
               <button class="ad_submit"></button>
             </div>
             <div class="ad_search_list">
               <ul>
-                <li>
+                <li v-for="fbAdAccount in fbAdAccountList" :key="fbAdAccount.id" @click="onClickFbAdAccount(fbAdAccount)">
                   <div class="list_image"></div>
                   <div class="list_info">
-                    <strong>프리메라 NEW</strong>
-                    <div>계정번호 : 1059484622123515</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="list_image"></div>
-                  <div class="list_info">
-                    <strong>프리메라 NEW</strong>
-                    <div>계정번호 : 1059484622123515</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="list_image"></div>
-                  <div class="list_info">
-                    <strong>프리메라 NEW</strong>
-                    <div>계정번호 : 1059484622123515</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="list_image"></div>
-                  <div class="list_info">
-                    <strong>프리메라 NEW</strong>
-                    <div>계정번호 : 1059484622123515</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="list_image"></div>
-                  <div class="list_info">
-                    <strong>프리메라 NEW</strong>
-                    <div>계정번호 : 1059484622123515</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="list_image"></div>
-                  <div class="list_info">
-                    <strong>프리메라 NEW</strong>
-                    <div>계정번호 : 1059484622123515</div>
+                    <strong>{{ fbAdAccount.name }}</strong>
+                    <div>계정번호 : {{ fbAdAccount.account_id }}</div>
                   </div>
                 </li>
               </ul>
@@ -82,7 +47,29 @@ export default {
   data () {
     return {
       isActive: false,
-      isShowList: false
+      isShowList: false,
+      searchName: '',
+      selectFbAdAccount: {},
+      fbAdAccounts: []
+    }
+  },
+
+  mounted () {
+    this.loadFbAdAccount()
+  },
+
+  computed: {
+    fbAdAccountList: function () {
+      let searchName = this.searchName
+      if (searchName !== '') {
+        return this.fbAdAccounts.filter(function(value) {
+          if ((value.name).indexOf(searchName) > -1) {
+            return value
+          }
+        })
+      } else {
+        return this.fbAdAccounts
+      }
     }
   },
 
@@ -90,6 +77,33 @@ export default {
     onClick: function () {
       this.isActive = !this.isActive
       this.isShowList = !this.isShowList
+    },
+
+    loadFbAdAccount: function () {
+      this.$http.get('api/fb_ad_accounts/')
+      .then(res => {
+        const response = res.data
+        const data = response.data
+        const success = response.success
+
+        if (success === "YES") {
+          if (data.length > 0) {
+            this.selectFbAdAccount = data[0]
+            this.fbAdAccounts = data
+          }
+        } else {
+          throw('success: ' + success)
+        }
+      })
+      .catch(err => {
+        console.error('api/fb_ad_accounts/', err)
+      })
+    },
+
+    onClickFbAdAccount: function (fbAdAccount) {
+      this.selectFbAdAccount = fbAdAccount
+      this.isActive = false
+      this.isShowList = false
     }
   }
 }
