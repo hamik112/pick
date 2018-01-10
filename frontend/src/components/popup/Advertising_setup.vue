@@ -97,7 +97,7 @@
 															<div class="result_thead">
 																<ul>
 																	<li>
-																		<div class="result_check"><input type="checkbox" id="all_check"><label for="all_check"></label></div>
+																		<div class="result_check"><input type="checkbox" id="all_check" v-model="selectAll"><label for="all_check"></label></div>
 																		<div class="result_advertiser">광고주</div>
 																		<div class="result_account">계정명</div>
 																	</li>
@@ -105,63 +105,8 @@
 															</div>
 															<div class="result_tbody">
 																<ul>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check01"><label for="check01"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check02"><label for="check02"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check03"><label for="check03"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check04"><label for="check04"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check05"><label for="check05"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check06"><label for="check06"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check07"><label for="check07"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check08"><label for="check08"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check09"><label for="check09"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check10"><label for="check10"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check11"><label for="check11"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="check12"><label for="check12"></label></div>
+																	<li v-for="adv in advs">
+																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :id="'adv-check-' + adv.id"><label :for="adv.id"></label></div>
 																		<div class="result_advertiser">LF몰</div>
 																		<div class="result_account">LF_M_구글</div>
 																	</li>
@@ -183,7 +128,7 @@
 															<div class="result_thead">
 																<ul>
 																	<li>
-																		<div class="result_check"><input type="checkbox" id="right_all_check"><label for="right_all_check"></label></div>
+																		<div class="result_check"><input type="checkbox" id="right_all_check" v-model="addSelectAll"><label for="right_all_check"></label></div>
 																		<div class="result_advertiser">광고주</div>
 																		<div class="result_account">계정명</div>
 																	</li>
@@ -191,13 +136,8 @@
 															</div>
 															<div class="result_tbody">
 																<ul>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="right_check01"><label for="right_check01"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
-																	</li>
-																	<li>
-																		<div class="result_check"><input type="checkbox" id="right_check02"><label for="right_check02"></label></div>
+																	<li v-for="addAdv in addAdvs">
+																		<div class="result_check"><input type="checkbox" v-model="selected" :value="addAdv.id" class="result-checkbox" :id="'addAdv-check-' + addAdv.id"><label :for="'addAdv-check-' + addAdv.id"></label></div>
 																		<div class="result_advertiser">LF몰</div>
 																		<div class="result_account">LF_M_구글</div>
 																	</li>
@@ -306,45 +246,98 @@
 import Select from '@/components/ui/Select'
 
 export default {
-  name:'SetupPop',
-  components:{
-  	'ui-select':Select
-  },
-  data () {
-	return {
-		tabActive1:false,
-		tabActive2:true,
-		tabActive3:false,
-
-		categorySelectData: {
-		emptyText: '픽셀 이벤트를 선택해주세요',
-		textList: [
-		  '픽셀1',
-		  '픽셀2',
-		  '픽셀3'
-		]
-	  }
-	}
-  },
-  methods:{
-  	selectCategory: function (item) {
-	  this.categorySelectData.emptyText = item
+	name:'SetupPop',
+	components:{
+		'ui-select':Select
 	},
-	tabMove:function(activeNumber) {
-		let tabArray = ['tabActive1','tabActive2','tabActive3']
-		for(let i = 0; i < tabArray.length; i++) {
-			if(i == activeNumber) {
-				this[tabArray[i]] = true
-			}else{
-				this[tabArray[i]] = false
-			}
+	data () {
+		return {
+			tabActive1:false,
+			tabActive2:true,
+			tabActive3:false,
+
+			categorySelectData: {
+			emptyText: '픽셀 이벤트를 선택해주세요',
+			textList: [
+			  '픽셀1',
+			  '픽셀2',
+			  '픽셀3'
+			]
+		  },
+		  advs: [
+			    { "id": "1", "name": "LF몰", "advid": "pfeffer.matt@yahoo.com" },
+			    { "id": "2", "name": "LF몰2", "email": "mohammad.ferry@yahoo.com" },
+			    { "id": "3", "name": "LF몰3", "email": "evolkman@hotmail.com" },
+			    { "id": "4", "name": "LF몰4", "email": "lenora95@leannon.com" }
+		  ],
+		  addAdvs:[],
+		  selected: [],
+		  addSelected:[]
 		}
 	},
-	success:function() {
-		alert('설정이 완료되었습니다.');
-		this.$emit('close')
+	methods:{
+		selectCategory: function (item) {
+		  this.categorySelectData.emptyText = item
+		},
+		//작업진행중
+		addCheckList:function() {
+			const checkPushs = function() {
+
+			}
+		},
+		tabMove:function(activeNumber) {
+			let tabArray = ['tabActive1','tabActive2','tabActive3']
+			for(let i = 0; i < tabArray.length; i++) {
+				if(i == activeNumber) {
+					this[tabArray[i]] = true
+				}else{
+					this[tabArray[i]] = false
+				}
+			}
+		},
+		success:function() {
+			alert('설정이 완료되었습니다.');
+			this.$emit('close')
+		}
+	},
+	computed: {
+	    selectAll: {
+	        get: function () {
+	        	if(this.advs.length != 0) {
+	            	return this.advs ? this.selected.length == this.advs.length : false;
+	            }
+	        },
+	        set: function (value) {
+	            var selected = [];
+
+	            if (value) {
+	                this.advs.forEach(function (adv) {
+	                    selected.push(adv.id);
+	                });
+	            }
+
+	            this.selected = selected;
+	        }
+	    },
+	    addSelectAll:{
+	    	get: function () {
+	    		if(this.addAdvs.length != 0) {
+	            	return this.addAdvs ? this.addSelected.length == this.addAdvs.length : false;
+	    		}
+	        },
+	        set: function (value) {
+	            var addSelected = [];
+
+	            if (value) {
+	                this.advs.forEach(function (addAdv) {
+	                    addSelected.push(addAdv.id);
+	                });
+	            }
+
+	            this.addSelected = addSelected;
+	        }
+	    }
 	}
-  }
 }
 </script>
 
