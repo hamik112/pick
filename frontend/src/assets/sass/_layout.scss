@@ -68,7 +68,7 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 }
 
 /* 사이드 바 */
-aside{position:absolute; top:0; left:0px; z-index:2; width: 165px; height:100%; padding:66px 0 0 0;
+aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100%;
 	.aside-wrap { height:100%; background:#222933; z-index:15; color:$basic_type01; @include boxSizing;}
 	a{color:$basic_type01;}
 	ul{
@@ -91,8 +91,9 @@ aside{position:absolute; top:0; left:0px; z-index:2; width: 165px; height:100%; 
 		}
 		.first_section{height:163px; padding-top:23px; background:#2d3541;}
 	}
-	.user_info_wrap{padding:23px 0px;
-		.u_logo{width: 72px; height: 72px; margin: 0 auto; margin-bottom:10px; background:$basic_type01; border-radius:50%;}
+	.user_info_wrap{padding:23px 0px; position:relative;
+		.u_mask{position:absolute; top:0px; left:0px; z-index:1;}
+		.u_logo{width: 72px; height: 72px; margin: 0 auto; margin-bottom:10px; background:$basic_type01;}
 		.u_info{
 			#ad_list_cate{width: 140px; margin:0 auto; padding-right: 10px; text-align:center; background:url(assets/images/icon/arrow_down.png) right 5px no-repeat; cursor:pointer;}
 			.active{background:url(assets/images/icon/arrow_up.png) right 5px no-repeat!important;}
@@ -135,7 +136,7 @@ aside{position:absolute; top:0; left:0px; z-index:2; width: 165px; height:100%; 
 				.select{width:260px; height:40px; line-height:40px;}
 				button{ width:121px; height:39px; line-height:39px; color:$basic_type01; background:#375b96;}
 			}
-			.target_aside{background:$basic_type01; position:absolute; top:0px; left:165px; padding:66px 0 0; height:100%; @include boxSizing; z-index:1;
+			.target_aside{background:$basic_type01; position:absolute; top:0px; left:165px; height:100%; @include boxSizing; z-index:1;
 				ul{
 					li{width:160px; height:64px; line-height:64px; border-bottom:1px solid #eff2f7; font-size:15px; color:#666; padding-left:19px; cursor:pointer;
 						span{width:28px; height:16px; line-height:1.6; background:#c9cdd1; border-radius:4px; color:$basic_type01; text-align:center; margin-left:8px; display:inline-block; vertical-align:middle; font-size:12px;}
