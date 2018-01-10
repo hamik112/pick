@@ -66,6 +66,42 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 		}
 	}
 }
+
+/* 사이드 바 */
+aside{position:absolute; top:0; left:0px; z-index:2; width: 165px; height:100%; padding:66px 0 0 0;
+	.aside-wrap { height:100%; background:#222933; z-index:15; color:$basic_type01; @include boxSizing;}
+	a{color:$basic_type01;}
+	ul{
+		.aside_section{
+			&:nth-child(1) .router-link-active{width:165px; height:128px; background:url(assets/images/common/aside_01_on.jpg) 0 0 no-repeat;}
+			&:nth-child(2) .router-link-active{width:165px; height:130px; background:url(assets/images/common/aside_02_on.jpg) 0 0 no-repeat;}
+			&:nth-child(3) .router-link-active{width:165px; height:130px; background:url(assets/images/common/aside_03_on.jpg) 0 0 no-repeat;}
+		}
+		.aside_section{width:165px; text-align:center; border-bottom:1px solid #303843; cursor:pointer;
+			a{width:165px; height:128px; display:block;}
+			&:nth-child(1) a{width:165px; height:128px; background:url(assets/images/common/aside_01_off.jpg) 0 0 no-repeat;
+				&:hover{background:url(assets/images/common/aside_01_on.jpg) 0 0 no-repeat;}
+			}
+			&:nth-child(2) a{width:165px; height:130px; background:url(assets/images/common/aside_02_off.jpg) 0 0 no-repeat;
+				&:hover{background:url(assets/images/common/aside_02_on.jpg) 0 0 no-repeat;}
+			}
+			&:nth-child(3) a{width:165px; height:130px; background:url(assets/images/common/aside_03_off.jpg) 0 0 no-repeat;
+				&:hover{background:url(assets/images/common/aside_03_on.jpg) 0 0 no-repeat;}
+			}
+		}
+		.first_section{height:163px; padding-top:23px; background:#2d3541;}
+	}
+	.user_info_wrap{padding:23px 0px;
+		.u_logo{width: 72px; height: 72px; margin: 0 auto; margin-bottom:10px; background:$basic_type01; border-radius:50%;}
+		.u_info{
+			#ad_list_cate{width: 140px; margin:0 auto; padding-right: 10px; text-align:center; background:url(assets/images/icon/arrow_down.png) right 5px no-repeat; cursor:pointer;}
+			.active{background:url(assets/images/icon/arrow_up.png) right 5px no-repeat!important;}
+			pre{font-size:12px; line-height:1.4;
+				&:last-child{text-align:center;  font-size:12px; color:#949494;}
+			}
+		}
+	}
+}
 /*타겟 메인 */
 .select_btn{float:left; cursor:pointer;
 	.select_contents{position:relative;
@@ -197,41 +233,6 @@ header{ position:relative; z-index:3; width:100%; display:table; padding:0 30px;
 						}
 						li.now{background:#375b96; color:#fff; border:1px solid #375b96;}
 					}
-				}
-			}
-		}
-	}
-	/* 사이드 바 */
-	aside{position:absolute; top:0; left:0px; z-index:2; width: 165px; height:100%; padding:66px 0 0 0;
-		.aside-wrap { height:100%; background:#222933; z-index:15; color:$basic_type01; @include boxSizing;}
-		a{color:$basic_type01;}
-		ul{
-			.aside_section{
-				&:nth-child(1) .router-link-active{width:165px; height:128px; background:url(assets/images/common/aside_01_on.jpg) 0 0 no-repeat;}
-				&:nth-child(2) .router-link-active{width:165px; height:130px; background:url(assets/images/common/aside_02_on.jpg) 0 0 no-repeat;}
-				&:nth-child(3) .router-link-active{width:165px; height:130px; background:url(assets/images/common/aside_03_on.jpg) 0 0 no-repeat;}
-			}
-			.aside_section{width:165px; text-align:center; border-bottom:1px solid #303843; cursor:pointer;
-				a{width:165px; height:128px; display:block;}
-				&:nth-child(1) a{width:165px; height:128px; background:url(assets/images/common/aside_01_off.jpg) 0 0 no-repeat;
-					&:hover{background:url(assets/images/common/aside_01_on.jpg) 0 0 no-repeat;}
-				}
-				&:nth-child(2) a{width:165px; height:130px; background:url(assets/images/common/aside_02_off.jpg) 0 0 no-repeat;
-					&:hover{background:url(assets/images/common/aside_02_on.jpg) 0 0 no-repeat;}
-				}
-				&:nth-child(3) a{width:165px; height:130px; background:url(assets/images/common/aside_03_off.jpg) 0 0 no-repeat;
-					&:hover{background:url(assets/images/common/aside_03_on.jpg) 0 0 no-repeat;}
-				}
-			}
-			.first_section{height:163px; padding-top:23px; background:#2d3541;}
-		}
-		.user_info_wrap{padding:23px 0px;
-			.u_logo{width: 72px; height: 72px; margin: 0 auto; margin-bottom:10px; background:$basic_type01; border-radius:50%;}
-			.u_info{
-				#ad_list_cate{width: 120px; margin:0 auto; padding-right: 10px; background:url(assets/images/icon/arrow_down.png) right 5px no-repeat; cursor:pointer;}
-				.active{background:url(assets/images/icon/arrow_up.png) right 5px no-repeat!important;}
-				p{font-size:14px; line-height:1.4;
-					&:last-child{text-align:center;  font-size:12px; color:#949494;}
 				}
 			}
 		}

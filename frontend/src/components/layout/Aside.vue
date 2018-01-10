@@ -5,8 +5,8 @@
         <div class="user_info_wrap">
           <div class="u_logo"></div>
           <div class="u_info">
-            <p id="ad_list_cate" href="javascript:void(0);" v-on:click="onClick" v-bind:class="{active: isActive}">{{ selectFbAdAccount.name }}</p>
-            <p>{{ selectFbAdAccount.account_id }}</p>
+            <pre id="ad_list_cate" href="javascript:void(0);" v-on:click="onClick" v-bind:class="{active: isActive}">{{ selectFbAdAccount.name }}</pre>
+            <pre>{{ selectFbAdAccount.account_id }}</pre>
           </div>
         </div>
         <div class="user_ad_list">
