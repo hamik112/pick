@@ -44,7 +44,11 @@ def get_insight_by_ad_set(ad_set_id, params={}):
         logger.error(traceback.format_exc())
         msg = e._error
         status_code = e._error['code']
-        if status_code == 1:
+        messege = e._error['messege']
+        if status_code == 1 and messege == 'An unknown error occurred':
+            pass
+        elif status_code == 1 and messege == 'Please reduce the amount of data you\'re asking for, then retry your request':
+            logger.info('Reduce data Error, Adset Id:', ad_set_id)
             pass
         else:
             raise Exception(msg)
@@ -77,7 +81,8 @@ def field_list():
         AdSet.Field.targeting,
         AdSet.Field.updated_time,
         AdSet.Field.attribution_spec,
-        AdSet.Field.is_average_price_pacing
+        AdSet.Field.is_average_price_pacing,
+        'campaign{id,name,objective}'
     ]
 
     return fields

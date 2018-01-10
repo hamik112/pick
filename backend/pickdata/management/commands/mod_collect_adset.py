@@ -45,7 +45,6 @@ class Command(BaseCommand):
 
                 for ad_set in ad_sets:
                     ad_set = ad_set._json
-
                     campaign_id = ad_set.get('campaign').get('id')
                     campaign_name = ad_set.get('campaign').get('name')
                     campaign_objective = ad_set.get('campaign').get('objective')

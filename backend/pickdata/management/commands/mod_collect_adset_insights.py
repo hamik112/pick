@@ -37,6 +37,17 @@ class Command(BaseCommand):
             # 		'name': "KB국민카드(엠포스)"
             # 	}
             # ]
+            # ad_sets = [
+            #     {
+            #         "id": '6048519882070'
+            #     },
+            #     {
+            #         "id": '6045438557872'
+            #     },
+            #     {
+            #         "id": '6042320740072'
+            #     }
+            # ]
 
             for my_account in my_accounts:
                 account_id = my_account.get('id')
@@ -45,7 +56,7 @@ class Command(BaseCommand):
                 ad_sets = ad_accounts.get_my_ad_sets(account_id)
 
                 for ad_set in ad_sets:
-                    ad_set = ad_set._json
+                    # ad_set = ad_set._json
                     adset_id = ad_set.get('id')
                     insights = ad_sets_api.get_insight_by_ad_set(adset_id,
                         params={

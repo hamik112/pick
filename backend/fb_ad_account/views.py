@@ -36,6 +36,7 @@ class FbAdAccountList(APIView):
 
             response_data['success'] = 'YES'
             response_data['data'] = me_accounts
+            response_data['count'] = len(me_accounts)
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
