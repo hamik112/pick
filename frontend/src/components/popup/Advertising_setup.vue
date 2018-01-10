@@ -35,6 +35,8 @@
 								</div>
 								<div class="pop_tab_wrap">
 									<div class="tab-contents-widget">
+
+										<!-- 카테고리 설정 -->
 										<div id="tab-list-1" class="basic-tab-contents category_setup clearfix" v-if='tabActive1'>
 											<div class="cate_prologue">
 												<strong>현재 선택된 광고 계정의 카테고리를 지정해주세요</strong>
@@ -71,9 +73,13 @@
 												</ul>
 											</div>
 											<div class="btn_wrap">
-												<button type="button" class="next_btn" @click="tabMove('tabActive2')">다음</button>
+												<button type="button" class="next_btn" @click="tabMove('1')">다음</button>
 											</div>
 										</div>
+										<!-- /.카테고리 설정 -->
+
+
+										<!-- 네오 계정 연동 -->
 										<div id="tab-list-2" class="basic-tab-contents clearfix" v-if='tabActive2'>
 											<div class="cate_prologue">
 												<strong>연결될 네오 계정을 선택해 주세요.</strong>
@@ -197,10 +203,15 @@
 												</div>
 											</div>
 											<div class="btn_wrap">
-												<button class="before_btn" @click="tabMove('tabActive1')">이전</button>
-												<button type="button" class="next_btn" @click="tabMove('tabActive3')">다음</button>
+												<button class="before_btn" @click="tabMove('0')">이전</button>
+												<button type="button" class="next_btn" @click="tabMove('2')">다음</button>
 											</div>
 										</div>
+										<!-- /.네오 계정 연동 -->
+
+
+
+										<!-- 픽셀 이벤트 매핑 -->
 										<div id="tab-list-3" class="basic-tab-contents clearfix" v-if='tabActive3'>
 											<div class="cate_prologue">
 												<strong>광고 계정에 사용된 픽셀 이벤트를 매핑해 주세요.</strong>
@@ -264,11 +275,14 @@
 													</li>
 												</ul>
 												<div class="btn_wrap">
-													<button type="button" class="before_btn" @click="tabMove('tabActive2')">이전</button>
+													<button type="button" class="before_btn" @click="tabMove('1')">이전</button>
 													<button class="next_btn" @click="success">완료</button>
 												</div>
 											</div>
 										</div>
+										<!-- /.픽셀 이벤트 매핑 -->
+
+
 									</div>
 								</div>
 							</div>
@@ -293,8 +307,8 @@ export default {
   },
   data () {
 	return {
-		tabActive1:true,
-		tabActive2:false,
+		tabActive1:false,
+		tabActive2:true,
 		tabActive3:false,
 
 		categorySelectData: {
@@ -312,24 +326,13 @@ export default {
 	  this.categorySelectData.emptyText = item
 	},
 	tabMove:function(activeNumber) {
-		if(activeNumber == 'tabActive1') {
-
-			this.tabActive1 = true
-			this.tabActive2 = false
-			this.tabActive3 = false
-
-		}else if(activeNumber == 'tabActive2') {
-
-			this.tabActive1 = false
-			this.tabActive2 = true
-			this.tabActive3 = false
-
-		}else{
-
-			this.tabActive1 = false
-			this.tabActive2 = false
-			this.tabActive3 = true
-
+		let tabArray = ['tabActive1','tabActive2','tabActive3']
+		for(let i = 0; i < tabArray.length; i++) {
+			if(i == activeNumber) {
+				this[tabArray[i]] = true
+			}else{
+				this[tabArray[i]] = false
+			}
 		}
 	},
 	success:function() {
