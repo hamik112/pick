@@ -183,7 +183,7 @@
 															<div class="result_thead">
 																<ul>
 																	<li>
-																		<div class="result_check"><input type="checkbox"></div>
+																		<div class="result_check"><input type="checkbox" id="right_all_check"><label for="right_all_check"></label></div>
 																		<div class="result_advertiser">광고주</div>
 																		<div class="result_account">계정명</div>
 																	</li>
@@ -192,7 +192,12 @@
 															<div class="result_tbody">
 																<ul>
 																	<li>
-																		<div class="result_check"><input type="checkbox"></div>
+																		<div class="result_check"><input type="checkbox" id="right_check01"><label for="right_check01"></label></div>
+																		<div class="result_advertiser">LF몰</div>
+																		<div class="result_account">LF_M_구글</div>
+																	</li>
+																	<li>
+																		<div class="result_check"><input type="checkbox" id="right_check02"><label for="right_check02"></label></div>
 																		<div class="result_advertiser">LF몰</div>
 																		<div class="result_account">LF_M_구글</div>
 																	</li>
