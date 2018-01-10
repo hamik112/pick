@@ -5,7 +5,7 @@ from facebookads.exceptions import FacebookRequestError
 
 # 구매고객 전체
 def create_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                              purchase_evnet_name="Purchase"):
+                              purchase_event_name="Purchase"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -27,7 +27,7 @@ def create_purchase_customers(account_id, name, pixel_id, retention_days=30, pre
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": purchase_evnet_name
+                                    "value": purchase_event_name
                                 }
                             ]
                         }

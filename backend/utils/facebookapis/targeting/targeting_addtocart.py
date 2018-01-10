@@ -5,7 +5,7 @@ from facebookads.exceptions import FacebookRequestError
 
 # 장바구니 전체 고객
 def create_addtocart_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                               addtocart_evnet_name="AddToCart"):
+                               addtocart_event_name="AddToCart"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -27,7 +27,7 @@ def create_addtocart_customers(account_id, name, pixel_id, retention_days=30, pr
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": addtocart_evnet_name
+                                    "value": addtocart_event_name
                                 }
                             ]
                         }

@@ -260,7 +260,7 @@ def create_visitor_and_addtocart_customers(account_id, name, pixel_id, retention
 
 # 사이트방문 전체고객 and 구매고객
 def create_visitor_and_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                          purchase_evnet_name="Purchase"):
+                                          purchase_event_name="Purchase"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -301,7 +301,7 @@ def create_visitor_and_purchase_customers(account_id, name, pixel_id, retention_
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": purchase_evnet_name
+                                    "value": purchase_event_name
                                 }
                             ]
                         }
@@ -329,7 +329,7 @@ def create_visitor_and_purchase_customers(account_id, name, pixel_id, retention_
 
 # 사이트방문 전체고객 and 미구매고객
 def create_visitor_and_non_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                              purchase_evnet_name="Purchase"):
+                                              purchase_event_name="Purchase"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -377,7 +377,7 @@ def create_visitor_and_non_purchase_customers(account_id, name, pixel_id, retent
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": purchase_evnet_name
+                                    "value": purchase_event_name
                                 }
                             ]
                         }
@@ -405,7 +405,7 @@ def create_visitor_and_non_purchase_customers(account_id, name, pixel_id, retent
 
 # 사이트방문 and 전환완료 고객
 def create_visitor_and_coversion_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                           conversions_name="ViewContent"):
+                                           conversion_event_name="ViewContent"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -446,7 +446,7 @@ def create_visitor_and_coversion_customers(account_id, name, pixel_id, retention
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": conversions_name
+                                    "value": conversion_event_name
                                 }
                             ]
                         }
@@ -474,7 +474,7 @@ def create_visitor_and_coversion_customers(account_id, name, pixel_id, retention
 
 # 사이트방문 and 미 전환 고객
 def create_visitor_and_non_coversion_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                               conversions_event_name="ViewContent"):
+                                               conversion_event_name="ViewContent"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -522,7 +522,7 @@ def create_visitor_and_non_coversion_customers(account_id, name, pixel_id, reten
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": conversions_event_name
+                                    "value": conversion_event_name
                                 }
                             ]
                         }

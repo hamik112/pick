@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from fb_ad_account.models import FbAdAccount
 
 from pixel_mapping.models import PixelMapping
+from pixel_mapping_category.models import PixelMappingCategory
+from pickdata_account_target.models import PickdataAccountTarget
 
 from utils.facebookapis.ad_account import ads_pixels
 from utils.facebookapis.targeting import targeting_visitor
@@ -13,6 +15,7 @@ from utils.facebookapis.targeting import targeting_addtocart
 from utils.facebookapis.targeting import targeting_conversion
 from utils.facebookapis.targeting import targeting_registration
 from utils.facebookapis.targeting import targeting_step
+from utils.facebookapis.targeting import targeting_purchase
 
 import json
 import logging
@@ -35,8 +38,8 @@ class FbAdAccountList(APIView):
             me_accounts = ad_accounts.get_my_ad_accounts()
 
             response_data['success'] = 'YES'
-            response_data['data'] = me_accounts
             response_data['count'] = len(me_accounts)
+            response_data['data'] = me_accounts
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -141,6 +144,7 @@ class FbAdAccountDefaultTarget(APIView):
             pixel_id = default_pixel.get('id')
 
             if pixel_id != '':
+
                 pixel_mappings = PixelMapping.objects.filter(fb_ad_account_id = fb_account_id)
 
                 pixel_categories = {}
@@ -148,151 +152,373 @@ class FbAdAccountDefaultTarget(APIView):
                 for pixel_mapping in pixel_mappings:
                     pixel_categories[pixel_mapping.pixel_mapping_category_id] = pixel_mapping
 
-                print("pixel_categories : ", pixel_categories)
+                # print("pixel_categories : ", pixel_categories)
 
                 ad_account_name = ad_account_name + "_"
 
-                #### default 개발 완료
-                # name = ad_account_name + "방문 고객_30일간"
-                # target_audience = targeting_visitor.create_total_customers(act_account_id, name, pixel_id)
-                # print(target_audience)
-                #
-                # name = ad_account_name + "미 방문 고객_30일간"
-                # target_audience = targeting_visitor.create_non_visition_customers(act_account_id, name, pixel_id)
-                # print(target_audience)
-                #
-                # name = ad_account_name + "이용 시간 상위 5%_30일간"
-                # target_audience = targeting_visitor.create_usage_time_top_customers(act_account_id, name, pixel_id, input_percent=5)
-                # print(target_audience)
+
+                visit_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'visit pages')
+                purchase_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'purchase')
+                addtocart_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'add to cart')
+                registration_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'registration')
+                conversion_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion complete')
+
+                step1_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 1step')
+                step2_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 2step')
+                step3_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 3step')
+                step4_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 4step')
+                step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 5step')
+
+
+                # print('pixel_mapping_category : ', pixel_mapping_category)
+                # print("pixel_mapping_category.id : ", pixel_mapping_category.id)
+
+                #### 기본 1
+                name = ad_account_name + "방문 고객_30일간"
+                description = {
+                    "pixel_mapping_category" : "사이트방문",
+                    "retention_days" : 30,
+                    "description" : "전체"
+                }
+
+                check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
+
+                if check_target:
+                    target_audience = targeting_visitor.create_total_customers(act_account_id, name, pixel_id)
+                    target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description)
+                    # print(target_audience)
+
+                #### 기본 2
+                name = ad_account_name + "미 방문 고객_30일간"
+                description = {
+                    "pixel_mapping_category" : "사이트방문",
+                    "retention_days" : 30,
+                    "description" : "미방문고객"
+                }
+                check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
+
+                if check_target:
+
+                    target_audience = targeting_visitor.create_non_visition_customers(act_account_id, name, pixel_id)
+                    target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description)
+                    # print(target_audience)
+
+                #### 기본 3
+                name = ad_account_name + "이용 시간 상위 5%_30일간"
+                description = {
+                    "pixel_mapping_category" : "사이트방문",
+                    "retention_days" : 30,
+                    "description" : "이용시간상위5%"
+                }
+
+                check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
+
+                if check_target:
+                    target_audience = targeting_visitor.create_usage_time_top_customers(act_account_id, name, pixel_id, input_percent=5)
+                    target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description)
+                    # print(target_audience)
 
 
                 #### A
-                if 1 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(1))
-                    puchase_event_name = pixel_categories.get(1).facebook_pixel_event_name
-                    #
-                    # name = ad_account_name + "방문 고객 중 미 구매고객_30일간"
-                    # target_audience = targeting_visitor.create_visitor_and_non_purchase_customers(act_account_id, name, pixel_id, purchase_evnet_name=puchase_event_name)
-                    # print(target_audience)
-                    #
-                    # name = ad_account_name + "구매한 사람_1일간"
-                    # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=1, purchase_evnet_name=puchase_event_name)
-                    # print(target_audience)
-                    #
-                    # name = ad_account_name + "구매한 사람_7일간"
-                    # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=7, purchase_evnet_name=puchase_event_name)
-                    # print(target_audience)
-                    #
-                    # name = ad_account_name + "구매한 사람_30일간"
-                    # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=30, purchase_evnet_name=puchase_event_name)
-                    # print(target_audience)
+                if purchase_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(purchase_pixel_mapping_category.id))
+                    purchase_event_name = pixel_categories.get(purchase_pixel_mapping_category.id).facebook_pixel_event_name
 
-
-                #### B
-                if 2 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(2))
-                    addtocart_event_name = pixel_categories.get(2).facebook_pixel_event_name
-                    #
-                    # name = ad_account_name + "장바구니 이용고객_1일간"
-                    # target_audience = targeting_visitor.create_visitor_and_addtocart_customers(act_account_id, name, pixel_id, retention_days=1, addtocart_evnet_name=addtocart_event_name)
-                    # print(target_audience)
-                    #
-                    # name = ad_account_name + "장바구니 이용고객_7일간"
-                    # target_audience = targeting_visitor.create_visitor_and_addtocart_customers(act_account_id, name, pixel_id, retention_days=7, addtocart_evnet_name=addtocart_event_name)
-                    # print(target_audience)
-                    #
-                    # if 1 in pixel_categories:
-                    #     name = ad_account_name + "장바구니 이용고객 중 미구매고객_1일간"
-                    #     target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=1, addtocart_evnet_name=addtocart_event_name, puchase_event_name=puchase_event_name)
-                    #     print(target_audience)
-                    #
-                    #     name = ad_account_name + "장바구니 이용고객 중 미구매고객_3일간"
-                    #     target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=3, addtocart_evnet_name=addtocart_event_name, puchase_event_name=puchase_event_name)
-                    #     print(target_audience)
-                    #
-                    #     name = ad_account_name + "장바구니 이용고객 중 미구매고객_7일간"
-                    #     target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=7, addtocart_evnet_name=addtocart_event_name, puchase_event_name=puchase_event_name)
-                    #     print(target_audience)
-
-                #### C
-                if 3 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(3))
-                    conversion_event_name = pixel_categories.get(3).facebook_pixel_event_name
-
-                    # name = ad_account_name + "방문 고객 중 미 구매고객_30일간"
-                    # target_audience = targeting_visitor.create_visitor_and_non_coversion_customers(act_account_id, name, pixel_id, conversions_name=conversion_event_name)
-                    # print(target_audience)
-
-                    # name = ad_account_name + "전환 완료 고객_30일간"
-                    # target_audience = targeting_conversion.create_conversion_customers(act_account_id, name, pixel_id, conversions_name=conversion_event_name)
-                    # print(target_audience)
-
-                    # name = ad_account_name + "미 전환 고객_30일간"
-                    # target_audience = targeting_visitor.create_visitor_and_non_coversion_customers(act_account_id, name, pixel_id, conversions_name=conversion_event_name)
-                    # print(target_audience)
-
-
-
-                #### D
-                if 4 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(4))
-                    registration_event_name = pixel_categories.get(4).facebook_pixel_event_name
-
-                    # name = ad_account_name + "회원가입 완료 고객_30일간"
-                    # target_audience = targeting_visitor.create_visitor_and_registration_customers(act_account_id, name, pixel_id, registration_event_name=registration_event_name)
-                    # print(target_audience)
-
-                    # if 1 in pixel_categories:
-                        # name = ad_account_name + "회원가입 완료 고객 중 미구매 고객_30일간"
-                        # target_audience = targeting_registration.create_regestration_and_non_purchase_customers(act_account_id, name, pixel_id, regestration_event_name=registration_event_name, purchase_event_name=puchase_event_name)
+                    #### A-1
+                    name = ad_account_name + "방문 고객 중 미 구매고객_30일간"
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": 30,
+                        "description": "미구매고객"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
+                    if check_target:
+                        target_audience = targeting_visitor.create_visitor_and_non_purchase_customers(act_account_id, name, pixel_id, purchase_event_name=purchase_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), visit_pixel_mapping_category, description)
                         # print(target_audience)
 
-                # E
-                if 5 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(5))
-                    step_event_name = pixel_categories.get(5).facebook_pixel_event_name
+                    #### A-2
+                    name = ad_account_name + "구매한 사람_1일간"
+                    description = {
+                        "pixel_mapping_category": "구매",
+                        "retention_days": 1,
+                        "description": "전체"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
+                    if check_target:
+                        # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=1, purchase_event_name=purchase_event_name)
+                        target_audience = targeting_purchase.create_purchase_customers(act_account_id, name, pixel_id, retention_days=1, purchase_event_name=purchase_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description)
+                        # print(target_audience)
 
-                    # name = ad_account_name + "전환 1단계 완료 고객_30일간"
-                    # target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step_event_name)
-                    # print(target_audience)
+                    #### A-3
+                    name = ad_account_name + "구매한 사람_7일간"
+                    description = {
+                        "pixel_mapping_category": "구매",
+                        "retention_days": 7,
+                        "description": "전체"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
+                    if check_target:
+                        # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=7, purchase_event_name=purchase_event_name)
+                        target_audience = targeting_purchase.create_purchase_customers(act_account_id, name, pixel_id,retention_days=7,purchase_event_name=purchase_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description)
+                        # print(target_audience)
+
+                    #### A-4
+                    name = ad_account_name + "구매한 사람_30일간"
+                    description = {
+                        "pixel_mapping_category": "구매",
+                        "retention_days": 30,
+                        "description": "전체"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
+                    if check_target:
+                        # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=30, purchase_event_name=purchase_event_name)
+                        target_audience = targeting_purchase.create_purchase_customers(act_account_id, name, pixel_id,retention_days=30,purchase_event_name=purchase_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description)
+                        # print(target_audience)
+
+                #### B
+                if addtocart_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(addtocart_pixel_mapping_category.id))
+                    addtocart_event_name = pixel_categories.get(addtocart_pixel_mapping_category.id).facebook_pixel_event_name
+
+                    #### B-1
+                    name = ad_account_name + "장바구니 이용고객_1일간"
+                    description = {
+                        "pixel_mapping_category": "장바구니",
+                        "retention_days": 1,
+                        "description": "전체"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, addtocart_pixel_mapping_category, str(description))
+                    if check_target:
+                        # target_audience = targeting_visitor.create_visitor_and_addtocart_customers(act_account_id, name, pixel_id, retention_days=1, addtocart_evnet_name=addtocart_event_name)
+                        target_audience = targeting_addtocart.create_addtocart_customers(act_account_id, name, pixel_id, retention_days=1, addtocart_event_name=addtocart_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description)
+                        # print(target_audience)
+
+                    #### B-2
+                    name = ad_account_name + "장바구니 이용고객_7일간"
+                    description = {
+                        "pixel_mapping_category": "장바구니",
+                        "retention_days": 7,
+                        "description": "전체"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
+                    if check_target:
+                        # target_audience = targeting_visitor.create_visitor_and_addtocart_customers(act_account_id, name, pixel_id, retention_days=7, addtocart_evnet_name=addtocart_event_name)
+                        target_audience = targeting_addtocart.create_addtocart_customers(act_account_id, name,pixel_id,retention_days=7,addtocart_event_name=addtocart_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description)
+                        # print(target_audience)
+
+                    if purchase_pixel_mapping_category.id in pixel_categories:
+                        #### B-3
+                        name = ad_account_name + "장바구니 이용고객 중 미구매고객_1일간"
+                        description = {
+                            "pixel_mapping_category": "장바구니",
+                            "retention_days": 1,
+                            "description": "미구매고객"
+                        }
+                        check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
+                        if check_target:
+                           target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=1, addtocart_evnet_name=addtocart_event_name, puchase_event_name=purchase_event_name)
+                           target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description)
+                           print(target_audience)
+
+                        #### B-4
+                        name = ad_account_name + "장바구니 이용고객 중 미구매고객_3일간"
+                        description = {
+                            "pixel_mapping_category": "장바구니",
+                            "retention_days": 3,
+                            "description": "미구매고객"
+                        }
+                        check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
+                        if check_target:
+                            target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=3, addtocart_evnet_name=addtocart_event_name, puchase_event_name=purchase_event_name)
+                            target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description)
+                            print(target_audience)
+
+                        #### B-5
+                        name = ad_account_name + "장바구니 이용고객 중 미구매고객_7일간"
+                        description = {
+                            "pixel_mapping_category": "장바구니",
+                            "retention_days": 7,
+                            "description": "미구매고객"
+                        }
+                        check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
+                        if check_target:
+                            target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=7, addtocart_evnet_name=addtocart_event_name, puchase_event_name=purchase_event_name)
+                            target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description)
+                            print(target_audience)
+
+
+                if conversion_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(conversion_pixel_mapping_category.id))
+                    conversion_event_name = pixel_categories.get(conversion_pixel_mapping_category.id).facebook_pixel_event_name
+
+                    #### C-1
+                    name = ad_account_name + "방문 고객 중 미 전환고객_30일간"
+                    description = {
+
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": 30,
+                        "description": "미전환고객"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,visit_pixel_mapping_category,str(description))
+                    if check_target:
+                        target_audience = targeting_visitor.create_visitor_and_non_coversion_customers(act_account_id, name, pixel_id, conversion_event_name=conversion_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),visit_pixel_mapping_category, description)
+                        # print(target_audience)
+
+                    #### C-2
+                    name = ad_account_name + "전환 완료 고객_30일간"
+                    description = {
+
+                        "pixel_mapping_category": "단계별 전환",
+                        "retention_days": 30,
+                        "description": "전환완료"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,conversion_pixel_mapping_category,str(description))
+                    if check_target:
+                        target_audience = targeting_conversion.create_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=conversion_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), conversion_pixel_mapping_category,description)
+                        # print(target_audience)
+
+                    #### C-3
+                    name = ad_account_name + "미 전환 고객_30일간"
+                    description = {
+                        "pixel_mapping_category": "단계별 전환",
+                        "retention_days": 30,
+                        "description": "미전환"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,conversion_pixel_mapping_category,str(description))
+                    if check_target:
+                        target_audience = targeting_visitor.create_visitor_and_non_coversion_customers(act_account_id, name, pixel_id, conversion_event_name=conversion_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), conversion_pixel_mapping_category,description)
+                        # print(target_audience)
+
+
+
+                if registration_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(registration_pixel_mapping_category.id))
+                    registration_event_name = pixel_categories.get(registration_pixel_mapping_category.id).facebook_pixel_event_name
+
+                    #### D-1
+                    name = ad_account_name + "회원가입 완료 고객_30일간"
+                    description = {
+                        "pixel_mapping_category": "회원가입",
+                        "retention_days": 30,
+                        "description": "전체"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,registration_pixel_mapping_category,str(description))
+                    if check_target:
+                        # target_audience = targeting_visitor.create_visitor_and_registration_customers(act_account_id, name, pixel_id, registration_event_name=registration_event_name)
+                        target_audience = targeting_registration.create_regestration_customers(act_account_id,name, pixel_id,registration_event_name=registration_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),registration_pixel_mapping_category, description)
+                        # print(target_audience)
+
+                    if purchase_pixel_mapping_category.id in pixel_categories:
+                        #### D-2
+                        name = ad_account_name + "회원가입 완료 고객 중 미구매 고객_30일간"
+                        description = {
+                            "pixel_mapping_category": "회원가입",
+                            "retention_days": 30,
+                            "description": "미구매"
+                        }
+                        check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,registration_pixel_mapping_category,str(description))
+                        if check_target:
+                            target_audience = targeting_registration.create_regestration_and_non_purchase_customers(act_account_id, name, pixel_id, regestration_event_name=registration_event_name, purchase_event_name=purchase_event_name)
+                            target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),registration_pixel_mapping_category, description)
+                            # print(target_audience)
+
+                # E
+                if step1_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(step1_pixel_mapping_category.id))
+                    step1_event_name = pixel_categories.get(step1_pixel_mapping_category.id).facebook_pixel_event_name
+
+                    name = ad_account_name + "전환 1단계 완료 고객_30일간"
+                    description = {
+                        "pixel_mapping_category": "단계별 전환",
+                        "retention_days": 30,
+                        "description": "전환1단계완료"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step1_pixel_mapping_category,str(description))
+                    if check_target:
+                        target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step1_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),step1_pixel_mapping_category, description)
+                        # print(target_audience)
 
 
                 # F
-                if 6 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(6))
-                    step_event_name = pixel_categories.get(6).facebook_pixel_event_name
+                if step2_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(step2_pixel_mapping_category.id))
+                    step2_event_name = pixel_categories.get(step2_pixel_mapping_category.id).facebook_pixel_event_name
 
-                    # name = ad_account_name + "전환 2단계 완료 고객_30일간"
-                    # target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step_event_name)
-                    # print(target_audience)
+                    name = ad_account_name + "전환 2단계 완료 고객_30일간"
+                    description = {
+                        "pixel_mapping_category": "단계별 전환",
+                        "retention_days": 30,
+                        "description": "전환2단계완료"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step2_pixel_mapping_category,str(description))
+                    if check_target:
+                        target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step2_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'),step2_pixel_mapping_category, description)
+                        # print(target_audience)
 
                 # G
-                if 7 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(7))
-                    step_event_name = pixel_categories.get(7).facebook_pixel_event_name
+                if step3_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(step3_pixel_mapping_category.id))
+                    step3_event_name = pixel_categories.get(step3_pixel_mapping_category.id).facebook_pixel_event_name
 
-                    # name = ad_account_name + "전환 3단계 완료 고객_30일간"
-                    # target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step_event_name)
-                    # print(target_audience)
+                    name = ad_account_name + "전환 3단계 완료 고객_30일간"
+                    description = {
+                        "pixel_mapping_category": "단계별 전환",
+                        "retention_days": 30,
+                        "description": "전환3단계완료"
+                    }
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step3_pixel_mapping_category,str(description))
+                    if check_target:
+                        target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step3_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), step3_pixel_mapping_category,description)
+                        # print(target_audience)
 
                 # H
-                if 8 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(8))
-                    step_event_name = pixel_categories.get(8).facebook_pixel_event_name
+                if step4_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(step4_pixel_mapping_category.id))
+                    step4_event_name = pixel_categories.get(step4_pixel_mapping_category.id).facebook_pixel_event_name
 
-                    # name = ad_account_name + "전환 4단계 완료 고객_30일간"
-                    # target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step_event_name)
-                    # print(target_audience)
+                    name = ad_account_name + "전환 4단계 완료 고객_30일간"
+                    description = {
+                        "pixel_mapping_category": "단계별 전환",
+                        "retention_days": 30,
+                        "description": "전환4단계완료"
+                    }
+
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step4_pixel_mapping_category,str(description))
+                    if check_target:
+                        target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step4_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), step4_pixel_mapping_category,description)
+                        # print(target_audience)
 
                 # H
-                if 9 in pixel_categories:
-                    print("pixel_category :", pixel_categories.get(9))
-                    step_event_name = pixel_categories.get(9).facebook_pixel_event_name
+                if step5_pixel_mapping_category.id in pixel_categories:
+                    # print("pixel_category :", pixel_categories.get(step5_pixel_mapping_category.id))
+                    step_event_name = pixel_categories.get(step5_pixel_mapping_category.id).facebook_pixel_event_name
 
-                    # name = ad_account_name + "전환 5단계 완료 고객_30일간"
-                    # target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step_event_name)
-                    # print(target_audience)
+                    name = ad_account_name + "전환 5단계 완료 고객_30일간"
+                    description = {
+                        "pixel_mapping_category": "단계별 전환",
+                        "retention_days": 30,
+                        "description": "전환5단계완료"
+                    }
 
+                    check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step5_pixel_mapping_category,str(description))
+                    if check_target:
+                        target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step_event_name)
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, 'test', fb_ad_account,target_audience.get('id'), step5_pixel_mapping_category,description)
+                        # print(target_audience)
 
             response_data['success'] = 'YES'
 

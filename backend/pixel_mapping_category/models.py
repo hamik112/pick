@@ -9,5 +9,26 @@ class PixelMappingCategory(models.Model):
     category_label_kr = models.CharField(max_length=128)
     category_label_en = models.CharField(max_length=128)
 
+    def get_pixel_mapping_category_by_label(self, label):
+        try:
+            pixel_mapping_category = PixelMappingCategory.objects.get(category_label_en=label)
+
+            return pixel_mapping_category
+        except PixelMappingCategory.DoesNotExist:
+            try:
+                pixel_mapping_category = PixelMappingCategory.objects.get(category_label_en=label)
+
+                return pixel_mapping_category
+            except PixelMappingCategory.DoesNotExist:
+                return None
+
+    def get_pixel_mapping_category_by_id(self, id):
+        try:
+            pixel_mapping_category = PixelMappingCategory.objects.get(pk=id)
+            return pixel_mapping_category
+
+        except PixelMappingCategory.DoesNotExist:
+            return None
+
     class Meta:
         db_table = "pixel_mapping_category"

@@ -95,9 +95,57 @@
       "category_label_en": "beauty"
     }
   },
-    {
+  {
     "model": "pixel_mapping_category.pixelmappingcategory",
     "pk": 1,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc0ac\uc774\ud2b8 \ubc29\ubb38",
+      "category_label_en": "visit pages"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 2,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\ud2b9\uc815\ud398\uc774\uc9c0 \ubc29\ubb38",
+      "category_label_en": "visit specific pages"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 3,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "NEO\ud0c0\uac9f",
+      "category_label_en": "neo target"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 4,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "UTM\ud0c0\uac9f",
+      "category_label_en": "utm target"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 5,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",
@@ -109,7 +157,7 @@
   },
   {
     "model": "pixel_mapping_category.pixelmappingcategory",
-    "pk": 2,
+    "pk": 6,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",
@@ -121,19 +169,19 @@
   },
   {
     "model": "pixel_mapping_category.pixelmappingcategory",
-    "pk": 3,
+    "pk": 7,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",
       "created_by": "test",
       "updated_by": "test",
       "category_label_kr": "\ud68c\uc6d0\uac00\uc785",
-      "category_label_en": "sign up"
+      "category_label_en": "registration"
     }
   },
   {
     "model": "pixel_mapping_category.pixelmappingcategory",
-    "pk": 4,
+    "pk": 8,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",
@@ -145,7 +193,7 @@
   },
   {
     "model": "pixel_mapping_category.pixelmappingcategory",
-    "pk": 5,
+    "pk": 9,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",
@@ -157,7 +205,7 @@
   },
   {
     "model": "pixel_mapping_category.pixelmappingcategory",
-    "pk": 6,
+    "pk": 10,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",
@@ -169,7 +217,7 @@
   },
   {
     "model": "pixel_mapping_category.pixelmappingcategory",
-    "pk": 7,
+    "pk": 11,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",
@@ -181,7 +229,7 @@
   },
   {
     "model": "pixel_mapping_category.pixelmappingcategory",
-    "pk": 8,
+    "pk": 12,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",
@@ -193,7 +241,7 @@
   },
   {
     "model": "pixel_mapping_category.pixelmappingcategory",
-    "pk": 9,
+    "pk": 13,
     "fields": {
       "created_at": "2018-01-08T16:05:46",
       "updated_at": "2018-01-08T16:05:46",

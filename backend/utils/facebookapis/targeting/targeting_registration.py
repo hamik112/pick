@@ -5,7 +5,7 @@ from facebookads.exceptions import FacebookRequestError
 
 # 회원가입 전체 고객
 def create_regestration_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                  regestration_event_name="CompleteRegistration"):
+                                  registration_event_name="CompleteRegistration"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -27,7 +27,7 @@ def create_regestration_customers(account_id, name, pixel_id, retention_days=30,
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": regestration_event_name
+                                    "value": registration_event_name
                                 }
                             ]
                         }
