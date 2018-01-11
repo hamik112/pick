@@ -107,7 +107,7 @@
 															<div class="result_tbody">
 																<ul>
 																	<li v-for="adv in advs">
-																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :id="'adv-check-' + adv.id"><label :for="adv.id"></label></div>
+																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :id="'adv-check-' + adv.id"><label :for="'adv-check-' + adv.id"></label></div>
 																		<div class="result_advertiser">LF몰</div>
 																		<div class="result_account">LF_M_구글</div>
 																	</li>
@@ -117,7 +117,7 @@
 													</div>
 												</div>
 												<div class="interlock_btn">
-													<button><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
+													<button type="button" v-on:click="addCheckList()"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
 													<button><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
 												</div>
 												<div class="account_wrap">
@@ -265,12 +265,12 @@ export default {
 			  '픽셀3'
 			]
 		  },
-		  advs: [
-			    { "id": "1", "name": "LF몰", "advid": "pfeffer.matt@yahoo.com" },
-			    { "id": "2", "name": "LF몰2", "email": "mohammad.ferry@yahoo.com" },
-			    { "id": "3", "name": "LF몰3", "email": "evolkman@hotmail.com" },
-			    { "id": "4", "name": "LF몰4", "email": "lenora95@leannon.com" }
-		  ],
+		  advs: {
+			    'list1':{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1" },
+			    'list2':{ "id": "2", "name": "LF몰2", "advid": "LF_M_구글2" },
+			    'list3':{ "id": "3", "name": "LF몰3", "advid": "LF_M_구글3" },
+			    'list4':{ "id": "4", "name": "LF몰4", "advid": "LF_M_구글4" }
+		  },
 		  addAdvs:[],
 		  selected: [],
 		  addSelected:[]
@@ -282,9 +282,7 @@ export default {
 		},
 		//작업진행중
 		addCheckList:function() {
-			const checkPushs = function() {
-
-			}
+			console.log('test')
 		},
 		tabMove:function(activeNumber) {
 			let tabArray = ['tabActive1','tabActive2','tabActive3']
@@ -304,17 +302,19 @@ export default {
 	computed: {
 	    selectAll: {
 	        get: function () {
-	        	if(this.advs.length != 0) {
-	            	return this.advs ? this.selected.length == this.advs.length : false;
+	        	let advKeys = Object.keys(this.advs)
+	        	if(advKeys.length != 0) {
+	            	return this.advs ? this.selected.length == advKeys.length : false;
 	            }
 	        },
 	        set: function (value) {
 	            var selected = [];
+	            let advKeys = Object.keys(this.advs)
 
 	            if (value) {
-	                this.advs.forEach(function (adv) {
-	                    selected.push(adv.id);
-	                });
+	            	for(var i = 0; i < advKeys.length; i++) {
+	            		selected.push(this.advs[advKeys[i]].id)
+	            	}
 	            }
 
 	            this.selected = selected;
