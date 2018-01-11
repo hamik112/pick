@@ -72,12 +72,17 @@ class TargetPick(APIView):
                     # code 441
 
                     display_count = ''
+                    targeting_complete = False
+                    demographic_complete = False
+
                     if operation_status_code == 441:
                         display_count = "생성중"
                     elif delivery_status_code == 300:
                         display_count = "규모가 적음"
+                        targeting_complete = True
                     elif delivery_status_code == 200:
                         display_count = audience_target.get('approximate_count')
+                        targeting_complete = True
 
                     gen_obj['display_count'] = display_count
                     gen_obj['name'] = audience_target.get('name')
@@ -85,6 +90,8 @@ class TargetPick(APIView):
                     gen_obj['delivery_status'] = audience_target.get('delivery_status')
                     gen_obj['operation_status'] = audience_target.get('operation_status')
                     gen_obj['pixel_id'] = audience_target.get('pixel_id')
+                    gen_obj['targeting_complete'] = targeting_complete
+                    gen_obj['demographic_complete'] = demographic_complete
 
                     group_target['total'].append(gen_obj)
                     group_target[group_category[pixel_mapping_category_id]].append(gen_obj)

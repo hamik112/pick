@@ -12,10 +12,10 @@ class FbAdAccount(models.Model):
     created_by = models.CharField(max_length=64)
     updated_by = models.CharField(max_length=64)
     ad_account_id = models.BigIntegerField()
-    act_account_id = models.CharField(max_length=64)
+    act_account_id = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=128)
     account_status = models.IntegerField(default=2)
-    account_category = models.ForeignKey('account_category.AccountCategory', db_constraint=False, null=False)
+    account_category = models.ForeignKey('account_category.AccountCategory', db_constraint=False, null=True)
 
     def find_by_fb_ad_account_id(self, fb_ad_account_id):
         print('find_by_fb_ad_account_id')
@@ -48,17 +48,44 @@ class FbAdAccount(models.Model):
             # TODO return []
             return None
 
-    def create_fb_ad_account(self, ad_account_id, name, account_status, account_category):
+    def update_or_create(self, act_account_id, ad_account_id, name, account_status, account_category_id):
         try:
-            fb_ad_account = FbAdAccount()
+            fb_ad_account = FbAdAccount.objects.get(act_account_id=act_account_id)
 
+            fb_ad_account.act_account_id = act_account_id
             fb_ad_account.ad_account_id = ad_account_id
-            fb_ad_account.act_account_id = 'act_' + str(ad_account_id)
             fb_ad_account.name = name
             fb_ad_account.account_status = account_status
-            fb_ad_account.account_category = account_category
+            if account_category_id != None:
+                fb_ad_account.account_category_id = account_category_id
 
             fb_ad_account.save()
+
+
+        except self.DoesNotExist:
+            fb_ad_account = FbAdAccount()
+
+            fb_ad_account.act_account_id = act_account_id
+            fb_ad_account.ad_account_id = ad_account_id
+            fb_ad_account.name = name
+            fb_ad_account.account_status = account_status
+            # fb_ad_account.account_category = a
+
+            fb_ad_account.save()
+
+            # params = {}
+            # params['name'] = name
+            # params['ad_account_id'] = ad_account_id
+            # params['account_status'] = account_status
+            # if account_category != None:
+            #     params['account_category_id'] = account_category_id
+            #
+            # obj, created = self.objects.update_or_create(
+            #     act_account_id=act_account_id,
+            #     defaults=params
+            # )
+            #
+            # return obj.id
 
         except Exception as e:
             print(traceback.format_exc())
