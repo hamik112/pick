@@ -10,7 +10,8 @@
 		<div class="left_area"><a href="#/"><img src="../../assets/images/common/main_logo.jpg" alt="pickdata" /></a></div>
 		<div class="right_area">
 			<div class="user">
-				<p><img src="../../assets/images/icon/user_logo.png" alt=""></p>
+				<p class="user_mask"></p>
+				<p class="user_image"><img src="../../assets/images/common/test_img.jpg" alt=""></p>
 				<p>임준수</p>
 			</div>
 			<div class="user_setup" tabindex="-1" @blur="allCategory('blur')">

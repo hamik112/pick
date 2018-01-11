@@ -10,7 +10,8 @@
 								<p class="popup-btn"><button type="button" id="close-btn" class="close_pop close-btn" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 							</div>
 							<div class="ad_info_wrap">
-								<div class="ad_image"></div>
+								<div class="ad_mask"></div>
+								<div class="ad_image"><img src="../../assets/images/common/test_img.jpg" alt=""></div>
 								<div class="ad_info">
 									<strong>프리메라 NEW</strong>
 									<div>계정번호:1059484622123515</div>
