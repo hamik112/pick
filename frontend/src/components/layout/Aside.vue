@@ -90,7 +90,7 @@ export default {
         console.log('DEBUG Call')
       }
       console.log('loadFbAdAccount', res)
-      this.$http.get('api/fb_ad_accounts/')
+      this.$http.get('/api/fb_ad_accounts/')
       .then(res => {
         const response = res.data
         const data = response.data
@@ -100,17 +100,19 @@ export default {
           if (data.length > 0) {
             this.selectFbAdAccount = data[0]
             this.fbAdAccounts = data
+            this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
           }
         } else {
           throw('success: ' + success)
         }
       })
       .catch(err => {
-        console.error('api/fb_ad_accounts/', err)
+        console.error('/api/fb_ad_accounts/', err)
       })
     },
 
     onClickFbAdAccount: function (fbAdAccount) {
+      this.$eventBus.$emit('selectFbAdAccount', fbAdAccount)
       this.selectFbAdAccount = fbAdAccount
       this.isActive = false
       this.isShowList = false
