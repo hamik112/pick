@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 
 from fb_ad_account.models import FbAdAccount
 
+from neo_account.models import NeoAccount
 from pixel_mapping.models import PixelMapping
 from pixel_mapping_category.models import PixelMappingCategory
 from pickdata_account_target.models import PickdataAccountTarget
@@ -48,48 +49,48 @@ class FbAdAccountList(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-
 class CheckAccountId(APIView):
     def get(self, request, format=None):
-        response_data = {}
-        try:
-            act_account_id = request.query_params.get('act_account_id', None)
-            print('act_account_id : ', act_account_id)
-
-            api_init_by_system_user()
-
-            ad_account = ad_accounts.get_ad_account(act_account_id)
-
-            fb_ad_account_id = FbAdAccount.update_or_create(FbAdAccount, ad_account.get('id'),ad_account.get('account_id'), ad_account.get('name'), ad_account.get('account_status'), None)
-
-            response_data['success'] = 'YES'
-            response_data['fb_ad_account_id'] = fb_ad_account_id
-
-            return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-        except Exception as e:
-            print(traceback.format_exc())
-            response_data['success'] = 'NO'
-            response_data['msg'] = e.args
-            return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-class FbAdAccountPixelCheck(APIView):
-    def get(self, request, fb_account_id, format=None):
         response_data = {}
         try:
             api_init_by_system_user()
             # TODO Session token
 
-            default_pixel = ads_pixels.get_account_default_pixel(fb_account_id)
+            account_id = request.query_params.get('account_id', None)
 
-            check_status = False
-
+            default_pixel = ads_pixels.get_account_default_pixel(account_id)
             if default_pixel != None:
-                check_status = True
+                bool_default_pixel = True
+            else:
+                bool_default_pixel = False
+
+            fb_ad_account =FbAdAccount.find_by_ad_account_id(FbAdAccount, account_id)
+            if fb_ad_account != None:
+                bool_fb_ad_account = True
+                dic_fb_ad_account = {
+                    "fb_ad_account_id":fb_ad_account.id,
+                    "name": fb_ad_account.name,
+                    "account_status": fb_ad_account.account_status,
+                    "account_category_id":fb_ad_account.account_category_id
+                }
+            else:
+                bool_fb_ad_account = False
+                fb_ad_account = None
+
+            neo_account_list = []
+            pixel_evnet_mapping = []
+            if fb_ad_account != None:
+                neo_account_list = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id=fb_ad_account.id)
+                pixel_evnet_mapping = PixelMapping.get
 
             response_data['success'] = 'YES'
-            response_data['check_status'] = check_status
-            response_data['data'] = default_pixel
+            response_data['bool_default_pixel'] = bool_default_pixel
+            response_data['default_pixel'] = default_pixel
+            response_data['bool_fb_ad_account'] = bool_fb_ad_account
+            response_data['fb_ad_account'] = dic_fb_ad_account
+            response_data['neo_account_list'] = neo_account_list
+            response_data['pixel_evnet_mappings'] = None
+
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -155,6 +156,7 @@ class FbAdAccountDefaultTarget(APIView):
             if  fb_ad_account == None:
                 raise Exception("FbAdAccount Not Exsit.")
 
+            print(fb_ad_account.id)
             ad_account_name = fb_ad_account.name
             act_account_id = fb_ad_account.act_account_id
 
@@ -179,7 +181,6 @@ class FbAdAccountDefaultTarget(APIView):
 
                 ad_account_name = ad_account_name + "_"
 
-
                 visit_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'visit pages')
                 purchase_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'purchase')
                 addtocart_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'add to cart')
@@ -201,7 +202,8 @@ class FbAdAccountDefaultTarget(APIView):
                 description = {
                     "pixel_mapping_category" : "사이트방문",
                     "retention_days" : 30,
-                    "description" : "전체"
+                    "description" : "전체",
+                    "option" : ""
                 }
 
                 check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
@@ -216,7 +218,8 @@ class FbAdAccountDefaultTarget(APIView):
                 description = {
                     "pixel_mapping_category" : "사이트방문",
                     "retention_days" : 30,
-                    "description" : "미방문고객"
+                    "description" : "미방문고객",
+                    "option": ""
                 }
                 check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
 
@@ -231,7 +234,8 @@ class FbAdAccountDefaultTarget(APIView):
                 description = {
                     "pixel_mapping_category" : "사이트방문",
                     "retention_days" : 30,
-                    "description" : "이용시간상위5%"
+                    "description" : "이용시간상위5%",
+                    "option": ""
                 }
 
                 check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
@@ -252,7 +256,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "사이트방문",
                         "retention_days": 30,
-                        "description": "미구매고객"
+                        "description": "미구매고객",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
                     if check_target:
@@ -265,7 +270,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "구매",
                         "retention_days": 1,
-                        "description": "전체"
+                        "description": "전체",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
                     if check_target:
@@ -279,7 +285,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "구매",
                         "retention_days": 7,
-                        "description": "전체"
+                        "description": "전체",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
                     if check_target:
@@ -293,7 +300,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "구매",
                         "retention_days": 30,
-                        "description": "전체"
+                        "description": "전체",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
                     if check_target:
@@ -312,7 +320,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "장바구니",
                         "retention_days": 1,
-                        "description": "전체"
+                        "description": "전체",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, addtocart_pixel_mapping_category, str(description))
                     if check_target:
@@ -326,7 +335,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "장바구니",
                         "retention_days": 7,
-                        "description": "전체"
+                        "description": "전체",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                     if check_target:
@@ -341,7 +351,8 @@ class FbAdAccountDefaultTarget(APIView):
                         description = {
                             "pixel_mapping_category": "장바구니",
                             "retention_days": 1,
-                            "description": "미구매고객"
+                            "description": "미구매고객",
+                            "option": ""
                         }
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
@@ -354,7 +365,8 @@ class FbAdAccountDefaultTarget(APIView):
                         description = {
                             "pixel_mapping_category": "장바구니",
                             "retention_days": 3,
-                            "description": "미구매고객"
+                            "description": "미구매고객",
+                            "option": ""
                         }
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
@@ -367,7 +379,8 @@ class FbAdAccountDefaultTarget(APIView):
                         description = {
                             "pixel_mapping_category": "장바구니",
                             "retention_days": 7,
-                            "description": "미구매고객"
+                            "description": "미구매고객",
+                            "option": ""
                         }
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
@@ -386,7 +399,8 @@ class FbAdAccountDefaultTarget(APIView):
 
                         "pixel_mapping_category": "사이트방문",
                         "retention_days": 30,
-                        "description": "미전환고객"
+                        "description": "미전환고객",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,visit_pixel_mapping_category,str(description))
                     if check_target:
@@ -400,7 +414,8 @@ class FbAdAccountDefaultTarget(APIView):
 
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "전환완료"
+                        "description": "전환완료",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,conversion_pixel_mapping_category,str(description))
                     if check_target:
@@ -413,7 +428,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "미전환"
+                        "description": "미전환",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,conversion_pixel_mapping_category,str(description))
                     if check_target:
@@ -432,7 +448,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "회원가입",
                         "retention_days": 30,
-                        "description": "전체"
+                        "description": "전체",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,registration_pixel_mapping_category,str(description))
                     if check_target:
@@ -447,7 +464,8 @@ class FbAdAccountDefaultTarget(APIView):
                         description = {
                             "pixel_mapping_category": "회원가입",
                             "retention_days": 30,
-                            "description": "미구매"
+                            "description": "미구매",
+                            "option": ""
                         }
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,registration_pixel_mapping_category,str(description))
                         if check_target:
@@ -464,7 +482,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "전환1단계완료"
+                        "description": "전환1단계완료",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step1_pixel_mapping_category,str(description))
                     if check_target:
@@ -482,7 +501,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "전환2단계완료"
+                        "description": "전환2단계완료",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step2_pixel_mapping_category,str(description))
                     if check_target:
@@ -499,7 +519,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "전환3단계완료"
+                        "description": "전환3단계완료",
+                        "option": ""
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step3_pixel_mapping_category,str(description))
                     if check_target:
@@ -516,7 +537,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "전환4단계완료"
+                        "description": "전환4단계완료",
+                        "option": ""
                     }
 
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step4_pixel_mapping_category,str(description))
@@ -534,7 +556,8 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "전환5단계완료"
+                        "description": "전환5단계완료",
+                        "option": ""
                     }
 
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step5_pixel_mapping_category,str(description))
