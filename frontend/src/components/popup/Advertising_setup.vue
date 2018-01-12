@@ -20,15 +20,15 @@
 							<div class="list-tab-widget">
 								<div class="tab-nav-widget">
 									<ul>
-										<li rel="tab-list-1" class="active">
+										<li rel="tab-list-1" v-bind:class="[(this.tabListStep === 0) ? 'active' : '']">
 											<p></p>
 											<a href="javascript:void(0);"><span>1</span>카테고리 설정</a>
 										</li>
-										<li rel="tab-list-2">
+										<li rel="tab-list-2" v-bind:class="[(this.tabListStep === 1) ? 'active' : '']">
 											<p></p>
 											<a href="javascript:void(0);"><span>2</span>네오 계정 연동</a>
 										</li>
-										<li rel="tab-list-3">
+										<li rel="tab-list-3" v-bind:class="[(this.tabListStep === 2) ? 'active' : '']">
 											<p></p>
 											<a href="javascript:void(0);"><span>3</span>픽셀 이벤트 매핑</a>
 										</li>
@@ -45,36 +45,36 @@
 											</div>
 											<div class="cate_contents_widget">
 												<ul class="target_pick_01">
-													<li>
+													<li @click="clickSteop1Category('보험')" v-bind:class="[(this.categoryName === '보험') ? 'Click_on' : '']">
 														<span>보험</span>
 													</li>
-													<li>
+													<li @click="clickSteop1Category('대출')" v-bind:class="[(this.categoryName === '대출') ? 'Click_on' : '']">
 														<span>대출</span>
 													</li>
-													<li>
+													<li @click="clickSteop1Category('카드')" v-bind:class="[(this.categoryName === '카드') ? 'Click_on' : '']">
 														<span>카드</span>
 													</li>
-													<li>
+													<li @click="clickSteop1Category('NGO')" v-bind:class="[(this.categoryName === 'NGO') ? 'Click_on' : '']">
 														<span>NGO</span>
 													</li>
 												</ul>
 												<ul class="target_pick_02">
-													<li>
+													<li @click="clickSteop1Category('쇼핑몰')" v-bind:class="[(this.categoryName === '쇼핑몰') ? 'Click_on' : '']">
 														<span>쇼핑몰</span>
 													</li>
-													<li>
+													<li @click="clickSteop1Category('여행')" v-bind:class="[(this.categoryName === '여행') ? 'Click_on' : '']">
 														<span>여행</span>
 													</li>
-													<li>
+													<li @click="clickSteop1Category('뷰티')" v-bind:class="[(this.categoryName === '뷰티') ? 'Click_on' : '']">
 														<span>뷰티</span>
 													</li>
-													<li>
+													<li @click="clickSteop1Category('기타')" v-bind:class="[(this.categoryName === '기타') ? 'Click_on' : '']">
 														<span>기타</span>
 													</li>
 												</ul>
 											</div>
 											<div class="btn_wrap">
-												<button type="button" class="next_btn" @click="tabMove('1')">다음</button>
+												<button type="button" class="next_btn" @click="tabMove('1', '0')">다음</button>
 											</div>
 										</div>
 										<!-- /.카테고리 설정 -->
@@ -149,8 +149,8 @@
 												</div>
 											</div>
 											<div class="btn_wrap">
-												<button class="before_btn" @click="tabMove('0')">이전</button>
-												<button type="button" class="next_btn" @click="tabMove('2')">다음</button>
+												<button class="before_btn" @click="tabMove('0', '1')">이전</button>
+												<button type="button" class="next_btn" @click="tabMove('2', '1')">다음</button>
 											</div>
 										</div>
 										<!-- /.네오 계정 연동 -->
@@ -221,7 +221,7 @@
 													</li>
 												</ul>
 												<div class="btn_wrap">
-													<button type="button" class="before_btn" @click="tabMove('1')">이전</button>
+													<button type="button" class="before_btn" @click="tabMove('1', '2')">이전</button>
 													<button class="next_btn" @click="success">완료</button>
 												</div>
 											</div>
@@ -248,43 +248,59 @@ import Select from '@/components/ui/Select'
 
 export default {
 	name:'SetupPop',
+
 	components:{
 		'ui-select':Select
 	},
+
 	data () {
 		return {
-			tabActive1:false,
-			tabActive2:true,
-			tabActive3:false,
+			tabActive1: true,
+			tabActive2: false,
+			tabActive3: false,
 
 			categorySelectData: {
-			emptyText: '픽셀 이벤트를 선택해주세요',
-			textList: [
-			  '픽셀1',
-			  '픽셀2',
-			  '픽셀3'
-			]
-		  },
-		  advs: {
-			    'list1':{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1" },
-			    'list2':{ "id": "2", "name": "LF몰2", "advid": "LF_M_구글2" },
-			    'list3':{ "id": "3", "name": "LF몰3", "advid": "LF_M_구글3" },
-			    'list4':{ "id": "4", "name": "LF몰4", "advid": "LF_M_구글4" }
-		  },
-		  addAdvs:[],
-		  selected: [],
-		  addSelected:[]
+				emptyText: '픽셀 이벤트를 선택해주세요',
+				textList: [
+					'픽셀1',
+					'픽셀2',
+					'픽셀3'
+				]
+			},
+			advs: {
+				'list1':{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1" },
+				'list2':{ "id": "2", "name": "LF몰2", "advid": "LF_M_구글2" },
+				'list3':{ "id": "3", "name": "LF몰3", "advid": "LF_M_구글3" },
+				'list4':{ "id": "4", "name": "LF몰4", "advid": "LF_M_구글4" }
+			},
+			addAdvs:[],
+			selected: [],
+			addSelected:[],
+
+			tabListStep: 0,
+			categoryName: ''
 		}
 	},
+
 	methods:{
-		selectCategory: function (item) {
-		  this.categorySelectData.emptyText = item
+		clickSteop1Category (name) {
+			this.categoryName = name
+		},
+		selectCategory (item) {
+			this.categorySelectData.emptyText = item
 		},
 		//작업진행중
-		addCheckList:function() {
+		addCheckList () {
 			console.log('test')
 		},
-		tabMove:function(activeNumber) {
+		tabMove (activeNumber, beforeNumber) {
+			if (beforeNumber === '0') {
+				if (this.categoryName === '') {
+					alert('추후 카테고리 선택을 해야만 하게 수정필요.')
+					// return
+				}
+			}
+			this.tabListStep = parseInt(activeNumber)
 			let tabArray = ['tabActive1','tabActive2','tabActive3']
 			for(let i = 0; i < tabArray.length; i++) {
 				if(i == activeNumber) {
@@ -294,50 +310,51 @@ export default {
 				}
 			}
 		},
-		success:function() {
+		success () {
 			alert('설정이 완료되었습니다.');
 			this.$emit('close')
 		}
 	},
+
 	computed: {
-	    selectAll: {
-	        get: function () {
-	        	let advKeys = Object.keys(this.advs)
-	        	if(advKeys.length != 0) {
-	            	return this.advs ? this.selected.length == advKeys.length : false;
-	            }
-	        },
-	        set: function (value) {
-	            var selected = [];
-	            let advKeys = Object.keys(this.advs)
+		selectAll: {
+			get: function () {
+				let advKeys = Object.keys(this.advs)
+				if(advKeys.length != 0) {
+					return this.advs ? this.selected.length == advKeys.length : false;
+				}
+			},
+			set: function (value) {
+				var selected = [];
+				let advKeys = Object.keys(this.advs)
 
-	            if (value) {
-	            	for(var i = 0; i < advKeys.length; i++) {
-	            		selected.push(this.advs[advKeys[i]].id)
-	            	}
-	            }
+				if (value) {
+					for(var i = 0; i < advKeys.length; i++) {
+						selected.push(this.advs[advKeys[i]].id)
+					}
+				}
 
-	            this.selected = selected;
-	        }
-	    },
-	    addSelectAll:{
-	    	get: function () {
-	    		if(this.addAdvs.length != 0) {
-	            	return this.addAdvs ? this.addSelected.length == this.addAdvs.length : false;
-	    		}
-	        },
-	        set: function (value) {
-	            var addSelected = [];
+				this.selected = selected;
+			}
+		},
+		addSelectAll:{
+			get: function () {
+				if(this.addAdvs.length != 0) {
+					return this.addAdvs ? this.addSelected.length == this.addAdvs.length : false;
+				}
+			},
+			set: function (value) {
+				var addSelected = [];
 
-	            if (value) {
-	                this.advs.forEach(function (addAdv) {
-	                    addSelected.push(addAdv.id);
-	                });
-	            }
+				if (value) {
+					this.advs.forEach(function (addAdv) {
+						addSelected.push(addAdv.id);
+					});
+				}
 
-	            this.addSelected = addSelected;
-	        }
-	    }
+				this.addSelected = addSelected;
+			}
+		}
 	}
 }
 </script>
