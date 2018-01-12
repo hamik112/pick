@@ -229,7 +229,7 @@
 	}
 }
 #target_pop_02{
-	.target_contents_wrap{margin:28px 22px;
+	.target_contents_wrap{margin:0px 22px; padding:28px 0px;
 		.target_thead{
 			> div{margin-bottom:15px;}
 			.contents_title{width:60px; font-size:14px; font-weight:bold;}
@@ -395,7 +395,7 @@
 	}
 }
 #target_chart{background:#f5f5f5;
-	.target_chart_graph_wrap{padding:30px 25px; padding-bottom:0px;
+	.target_chart_graph_inner{padding:30px 25px; padding-bottom:0px;
 		.target_chart_select{margin-bottom:12px;
 			.select_btn{width:350px; float:right;
 				.select{height:40px; line-height:40px;
@@ -443,6 +443,12 @@
 			}
 			h2{height: 38px; font-size: 18px; line-height: 38px; font-weight: bold; border-top:1px solid #ebeef3; border-bottom:1px solid #ebeef3; padding-left:23px; background:url(assets/images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%;}
 		}
+	}
+}
+#target_not{
+	.target_chart_graph_wrap{text-align:center; padding:20px 0px;
+		.title{font-weight: bold; font-size: 24px;}
+		.prologue{line-height: 2; margin-bottom:10px;}
 	}
 }
 

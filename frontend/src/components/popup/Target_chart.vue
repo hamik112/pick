@@ -4,58 +4,60 @@
 			<div class="modal-container">
 				<div class="layer-pop-widget">
 					<div class="popup-widget" id="target_chart">
-						<div class="popup-contents clearfix pop-scroll">
+						<div class="popup-contents clearfix">
 							<div class="pop_title_wrap">
 								<div class="pop_title">타겟 Chart</div>
 								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 							</div>
-							<div class="target_chart_graph_wrap clearfix">
-								<div class="target_chart_select clearfix">
-									<div class="select_btn">
-										<div class="select_contents">
-											<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
-											<ui-calendar v-model="range"></ui-calendar>
+							<div class="target_chart_graph_wrap pop-scroll">
+								<div class="target_chart_graph_inner clearfix ">
+									<div class="target_chart_select clearfix">
+										<div class="select_btn">
+											<div class="select_contents">
+												<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
+												<ui-calendar v-model="range"></ui-calendar>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="target_chart_top clearfix">
-									<div class="use_limit clearfix">
+									<div class="target_chart_top clearfix">
+										<div class="use_limit clearfix">
+											<div>
+												<span>장바구니 이용고객_7일간</span>
+												<ui-hover></ui-hover>
+											</div>
+											<p>글자수제한</p>
+											<strong>6,500명</strong>
+										</div>
+										<div class="expense_price">
+											<p>총 지출 금액(원)</p>
+											<p>1,152,352,000</p>
+										</div>
+										<div class="all_switch">
+											<p>총 전환</p>
+											<p>3,512</p>
+										</div>
+										<div class="cpa_chart">
+											<p>CPA</p>
+											<p>815</p>
+										</div>
+									</div>
+									<div class="target_chart_wrap">
 										<div>
-											<span>장바구니 이용고객_7일간</span>
-											<ui-hover></ui-hover>
+											<h2>인구 통계학적 특성</h2>
+											<div class="graph_type01">
+												<ui-charts></ui-charts>
+											</div>
 										</div>
-										<p>글자수제한</p>
-										<strong>6,500명</strong>
-									</div>
-									<div class="expense_price">
-										<p>총 지출 금액(원)</p>
-										<p>1,152,352,000</p>
-									</div>
-									<div class="all_switch">
-										<p>총 전환</p>
-										<p>3,512</p>
-									</div>
-									<div class="cpa_chart">
-										<p>CPA</p>
-										<p>815</p>
-									</div>
-								</div>
-								<div class="target_chart_wrap">
-									<div>
-										<h2>인구 통계학적 특성</h2>
-										<div class="graph_type01">
-											<ui-charts></ui-charts>
-										</div>
-									</div>
-									<div>
-										<h2>노출위치</h2>
-										<div class="graph_type02">
-											<ui-charts></ui-charts>
+										<div>
+											<h2>노출위치</h2>
+											<div class="graph_type02">
+												<ui-charts></ui-charts>
+											</div>
 										</div>
 									</div>
 								</div>
+								<div class="chart_close_btn close_pop" @click="$emit('close')">닫기</div>
 							</div>
-							<div class="chart_close_btn close_pop" @click="$emit('close')">닫기</div>
 						</div>
 					</div>
 				</div>

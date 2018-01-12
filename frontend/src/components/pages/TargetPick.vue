@@ -61,7 +61,6 @@
 	</div>
 </template>
 
-
 <script>
 	// 팝업
 	import TargetChartPop from '@/components/popup/Target_chart'

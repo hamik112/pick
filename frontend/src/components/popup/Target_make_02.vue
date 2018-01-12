@@ -3,13 +3,13 @@
 		<div class="modal-wrapper">
 			<div class="modal-container">
 				<div class="layer-pop-widget">
-					<div class="popup-widget pop-scroll" id="target_pop_02">
+					<div class="popup-widget" id="target_pop_02">
 						<div class="popup-contents clearfix">
 							<div class="pop_title_wrap">
 								<div class="pop_title">타겟 만들기 (2/2)</div>
 								<p class="popup-btn"><button type="button" id="close-btn" class="close-btn close_pop" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 							</div>
-							<div class="target_contents_wrap clearfix">
+							<div class="target_contents_wrap pop-scroll clearfix">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
