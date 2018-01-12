@@ -106,9 +106,9 @@
 																</ul>
 															</div>
 															<div class="result_tbody">
-																<ul>
+																<ul id="adv-list-1">
 																	<li v-for="adv in advs">
-																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :data-key="'list' + adv.id" :id="'adv-check-' + adv.id" @change="handleChange(adv)"><label :for="'adv-check-' + adv.id"></label></div>
+																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :data-type="'advs'" :id="'adv-check-' + adv.id" @change="handleChange(adv)"><label :for="'adv-check-' + adv.id"></label></div>
 																		<div class="result_advertiser">{{ adv.name }}</div>
 																		<div class="result_account">{{ adv.advid }}</div>
 																	</li>
@@ -123,7 +123,7 @@
 												</div>
 												<div class="account_wrap">
 													<div class="advertiser_search">
-														<div class="search_title">연결계정 <span>2</span></div>
+														<div class="search_title">연결계정 <span id="ct-count">{{ this.ctCount }}</span></div>
 													</div>
 													<div class="advertiser_search_result pop-scroll">
 														<div>
@@ -137,9 +137,9 @@
 																</ul>
 															</div>
 															<div class="result_tbody">
-																<ul>
+																<ul id="adv-list-2">
 																	<li v-for="addAdv in addAdvs">
-																		<div class="result_check"><input type="checkbox" v-model="addSelected" :value="addAdv.id" class="result-checkbox" :id="'addAdv-check-' + addAdv.id" @change="handleChange(addAdv)"><label :for="'addAdv-check-' + addAdv.id"></label></div>
+																		<div class="result_check"><input type="checkbox" v-model="addSelected" :value="addAdv.id" class="result-checkbox" :data-type="'addAdvs'" :id="'addAdv-check-' + addAdv.id" @change="handleChange(addAdv)"><label :for="'addAdv-check-' + addAdv.id"></label></div>
 																		<div class="result_advertiser">{{ addAdv.name }}</div>
 																		<div class="result_account">{{ addAdv.advid }}</div>
 																	</li>
@@ -258,8 +258,8 @@ export default {
 
 	data () {
 		return {
-			tabActive1: true,
-			tabActive2: false,
+			tabActive1: false,
+			tabActive2: true,
 			tabActive3: false,
 
 			categorySelectData: {
@@ -271,10 +271,10 @@ export default {
 				]
 			},
 			advs: [
-			    { "id": "1", "name": "LF몰", "advid": "LF_M_구글1" },
-			    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2" },
-			    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3" },
-			    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4" }
+			    { "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
+			    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
+			    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
+			    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
 			],
 			addAdvs:[],
 			checkData:[],
@@ -283,6 +283,7 @@ export default {
 			addSelected:[],
 
 			tabListStep: 0,
+			ctCount:0,
 			categoryName: ''
 		}
 	},
@@ -296,19 +297,64 @@ export default {
 		},
 		handleChange (item) {
 			let checked = event.target.checked
-			if(checked == true) {
+			let types = event.target.getAttribute('data-type')
+			let checkFilter = this.checkFilter(types, 'type2')
+
+			if(checked == true && checkFilter == true) {
 				this.checkData.push(item)
+			}
+		},
+		checkFilter(type, type2) {
+			let elId = (type == 'advs') ? "adv-list-1":"adv-list-2"
+			let notEl = (type != 'advs') ? "adv-list-1":"adv-list-2"
+			let ul = document.getElementById(elId)
+			let notUl = document.getElementById(notEl)
+			let items = ul.getElementsByTagName("li")
+			let noItems = notUl.getElementsByTagName("li")
+
+			if(type2 == 'type1') {
+				for(let i = 0; i < noItems.length; ++i) {
+					noItems[i].getElementsByTagName('input')[0].checked = false
+				}
+				for (let i = 0; i < items.length; ++i) {
+					let checkBox = items[i].getElementsByTagName('input')[0].checked
+					if(checkBox == true) {
+						return true
+					}
+				}
+			}else{
+				if(noItems.length != 0) {
+					for(let i = 0; i < noItems.length; ++i) {
+						let check = noItems[i].getElementsByTagName('input')[0].checked
+						if(check == true) {
+							return false
+						}else if(noItems.length-1 == i && check == false) {
+							return true
+						}
+						noItems[i].getElementsByTagName('input')[0].checked = false
+					}
+				}else{
+					return true
+				}
 			}
 		},
 		checkList (before,after) {
 			const me = this
-			me[after] = me[after].concat(me.checkData)
+			let checkFilter = this.checkFilter(before, 'type1')
 
-			me.checkData.forEach(function(value, index) {
-				me[before] = me[before].filter(function(item) {
-					return item !== value
+			if(checkFilter == true) {
+				me[after] = me[after].concat(me.checkData)
+				me.checkData.forEach(function(value, index) {
+					me[before] = me[before].filter(function(item) {
+						return item !== value
+					})
 				})
-			})
+			}
+			//addList Count
+			this.ctCount = me['addAdvs'].length
+			document.getElementById('ct-count').innerText = this.ctCount
+
+
 			this.addSelected = []
 			this.selected = []
 			me.checkData = []
@@ -316,11 +362,14 @@ export default {
 		allCheck(value,key1,key2,before,after) {
 			const me = this
 			var selected = []
+			let checkFilter = this.checkFilter(key1, 'type2')
 
             if (value) {
                 me[key1].forEach(function (item) {
                     selected.push(item.id)
-                    me.checkData.push(item)
+                    if(checkFilter == true) {
+                    	me.checkData.push(item)
+                    }
                 });
             }
             me[key2] = selected;
