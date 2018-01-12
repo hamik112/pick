@@ -35,6 +35,7 @@
           <li rel="section_list_1" class="aside_section active"><router-link v-bind:to="{ path: '/pick' }"></router-link></li>
           <li rel="section_list_2" class="aside_section"><router-link v-bind:to="{ path: '/report' }"></router-link></li>
           <li rel="section_list_3" class="aside_section"><router-link v-bind:to="{ path: '/library' }"></router-link></li>
+          <li rel="section_list_4" class="aside_section"><router-link v-bind:to="{ path: '/loading' }">로딩</router-link></li>
         </ul>
       </div>
     </div>
@@ -90,7 +91,7 @@ export default {
         console.log('DEBUG Call')
       }
       console.log('loadFbAdAccount', res)
-      this.$http.get('api/fb_ad_accounts/')
+      this.$http.get('/api/fb_ad_accounts/')
       .then(res => {
         const response = res.data
         const data = response.data
@@ -100,17 +101,19 @@ export default {
           if (data.length > 0) {
             this.selectFbAdAccount = data[0]
             this.fbAdAccounts = data
+            this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
           }
         } else {
           throw('success: ' + success)
         }
       })
       .catch(err => {
-        console.error('api/fb_ad_accounts/', err)
+        console.error('/api/fb_ad_accounts/', err)
       })
     },
 
     onClickFbAdAccount: function (fbAdAccount) {
+      this.$eventBus.$emit('selectFbAdAccount', fbAdAccount)
       this.selectFbAdAccount = fbAdAccount
       this.isActive = false
       this.isShowList = false
