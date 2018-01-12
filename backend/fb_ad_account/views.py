@@ -56,7 +56,9 @@ class CheckAccountId(APIView):
             api_init_by_system_user()
             # TODO Session token
 
-            account_id = request.query_params.get('account_id', None)
+            account_id = request.query_params.get('act_account_id', None)
+
+            # print(ad_accounts.get_ad_account(account_id))
 
             default_pixel = ads_pixels.get_account_default_pixel(account_id)
             if default_pixel != None:
@@ -78,10 +80,13 @@ class CheckAccountId(APIView):
                 fb_ad_account = None
 
             neo_account_list = []
-            pixel_evnet_mapping = []
             if fb_ad_account != None:
                 neo_account_list = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id=fb_ad_account.id)
-                pixel_evnet_mapping = PixelMapping.get
+                pixel_evnet_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
+
+                from pixel_mapping.serializers import PixelMappingMergeSerializer
+
+                pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
 
             response_data['success'] = 'YES'
             response_data['bool_default_pixel'] = bool_default_pixel
@@ -89,7 +94,7 @@ class CheckAccountId(APIView):
             response_data['bool_fb_ad_account'] = bool_fb_ad_account
             response_data['fb_ad_account'] = dic_fb_ad_account
             response_data['neo_account_list'] = neo_account_list
-            response_data['pixel_evnet_mappings'] = None
+            response_data['pixel_event_mappings'] = pixel_evnet_mapping_se.data
 
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")

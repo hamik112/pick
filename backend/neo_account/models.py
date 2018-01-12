@@ -19,7 +19,7 @@ class NeoAccount(models.Model):
         if fb_ad_account_id == 0:
             return []
         try:
-            neo_accounts = self.objects.get(fb_ad_account_id=fb_ad_account_id)
+            neo_accounts = self.objects.filter(fb_ad_account_id=fb_ad_account_id)
 
             return_data = []
 

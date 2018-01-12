@@ -81,7 +81,7 @@ def get_account_pixel_events(account_id):
 # GET Account Default pixel
 def get_account_default_pixel(account_id):
     try:
-        print("get_account_default_pixel")
+        # print("get_account_default_pixel")
         ad_account = AdAccount(fbid=account_id)
 
         ads_pixels = ad_account.get_ads_pixels(fields=[
@@ -91,7 +91,7 @@ def get_account_default_pixel(account_id):
             AdsPixel.Field.owner_ad_account
         ])
 
-        print("ads_pixels : ", ads_pixels)
+        # print("ads_pixels : ", ads_pixels)
         account_pixel = None
 
         for ad_pixel in ads_pixels:
