@@ -86,6 +86,7 @@
 												<strong>연결될 네오 계정을 선택해 주세요.</strong>
 												<p>연결 가능한 네오 계정이 없다면 다음을 클릭해 주세요.</p>
 											</div>
+
 											<div class="cate_contents">
 												<div class="account_wrap">
 													<div class="advertiser_search">
@@ -107,9 +108,9 @@
 															<div class="result_tbody">
 																<ul>
 																	<li v-for="adv in advs">
-																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :id="'adv-check-' + adv.id"><label :for="'adv-check-' + adv.id"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
+																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :data-key="'list' + adv.id" :id="'adv-check-' + adv.id" @change="handleChange(adv)"><label :for="'adv-check-' + adv.id"></label></div>
+																		<div class="result_advertiser">{{ adv.name }}</div>
+																		<div class="result_account">{{ adv.advid }}</div>
 																	</li>
 																</ul>
 															</div>
@@ -117,8 +118,8 @@
 													</div>
 												</div>
 												<div class="interlock_btn">
-													<button type="button" v-on:click="addCheckList()"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
-													<button><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
+													<button type="button" v-on:click="checkList('addAdvs','advs')"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
+													<button type="button" v-on:click="checkList('advs','addAdvs')"><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
 												</div>
 												<div class="account_wrap">
 													<div class="advertiser_search">
@@ -138,9 +139,9 @@
 															<div class="result_tbody">
 																<ul>
 																	<li v-for="addAdv in addAdvs">
-																		<div class="result_check"><input type="checkbox" v-model="selected" :value="addAdv.id" class="result-checkbox" :id="'addAdv-check-' + addAdv.id"><label :for="'addAdv-check-' + addAdv.id"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
+																		<div class="result_check"><input type="checkbox" v-model="addSelected" :value="addAdv.id" class="result-checkbox" :id="'addAdv-check-' + addAdv.id" @change="handleChange(addAdv)"><label :for="'addAdv-check-' + addAdv.id"></label></div>
+																		<div class="result_advertiser">{{ addAdv.name }}</div>
+																		<div class="result_account">{{ addAdv.advid }}</div>
 																	</li>
 																</ul>
 															</div>
@@ -148,6 +149,8 @@
 													</div>
 												</div>
 											</div>
+
+
 											<div class="btn_wrap">
 												<button class="before_btn" @click="tabMove('0', '1')">이전</button>
 												<button type="button" class="next_btn" @click="tabMove('2', '1')">다음</button>
@@ -267,13 +270,15 @@ export default {
 					'픽셀3'
 				]
 			},
-			advs: {
-				'list1':{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1" },
-				'list2':{ "id": "2", "name": "LF몰2", "advid": "LF_M_구글2" },
-				'list3':{ "id": "3", "name": "LF몰3", "advid": "LF_M_구글3" },
-				'list4':{ "id": "4", "name": "LF몰4", "advid": "LF_M_구글4" }
-			},
+			advs: [
+			    { "id": "1", "name": "LF몰", "advid": "LF_M_구글1" },
+			    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2" },
+			    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3" },
+			    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4" }
+			],
 			addAdvs:[],
+			checkData:[],
+			addKey:[],
 			selected: [],
 			addSelected:[],
 
@@ -289,9 +294,36 @@ export default {
 		selectCategory (item) {
 			this.categorySelectData.emptyText = item
 		},
-		//작업진행중
-		addCheckList () {
-			console.log('test')
+		handleChange (item) {
+			let checked = event.target.checked
+			if(checked == true) {
+				this.checkData.push(item)
+			}
+		},
+		checkList (before,after) {
+			const me = this
+			me[after] = me[after].concat(me.checkData)
+
+			me.checkData.forEach(function(value, index) {
+				me[before] = me[before].filter(function(item) {
+					return item !== value
+				})
+			})
+			this.addSelected = []
+			this.selected = []
+			me.checkData = []
+		},
+		allCheck(value,key1,key2,before,after) {
+			const me = this
+			var selected = []
+
+            if (value) {
+                me[key1].forEach(function (item) {
+                    selected.push(item.id)
+                    me.checkData.push(item)
+                });
+            }
+            me[key2] = selected;
 		},
 		tabMove (activeNumber, beforeNumber) {
 			if (beforeNumber === '0') {
@@ -318,43 +350,24 @@ export default {
 
 	computed: {
 		selectAll: {
-			get: function () {
-				let advKeys = Object.keys(this.advs)
-				if(advKeys.length != 0) {
-					return this.advs ? this.selected.length == advKeys.length : false;
-				}
-			},
-			set: function (value) {
-				var selected = [];
-				let advKeys = Object.keys(this.advs)
-
-				if (value) {
-					for(var i = 0; i < advKeys.length; i++) {
-						selected.push(this.advs[advKeys[i]].id)
-					}
-				}
-
-				this.selected = selected;
-			}
-		},
-		addSelectAll:{
-			get: function () {
-				if(this.addAdvs.length != 0) {
-					return this.addAdvs ? this.addSelected.length == this.addAdvs.length : false;
-				}
-			},
-			set: function (value) {
-				var addSelected = [];
-
-				if (value) {
-					this.advs.forEach(function (addAdv) {
-						addSelected.push(addAdv.id);
-					});
-				}
-
-				this.addSelected = addSelected;
-			}
-		}
+	        get: function () {
+                return this.advs ? this.selected.length == this.advs.length : false;
+            },
+            set: function (value) {
+                this.allCheck(value,'advs','selected','advs','addAdvs')
+            }
+	    },
+	    addSelectAll:{
+	        get: function () {
+	        	let advKeys = Object.keys(this.addAdvs)
+	        	if(advKeys.length != 0) {
+	            	return this.addAdvs ? this.addSelected.length == advKeys.length : false;
+	            }
+	        },
+	        set: function (value) {
+	            this.allCheck(value,'addAdvs','addSelected','addAdvs','advs')
+	        }
+	    }
 	}
 }
 </script>
