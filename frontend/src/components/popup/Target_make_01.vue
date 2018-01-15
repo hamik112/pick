@@ -141,7 +141,7 @@
 															<button><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
 															<ul>
 																<li v-for="addAdv in addAdvs" class="sticker_btn">
-																	<span>모바일 DA_페이스북 (질바이질슈즈)</span> <span><img src="images/target/target_list_close.png" alt=""></span>
+																	<span>모바일 DA_페이스북 (질바이질슈즈123)</span> <span><img src="../../assets/images/target/target_list_close.png" alt=""></span>
 																</li>
 															</ul>
 														</div>
