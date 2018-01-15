@@ -109,7 +109,76 @@
 													<div class="account_inner_wrap clearfix">
 														<div class="account_left">
 															<div class="advertiser_search_result pop-scroll">
-
+																<div class="result_list_inner">
+																	<div class="result_thead">
+																		<ul>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="all_check"><label for="all_check"></label></div>
+																				<div class="result_account">계정명</div>
+																				<div class="result_group">그룹명</div>
+																				<div class="result_switch">전환 수</div>
+																			</li>
+																		</ul>
+																	</div>
+																	<div class="result_tbody">
+																		<ul>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result01"><label for="target_result01"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result02"><label for="target_result02"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result03"><label for="target_result03"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result04"><label for="target_result04"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result05"><label for="target_result05"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result06"><label for="target_result06"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result07"><label for="target_result07"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result08"><label for="target_result08"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="target_result09"><label for="target_result09"></label></div>
+																				<div class="result_account">LF몰</div>
+																				<div class="result_group">LF_M_구글</div>
+																				<div class="result_switch">LF_M_구글</div>
+																			</li>
+																		</ul>
+																	</div>
+																</div>
 															</div>
 															<div class="account_add_wrap">
 																<div>*최근 한달 기준</div>
