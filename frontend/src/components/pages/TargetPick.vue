@@ -4,7 +4,6 @@
 		<transition name='modal'>
 			<TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
 			<TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
-			<TargetMake2 v-if="makeModal2" @close="makeModal2 = false"></TargetMake2>
 		</transition>
 
 		<div id="container">
@@ -28,7 +27,7 @@
 							<div class="target_contents_wrap">
 								<div class="target_setup">
 									<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-									<button type="button" @click="makeModal2 = true">타겟만들기</button>
+									<button type="button" @click="makeModal1 = true">타겟만들기</button>
 								</div>
 								<div class="target_contents">
 									<ul>
