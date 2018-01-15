@@ -9,19 +9,21 @@
 								<div class="pop_title">타겟 만들기 (<span id="page-number">1</span>/2)</div>
 								<p class="popup-btn"><button type="button" id="close-btn" class="close_pop close-btn" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 							</div>
+
+							<!-- 카테고리 선택 탭 -->
 							<div class="pop_tab_wrap clearfix" v-if="tabActive1">
 								<div class="cate_contents_widget">
 									<ul class="target_pick_01">
 										<li @click="tabMove(1)">
 											<span>사이트방문</span>
 										</li>
-										<li @click="tabMove(1)">
+										<li @click="tabMove(2)">
 											<span>특정페이지 방문</span>
 										</li>
-										<li @click="tabMove(1)">
+										<li @click="tabMove(3)">
 											<span>NEO 타겟</span>
 										</li>
-										<li @click="tabMove(1)">
+										<li @click="tabMove(4)">
 											<span>구글애널리틱스</span>
 										</li>
 									</ul>
@@ -35,7 +37,7 @@
 										<li @click="tabMove(1)">
 											<span>회원가입</span>
 										</li>
-										<li @click="tabMove(1)">
+										<li @click="tabMove(5)">
 											<span>단계별 전환</span>
 										</li>
 									</ul>
@@ -45,7 +47,148 @@
 								</div>
 							</div>
 
+
+							<!-- 사이트 방문 탭 -->
 							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive2">
+								<div class="target_contents_inner">
+									<div class="target_thead">
+										<div class="main_title">
+											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div class="title_info">
+												<p>NEO타겟</p>
+												<p>타겟의 속성을 정의하세요</p>
+											</div>
+										</div>
+										<div class="use_wrap">
+											<div class="use_select">
+												<div class="contents_title">사용픽셀</div>
+												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+											</div>
+											<div class="use_date">
+												<div>수집기간 : 최근</div>
+												<div><input type="text"><span>일</span></div>
+											</div>
+										</div>
+										<div class="target_name">
+											<div class="contents_title">타겟이름</div>
+											<div><input type="text"></div>
+										</div>
+									</div>
+									<div class="target_tbody">
+										<div class="target_inner_tbody clearfix">
+											<div class="target_generate">
+												<div class="account_info">
+													<div class="account_title">"사이트 방문자"중</div>
+													<div>
+														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="btn_wrap">
+									<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+									<button class="next_btn">타겟 만들기</button>
+								</div>
+								<div class="btn_wrap">
+									<button class="before_btn close_pop" @click="$emit('close')">취소</button>
+									<button class="delete_btn">타겟 삭제</button>
+									<button class="adjust_btn">타겟 수정</button>
+								</div>
+							</div>
+
+							<!-- 특정 페이지 방문 탭 -->
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive3">
+								<div class="target_contents_inner">
+									<div class="target_thead">
+										<div class="main_title">
+											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div class="title_info">
+												<p>NEO타겟</p>
+												<p>타겟의 속성을 정의하세요</p>
+											</div>
+										</div>
+										<div class="use_wrap">
+											<div class="use_select">
+												<div class="contents_title">사용픽셀</div>
+												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+											</div>
+											<div class="use_date">
+												<div>수집기간 : 최근</div>
+												<div><input type="text"><span>일</span></div>
+											</div>
+										</div>
+										<div class="target_name">
+											<div class="contents_title">타겟이름</div>
+											<div><input type="text"></div>
+										</div>
+									</div>
+									<div class="target_tbody">
+										<div class="target_inner_tbody clearfix">
+											<div class="target_generate">
+												<div class="account_info">
+													<div class="account_title">"아래 그룹로 유입된 사람"중</div>
+													<div>
+														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+													</div>
+													<div class="account_date">
+														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+													</div>
+												</div>
+												<div class="generate_url_list">
+													<div class="url_list clearfix">
+														<div class="url_select clearfix">
+															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														</div>
+														<div class="url_input">
+															<input type="text">
+														</div>
+														<div class="url_btn clearfix">
+															<div>+</div>
+															<div>-</div>
+														</div>
+													</div>
+													<div class="url_list clearfix">
+														<div class="url_select clearfix">
+															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														</div>
+														<div class="url_input">
+															<input type="text">
+														</div>
+														<div class="url_btn clearfix">
+															<div>-</div>
+														</div>
+													</div>
+													<div class="url_list clearfix">
+														<div class="url_select clearfix">
+															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														</div>
+														<div class="url_input">
+															<input type="text">
+														</div>
+														<div class="url_btn clearfix">
+															<div>+</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="btn_wrap">
+									<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+									<button class="next_btn">타겟 만들기</button>
+								</div>
+								<div class="btn_wrap">
+									<button class="before_btn close_pop" @click="$emit('close')">취소</button>
+									<button class="delete_btn">타겟 삭제</button>
+									<button class="adjust_btn">타겟 수정</button>
+								</div>
+							</div>
+
+							<!-- 네오 탭 -->
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive4">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -123,8 +266,8 @@
 																	<div class="result_tbody">
 																		<ul id="adv-list-1">
 																			<li v-for="adv in advs">
-																				<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.id"><label :for="'adv-check-' + adv.id"></label></div>
-																				<div class="result_account">LF몰</div>
+																				<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.number" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.number"><label :for="'adv-check-' + adv.number"></label></div>
+																				<div class="result_account">{{ adv.name }}</div>
 																				<div class="result_group">LF_M_구글</div>
 																				<div class="result_switch">LF_M_구글</div>
 																			</li>
@@ -138,10 +281,10 @@
 															</div>
 														</div>
 														<div class="account_right clearfix">
-															<button><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
-															<ul>
+															<button type="button" v-on:click="deleteAddAdvs('all')" title="전체삭제"><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
+															<ul id="adv-list-2">
 																<li v-for="addAdv in addAdvs" class="sticker_btn">
-																	<span>모바일 DA_페이스북 (질바이질슈즈123)</span> <span><img src="../../assets/images/target/target_list_close.png" alt=""></span>
+																	<span>{{ addAdv.name }}</span> <span @click="deleteAddAdvs(addAdv)" :data-number="addAdv.number" title="삭제하기"><img src="../../assets/images/target/target_list_close.png" alt=""></span>
 																</li>
 															</ul>
 														</div>
@@ -161,6 +304,116 @@
 									<button class="adjust_btn">타겟 수정</button>
 								</div>
 							</div>
+
+							<!-- 구글애널리틱스 탭 -->
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive5">
+								<div class="target_contents_inner">
+									<div class="target_thead">
+										<div class="main_title">
+											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div class="title_info">
+												<p>NEO타겟</p>
+												<p>타겟의 속성을 정의하세요</p>
+											</div>
+										</div>
+										<div class="use_wrap">
+											<div class="use_select">
+												<div class="contents_title">사용픽셀</div>
+												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+											</div>
+											<div class="use_date">
+												<div>수집기간 : 최근</div>
+												<div><input type="text"><span>일</span></div>
+											</div>
+										</div>
+										<div class="target_name">
+											<div class="contents_title">타겟이름</div>
+											<div><input type="text"></div>
+										</div>
+									</div>
+									<div class="target_tbody">
+										<div class="target_inner_tbody clearfix">
+											<div class="analytics_tab_wrap">
+												<div class="analytics_tab_widget clearfix">
+													<ul class="clearfix">
+														<li rel="tab_list_1" class="active">source</li>
+														<li rel="tab_list_2">medium</li>
+														<li rel="tab_list_3">campaign</li>
+														<li rel="tab_list_4">team</li>
+														<li rel="tab_list_5">content</li>
+														<li rel="tab_list_6">custom</li>
+													</ul>
+												</div>
+												<div class="analytics_tab_list">
+													<div id="tab_list_1" class="analytics_tab_contents clearfix">
+														<ul>
+															<li class="sticker_btn"><span>naver</span></li>
+															<li class="sticker_btn"><span>daum</span></li>
+															<li class="sticker_btn"><span>google</span></li>
+														</ul>
+														<div class="analytics_all_close"><img src="images/target/target_close_btn.png" alt=""></div>
+													</div>
+													<div id="tab_list_2" class="analytics_tab_contents clearfix"></div>
+													<div id="tab_list_3" class="analytics_tab_contents clearfix"></div>
+													<div id="tab_list_4" class="analytics_tab_contents clearfix"></div>
+													<div id="tab_list_5" class="analytics_tab_contents clearfix"></div>
+													<div id="tab_list_6" class="analytics_tab_contents clearfix"></div>
+												</div>
+												</div>
+											</div>
+										</div>
+										<div class="btn_wrap">
+											<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+											<button class="next_btn">타겟 만들기</button>
+										</div>
+										<div class="btn_wrap">
+											<button class="before_btn close_pop" @click="$emit('close')">취소</button>
+											<button class="delete_btn">타겟 삭제</button>
+											<button class="adjust_btn">타겟 수정</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+							<!-- 단계별 전환 -->
+
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive9">
+								<div class="target_contents_inner">
+									<div class="target_thead">
+										<div class="main_title">
+											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div class="title_info">
+												<p>타겟의 속성을 정의하세요</p>
+											</div>
+										</div>
+										<div class="use_wrap">
+											<div class="use_select">
+												<div class="contents_title">사용픽셀</div>
+												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+											</div>
+											<div class="use_date">
+												<div>수집기간 : 최근</div>
+												<div><input type="text"><span>일</span></div>
+											</div>
+										</div>
+										<div class="target_name">
+											<div class="contents_title">타겟이름</div>
+											<div><input type="text"></div>
+										</div>
+									</div>
+									<div class="target_tbody">
+										<div class="target_inner_tbody clearfix">
+
+										</div>
+										<div class="btn_wrap">
+											<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+											<button class="next_btn">타겟 만들기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
 
 						</div>
 					</div>
@@ -186,7 +439,15 @@ export default {
     return {
     	tabActive1:true,
     	tabActive2:false,
+    	tabActive3:false,
+    	tabActive4:false,
+    	tabActive5:false,
+    	tabActive9:false,
+
     	categoryName:'',
+
+
+
 
     	selectData: {
           emptyText: '전체보기',
@@ -196,6 +457,8 @@ export default {
             '이벤트3'
           ]
         },
+
+
         selectData2: {
           emptyText: '특정일 동안 미방문 고객',
           textList: [
@@ -204,11 +467,13 @@ export default {
             '이벤트3'
           ]
         },
+
+
         advs:[
-        	{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
-		    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
-		    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
-		    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
+        	{ "number": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
+		    { "number": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
+		    { "number": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
+		    { "number": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
         ],
         addAdvs:[],
         checkData:[],
@@ -217,7 +482,7 @@ export default {
   },
   methods: {
 	tabMove(activeNumber, beforeNumber) {
-		let tabArray = ['tabActive1','tabActive2']
+		let tabArray = ['tabActive1','tabActive2','tabActive3','tabActive4','tabActive5','tabActive9']
 		let pageNum = (activeNumber == 0) ? '1':'2'
 
 		document.getElementById('page-number').innerText = pageNum
@@ -230,8 +495,22 @@ export default {
 			}
 		}
 	},
-	selectTarget: function (item) {
+	selectTarget(item) {
 		this.selectData.emptyText = item
+	},
+	deleteAddAdvs(item) {
+		let checkAdd = this.addAdvs
+		let addListEl = document.getElementById('adv-list-2')
+		let addlistLi = addListEl.getElementsByTagName('li')
+		if(item === 'all') {
+				for(let i = 0; i < addlistLi.length; i++) {
+					this.advs.push(checkAdd[i])
+				}
+				this.addAdvs.splice(0, addlistLi.length)
+		}else{
+			this.addAdvs.splice(this.addAdvs.indexOf(item), 1)
+			this.advs.push(item)
+		}
 	},
 	allCheck(value,key1,key2,before,after) {
 		const me = this
@@ -239,7 +518,7 @@ export default {
         if (value) {
             this.checkFilter(key1, 'type2')
             me[key1].forEach(function (item) {
-                selected.push(item.id)
+                selected.push(item.number)
             });
         }
         me[key2] = selected;
