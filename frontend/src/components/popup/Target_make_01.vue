@@ -6,7 +6,7 @@
 					<div class="popup-widget" id="target_pop_01">
 						<div class="popup-contents clearfix">
 							<div class="pop_title_wrap">
-								<div class="pop_title">타겟 만들기 (1/2)</div>
+								<div class="pop_title">타겟 만들기 (<span id="page-number">1</span>/2)</div>
 								<p class="popup-btn"><button type="button" id="close-btn" class="close_pop close-btn" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 							</div>
 							<div class="pop_tab_wrap clearfix" v-if="tabActive1">
@@ -113,7 +113,7 @@
 																	<div class="result_thead">
 																		<ul>
 																			<li>
-																				<div class="result_check"><input type="checkbox" id="all_check"><label for="all_check"></label></div>
+																				<div class="result_check"><input type="checkbox" id="all_check" v-model="selectAll"><label for="all_check"></label></div>
 																				<div class="result_account">계정명</div>
 																				<div class="result_group">그룹명</div>
 																				<div class="result_switch">전환 수</div>
@@ -121,57 +121,9 @@
 																		</ul>
 																	</div>
 																	<div class="result_tbody">
-																		<ul>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result01"><label for="target_result01"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result02"><label for="target_result02"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result03"><label for="target_result03"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result04"><label for="target_result04"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result05"><label for="target_result05"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result06"><label for="target_result06"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result07"><label for="target_result07"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result08"><label for="target_result08"></label></div>
-																				<div class="result_account">LF몰</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
-																			</li>
-																			<li>
-																				<div class="result_check"><input type="checkbox" id="target_result09"><label for="target_result09"></label></div>
+																		<ul id="adv-list-1">
+																			<li v-for="adv in advs">
+																				<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.id"><label :for="'adv-check-' + adv.id"></label></div>
 																				<div class="result_account">LF몰</div>
 																				<div class="result_group">LF_M_구글</div>
 																				<div class="result_switch">LF_M_구글</div>
@@ -182,20 +134,14 @@
 															</div>
 															<div class="account_add_wrap">
 																<div>*최근 한달 기준</div>
-																<button>선택한 매체 추가</button>
+																<button type="button" v-on:click="checkList('advs','addAdvs')">선택한 매체 추가</button>
 															</div>
 														</div>
 														<div class="account_right clearfix">
 															<button><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
 															<ul>
-																<li class="sticker_btn">
-																	<span>모바일 DA_페이스북 (질바이질슈즈)</span>
-																</li>
-																<li class="sticker_btn">
-																	<span>모바일 DA_페이스북 (질바이질슈즈)</span>
-																</li>
-																<li class="sticker_btn">
-																	<span>모바일 DA_페이스북 (질바이질슈즈)</span>
+																<li v-for="addAdv in addAdvs" class="sticker_btn">
+																	<span>모바일 DA_페이스북 (질바이질슈즈)</span> <span><img src="images/target/target_list_close.png" alt=""></span>
 																</li>
 															</ul>
 														</div>
@@ -206,7 +152,7 @@
 									</div>
 								</div>
 								<div class="btn_wrap">
-									<button class="before_btn close_pop">취소</button>
+									<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
 									<button class="next_btn">타겟 만들기</button>
 								</div>
 								<div class="btn_wrap">
@@ -257,12 +203,25 @@ export default {
             '이벤트2',
             '이벤트3'
           ]
-        }
+        },
+        advs:[
+        	{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
+		    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
+		    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
+		    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
+        ],
+        addAdvs:[],
+        checkData:[],
+        selected:[]
     }
   },
   methods: {
 	tabMove(activeNumber, beforeNumber) {
 		let tabArray = ['tabActive1','tabActive2']
+		let pageNum = (activeNumber == 0) ? '1':'2'
+
+		document.getElementById('page-number').innerText = pageNum
+
 		for(let i = 0; i < tabArray.length; i++) {
 			if(i == activeNumber) {
 				this[tabArray[i]] = true
@@ -273,8 +232,66 @@ export default {
 	},
 	selectTarget: function (item) {
 		this.selectData.emptyText = item
+	},
+	allCheck(value,key1,key2,before,after) {
+		const me = this
+		var selected = []
+        if (value) {
+            this.checkFilter(key1, 'type2')
+            me[key1].forEach(function (item) {
+                selected.push(item.id)
+            });
+        }
+        me[key2] = selected;
+	},
+	checkList (before,after) {
+		const me = this
+
+		this.checkFilter(before, 'type1')
+
+		me[after] = me[after].concat(me.checkData)
+		me.checkData.forEach(function(value, index) {
+			me[before] = me[before].filter(function(item) {
+				return item !== value
+			})
+		})
+
+		this.selected = []
+		me.checkData = []
+	},
+	checkFilter(type, type2) {
+		let elId = "adv-list-1"
+		let ul = document.getElementById(elId)
+		let items = ul.getElementsByTagName("li")
+		let itemsData = this[type]
+
+		for (let i = 0; i < items.length; i++) {
+			let checkBox = items[i].getElementsByTagName('input')[0].checked
+			if(checkBox == true) {
+				let checkItemsId = items[i].getElementsByTagName('input')[0].getAttribute('data-id')
+				for(let idx = 0; idx < itemsData.length; idx++) {
+					if(checkItemsId == itemsData[idx]['type_id']) {
+						this.checkData.push(itemsData[idx])
+					}
+				}
+			}
+		}
 	}
+  },
+  computed:{
+  	selectAll: {
+        get: function () {
+            let advKeys = Object.keys(this.advs)
+        	if(advKeys.length != 0) {
+            	return this.advs ? this.selected.length == advKeys.length : false;
+            }
+        },
+        set: function (value) {
+            this.allCheck(value,'advs','selected','advs','addAdvs')
+        }
+    }
   }
+
 }
 </script>
 
