@@ -13,6 +13,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'http://beta.fb.pickdata.co.kr:8000',
+        // target: 'http://dev.snack.emforce.co.kr:8080/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

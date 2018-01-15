@@ -25,5 +25,31 @@ class PixelMapping(models.Model):
             logger.error(traceback.format_exc())
             return None
 
+    def get_list_by_fb_ad_account_id(self, fb_ad_account_id=0):
+        if fb_ad_account_id == 0:
+            return None
+        try:
+            pixel_mappings = self.objects.filter(fb_ad_account_id=fb_ad_account_id)
+
+            # return_data = []
+            #
+            # for pixel_mapping in pixel_mappings:
+            #     return_data.append({
+            #         "fb_ad_account_id" : pixel_mapping.fb_ad_account_id,
+            #         "pixel_mapping_category_id" : pixel_mapping.pixel_mapping_category_id,
+            #         "facebook_pixel_event_name": pixel_mapping.facebook_pixel_event_name
+            #     })
+
+            # PixelMappingSerializer
+
+            return pixel_mappings
+        except self.DoesNotExist:
+            return None
+        except Exception as e:
+            print(traceback.format_exc())
+            logger.error(traceback.format_exc())
+            # TODO return []
+            return None
+
     class Meta:
         db_table = "pixel_mappings"

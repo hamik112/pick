@@ -56,7 +56,7 @@ class Command(BaseCommand):
                 account_id = my_account.get('id')
                 account_name = my_account.get('name')
 
-                ad_sets = ad_accounts.get_my_ad_sets(account_id)
+                ad_sets = ad_sets.get_my_ad_sets(account_id)
 
                 for ad_set in ad_sets:
                     # ad_set = ad_set._json

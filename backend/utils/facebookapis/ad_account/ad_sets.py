@@ -12,48 +12,6 @@ import traceback
 logger = logging.getLogger('mod_pickdata')
 
 
-def remote_get_ad_set_by_account_id(account_id, fields = []):
-    try:
-        if fields == []:
-            fields = field_list()
-            ad_account = AdAccount(account_id)
-            ad_sets = ad_account.get_ad_sets(fields=fields,
-                                             params={
-                                             'locale': 'ko_KR',
-                                             'limit': 500,
-                                             })
-
-        return ad_sets
-    except FacebookRequestError as e:
-        print(e)
-        msg = {}
-        msg['request_context'] = e._request_context
-        msg['error'] = e._error
-    raise Exception(msg)
-
-
-def get_insight_by_ad_set(ad_set_id, params={}):
-    try:
-        ad_set = AdSet(ad_set_id)
-        ad_insights = ad_set.get_insights(fields=insight_fields(), params=params)
-        
-        return ad_insights
-
-    except FacebookRequestError as e:
-        print(traceback.format_exc())
-        logger.error(traceback.format_exc())
-        msg = e._error
-        status_code = e._error['code']
-        message = e._error['message']
-        if status_code == 1 and message == 'An unknown error occurred':
-            logger.info('Unknown Error, Adset Id:', ad_set_id)
-            pass
-        elif status_code == 1 and message == 'Please reduce the amount of data you\'re asking for, then retry your request':
-            logger.info('Reduce data Error, Adset Id:', ad_set_id)
-            pass
-        else:
-            raise Exception(msg)
-
 
 def field_list():
     fields = [
@@ -88,8 +46,73 @@ def field_list():
 
     return fields
 
+def get_my_ad_sets(account_id, limit=25, after=None, fields=field_list()):
+    try:
+        ad_account = AdAccount(account_id)
+
+        params = default_params()
+        params['limit'] = limit
+
+        if after != None:
+            params['after'] = after
+
+        ad_sets = ad_account.get_ad_sets(fields=fields, params=params)
+
+        return ad_sets
+
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
+
+
+def remote_get_ad_set_by_account_id(account_id, fields=[]):
+    try:
+        if fields == []:
+            fields = field_list()
+            ad_account = AdAccount(account_id)
+            ad_sets = ad_account.get_ad_sets(fields=fields,
+                                             params={
+                                                 'locale': 'ko_KR',
+                                                 'limit': 500,
+                                             })
+
+        return ad_sets
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+    raise Exception(msg)
+
+
+def get_insight_by_ad_set(ad_set_id, params={}):
+    try:
+        ad_set = AdSet(ad_set_id)
+        ad_insights = ad_set.get_insights(fields=insight_fields(), params=params)
+        
+        return ad_insights
+
+    except FacebookRequestError as e:
+        print(traceback.format_exc())
+        logger.error(traceback.format_exc())
+        msg = e._error
+        status_code = e._error['code']
+        message = e._error['message']
+        if status_code == 1 and message == 'An unknown error occurred':
+            logger.info('Unknown Error, Adset Id:', ad_set_id)
+            pass
+        elif status_code == 1 and message == 'Please reduce the amount of data you\'re asking for, then retry your request':
+            logger.info('Reduce data Error, Adset Id:', ad_set_id)
+            pass
+        else:
+            raise Exception(msg)
+
+
 def insight_fields():
-    fields=[
+    fields = [
         'account_id',
         'account_name',
         'action_values',
@@ -169,3 +192,11 @@ def insight_fields():
     ]
 
     return fields
+
+
+def default_params():
+    defult_parms = {
+        'locale': 'ko_KR'
+    }
+
+    return defult_parms

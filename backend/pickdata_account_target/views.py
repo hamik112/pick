@@ -28,6 +28,11 @@ class TargetPick(APIView):
             api_init_by_system_user()
 
             fb_ad_account_id = request.query_params.get('fb_ad_account_id', None)
+            target_type = request.query_params.get('target_type', None)
+
+            if target_type == None:
+                target_type = "all"
+
             fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
             if fb_ad_account_id == None or fb_ad_account == None:
                 raise Exception("Not Existg FbAdAccount.")
@@ -36,6 +41,8 @@ class TargetPick(APIView):
 
             dic_audience_targets = custom_audiences.get_dic_custom_audiences(act_account_id)
             pickdata_targets = PickdataAccountTarget.get_list(PickdataAccountTarget, fb_ad_account_id)
+
+
             pixel_mapping_categories = PixelMappingCategory.objects.all()
 
             group_target = {"total" : []}
@@ -54,9 +61,10 @@ class TargetPick(APIView):
                 gen_obj = {}
                 audience_id = pickdata_target.target_audience_id
                 pixel_mapping_category_id = pickdata_target.pixel_mapping_category_id
+                target_description = string_to_literal(pickdata_target.description)
 
                 gen_obj['audience_id'] = audience_id
-                gen_obj['description'] = string_to_literal(pickdata_target.description)
+                gen_obj['description'] = target_description
                 gen_obj['pixel_mapping_category_id'] = pixel_mapping_category_id
 
                 if str(audience_id) in dic_audience_targets:
@@ -72,12 +80,17 @@ class TargetPick(APIView):
                     # code 441
 
                     display_count = ''
+                    targeting_complete = False
+                    demographic_complete = False
+
                     if operation_status_code == 441:
                         display_count = "생성중"
                     elif delivery_status_code == 300:
                         display_count = "규모가 적음"
+                        targeting_complete = True
                     elif delivery_status_code == 200:
                         display_count = audience_target.get('approximate_count')
+                        targeting_complete = True
 
                     gen_obj['display_count'] = display_count
                     gen_obj['name'] = audience_target.get('name')
@@ -85,9 +98,34 @@ class TargetPick(APIView):
                     gen_obj['delivery_status'] = audience_target.get('delivery_status')
                     gen_obj['operation_status'] = audience_target.get('operation_status')
                     gen_obj['pixel_id'] = audience_target.get('pixel_id')
+                    gen_obj['targeting_complete'] = targeting_complete
+                    gen_obj['demographic_complete'] = demographic_complete
 
-                    group_target['total'].append(gen_obj)
-                    group_target[group_category[pixel_mapping_category_id]].append(gen_obj)
+                    if target_type == "all":
+                        group_target['total'].append(gen_obj)
+                        group_target[group_category[pixel_mapping_category_id]].append(gen_obj)
+                    elif target_type == "default":
+                        if target_description.get('type') == 'default':
+                            group_target['total'].append(gen_obj)
+                            group_target[group_category[pixel_mapping_category_id]].append(gen_obj)
+                    elif target_type == "created":
+                        if target_description.get('type') != 'default':
+                            group_target['total'].append(gen_obj)
+                            group_target[group_category[pixel_mapping_category_id]].append(gen_obj)
+                    elif target_type == "targeting_completed":
+                        if targeting_complete == True:
+                            group_target['total'].append(gen_obj)
+                            group_target[group_category[pixel_mapping_category_id]].append(gen_obj)
+                    elif target_type == "targeting_progress":
+                        if targeting_complete == False:
+                            group_target['total'].append(gen_obj)
+                            group_target[group_category[pixel_mapping_category_id]].append(gen_obj)
+                    elif target_type == "demographic":
+                        if demographic_complete == True:
+                            group_target['total'].append(gen_obj)
+                            group_target[group_category[pixel_mapping_category_id]].append(gen_obj)
+                    else:
+                        pass
 
             group_target_and_cnt = {}
             for key in group_target:
