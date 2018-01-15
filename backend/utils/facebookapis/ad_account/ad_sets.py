@@ -36,7 +36,7 @@ def get_insight_by_ad_set(ad_set_id, params={}):
     try:
         ad_set = AdSet(ad_set_id)
         ad_insights = ad_set.get_insights(fields=insight_fields(), params=params)
-
+        
         return ad_insights
 
     except FacebookRequestError as e:
@@ -44,10 +44,11 @@ def get_insight_by_ad_set(ad_set_id, params={}):
         logger.error(traceback.format_exc())
         msg = e._error
         status_code = e._error['code']
-        messege = e._error['messege']
-        if status_code == 1 and messege == 'An unknown error occurred':
+        message = e._error['message']
+        if status_code == 1 and message == 'An unknown error occurred':
+            logger.info('Unknown Error, Adset Id:', ad_set_id)
             pass
-        elif status_code == 1 and messege == 'Please reduce the amount of data you\'re asking for, then retry your request':
+        elif status_code == 1 and message == 'Please reduce the amount of data you\'re asking for, then retry your request':
             logger.info('Reduce data Error, Adset Id:', ad_set_id)
             pass
         else:
