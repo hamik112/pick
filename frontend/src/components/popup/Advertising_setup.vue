@@ -86,12 +86,13 @@
 												<strong>연결될 네오 계정을 선택해 주세요.</strong>
 												<p>연결 가능한 네오 계정이 없다면 다음을 클릭해 주세요.</p>
 											</div>
+
 											<div class="cate_contents">
 												<div class="account_wrap">
 													<div class="advertiser_search">
 														<div class="search_title">광고주검색</div>
-														<div><input type="text"></div>
-														<div><button>조회</button></div>
+														<div><input type="text" value="" placeholder="광고주를 검색하세요."></div>
+														<div><button type="button" @click="listSearch()">조회</button></div>
 													</div>
 													<div class="advertiser_search_result pop-scroll">
 														<div>
@@ -105,11 +106,11 @@
 																</ul>
 															</div>
 															<div class="result_tbody">
-																<ul>
+																<ul id="adv-list-1">
 																	<li v-for="adv in advs">
-																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :id="'adv-check-' + adv.id"><label :for="'adv-check-' + adv.id"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
+																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.id"><label :for="'adv-check-' + adv.id"></label></div>
+																		<div class="result_advertiser">{{ adv.name }}</div>
+																		<div class="result_account">{{ adv.advid }}</div>
 																	</li>
 																</ul>
 															</div>
@@ -117,12 +118,12 @@
 													</div>
 												</div>
 												<div class="interlock_btn">
-													<button type="button" v-on:click="addCheckList()"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
-													<button><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
+													<button type="button" title="삭제" v-on:click="checkList('addAdvs','advs')"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
+													<button type="button" title="추가" v-on:click="checkList('advs','addAdvs')"><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
 												</div>
 												<div class="account_wrap">
 													<div class="advertiser_search">
-														<div class="search_title">연결계정 <span>2</span></div>
+														<div class="search_title">연결계정 <span id="ct-count">{{ this.ctCount }}</span></div>
 													</div>
 													<div class="advertiser_search_result pop-scroll">
 														<div>
@@ -136,11 +137,11 @@
 																</ul>
 															</div>
 															<div class="result_tbody">
-																<ul>
+																<ul id="adv-list-2">
 																	<li v-for="addAdv in addAdvs">
-																		<div class="result_check"><input type="checkbox" v-model="selected" :value="addAdv.id" class="result-checkbox" :id="'addAdv-check-' + addAdv.id"><label :for="'addAdv-check-' + addAdv.id"></label></div>
-																		<div class="result_advertiser">LF몰</div>
-																		<div class="result_account">LF_M_구글</div>
+																		<div class="result_check"><input type="checkbox" v-model="addSelected" :value="addAdv.id" class="result-checkbox" :data-type="'addAdvs'" :data-id="addAdv.type_id" :id="'addAdv-check-' + addAdv.id"><label :for="'addAdv-check-' + addAdv.id"></label></div>
+																		<div class="result_advertiser">{{ addAdv.name }}</div>
+																		<div class="result_account">{{ addAdv.advid }}</div>
 																	</li>
 																</ul>
 															</div>
@@ -148,6 +149,8 @@
 													</div>
 												</div>
 											</div>
+
+
 											<div class="btn_wrap">
 												<button class="before_btn" @click="tabMove('0', '1')">이전</button>
 												<button type="button" class="next_btn" @click="tabMove('2', '1')">다음</button>
@@ -267,17 +270,15 @@ export default {
 					'픽셀3'
 				]
 			},
-			advs: {
-				'list1':{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1" },
-				'list2':{ "id": "2", "name": "LF몰2", "advid": "LF_M_구글2" },
-				'list3':{ "id": "3", "name": "LF몰3", "advid": "LF_M_구글3" },
-				'list4':{ "id": "4", "name": "LF몰4", "advid": "LF_M_구글4" }
-			},
+			advs: [],
 			addAdvs:[],
+			checkData:[],
+			addKey:[],
 			selected: [],
 			addSelected:[],
 
 			tabListStep: 0,
+			ctCount:0,
 			categoryName: ''
 		}
 	},
@@ -289,15 +290,88 @@ export default {
 		selectCategory (item) {
 			this.categorySelectData.emptyText = item
 		},
-		//작업진행중
-		addCheckList () {
-			console.log('test')
+		listSearch() {
+
+			//리스트 검색시 노출
+			this.advs = [
+				{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
+			    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
+			    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
+			    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
+			]
+
+		},
+		listSort(item) {
+			const me = this
+			let checkData = me.checkData
+
+		},
+		checkFilter(type, type2) {
+			let elId = (type == 'advs') ? "adv-list-1":"adv-list-2"
+			let notEl = (type != 'advs') ? "adv-list-1":"adv-list-2"
+			let ul = document.getElementById(elId)
+			let notUl = document.getElementById(notEl)
+			let items = ul.getElementsByTagName("li")
+			let noItems = notUl.getElementsByTagName("li")
+			let itemsData = this[type]
+
+			for(let i = 0; i < noItems.length; i++) {
+				noItems[i].getElementsByTagName('input')[0].checked = false
+			}
+			for (let i = 0; i < items.length; i++) {
+				let checkBox = items[i].getElementsByTagName('input')[0].checked
+				if(checkBox == true) {
+					let checkItemsId = items[i].getElementsByTagName('input')[0].getAttribute('data-id')
+					for(let idx = 0; idx < itemsData.length; idx++) {
+						if(checkItemsId == itemsData[idx]['type_id']) {
+							this.checkData.push(itemsData[idx])
+						}
+					}
+				}
+			}
+		},
+		checkList (before,after) {
+			const me = this
+
+			this.checkFilter(before, 'type1')
+
+			me[after] = me[after].concat(me.checkData)
+			me.checkData.forEach(function(value, index) {
+				me[before] = me[before].filter(function(item) {
+					return item !== value
+				})
+			})
+			//addList Count
+			this.ctCount = me['addAdvs'].length
+			document.getElementById('ct-count').innerText = this.ctCount
+
+
+			this.addSelected = []
+			this.selected = []
+			me.checkData = []
+		},
+		allCheck(value,key1,key2,before,after) {
+			const me = this
+			var selected = []
+            if (value) {
+                this.checkFilter(key1, 'type2')
+                me[key1].forEach(function (item) {
+                    selected.push(item.id)
+                });
+            }
+            me[key2] = selected;
 		},
 		tabMove (activeNumber, beforeNumber) {
 			if (beforeNumber === '0') {
 				if (this.categoryName === '') {
-					alert('추후 카테고리 선택을 해야만 하게 수정필요.')
-					// return
+					alert('통계 및 계정 유형 분석을 선택해주세요.')
+					return false
+				}
+			}else if(beforeNumber === '1') {
+				if(this.addAdvs.length == 0) {
+					if(confirm('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?') === false) {
+						return false
+					}
 				}
 			}
 			this.tabListStep = parseInt(activeNumber)
@@ -311,50 +385,37 @@ export default {
 			}
 		},
 		success () {
-			alert('설정이 완료되었습니다.');
-			this.$emit('close')
+			if(confirm('현재 매칭된 상태로 Target Pick 설정을 진행할까요?') === true) {
+				this.$emit('close')
+			}else{
+				return false
+			}
 		}
 	},
 
 	computed: {
 		selectAll: {
-			get: function () {
-				let advKeys = Object.keys(this.advs)
-				if(advKeys.length != 0) {
-					return this.advs ? this.selected.length == advKeys.length : false;
-				}
-			},
-			set: function (value) {
-				var selected = [];
-				let advKeys = Object.keys(this.advs)
-
-				if (value) {
-					for(var i = 0; i < advKeys.length; i++) {
-						selected.push(this.advs[advKeys[i]].id)
-					}
-				}
-
-				this.selected = selected;
-			}
-		},
-		addSelectAll:{
-			get: function () {
-				if(this.addAdvs.length != 0) {
-					return this.addAdvs ? this.addSelected.length == this.addAdvs.length : false;
-				}
-			},
-			set: function (value) {
-				var addSelected = [];
-
-				if (value) {
-					this.advs.forEach(function (addAdv) {
-						addSelected.push(addAdv.id);
-					});
-				}
-
-				this.addSelected = addSelected;
-			}
-		}
+	        get: function () {
+                let advKeys = Object.keys(this.advs)
+	        	if(advKeys.length != 0) {
+	            	return this.advs ? this.selected.length == advKeys.length : false;
+	            }
+            },
+            set: function (value) {
+                this.allCheck(value,'advs','selected','advs','addAdvs')
+            }
+	    },
+	    addSelectAll:{
+	        get: function () {
+	        	let advKeys = Object.keys(this.addAdvs)
+	        	if(advKeys.length != 0) {
+	            	return this.addAdvs ? this.addSelected.length == advKeys.length : false;
+	            }
+	        },
+	        set: function (value) {
+	            this.allCheck(value,'addAdvs','addSelected','addAdvs','advs')
+	        }
+	    }
 	}
 }
 </script>
