@@ -445,11 +445,12 @@
 		}
 	}
 }
-#target_not{
-	.target_chart_graph_wrap{text-align:center; padding:20px 0px;
+#target_not{width:535px;
+	.popup-contents{width:535px;}
+	.target_chart_graph_wrap{text-align:left; padding:35px 30px;
 		.title{font-weight: bold; font-size: 24px;}
 		.prologue{line-height: 2; margin-bottom:10px;}
-		.chart_close_btn{margin-bottom:0px;}
+		.chart_close_btn{margin-bottom:0px; background:#375b96;}
 	}
 }
 

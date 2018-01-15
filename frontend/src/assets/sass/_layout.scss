@@ -218,7 +218,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 						}
 					}
 					.target_report_contents{width:100%; clear:both;
-						.report_contents_inner_wrap{overflow-x:scroll;
+						.report_contents_inner_wrap{overflow-x:scroll; min-height:500px;
 							.contents_inner{width:200%; display:table; border-top:2px solid #333;
 								th{height:43px; line-height:43px; text-align:center; background:url(assets/images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%; border-right:1px solid #ededed; border-bottom:1px solid #ededed; font-weight:bold;
 									&:last-child{border-right:0px;}
@@ -230,6 +230,17 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 										&:last-child{border-right:0px;}
 									}
 								}
+							}
+							.interest{position:relative; height:22px!important; line-height:22px!important;
+								span{text-decoration:underline; color:#0066cf; cursor:pointer;}
+								.interest_view{width:212px; position:absolute; top:100%; left:0px; background:#375b96 url(assets/images/target/interest_icon.png) 0 0 no-repeat; color:#fff; border-radius:2px; z-index:1; padding:15px; font-size:12px; border-radius:2px; display:none;
+									ul{letter-spacing: -4px; margin-bottom:10px; text-align:left;
+										li{display:inline-block; vertical-align:middle; letter-spacing: 0px; background:url(assets/images/target/slash.png) center right no-repeat; padding-right:7px; }
+									}
+									.inter_clip_copy{height:34px; line-height:34px; background: #fff; color: #375b96; font-weight: bold; cursor:pointer;}
+									.inter_close{height:34px; line-height:34px; font-weight: bold; border: 1px solid #fff; margin-top: 5px; cursor:pointer;}
+								}
+								span:hover + .interest_view{display:block;}
 							}
 						}
 					}
