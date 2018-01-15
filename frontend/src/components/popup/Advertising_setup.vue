@@ -91,8 +91,8 @@
 												<div class="account_wrap">
 													<div class="advertiser_search">
 														<div class="search_title">광고주검색</div>
-														<div><input type="text"></div>
-														<div><button>조회</button></div>
+														<div><input type="text" value=""></div>
+														<div><button type="button" @click="listSearch()">조회</button></div>
 													</div>
 													<div class="advertiser_search_result pop-scroll">
 														<div>
@@ -118,8 +118,8 @@
 													</div>
 												</div>
 												<div class="interlock_btn">
-													<button type="button" v-on:click="checkList('addAdvs','advs')"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
-													<button type="button" v-on:click="checkList('advs','addAdvs')"><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
+													<button type="button" title="삭제" v-on:click="checkList('addAdvs','advs')"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
+													<button type="button" title="추가" v-on:click="checkList('advs','addAdvs')"><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
 												</div>
 												<div class="account_wrap">
 													<div class="advertiser_search">
@@ -258,8 +258,8 @@ export default {
 
 	data () {
 		return {
-			tabActive1: false,
-			tabActive2: true,
+			tabActive1: true,
+			tabActive2: false,
 			tabActive3: false,
 
 			categorySelectData: {
@@ -270,12 +270,7 @@ export default {
 					'픽셀3'
 				]
 			},
-			advs: [
-			    { "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
-			    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
-			    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
-			    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
-			],
+			advs: [],
 			addAdvs:[],
 			checkData:[],
 			addKey:[],
@@ -295,12 +290,27 @@ export default {
 		selectCategory (item) {
 			this.categorySelectData.emptyText = item
 		},
+		listSearch() {
+
+			//리스트 검색시 노출
+			this.advs = [
+				{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
+			    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
+			    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
+			    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
+			]
+
+		},
+		listSort(item) {
+			const me = this
+			let checkData = me.checkData
+
+		},
 		checkFilter(type, type2) {
 			let elId = (type == 'advs') ? "adv-list-1":"adv-list-2"
 			let notEl = (type != 'advs') ? "adv-list-1":"adv-list-2"
 			let ul = document.getElementById(elId)
 			let notUl = document.getElementById(notEl)
-			let allCheckEl = document.getElementById('all_check')
 			let items = ul.getElementsByTagName("li")
 			let noItems = notUl.getElementsByTagName("li")
 			let itemsData = this[type]
@@ -322,6 +332,7 @@ export default {
 		},
 		checkList (before,after) {
 			const me = this
+
 			this.checkFilter(before, 'type1')
 
 			me[after] = me[after].concat(me.checkData)
@@ -353,8 +364,14 @@ export default {
 		tabMove (activeNumber, beforeNumber) {
 			if (beforeNumber === '0') {
 				if (this.categoryName === '') {
-					alert('추후 카테고리 선택을 해야만 하게 수정필요.')
-					// return
+					alert('통계 및 계정 유형 분석을 선택해주세요.')
+					return false
+				}
+			}else if(beforeNumber === '1') {
+				if(this.addAdvs.length == 0) {
+					if(confirm('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?') === false) {
+						return false
+					}
 				}
 			}
 			this.tabListStep = parseInt(activeNumber)
@@ -368,8 +385,11 @@ export default {
 			}
 		},
 		success () {
-			alert('설정이 완료되었습니다.');
-			this.$emit('close')
+			if(confirm('현재 매칭된 상태로 Target Pick 설정을 진행할까요?') === true) {
+				this.$emit('close')
+			}else{
+				return false
+			}
 		}
 	},
 
