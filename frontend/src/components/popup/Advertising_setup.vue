@@ -91,7 +91,7 @@
 												<div class="account_wrap">
 													<div class="advertiser_search">
 														<div class="search_title">광고주검색</div>
-														<div><input type="text" value=""></div>
+														<div><input type="text" value="" placeholder="광고주를 검색하세요."></div>
 														<div><button type="button" @click="listSearch()">조회</button></div>
 													</div>
 													<div class="advertiser_search_result pop-scroll">
