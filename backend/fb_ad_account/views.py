@@ -208,7 +208,8 @@ class FbAdAccountDefaultTarget(APIView):
                     "pixel_mapping_category" : "사이트방문",
                     "retention_days" : 30,
                     "description" : "전체",
-                    "option" : ""
+                    "option" : "",
+                    "type" : "default"
                 }
 
                 check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
@@ -224,7 +225,8 @@ class FbAdAccountDefaultTarget(APIView):
                     "pixel_mapping_category" : "사이트방문",
                     "retention_days" : 30,
                     "description" : "미방문고객",
-                    "option": ""
+                    "option": "",
+                    "type": "default"
                 }
                 check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
 
@@ -240,7 +242,8 @@ class FbAdAccountDefaultTarget(APIView):
                     "pixel_mapping_category" : "사이트방문",
                     "retention_days" : 30,
                     "description" : "이용시간상위5%",
-                    "option": ""
+                    "option": "",
+                    "type": "default"
                 }
 
                 check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
@@ -262,7 +265,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "사이트방문",
                         "retention_days": 30,
                         "description": "미구매고객",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
                     if check_target:
@@ -276,7 +280,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "구매",
                         "retention_days": 1,
                         "description": "전체",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
                     if check_target:
@@ -291,7 +296,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "구매",
                         "retention_days": 7,
                         "description": "전체",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
                     if check_target:
@@ -306,7 +312,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "구매",
                         "retention_days": 30,
                         "description": "전체",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, purchase_pixel_mapping_category, str(description))
                     if check_target:
@@ -326,7 +333,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "장바구니",
                         "retention_days": 1,
                         "description": "전체",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, addtocart_pixel_mapping_category, str(description))
                     if check_target:
@@ -341,7 +349,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "장바구니",
                         "retention_days": 7,
                         "description": "전체",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                     if check_target:
@@ -357,7 +366,8 @@ class FbAdAccountDefaultTarget(APIView):
                             "pixel_mapping_category": "장바구니",
                             "retention_days": 1,
                             "description": "미구매고객",
-                            "option": ""
+                            "option": "",
+                            "type": "default"
                         }
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
@@ -371,7 +381,8 @@ class FbAdAccountDefaultTarget(APIView):
                             "pixel_mapping_category": "장바구니",
                             "retention_days": 3,
                             "description": "미구매고객",
-                            "option": ""
+                            "option": "",
+                            "type": "default"
                         }
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
@@ -385,7 +396,8 @@ class FbAdAccountDefaultTarget(APIView):
                             "pixel_mapping_category": "장바구니",
                             "retention_days": 7,
                             "description": "미구매고객",
-                            "option": ""
+                            "option": "",
+                            "type": "default"
                         }
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
@@ -405,7 +417,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "사이트방문",
                         "retention_days": 30,
                         "description": "미전환고객",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,visit_pixel_mapping_category,str(description))
                     if check_target:
@@ -420,7 +433,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
                         "description": "전환완료",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,conversion_pixel_mapping_category,str(description))
                     if check_target:
@@ -434,7 +448,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
                         "description": "미전환",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,conversion_pixel_mapping_category,str(description))
                     if check_target:
@@ -454,7 +469,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "회원가입",
                         "retention_days": 30,
                         "description": "전체",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,registration_pixel_mapping_category,str(description))
                     if check_target:
@@ -470,7 +486,8 @@ class FbAdAccountDefaultTarget(APIView):
                             "pixel_mapping_category": "회원가입",
                             "retention_days": 30,
                             "description": "미구매",
-                            "option": ""
+                            "option": "",
+                            "type": "default"
                         }
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,registration_pixel_mapping_category,str(description))
                         if check_target:
@@ -488,7 +505,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
                         "description": "전환1단계완료",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step1_pixel_mapping_category,str(description))
                     if check_target:
@@ -507,7 +525,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
                         "description": "전환2단계완료",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step2_pixel_mapping_category,str(description))
                     if check_target:
@@ -525,7 +544,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
                         "description": "전환3단계완료",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step3_pixel_mapping_category,str(description))
                     if check_target:
@@ -543,7 +563,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
                         "description": "전환4단계완료",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
 
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step4_pixel_mapping_category,str(description))
@@ -562,7 +583,8 @@ class FbAdAccountDefaultTarget(APIView):
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
                         "description": "전환5단계완료",
-                        "option": ""
+                        "option": "",
+                        "type": "default"
                     }
 
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step5_pixel_mapping_category,str(description))
