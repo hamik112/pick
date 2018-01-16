@@ -322,7 +322,7 @@
 										</div>
 									</div>
 									<div class="target_tbody">
-										<div class="target_inner_tbody clearfix">
+										<div class="target_inner_tbody google_body clearfix">
 											<div class="target_generate google_analytics">
 												<div class="account_info">
 													<div class="account_title">"아래 UTM 속성으로 유입된 사람" 중</div>
