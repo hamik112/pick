@@ -374,11 +374,12 @@
 												</ul>
 											</div>
 											<div class="analytics_tab_list">
+												<div class="list_close_btn"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
 												<div id="tab_list_1" class="analytics_tab_contents clearfix">
 													<ul>
-														<li class="sticker_btn"><span>naver</span></li>
-														<li class="sticker_btn"><span>daum</span></li>
-														<li class="sticker_btn"><span>google</span></li>
+														<li class="sticker_btn"><span>naver</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li class="sticker_btn"><span>daum</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li class="sticker_btn"><span>google</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
 													<div class="analytics_all_close"><img src="images/target/target_close_btn.png" alt=""></div>
 												</div>
@@ -591,7 +592,7 @@
 													</div>
 													<div class="url_list clearfix">
 														<div class="url_text clearfix">
-															<p>해당 단계 완료 URL</p>
+															<p>다음 단계 완료 URL</p>
 														</div>
 														<div class="url_input">
 															<input type="text">
