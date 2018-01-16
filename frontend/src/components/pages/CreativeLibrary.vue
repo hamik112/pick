@@ -4,7 +4,9 @@
 			<div id="container_wrap">
 				<div class="list-tab-widget">
 					<div class="tab-contents-widget">
-						<div id="section_list_3" class="section_tab_contents clearfix">크리에이티브 라이브러리</div>
+						<div id="section_list_3" class="section_tab_contents clearfix">
+							<iframe width="100%" src="http://www.pickdata.co.kr:7777/creative/" frameborder="0" allowfullscreen></iframe>
+						</div>
 					</div>
 				</div>
 			</div>
