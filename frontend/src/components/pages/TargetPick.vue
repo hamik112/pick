@@ -163,11 +163,15 @@
 			selectFbAdAccount (fbAdAccount) {
 				console.log('selectFbAdAccount', fbAdAccount)
 				this.checkFbAdAccount(fbAdAccount)
-				this.getAccountTarget(fbAdAccount)
 			},
 
 			checkFbAdAccount (fbAdAccount) {
 				console.log('checkFbAdAccount', fbAdAccount)
+				this.isPick = false
+				this.isLoading = true
+				this.loadingTitle = '광고계정을 검사중입니다.'
+				this.loadingDescription = '조금만 기다려 주시면, 확인이 완료됩니다.'
+
 				const account_id = fbAdAccount.account_id
 				let url = '/api/fb_ad_accounts/confirm_ad_account?act_account_id=act_' + account_id
 				this.$http.get(url)
@@ -175,7 +179,7 @@
 					const bool_default_pixel = res.data.bool_default_pixel
 					const bool_fb_ad_account = res.data.bool_fb_ad_account
 					if (bool_fb_ad_account == false) {
-            // Advertising_setup popup 호출
+						// Advertising_setup popup 호출
 						this.setupPop = true
 					} else {
 						this.setupPop = false
@@ -186,6 +190,15 @@
 					} else {
 						this.pixelNone = false
 					}
+					this.isPick = true
+					this.isLoading = false
+
+					this.getAccountTarget(fbAdAccount)
+				})
+				.catch(err => {
+					this.isPick = true
+					this.isLoading = false
+					console.error('/api/pickdata_account_target/targetpick', err)
 				})
 			},
 
