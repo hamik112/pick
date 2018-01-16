@@ -11,7 +11,7 @@
 			<PixelNone v-if="pixelNone" @close="pixelNone = false" key="pixel"></PixelNone>
 		</transition-group>
 
-		<div id="container">
+		<div id="container" v-show="isPick">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
 					<div class="tab-contents-widget">
@@ -62,6 +62,7 @@
 				</div>
 			</div>
 		</div>
+		<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
 	</div>
 </template>
 
@@ -72,6 +73,7 @@
 	// UI
 	import Select from '@/components/ui/Select'
 	import Calendar from '@/components/ui/Calendar'
+	import Loading from '@/components/ui/Loading'
 
 	import SetupPop from '@/components/popup/Advertising_setup'
 	import PixelNone from '@/components/popup/Target_not_available'
@@ -84,6 +86,7 @@
 			'TargetMake1': TargetMake1,
 			'ui-select': Select,
 			'ui-calendar': Calendar,
+			'ui-loading': Loading,
 			'SetupPop': SetupPop,
 			'PixelNone': PixelNone
 		},
@@ -133,7 +136,11 @@
 					utmTargetCount: 0,
 					purchaseCount: 0,
 					neoTargetCount: 0
-				}
+				},
+				isPick: true,
+				isLoading: false,
+				loadingTitle: '',
+				loadingDescription: ''
 			}
 		},
 
@@ -184,6 +191,11 @@
 
 			getAccountTarget (fbAdAccount) {
 				console.log('getAccountTarget', fbAdAccount)
+				this.isPick = false
+				this.isLoading = true
+				this.loadingTitle = '타겟을 가져오는 중입니다.'
+				this.loadingDescription = '조금만 기다려 주시면, 생성된 타겟을 가져옵니다.'
+
 				let url = '/api/pickdata_account_target/targetpick?fb_ad_account_id=2'
 				this.$http.get(url)
 				.then(res => {
@@ -235,8 +247,12 @@
 					} else {
 						throw('success: ' + success)
 					}
+					this.isPick = true
+					this.isLoading = false
 				})
 				.catch(err => {
+					this.isPick = true
+					this.isLoading = false
 					console.error('/api/pickdata_account_target/targetpick', err)
 				})
 			}
