@@ -367,7 +367,7 @@ export default {
 					alert('통계 및 계정 유형 분석을 선택해주세요.')
 					return false
 				}
-			}else if(beforeNumber === '1') {
+			}else if(activeNumber == '2' && beforeNumber === '1') {
 				if(this.addAdvs.length == 0) {
 					if(confirm('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?') === false) {
 						return false
