@@ -9,6 +9,14 @@ class PixelMappingCategory(models.Model):
     category_label_kr = models.CharField(max_length=128)
     category_label_en = models.CharField(max_length=128)
 
+    def get_pixel_mapping_categories(self):
+        try:
+            pixel_mapping_categories = PixelMappingCategory.objects.all()
+
+            return pixel_mapping_categories
+        except Exception as e:
+            return None
+
     def get_pixel_mapping_category_by_label(self, label):
         try:
             pixel_mapping_category = PixelMappingCategory.objects.get(category_label_en=label)

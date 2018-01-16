@@ -1,7 +1,11 @@
 from django.db import models
+from pixel_mapping_category.models import PixelMappingCategory
+from pixel_mapping_category.serializers import PixelMappingCategorySerializer
+from utils.common.string_formatter import string_to_literal
 
 import traceback
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +16,7 @@ class PixelMapping(models.Model):
     created_by = models.CharField(max_length=64)
     updated_by = models.CharField(max_length=64)
     fb_ad_account = models.ForeignKey('fb_ad_account.FbAdAccount', db_constraint=False, null=False)
-    facebook_pixel_event_name = models.CharField(max_length=128)
+    facebook_pixel_event_name = models.CharField(max_length=128, null=True)
     pixel_mapping_category = models.ForeignKey('pixel_mapping_category.PixelMappingCategory', db_constraint=False, null=False)
 
     def get_pixel_mapping_by_id(self, pixel_mapping_id):
@@ -50,6 +54,35 @@ class PixelMapping(models.Model):
             logger.error(traceback.format_exc())
             # TODO return []
             return None
+
+    def create(self, fb_ad_account, facebook_pixel_event_names = [], pixel_mapping_category_ids = [], username = 'Test'):
+        created_cnt = 0
+
+        # pixel_mapping_categories = PixelMappingCategory.get_pixel_mapping_categories(PixelMappingCategory)
+        # pixel_mapping_category_serializer = PixelMappingCategorySerializer(pixel_mapping_categories, many=True)
+
+        print(facebook_pixel_event_names)
+        print(pixel_mapping_category_ids)
+
+        for idx, pixel_mapping_category_id in enumerate(pixel_mapping_category_ids):
+            print("for loop")
+            print(idx)
+            print(pixel_mapping_category_id)
+            pixel_mapping = PixelMapping()
+
+            pixel_mapping.created_by = username
+            pixel_mapping.updated_by = username
+
+            pixel_mapping.fb_ad_account = fb_ad_account
+
+            pixel_mapping.fb_ad_account = fb_ad_account
+            pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
+
+            pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
+
+            pixel_mapping.save()
+
+        return created_cnt
 
     class Meta:
         db_table = "pixel_mappings"

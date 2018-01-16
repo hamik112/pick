@@ -10,7 +10,8 @@ from pixel_mapping.models import PixelMapping
 from pixel_mapping_category.models import PixelMappingCategory
 from pickdata_account_target.models import PickdataAccountTarget
 
-from utils.facebookapis.ad_account import ad_accounts
+
+from utils.facebookapis.ad_account import ads_pixels
 from utils.facebookapis.targeting import targeting_visitor
 from utils.facebookapis.targeting import targeting_addtocart
 from utils.facebookapis.targeting import targeting_conversion
@@ -131,6 +132,28 @@ class CheckAccountId(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+class AccountPixelEvent(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            api_init_by_system_user()
+            events = ads_pixels.get_account_pixel_events(fb_ad_account.act_account_id)
+
+            response_data['success'] = 'YES'
+            response_data['data'] = events
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 class FbAdAccountCategory(APIView):
     def get(self, request, fb_account_id, format=None):
