@@ -5,7 +5,7 @@
 				<div class="list-tab-widget">
 					<div class="tab-contents-widget">
 						<div id="section_list_3" class="section_tab_contents clearfix">
-							<iframe width="100%" src="http://www.pickdata.co.kr:7777/creative/" frameborder="0" allowfullscreen></iframe>
+							<iframe id="creative-frame" :src="iframe.src" ref="frame" @load="load('creative-frame')" v-show="iframe.loaded" width="100%" :height="iframe.height" frameborder="0" allowfullscreen></iframe>
 						</div>
 					</div>
 				</div>
@@ -21,8 +21,26 @@
 
 	  data () {
 	    return {
-
+	    	iframe: {
+		      src: 'http://www.pickdata.co.kr:7777/creative/',
+		      height:0,
+		      loaded: false
+		    }
 	    }
+	  },
+	  methods:{
+	  	load: function(el){
+	    	this.iframe.loaded = true;
+	    	this.iframe.height = window.innerHeight
+	    	console.log(this.getDocHeight(el))
+	    },
+	    getDocHeight(doc) {
+		    doc = doc || document;
+		    let body = doc.body
+		    let html = doc.documentElement
+		    let height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight )
+		    return height;
+		}
 	  }
 	}
 </script>
