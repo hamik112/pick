@@ -275,6 +275,11 @@
 		}
 		.target_tbody{
 			.target_inner_tbody{padding:19px 17px; border:$Border_type01;
+				/* url 버튼 */
+				.url_btn{float:left; margin:6px 0px;
+					div{float:left; text-align:center; width:26px; height:26px; line-height:26px; border:$Border_type01; margin-left:10px; cursor:pointer; background:url(assets/images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%;}
+				}
+				/* // url 버튼 */
 				/* 계정연동 하지 않았을 경우*/
 				.account_interlock{padding:95px 0px; line-height:1.5; text-align:center;
 					strong{font-size:18px;}
@@ -329,10 +334,10 @@
 						.url_list{margin-bottom:10px;
 							&:last-child{margin-bottom:0px;}
 							.url_select{float:left; margin-right:10px;
-								.select{width:106px; height:38px; line-height:38px;}
+								.select{width:106px; height:38px; line-height:37px;}
 							}
 							.url_input{float:left;
-								input{width:559px; height:38px; line-height:38px; border:$Border_type01; border-radius:2px;}
+								input{width:595px; height:38px; line-height:37px; border:$Border_type01; border-radius:2px;}
 							}
 						}
 					}

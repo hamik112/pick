@@ -21,10 +21,10 @@ ex) python manage.py mod_collect_adset_insights --settings=pickdata.settings.dev
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
-        self.stdout.write("--- collect collect adset module start ---")
+        self.stdout.write("--- collect collect adset insight module start ---")
 
     def handle(self, *args, **options):
-        self.stdout.write("--- collect collect adset module handle ---")
+        self.stdout.write("--- collect collect adset insight module handle ---")
         try:
             api_init.api_init_by_system_user()
 
@@ -39,15 +39,18 @@ class Command(BaseCommand):
             # ]
             # ad_sets = [
             #     {
-            #         "id": '6048519882070'
+            #         "id": '6018911082497'
             #     },
             #     {
-            #         "id": '6045438557872'
+            #         "id": '6023736631897'
             #     },
             #     {
-            #         "id": '6042320740072'
+            #         "id": '6036501853790'
             #     }
             # ]
+
+            adset_insight_list = []
+            no_insights = 1
 
             for my_account in my_accounts:
                 account_id = my_account.get('id')
@@ -60,10 +63,15 @@ class Command(BaseCommand):
                     adset_id = ad_set.get('id')
                     insights = ad_sets_api.get_insight_by_ad_set(adset_id,
                         params={
-                            "date_preset": "lifetime",
+                            "time_range": {
+                                "since": "2018-01-10",
+                                "until": "2018-01-14"
+                            },
+                            # "date_preset": "yesterday",
                             "time_increment": 1
                         })
-                    if insights != None:
+
+                    if insights:
                         for insight in insights:
                             # Adset ad_insights
                             account_id = insight.get('account_id')
@@ -129,7 +137,7 @@ class Command(BaseCommand):
                             video_p95_watched_actions = insight.get('video_p95_watched_actions')
                             website_ctr = insight.get('website_ctr')
 
-                            # ad_set_insight 데이터 insert
+                            # ad_set_insight model
                             adset_insight = AdSetInsight()
 
                             adset_insight.created_by = "Module"
@@ -204,9 +212,15 @@ class Command(BaseCommand):
                             adset_insight.video_p95_watched_actions = video_p95_watched_actions
                             adset_insight.website_ctr = website_ctr
 
+                            # adset_insight_list.append(adset_insight)
                             adset_insight.save()
                     else:
                         pass
+                        no_insights += 1
+
+            logger.info(no_insights)
+            # logger.info('adset_insight_list')
+            # logger.info(len(adset_insight_list))
 
             logger.info("collect adset insight module complete")
         except Exception as e:

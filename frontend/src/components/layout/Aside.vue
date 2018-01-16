@@ -1,7 +1,7 @@
 <template>
   <aside>
   	<transition name='modal'>
-  		<TargetNot v-if="show" @close="show = false"></TargetNot>
+  		<!-- <TargetNot v-if="show" @close="show = false"></TargetNot> -->
   	</transition>
 	<div class="aside-wrap">
 	  <div class="aside_section first_section">
@@ -49,14 +49,15 @@
 <script>
 	// 팝업
 	import TargetNot from '@/components/popup/Target_not_available'
+
 export default {
   name: 'Aside',
   components:{
-  	'TargetNot' : TargetNot
+  	// 'TargetNot' : TargetNot
   },
   data () {
 	return {
-		show: false,
+		// show: false,
 		isActive: false,
 		isShowList: false,
 		searchName: '',
@@ -126,6 +127,7 @@ export default {
 	  this.selectFbAdAccount = fbAdAccount
 	  this.isActive = false
 	  this.isShowList = false
+    localStorage.setItem('account_id', fbAdAccount.account_id)
 	}
   }
 }
