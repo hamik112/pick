@@ -19,7 +19,7 @@
 <script>
 //레이아웃 호출
 export default {
-	name: 'loading',
+	name: 'Loading',
 
 	data () {
 		return {
