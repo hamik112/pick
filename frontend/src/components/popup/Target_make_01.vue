@@ -53,7 +53,7 @@
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
-											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
 											<div class="title_info">
 												<p>NEO타겟</p>
 												<p>타겟의 속성을 정의하세요</p>
@@ -103,7 +103,7 @@
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
-											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div><img src="../../assets/images/target/target_logo_02.png" alt="neo"></div>
 											<div class="title_info">
 												<p>NEO타겟</p>
 												<p>타겟의 속성을 정의하세요</p>
@@ -192,7 +192,7 @@
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
-											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div><img src="../../assets/images/target/target_logo_03.png" alt="neo"></div>
 											<div class="title_info">
 												<p>NEO타겟</p>
 												<p>타겟의 속성을 정의하세요</p>
@@ -310,7 +310,7 @@
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
-											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div><img src="../../assets/images/target/target_logo_04.png" alt="neo"></div>
 											<div class="title_info">
 												<p>NEO타겟</p>
 												<p>타겟의 속성을 정의하세요</p>
@@ -333,33 +333,70 @@
 									</div>
 									<div class="target_tbody">
 										<div class="target_inner_tbody clearfix">
-											<div class="analytics_tab_wrap">
-												<div class="analytics_tab_widget clearfix">
-													<ul class="clearfix">
-														<li rel="tab_list_1" class="active">source</li>
-														<li rel="tab_list_2">medium</li>
-														<li rel="tab_list_3">campaign</li>
-														<li rel="tab_list_4">team</li>
-														<li rel="tab_list_5">content</li>
-														<li rel="tab_list_6">custom</li>
-													</ul>
-												</div>
-												<div class="analytics_tab_list">
-													<div id="tab_list_1" class="analytics_tab_contents clearfix">
-														<ul>
-															<li class="sticker_btn"><span>naver</span></li>
-															<li class="sticker_btn"><span>daum</span></li>
-															<li class="sticker_btn"><span>google</span></li>
-														</ul>
-														<div class="analytics_all_close"><img src="images/target/target_close_btn.png" alt=""></div>
+											<div class="target_generate google_analytics">
+												<div class="account_info">
+													<div class="account_title">"아래 UTM 속성으로 유입된 사람" 중</div>
+													<div>
+														<div class="select_btn">
+															<div class="select_contents">
+																<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+															</div>
+														</div>
 													</div>
-													<div id="tab_list_2" class="analytics_tab_contents clearfix"></div>
-													<div id="tab_list_3" class="analytics_tab_contents clearfix"></div>
-													<div id="tab_list_4" class="analytics_tab_contents clearfix"></div>
-													<div id="tab_list_5" class="analytics_tab_contents clearfix"></div>
-													<div id="tab_list_6" class="analytics_tab_contents clearfix"></div>
+													<div class="account_date">
+														<div class="select_btn">
+															<div class="select_contents">
+																<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+																<ul class="select_view">
+																	<li>25%</li>
+																	<li>50%</li>
+																	<li>75%</li>
+																</ul>
+															</div>
+														</div>
+													</div>
 												</div>
+												<div class="generate_url_list">
+													<div class="url_list clearfix">
+														<div class="url_select clearfix">
+															<div class="select_btn">
+																<div class="select_contents">
+																	<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+																</div>
+															</div>
+														</div>
+														<div class="url_input">
+															<input type="text" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
+														</div>
+													</div>
 												</div>
+											</div>
+										</div>
+										<div class="analytics_tab_wrap">
+											<div class="analytics_tab_widget clearfix">
+												<ul class="clearfix">
+													<li rel="tab_list_1" class="active">source</li>
+													<li rel="tab_list_2">medium</li>
+													<li rel="tab_list_3">campaign</li>
+													<li rel="tab_list_4">team</li>
+													<li rel="tab_list_5">content</li>
+													<li rel="tab_list_6">custom</li>
+												</ul>
+											</div>
+											<div class="analytics_tab_list">
+												<div id="tab_list_1" class="analytics_tab_contents clearfix">
+													<ul>
+														<li class="sticker_btn"><span>naver</span></li>
+														<li class="sticker_btn"><span>daum</span></li>
+														<li class="sticker_btn"><span>google</span></li>
+													</ul>
+													<div class="analytics_all_close"><img src="images/target/target_close_btn.png" alt=""></div>
+												</div>
+												<div id="tab_list_2" class="analytics_tab_contents clearfix"></div>
+												<div id="tab_list_3" class="analytics_tab_contents clearfix"></div>
+												<div id="tab_list_4" class="analytics_tab_contents clearfix"></div>
+												<div id="tab_list_5" class="analytics_tab_contents clearfix"></div>
+												<div id="tab_list_6" class="analytics_tab_contents clearfix"></div>
 											</div>
 										</div>
 										<div class="btn_wrap">
@@ -382,7 +419,7 @@
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
-											<div><img src="../../assets/images/target/neo_logo.png" alt="neo"></div>
+											<div><img src="../../assets/images/target/target_logo_08.png" alt="neo"></div>
 											<div class="title_info">
 												<p>타겟의 속성을 정의하세요</p>
 											</div>
@@ -401,10 +438,52 @@
 											<div class="contents_title">타겟이름</div>
 											<div><input type="text"></div>
 										</div>
+										<div class="target_data">
+											<div class="contents_title">타겟 모수</div>
+											<div>
+												<span>12,000</span>명
+											</div>
+										</div>
 									</div>
 									<div class="target_tbody">
 										<div class="target_inner_tbody clearfix">
-
+											<div class="target_generate">
+												<div class="account_info">
+													<div>
+														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+													</div>
+													<div>
+														<input type="text">
+														<p>단계 완료 후 이탈 고객</p>
+													</div>
+												</div>
+												<div class="generate_url_list">
+													<div class="url_list clearfix">
+														<div class="url_select clearfix">
+															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														</div>
+														<div class="url_input">
+															<input type="text">
+														</div>
+													</div>
+													<div class="url_list clearfix">
+														<div class="url_select clearfix">
+															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														</div>
+														<div class="url_input">
+															<input type="text">
+														</div>
+													</div>
+													<div class="url_list clearfix">
+														<div class="url_select clearfix">
+															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														</div>
+														<div class="url_input">
+															<input type="text">
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 										<div class="btn_wrap">
 											<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
