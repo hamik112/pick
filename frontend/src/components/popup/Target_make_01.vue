@@ -575,31 +575,23 @@
 													<div>
 														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
 													</div>
-													<div>
+													<div class="breakaway_wrap">
 														<input type="text">
 														<p>단계 완료 후 이탈 고객</p>
 													</div>
 												</div>
 												<div class="generate_url_list">
 													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<div class="url_text clearfix">
+															<p>해당 단계 완료 URL</p>
 														</div>
 														<div class="url_input">
 															<input type="text">
 														</div>
 													</div>
 													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-														</div>
-														<div class="url_input">
-															<input type="text">
-														</div>
-													</div>
-													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<div class="url_text clearfix">
+															<p>해당 단계 완료 URL</p>
 														</div>
 														<div class="url_input">
 															<input type="text">
