@@ -10,6 +10,7 @@ from pixel_mapping.models import PixelMapping
 from pixel_mapping_category.models import PixelMappingCategory
 from pickdata_account_target.models import PickdataAccountTarget
 
+from utils.facebookapis.ad_account import ad_accounts
 from utils.facebookapis.targeting import targeting_visitor
 from utils.facebookapis.targeting import targeting_addtocart
 from utils.facebookapis.targeting import targeting_conversion
@@ -43,6 +44,31 @@ class FbAdAccountList(APIView):
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    def post(self, request, format=None):
+        response_data = {}
+        try:
+            act_account_id = request.data.get('act_account_id', '')
+            account_category_id = request.data.get('account_category_id', '')
+
+            api_init_by_system_user()
+            ad_account = ad_accounts.get_ad_account(act_account_id)
+
+            ad_account_id = ad_account.get('account_id')
+            act_account_id = ad_account.get('id')
+            name = ad_account.get('name')
+            account_statsus = ad_account.get('account_statsus')
+
+            fb_ad_accouint = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id)
+
+            response_data['success'] = 'YES'
+            response_data['data'] = fb_ad_accouint
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
         except Exception as e:
             print(traceback.format_exc())
             response_data['success'] = 'NO'
