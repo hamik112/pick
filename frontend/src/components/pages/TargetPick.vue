@@ -6,6 +6,11 @@
 			<TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
 		</transition>
 
+		<transition-group name='modal'>
+			<SetupPop v-if="setupPop" @close="setupPop = false" key="setup"></SetupPop>
+			<PixelNone v-if="pixelNone" @close="pixelNone = false" key="pixel"></PixelNone>
+		</transition-group>
+
 		<div id="container">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
@@ -68,6 +73,9 @@
 	import Select from '@/components/ui/Select'
 	import Calendar from '@/components/ui/Calendar'
 
+	import SetupPop from '@/components/popup/Advertising_setup'
+	import PixelNone from '@/components/popup/Target_not_available'
+
 	export default {
 		name: 'TargetPick',
 
@@ -75,11 +83,15 @@
 			'TargetChartPop': TargetChartPop,
 			'TargetMake1': TargetMake1,
 			'ui-select': Select,
-			'ui-calendar':Calendar
+			'ui-calendar': Calendar,
+			'SetupPop': SetupPop,
+			'PixelNone': PixelNone
 		},
 
 		data () {
 			return {
+				setupPop: false,
+				pixelNone: false,
 				chartModal: false,
 				makeModal1: false,
 				makeModal2: false,
@@ -143,7 +155,31 @@
 
 			selectFbAdAccount (fbAdAccount) {
 				console.log('selectFbAdAccount', fbAdAccount)
+				this.checkFbAdAccount(fbAdAccount)
 				this.getAccountTarget(fbAdAccount)
+			},
+
+			checkFbAdAccount (fbAdAccount) {
+				console.log('checkFbAdAccount', fbAdAccount)
+				const account_id = fbAdAccount.account_id
+				let url = '/api/fb_ad_accounts/confirm_ad_account?act_account_id=act_' + account_id
+				this.$http.get(url)
+				.then(res => {
+					const bool_default_pixel = res.data.bool_default_pixel
+					const bool_fb_ad_account = res.data.bool_fb_ad_account
+					if (bool_fb_ad_account == false) {
+            // Advertising_setup popup 호출
+						this.setupPop = true
+					} else {
+						this.setupPop = false
+					}
+					if (bool_default_pixel == false) {
+            // default_pixel alert popup
+						this.pixelNone = true
+					} else {
+						this.pixelNone = false
+					}
+				})
 			},
 
 			getAccountTarget (fbAdAccount) {
