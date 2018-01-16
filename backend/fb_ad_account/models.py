@@ -38,7 +38,6 @@ class FbAdAccount(models.Model):
             return None
 
     def find_by_fb_ad_account_id(self, fb_ad_account_id):
-        print('find_by_fb_ad_account_id')
         if fb_ad_account_id == '0':
             return None
         try:
