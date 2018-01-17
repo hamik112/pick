@@ -84,8 +84,9 @@ class Signin(APIView):
 class Signout(APIView):
     def get(self, request, format=None):
         try:
-            del request.session['__user_id__']
-            del request.session['__username__']
+            request.session['__user_id__'] = None
+            request.session['__username__'] = None
+            request.session.modified = True
         except KeyError as e:
             logger.error(e)
         return HttpResponseRedirect('/')
