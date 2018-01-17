@@ -48,13 +48,13 @@
 												<div class="table_head">
 													<ul class="head_th clearfix">
 														<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
-														<li class="line-2" v-if="sortSelectData.listData[1].setting.show">캠페인명</li>
+														<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">캠페인명</li>
 														<li class="line-3" v-if="sortSelectData.listData[2].setting.show">기간</li>
-														<li class="line-4" v-if="sortSelectData.listData[3].setting.show">광고세트</li>
+														<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">광고세트</li>
 														<li class="line-5" v-if="sortSelectData.listData[4].setting.show">연령</li>
 														<li class="line-6" v-if="sortSelectData.listData[5].setting.show">성별</li>
 														<li class="line-7" v-if="sortSelectData.listData[6].setting.show">관심사 개수</li>
-														<li class="line-8" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
+														<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
 														<li class="line-9" v-if="sortSelectData.listData[8].setting.show">
 															<span>광고비</span>
 															<span class="sort_btn"></span>
@@ -226,9 +226,9 @@
 													<div  class="table_body_inner" v-for="data in listData">
 														<ul class="body_th clearfix">
 															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
-															<li class="line-2" v-if="sortSelectData.listData[1].setting.show">CTR</li>
+															<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">CTR</li>
 															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">CPC</li>
-															<li class="line-4" v-if="sortSelectData.listData[3].setting.show">1번</li>
+															<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">1번</li>
 															<li class="line-5" v-if="sortSelectData.listData[4].setting.show">2번</li>
 															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">3번</li>
 															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
@@ -250,7 +250,7 @@
 																	<div class="inter_close">닫기</div>
 																</div>
 															</li>
-															<li class="line-8" v-if="sortSelectData.listData[7].setting.show">5번</li>
+															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">5번</li>
 															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">6번</li>
 															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">3초 이상 View</li>
 															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">3초 이상 VTR</li>
