@@ -28,16 +28,16 @@
 										</li>
 									</ul>
 									<ul class="target_pick_02">
-										<li @click="tabMove(1)">
+										<li @click="tabMove(5)">
 											<span>구매</span>
 										</li>
-										<li @click="tabMove(1)">
+										<li @click="tabMove(6)">
 											<span>장바구니</span>
 										</li>
-										<li @click="tabMove(1)">
+										<li @click="tabMove(7)">
 											<span>회원가입</span>
 										</li>
-										<li @click="tabMove(5)">
+										<li @click="tabMove(8)">
 											<span>단계별 전환</span>
 										</li>
 									</ul>
@@ -322,7 +322,7 @@
 										</div>
 									</div>
 									<div class="target_tbody">
-										<div class="target_inner_tbody clearfix">
+										<div class="target_inner_tbody google_body clearfix">
 											<div class="target_generate google_analytics">
 												<div class="account_info">
 													<div class="account_title">"아래 UTM 속성으로 유입된 사람" 중</div>
@@ -374,11 +374,12 @@
 												</ul>
 											</div>
 											<div class="analytics_tab_list">
+												<div class="list_close_btn"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
 												<div id="tab_list_1" class="analytics_tab_contents clearfix">
 													<ul>
-														<li class="sticker_btn"><span>naver</span></li>
-														<li class="sticker_btn"><span>daum</span></li>
-														<li class="sticker_btn"><span>google</span></li>
+														<li class="sticker_btn"><span>naver</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li class="sticker_btn"><span>daum</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li class="sticker_btn"><span>google</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
 													<div class="analytics_all_close"><img src="images/target/target_close_btn.png" alt=""></div>
 												</div>
@@ -402,9 +403,142 @@
 								</div>
 							</div>
 
+							<!-- 구매 탭 -->
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive6">
+								<div class="target_contents_inner">
+									<div class="target_thead">
+										<div class="main_title">
+											<div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
+											<div class="title_info">
+												<p>구매</p>
+												<p>타겟의 속성을 정의하세요</p>
+											</div>
+										</div>
+										<div class="use_wrap">
+											<div class="use_select">
+												<div class="contents_title">사용픽셀</div>
+												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+											</div>
+											<div class="use_date">
+												<div>수집기간 : 최근</div>
+												<div><input type="text"><span>일</span></div>
+											</div>
+										</div>
+										<div class="target_name">
+											<div class="contents_title">타겟이름</div>
+											<div><input type="text"></div>
+										</div>
+									</div>
+									<div class="target_tbody">
+										<div class="target_inner_tbody clearfix">
+											<div class="target_generate">
+												<div class="account_info">
+													<div class="account_title">"사이트 방문자"중</div>
+													<div>
+														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="btn_wrap">
+									<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+									<button class="next_btn">타겟 만들기</button>
+								</div>
+							</div>
+
+							<!-- 장바구니 탭 -->
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive7">
+								<div class="target_contents_inner">
+									<div class="target_thead">
+										<div class="main_title">
+											<div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
+											<div class="title_info">
+												<p>장바구니</p>
+												<p>타겟의 속성을 정의하세요</p>
+											</div>
+										</div>
+										<div class="use_wrap">
+											<div class="use_select">
+												<div class="contents_title">사용픽셀</div>
+												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+											</div>
+											<div class="use_date">
+												<div>수집기간 : 최근</div>
+												<div><input type="text"><span>일</span></div>
+											</div>
+										</div>
+										<div class="target_name">
+											<div class="contents_title">타겟이름</div>
+											<div><input type="text"></div>
+										</div>
+									</div>
+									<div class="target_tbody">
+										<div class="target_inner_tbody clearfix">
+											<div class="target_generate">
+												<div class="account_info">
+													<div class="account_title">"사이트 방문자"중</div>
+													<div>
+														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="btn_wrap">
+									<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+									<button class="next_btn">타겟 만들기</button>
+								</div>
+							</div>
+
+							<!-- 회원가입 탭 -->
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive8">
+								<div class="target_contents_inner">
+									<div class="target_thead">
+										<div class="main_title">
+											<div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
+											<div class="title_info">
+												<p>회원가입</p>
+												<p>타겟의 속성을 정의하세요</p>
+											</div>
+										</div>
+										<div class="use_wrap">
+											<div class="use_select">
+												<div class="contents_title">사용픽셀</div>
+												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+											</div>
+											<div class="use_date">
+												<div>수집기간 : 최근</div>
+												<div><input type="text"><span>일</span></div>
+											</div>
+										</div>
+										<div class="target_name">
+											<div class="contents_title">타겟이름</div>
+											<div><input type="text"></div>
+										</div>
+									</div>
+									<div class="target_tbody">
+										<div class="target_inner_tbody clearfix">
+											<div class="target_generate">
+												<div class="account_info">
+													<div class="account_title">"사이트 방문자"중</div>
+													<div>
+														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="btn_wrap">
+									<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+									<button class="next_btn">타겟 만들기</button>
+								</div>
+							</div>
 
 							<!-- 단계별 전환 -->
-
 							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive9">
 								<div class="target_contents_inner">
 									<div class="target_thead">
@@ -442,31 +576,23 @@
 													<div>
 														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
 													</div>
-													<div>
+													<div class="breakaway_wrap">
 														<input type="text">
 														<p>단계 완료 후 이탈 고객</p>
 													</div>
 												</div>
 												<div class="generate_url_list">
 													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<div class="url_text clearfix">
+															<p>해당 단계 완료 URL</p>
 														</div>
 														<div class="url_input">
 															<input type="text">
 														</div>
 													</div>
 													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-														</div>
-														<div class="url_input">
-															<input type="text">
-														</div>
-													</div>
-													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<div class="url_text clearfix">
+															<p>다음 단계 완료 URL</p>
 														</div>
 														<div class="url_input">
 															<input type="text">
@@ -511,6 +637,9 @@ export default {
     	tabActive3:false,
     	tabActive4:false,
     	tabActive5:false,
+    	tabActive6:false,
+    	tabActive7:false,
+    	tabActive8:false,
     	tabActive9:false,
 
     	categoryName:'',
@@ -551,7 +680,7 @@ export default {
   },
   methods: {
 	tabMove(activeNumber, beforeNumber) {
-		let tabArray = ['tabActive1','tabActive2','tabActive3','tabActive4','tabActive5','tabActive9']
+		let tabArray = ['tabActive1','tabActive2','tabActive3','tabActive4','tabActive5','tabActive6','tabActive7','tabActive8','tabActive9']
 		let pageNum = (activeNumber == 0) ? '1':'2'
 
 		document.getElementById('page-number').innerText = pageNum

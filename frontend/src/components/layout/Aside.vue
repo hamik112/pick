@@ -38,7 +38,6 @@
 		  <li rel="section_list_1" class="aside_section active" @click="show = true"><router-link v-bind:to="{ path: '/pick' }"></router-link></li>
 		  <li rel="section_list_2" class="aside_section"><router-link v-bind:to="{ path: '/report' }"></router-link></li>
 		  <li rel="section_list_3" class="aside_section"><router-link v-bind:to="{ path: '/library' }"></router-link></li>
-		  <li rel="section_list_4" class="aside_section"><router-link v-bind:to="{ path: '/loading' }">로딩</router-link></li>
 		</ul>
 	  </div>
 	</div>

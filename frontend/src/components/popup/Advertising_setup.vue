@@ -395,7 +395,7 @@ export default {
 						account_category_id: accountCategoryId,
 					})
 				}
-			}else if(beforeNumber === '1') {
+			}else if(activeNumber == '2' && beforeNumber === '1') {
 				if(this.addAdvs.length == 0) {
 					if(confirm('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?') === false) {
 						return false

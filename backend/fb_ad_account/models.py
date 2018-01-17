@@ -19,6 +19,20 @@ class FbAdAccount(models.Model):
 
     def create(self, ad_account_id, act_account_id, name, account_statsus, account_category_id, username = 'TEST'):
         try:
+            fb_ad_account = self.objects.get(act_account_id=act_account_id)
+
+            fb_ad_account.created_by = username
+            fb_ad_account.updated_by = username
+            fb_ad_account.ad_account_id = ad_account_id
+            fb_ad_account.act_account_id = act_account_id
+            fb_ad_account.name = name
+            fb_ad_account.account_status = account_statsus
+            fb_ad_account.account_category_id = account_category_id
+
+            fb_ad_account.save()
+
+            return fb_ad_account
+        except self.DoesNotExist:
             fb_ad_account = FbAdAccount()
 
             fb_ad_account.created_by = username
@@ -38,7 +52,6 @@ class FbAdAccount(models.Model):
             return None
 
     def find_by_fb_ad_account_id(self, fb_ad_account_id):
-        print('find_by_fb_ad_account_id')
         if fb_ad_account_id == '0':
             return None
         try:

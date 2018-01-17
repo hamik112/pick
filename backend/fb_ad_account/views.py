@@ -4,13 +4,15 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 
 from fb_ad_account.models import FbAdAccount
+from fb_ad_account.serializers import FbAdAccountSerializer
 
 from neo_account.models import NeoAccount
 from pixel_mapping.models import PixelMapping
 from pixel_mapping_category.models import PixelMappingCategory
 from pickdata_account_target.models import PickdataAccountTarget
 
-from utils.facebookapis.ad_account import ad_accounts
+
+from utils.facebookapis.ad_account import ads_pixels
 from utils.facebookapis.targeting import targeting_visitor
 from utils.facebookapis.targeting import targeting_addtocart
 from utils.facebookapis.targeting import targeting_conversion
@@ -52,21 +54,26 @@ class FbAdAccountList(APIView):
     def post(self, request, format=None):
         response_data = {}
         try:
-            act_account_id = request.data.get('act_account_id', '')
-            account_category_id = request.data.get('account_category_id', '')
+            act_account_id = request.POST.get('act_account_id', '')
+            account_category_id = request.POST.get('account_category_id', '')
+
+            print('act_account_id : ', act_account_id)
+            print('account_category_id : ', account_category_id)
 
             api_init_by_system_user()
             ad_account = ad_accounts.get_ad_account(act_account_id)
 
+            print(ad_account)
+
             ad_account_id = ad_account.get('account_id')
             act_account_id = ad_account.get('id')
             name = ad_account.get('name')
-            account_statsus = ad_account.get('account_statsus')
+            account_statsus = ad_account.get('account_status')
 
-            fb_ad_accouint = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id)
+            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id)
 
             response_data['success'] = 'YES'
-            response_data['data'] = fb_ad_accouint
+            response_data['data'] = FbAdAccountSerializer(fb_ad_account).data
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         except Exception as e:
@@ -131,6 +138,28 @@ class CheckAccountId(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+class AccountPixelEvent(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            api_init_by_system_user()
+            events = ads_pixels.get_account_pixel_events(fb_ad_account.act_account_id)
+
+            response_data['success'] = 'YES'
+            response_data['data'] = events
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 class FbAdAccountCategory(APIView):
     def get(self, request, fb_account_id, format=None):
