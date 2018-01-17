@@ -28,9 +28,9 @@
 								<div class="target_report_wrap">
 									<div class="target_setup">
 										<div class="select_btn">
-											<div class="select_contents test01">
+											<div class="select_contents control-select">
 												<div class="select" v-on:click="sortSelectOnOff()"><p>열 맞춤 설정</p></div>
-												<ul class="select_view test01_view" v-if="this.sortSelectData.onShow">
+												<ul class="select_view control_view" v-if="this.sortSelectData.onShow">
 													<li v-for="item in this.sortSelectData.listData"><input type="checkbox" v-bind:id="item.setting.checkId" v-on:change="sortSelectFilter(item)" checked><label v-bind:for="item.setting.checkId">{{ item.setting.name }}</label></li>
 												</ul>
 											</div>
