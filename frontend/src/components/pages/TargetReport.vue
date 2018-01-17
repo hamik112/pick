@@ -44,34 +44,34 @@
 									</div>
 									<div class="target_report_contents">
 										<div class="report_contents_inner_wrap">
-											<div class="contents_inner" :width="this.tablesAutoWidth">
+											<div id="report-list" class="contents_inner">
 												<div class="table_head">
-													<ul class="head_th clearfix">
-														<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
-														<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">캠페인명</li>
-														<li class="line-3" v-if="sortSelectData.listData[2].setting.show">기간</li>
-														<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">광고세트</li>
-														<li class="line-5" v-if="sortSelectData.listData[4].setting.show">연령</li>
-														<li class="line-6" v-if="sortSelectData.listData[5].setting.show">성별</li>
-														<li class="line-7" v-if="sortSelectData.listData[6].setting.show">관심사 개수</li>
-														<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
-														<li class="line-9" v-if="sortSelectData.listData[8].setting.show">
+													<ul id="report-list-head" class="head_th clearfix">
+														<li class="line-1 report-line" v-if="sortSelectData.listData[0].setting.show">광고주</li>
+														<li class="line-2 normal_depth report-line" v-if="sortSelectData.listData[1].setting.show">캠페인명</li>
+														<li class="line-3 report-line" v-if="sortSelectData.listData[2].setting.show">기간</li>
+														<li class="line-4 normal_depth report-line" v-if="sortSelectData.listData[3].setting.show">광고세트</li>
+														<li class="line-5 report-line" v-if="sortSelectData.listData[4].setting.show">연령</li>
+														<li class="line-6 report-line" v-if="sortSelectData.listData[5].setting.show">성별</li>
+														<li class="line-7 report-line" v-if="sortSelectData.listData[6].setting.show">관심사 개수</li>
+														<li class="line-8 normal_depth report-line" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
+														<li class="line-9 report-line" v-if="sortSelectData.listData[8].setting.show">
 															<span>광고비</span>
 															<span class="sort_btn"></span>
 														</li>
-														<li class="line-10" v-if="sortSelectData.listData[9].setting.show">
+														<li class="line-10 report-line" v-if="sortSelectData.listData[9].setting.show">
 															<span>노출</span>
 															<span class="sort_btn"></span>
 														</li>
-														<li class="line-11" v-if="sortSelectData.listData[10].setting.show">
+														<li class="line-11 report-line" v-if="sortSelectData.listData[10].setting.show">
 															<span>도달</span>
 															<span class="sort_btn"></span>
 														</li>
-														<li class="line-12" v-if="sortSelectData.listData[11].setting.show">
+														<li class="line-12 report-line" v-if="sortSelectData.listData[11].setting.show">
 															<span>도달빈도</span>
 															<span class="sort_btn"></span>
 														</li>
-														<li class="line-13 th_sub depth1" v-if="sortSelectData.listData[12].setting.show">
+														<li class="line-13 th_sub depth1 report-line" v-if="sortSelectData.listData[12].setting.show">
 															<dl>
 																<dt>사이트 유입 지표</dt>
 																<dd>
@@ -92,7 +92,7 @@
 																</dd>
 															</dl>
 														</li>
-														<li class="line-14 th_sub depth2" v-if="sortSelectData.listData[13].setting.show">
+														<li class="line-14 th_sub depth2 report-line" v-if="sortSelectData.listData[13].setting.show">
 															<dl>
 																<dt>슬라이드 소재 클릭 지표</dt>
 																<dd>
@@ -125,7 +125,7 @@
 																</dd>
 															</dl>
 														</li>
-														<li class="line-15 th_sub depth3" v-if="sortSelectData.listData[14].setting.show">
+														<li class="line-15 th_sub depth3 report-line" v-if="sortSelectData.listData[14].setting.show">
 															<dl>
 																<dt>영상캠페인 지표</dt>
 																<dd>
@@ -158,7 +158,7 @@
 																</dd>
 															</dl>
 														</li>
-														<li class="line-16 th_sub depth4" v-if="sortSelectData.listData[15].setting.show">
+														<li class="line-16 th_sub depth4 report-line" v-if="sortSelectData.listData[15].setting.show">
 															<dl>
 																<dt>전환 지표</dt>
 																<dd>
@@ -195,7 +195,7 @@
 																</dd>
 															</dl>
 														</li>
-														<li class="line-17 th_sub depth5" v-if="sortSelectData.listData[16].setting.show">
+														<li class="line-17 th_sub depth5 report-line" v-if="sortSelectData.listData[16].setting.show">
 															<dl>
 																<dt>페이지 참여 지표</dt>
 																<dd>
@@ -368,6 +368,9 @@ export default {
 	beforeMount() {
 		this.setDatas()
 	},
+	mounted() {
+		this.sortTableAutoWidth()
+	},
 	data () {
 		return {
 			categorySelectData: {
@@ -414,7 +417,7 @@ export default {
 				}
 			],
 
-			tablesAutoWidth:1280,
+			tablesAutoWidth:4880,
 
 
 
@@ -459,8 +462,6 @@ export default {
 				}
 				this.sortSelectData.listData.push(setting)
 			}
-
-
 		},
 		selectCategory(item) {
 			this.categorySelectData.emptyText = item
@@ -472,11 +473,25 @@ export default {
 			this.sortSelectData.onShow = !this.sortSelectData.onShow
 		},
 		sortSelectFilter(item) {
+			const me = this
 			item.setting.checked = !item.setting.checked
 			item.setting.show = !item.setting.show
+			setTimeout(function() {
+				me.sortTableAutoWidth()
+			}, 1)
 		},
 		sortTableAutoWidth(){
+			const listEl = document.getElementById('report-list')
+			const ulEl = document.getElementById('report-list-head')
+			const liEl = ulEl.getElementsByClassName('report-line')
+			let listWidth = 0
 
+			for(let i = 0; i < liEl.length; i++) {
+				listWidth += liEl[i].offsetWidth
+			}
+
+			this.tablesAutoWidth = listWidth
+			listEl.style.width = this.tablesAutoWidth + 'px'
 		},
 		disabledDate (time) {
 			return time < this.min || time > this.max
