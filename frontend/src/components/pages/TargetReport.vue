@@ -44,226 +44,293 @@
 									</div>
 									<div class="target_report_contents">
 										<div class="report_contents_inner_wrap">
-											<table class="contents_inner" :width="this.tablesAutoWidth">
-												<thead>
-													<tr>
-														<th rowspan="2" class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</th>
-														<th rowspan="2" class="line-2" v-if="sortSelectData.listData[1].setting.show">캠페인명</th>
-														<th rowspan="2" class="line-3" v-if="sortSelectData.listData[2].setting.show">기간</th>
-														<th rowspan="2" class="line-4" v-if="sortSelectData.listData[3].setting.show">광고세트</th>
-														<th rowspan="2" class="line-5" v-if="sortSelectData.listData[4].setting.show">연령</th>
-														<th rowspan="2" class="line-6" v-if="sortSelectData.listData[5].setting.show">성별</th>
-														<th rowspan="2" class="line-7" v-if="sortSelectData.listData[6].setting.show">관심사 개수</th>
-														<th rowspan="2" class="line-8" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</th>
-														<th rowspan="2" class="line-9" v-if="sortSelectData.listData[8].setting.show">
+											<div class="contents_inner" :width="this.tablesAutoWidth">
+												<div class="table_head">
+													<ul class="head_th clearfix">
+														<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
+														<li class="line-2" v-if="sortSelectData.listData[1].setting.show">캠페인명</li>
+														<li class="line-3" v-if="sortSelectData.listData[2].setting.show">기간</li>
+														<li class="line-4" v-if="sortSelectData.listData[3].setting.show">광고세트</li>
+														<li class="line-5" v-if="sortSelectData.listData[4].setting.show">연령</li>
+														<li class="line-6" v-if="sortSelectData.listData[5].setting.show">성별</li>
+														<li class="line-7" v-if="sortSelectData.listData[6].setting.show">관심사 개수</li>
+														<li class="line-8" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
+														<li class="line-9" v-if="sortSelectData.listData[8].setting.show">
 															<span>광고비</span>
 															<span class="sort_btn"></span>
-														</th>
-														<th rowspan="2" class="line-10" v-if="sortSelectData.listData[9].setting.show">
+														</li>
+														<li class="line-10" v-if="sortSelectData.listData[9].setting.show">
 															<span>노출</span>
 															<span class="sort_btn"></span>
-														</th>
-														<th rowspan="2" class="line-11" v-if="sortSelectData.listData[10].setting.show">
+														</li>
+														<li class="line-11" v-if="sortSelectData.listData[10].setting.show">
 															<span>도달</span>
 															<span class="sort_btn"></span>
-														</th>
-														<th rowspan="2" class="line-12" v-if="sortSelectData.listData[11].setting.show">
+														</li>
+														<li class="line-12" v-if="sortSelectData.listData[11].setting.show">
 															<span>도달빈도</span>
 															<span class="sort_btn"></span>
-														</th>
-														<th colspan="3" class="line-13" v-if="sortSelectData.listData[12].setting.show">사이트 유입 지표</th>
-														<th colspan="6" class="line-14" v-if="sortSelectData.listData[13].setting.show">슬라이드 소재 클릭 지표</th>
-														<th colspan="6" class="line-15" v-if="sortSelectData.listData[14].setting.show">영상캠페인 지표</th>
-														<th colspan="7" class="line-16" v-if="sortSelectData.listData[15].setting.show">전환 지표</th>
-														<th colspan="4" class="line-17" v-if="sortSelectData.listData[16].setting.show">페이지 참여 지표</th>
-													</tr>
-													<tr class="tbody_th">
-														<td v-if="sortSelectData.listData[12].setting.show">
-															<span>링크클릭</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[12].setting.show">
-															<span>CTR</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[12].setting.show">
-															<span>CPC</span>
-															<span class="sort_btn"></span>
-														</td>
+														</li>
+														<li class="line-13 th_sub depth1" v-if="sortSelectData.listData[12].setting.show">
+															<dl>
+																<dt>사이트 유입 지표</dt>
+																<dd>
+																	<ul class="clearfix">
+																		<li v-if="sortSelectData.listData[12].setting.show">
+																			<span>링크클릭</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[12].setting.show">
+																			<span>CTR</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[12].setting.show">
+																			<span>CPC</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																	</ul>
+																</dd>
+															</dl>
+														</li>
+														<li class="line-14 th_sub depth2" v-if="sortSelectData.listData[13].setting.show">
+															<dl>
+																<dt>슬라이드 소재 클릭 지표</dt>
+																<dd>
+																	<ul class="clearfix">
+																		<li v-if="sortSelectData.listData[13].setting.show">
+																			<span>1번</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[13].setting.show">
+																			<span>2번</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[13].setting.show">
+																			<span>3번</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[13].setting.show">
+																			<span>4번</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[13].setting.show">
+																			<span>5번</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[13].setting.show">
+																			<span>6번</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																	</ul>
+																</dd>
+															</dl>
+														</li>
+														<li class="line-15 th_sub depth3" v-if="sortSelectData.listData[14].setting.show">
+															<dl>
+																<dt>영상캠페인 지표</dt>
+																<dd>
+																	<ul class="clearfix">
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>3초 이상 View</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>3초 이상 VTR</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>3초 이상 CPV</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>10초 이상 View</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>10초 이상 VTR</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>10초 이상 CPV</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																	</ul>
+																</dd>
+															</dl>
+														</li>
+														<li class="line-16 th_sub depth4" v-if="sortSelectData.listData[15].setting.show">
+															<dl>
+																<dt>전환 지표</dt>
+																<dd>
+																	<ul class="clearfix">
+																		<li v-if="sortSelectData.listData[15].setting.show">
+																			<span>전환 완료</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[15].setting.show">
+																			<span>전환 완료 가치</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[15].setting.show">
+																			<span>1단계 완료</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[15].setting.show">
+																			<span>2단계 완료</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[15].setting.show">
+																			<span>3단계 완료</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[15].setting.show">
+																			<span>4단계 완료</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[15].setting.show">
+																			<span>5단계 완료</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																	</ul>
+																</dd>
+															</dl>
+														</li>
+														<li class="line-17 th_sub depth5" v-if="sortSelectData.listData[16].setting.show">
+															<dl>
+																<dt>페이지 참여 지표</dt>
+																<dd>
+																	<ul class="clearfix">
+																		<li v-if="sortSelectData.listData[16].setting.show">
+																			<span>공유</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[16].setting.show">
+																			<span>좋아요</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[16].setting.show">
+																			<span>댓글</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[16].setting.show">
+																			<span>공감</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																	</ul>
+																</dd>
+															</dl>
+														</li>
+													</ul>
+												</div>
+												<div class="table_body">
+													<div  class="table_body_inner" v-for="data in listData">
+														<ul class="body_th clearfix">
+															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
+															<li class="line-2" v-if="sortSelectData.listData[1].setting.show">CTR</li>
+															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">CPC</li>
+															<li class="line-4" v-if="sortSelectData.listData[3].setting.show">1번</li>
+															<li class="line-5" v-if="sortSelectData.listData[4].setting.show">2번</li>
+															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">3번</li>
+															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
+																<span>4번</span>
+																<div class="interest_view">
+																	<ul class="clearfix">
+																		<li>겉옷</li>
+																		<li>데님</li>
+																		<li>미니스커트</li>
+																		<li>민소매셔츠</li>
+																		<li>바지</li>
+																		<li>반바지</li>
+																		<li>블라우스</li>
+																		<li>셔츠</li>
+																		<li>쇼핑 및 패션</li>
+																		<li>슈트</li>
+																	</ul>
+																	<div class="inter_clip_copy">클립보드로 복사하기</div>
+																	<div class="inter_close">닫기</div>
+																</div>
+															</li>
+															<li class="line-8" v-if="sortSelectData.listData[7].setting.show">5번</li>
+															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">6번</li>
+															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">3초 이상 View</li>
+															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">3초 이상 VTR</li>
+															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">3초 이상 CPV</li>
+															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
+																<dl>
+																	<dt></dt>
+																	<dd>
+																		<ul>
+																			<li>10초 이상 VTR</li>
+																			<li>10초 이상 CPV</li>
+																			<li>10초 이상 CPV</li>
+																		</ul>
+																	</dd>
+																</dl>
+															</li>
+															<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show">
+																<dl>
+																	<dt></dt>
+																	<dd>
+																		<ul>
+																			<li>1단계 완료</li>
+																			<li>1단계 완료</li>
+																			<li>1단계 완료</li>
+																			<li>1단계 완료</li>
+																			<li>1단계 완료</li>
+																			<li>1단계 완료</li>
+																		</ul>
+																	</dd>
+																</dl>
+															</li>
+															<li class="line-15 depth3" v-if="sortSelectData.listData[14].setting.show">
+																<dl>
+																	<dt></dt>
+																	<dd>
+																		<ul>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">좋아요</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">댓글</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">좋아요</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">댓글</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">공감</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">10초 이상 CPV</li>
+																		</ul>
+																	</dd>
+																</dl>
+															</li>
 
-
-														<td v-if="sortSelectData.listData[13].setting.show">
-															<span>1번</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[13].setting.show">
-															<span>2번</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[13].setting.show">
-															<span>13번</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[13].setting.show">
-															<span>4번</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[13].setting.show">
-															<span>5번</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[13].setting.show">
-															<span>6번</span>
-															<span class="sort_btn"></span>
-														</td>
-
-
-														<td v-if="sortSelectData.listData[14].setting.show">
-															<span>3초 이상 View</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[14].setting.show">
-															<span>3초 이상 VTR</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[14].setting.show">
-															<span>3초 이상 CPV</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[14].setting.show">
-															<span>10초 이상 View</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[14].setting.show">
-															<span>10초 이상 VTR</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[14].setting.show">
-															<span>10초 이상 CPV</span>
-															<span class="sort_btn"></span>
-														</td>
-
-
-														<td v-if="sortSelectData.listData[15].setting.show">
-															<span>전환 완료</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[15].setting.show">
-															<span>전환 완료 가치</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[15].setting.show">
-															<span>1단계 완료</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[15].setting.show">
-															<span>2단계 완료</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[15].setting.show">
-															<span>3단계 완료</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[15].setting.show">
-															<span>4단계 완료</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[15].setting.show">
-															<span>5단계 완료</span>
-															<span class="sort_btn"></span>
-														</td>
-
-
-														<td v-if="sortSelectData.listData[16].setting.show">
-															<span>공유</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[16].setting.show">
-															<span>좋아요</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[16].setting.show">
-															<span>댓글</span>
-															<span class="sort_btn"></span>
-														</td>
-														<td v-if="sortSelectData.listData[16].setting.show">
-															<span>공감</span>
-															<span class="sort_btn"></span>
-														</td>
-													</tr>
-												</thead>
-												<tbody>
-													<tr v-for="data in listData">
-														<td class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</td>
-														<td class="line-2" v-if="sortSelectData.listData[1].setting.show">CTR</td>
-														<td class="line-3" v-if="sortSelectData.listData[2].setting.show">CPC</td>
-														<td class="line-4" v-if="sortSelectData.listData[3].setting.show">1번</td>
-														<td class="line-5" v-if="sortSelectData.listData[4].setting.show">2번</td>
-														<td class="line-6" v-if="sortSelectData.listData[5].setting.show">3번</td>
-														<td class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
-															<span>4번</span>
-															<div class="interest_view">
-																<ul class="clearfix">
-																	<li>겉옷</li>
-																	<li>데님</li>
-																	<li>미니스커트</li>
-																	<li>민소매셔츠</li>
-																	<li>바지</li>
-																	<li>반바지</li>
-																	<li>블라우스</li>
-																	<li>셔츠</li>
-																	<li>쇼핑 및 패션</li>
-																	<li>슈트</li>
-																</ul>
-																<div class="inter_clip_copy">클립보드로 복사하기</div>
-																<div class="inter_close">닫기</div>
-															</div>
-														</td>
-														<td class="line-8" v-if="sortSelectData.listData[7].setting.show">5번</td>
-														<td class="line-9" v-if="sortSelectData.listData[8].setting.show">6번</td>
-														<td class="line-10" v-if="sortSelectData.listData[9].setting.show">3초 이상 View</td>
-														<td class="line-11" v-if="sortSelectData.listData[10].setting.show">3초 이상 VTR</td>
-														<td class="line-12" v-if="sortSelectData.listData[11].setting.show">3초 이상 CPV</td>
-
-														<!-- 사이트 유입 지표 -->
-														<td class="line-13" v-if="sortSelectData.listData[12].setting.show">10초 이상 View</td>
-														<td class="line-13" v-if="sortSelectData.listData[12].setting.show">10초 이상 VTR</td>
-														<td class="line-13" v-if="sortSelectData.listData[12].setting.show">10초 이상 CPV</td>
-
-														<!-- 슬라이드 소재 클릭 지표 -->
-														<td class="line-14" v-if="sortSelectData.listData[13].setting.show">전환 완료</td>
-														<td class="line-14" v-if="sortSelectData.listData[13].setting.show">전환 완료 가치</td>
-														<td class="line-14" v-if="sortSelectData.listData[13].setting.show">1단계 완료</td>
-														<td class="line-14" v-if="sortSelectData.listData[13].setting.show">2단계 완료</td>
-														<td class="line-14" v-if="sortSelectData.listData[13].setting.show">3단계 완료</td>
-														<td class="line-14" v-if="sortSelectData.listData[13].setting.show">4단계 완료</td>
-														<td class="line-15" v-if="sortSelectData.listData[13].setting.show">5단계 완료</td>
-
-														<!-- 영상캠페인 지표 -->
-														<td class="line-15" v-if="sortSelectData.listData[14].setting.show">공유</td>
-														<td class="line-15" v-if="sortSelectData.listData[14].setting.show">좋아요</td>
-														<td class="line-15" v-if="sortSelectData.listData[14].setting.show">댓글</td>
-														<td class="line-15" v-if="sortSelectData.listData[14].setting.show">공감</td>
-														<td class="line-15" v-if="sortSelectData.listData[14].setting.show">10초 이상 CPV</td>
-
-														<!-- 전환 지표 -->
-														<td class="line-16" v-if="sortSelectData.listData[15].setting.show">전환 완료</td>
-														<td class="line-16" v-if="sortSelectData.listData[15].setting.show">전환 완료 가치</td>
-														<td class="line-16" v-if="sortSelectData.listData[15].setting.show">1단계 완료</td>
-														<td class="line-16" v-if="sortSelectData.listData[15].setting.show">2단계 완료</td>
-														<td class="line-16" v-if="sortSelectData.listData[15].setting.show">3단계 완료</td>
-														<td class="line-16" v-if="sortSelectData.listData[15].setting.show">4단계 완료</td>
-														<td class="line-16" v-if="sortSelectData.listData[15].setting.show">5단계 완료</td>
-
-														<!-- 페이지 참여 지표 -->
-														<td class="line-17" v-if="sortSelectData.listData[16].setting.show">공유</td>
-														<td class="line-17" v-if="sortSelectData.listData[16].setting.show">좋아요</td>
-														<td class="line-17" v-if="sortSelectData.listData[16].setting.show">댓글</td>
-														<td class="line-17" v-if="sortSelectData.listData[16].setting.show">공감</td>
-
-													</tr>
-												</tbody>
-											</table>
+															<li class="line-16 depth4" v-if="sortSelectData.listData[15].setting.show">
+																<dl>
+																	<dt></dt>
+																	<dd>
+																		<ul>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">좋아요</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">좋아요</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">공감</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">10초 이상 CPV</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">10초 이상 CPV</li>
+																		</ul>
+																	</dd>
+																</dl>
+															</li>
+															<li class="line-17 depth5" v-if="sortSelectData.listData[16].setting.show">
+																<dl>
+																	<dt></dt>
+																	<dd>
+																		<ul>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">좋아요</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">댓글</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">좋아요</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">댓글</li>
+																		</ul>
+																	</dd>
+																</dl>
+															</li>
+														</ul>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="pagination">

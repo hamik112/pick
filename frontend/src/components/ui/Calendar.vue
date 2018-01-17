@@ -36,7 +36,7 @@
 							<p id="date-desc" class="calender-date">{{ this.textDate }}</p>
 							<div class="calender-btn">
 								<button type="button" class="close_btn" @click.stop="close">취소</button>
-								<button type="button" class="update_btn" @click="this.ok">업데이트</button>
+								<button type="button" class="update_btn" @click="update">업데이트</button>
 							</div>
 						</div>
 					</div>
@@ -303,6 +303,13 @@
 		  setTimeout(() => {
 			$this.show = $this.range
 		  })
+		},
+		update(){
+			const $this = this
+			$this.$emit('input', Array.isArray($this.value) ? $this.dates : $this.dates[0])
+			setTimeout(() => {
+				$this.show = false
+			})
 		},
 		tf (time, format) {
 		  const year = time.getFullYear()
