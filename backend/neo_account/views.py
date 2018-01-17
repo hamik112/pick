@@ -10,7 +10,7 @@ import json
 logger = logging.getLogger(__name__)
 
 
-class NeoAccount(APIView):
+class NeoAccountView(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
