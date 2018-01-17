@@ -64,13 +64,17 @@ header{width:100%; display:table; padding:0 30px; height:66px; background:$basic
 			}
 			.user_mask{width:40px; height:40px; position:absolute; top:0px; left:5px; background:url(assets/images/common/mask_type_03.png) 0 0 no-repeat; padding-left:0px;}
 		}
-		.user_setup{position:relative; padding-left:44px; display:inline-block; *display:inline; vertical-align:middle;
-			.setup_list{position: absolute; top: 40px; right: -30px; background: #fff; width: 100px; text-align: center; line-height: 1.4; z-index: 1; cursor: pointer; border:$Border_type01;
-				p{padding:5px;
+		.user_setup{position:relative; padding-left:44px; height:40px; display:inline-block; *display:inline; vertical-align:middle;
+			#set_up { margin:10px 0 0 0; }
+			.setup_list{ display:none; position: absolute; top:40px; right: -30px; background: #fff; width: 100px; text-align: center; line-height: 1.4; z-index: 1; cursor: pointer; border:$Border_type01;
+				p{
 					&:first-child{border-bottom:$Border_type01;}
-					&:hover{color:#fff; background:#375b96 }
+					a { display:block; padding:5px;
+						&:hover{color:#fff; background:#375b96 }
+					}
 				}
 			}
+			&:hover .setup_list { display:block; }
 		}
 	}
 }

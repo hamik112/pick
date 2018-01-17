@@ -11,7 +11,7 @@
 							</div>
 
 							<!-- 카테고리 선택 탭 -->
-							<div class="pop_tab_wrap clearfix" v-if="tabActive1">
+							<div class="pop_tab_wrap clearfix" v-if="tabAction.tabActive1.show">
 								<div class="cate_contents_widget">
 									<ul class="target_pick_01">
 										<li @click="tabMove(1)">
@@ -49,7 +49,7 @@
 
 
 							<!-- 사이트 방문 탭 -->
-							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive2">
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive2.show">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -94,7 +94,7 @@
 							</div>
 
 							<!-- 특정 페이지 방문 탭 -->
-							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive3">
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive3.show">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -178,7 +178,7 @@
 							</div>
 
 							<!-- 네오 탭 -->
-							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive4">
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive4.show">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -212,23 +212,78 @@
 											<div class="contents_title">Neo 유형</div>
 											<ul>
 												<li>
-													<div class="result_check"><input type="checkbox" id="target_type01"><label for="target_type01">매체</label></div>
+													<div class="result_check"><input type="radio" id="target_type01" @change="neoTab('media')" name="neo_type" value="media" checked><label for="target_type01">매체</label></div>
 												</li>
 												<li>
-													<div class="result_check"><input type="checkbox" id="target_type02"><label for="target_type02">그룹</label></div>
+													<div class="result_check"><input type="radio" id="target_type02" name="neo_type" @change="neoTab('group')" value="group"><label for="target_type02">그룹</label></div>
 												</li>
 												<li>
-													<div class="result_check"><input type="checkbox" id="target_type03"><label for="target_type03">키워드</label></div>
+													<div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="neoTab('keyword')" value="keyword"><label for="target_type03">키워드</label></div>
 												</li>
 												<li>
-													<div class="result_check"><input type="checkbox" id="target_type04"><label for="target_type04">엑셀업로드</label></div>
+													<div class="result_check"><input type="radio" id="target_type04" name="neo_type" @change="neoTab('excel')" value="excel"><label for="target_type04">엑셀업로드</label></div>
 												</li>
 											</ul>
 										</div>
 									</div>
 									<div class="target_tbody">
 										<div class="target_inner_tbody clearfix">
-											<div class="cate_contents">
+											<!-- 매체 -->
+											<div class="cate_contents" v-if="tabAction.tabActive4.subActive.media">
+												<div class="account_info">
+													<div class="account_title">"아래 매체로 유입된 사람"중</div>
+													<div>
+														<ui-select :selectData="this.selectData2" :onClick="selectTarget"></ui-select>
+													</div>
+													<div class="account_date">
+														<input type="text"><span>일</span>
+													</div>
+												</div>
+												<div class="account_wrap">
+													<div class="account_inner_wrap clearfix">
+														<div class="account_left">
+															<div class="advertiser_search_result pop-scroll">
+																<div class="result_list_inner">
+																	<div class="result_thead">
+																		<ul>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="all_check" v-model="selectAll"><label for="all_check"></label></div>
+																				<div class="result_account">계정명</div>
+																				<div class="result_group">캠페인명</div>
+																				<div class="result_switch">전환 수</div>
+																			</li>
+																		</ul>
+																	</div>
+																	<div class="result_tbody">
+																		<ul id="adv-list-1">
+																			<li v-for="adv in advs">
+																				<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.number" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.number"><label :for="'adv-check-' + adv.number"></label></div>
+																				<div class="result_account">{{ adv.name }}</div>
+																				<div class="result_group">{{ adv.campaign }}</div>
+																				<div class="result_switch">{{ adv.count }}</div>
+																			</li>
+																		</ul>
+																	</div>
+																</div>
+															</div>
+															<div class="account_add_wrap">
+																<div>*최근 한달 기준</div>
+																<button type="button" v-on:click="checkList('advs','addAdvs')">선택한 매체 추가</button>
+															</div>
+														</div>
+														<div class="account_right clearfix">
+															<button type="button" v-on:click="deleteAddAdvs('all')" title="전체삭제"><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
+															<ul id="adv-list-2">
+																<li v-for="addAdv in addAdvs" class="sticker_btn">
+																	<span>{{ addAdv.name }}</span> <span @click="deleteAddAdvs(addAdv)" :data-number="addAdv.number" title="삭제하기"><img src="../../assets/images/target/target_list_close.png" alt=""></span>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 그룹 -->
+											<div class="cate_contents" v-if="tabAction.tabActive4.subActive.group">
 												<div class="account_info">
 													<div class="account_title">"아래 그룹로 유입된 사람"중</div>
 													<div>
@@ -258,8 +313,8 @@
 																			<li v-for="adv in advs">
 																				<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.number" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.number"><label :for="'adv-check-' + adv.number"></label></div>
 																				<div class="result_account">{{ adv.name }}</div>
-																				<div class="result_group">LF_M_구글</div>
-																				<div class="result_switch">LF_M_구글</div>
+																				<div class="result_group">{{ adv.campaign }}</div>
+																				<div class="result_switch">{{ adv.count }}</div>
 																			</li>
 																		</ul>
 																	</div>
@@ -268,6 +323,111 @@
 															<div class="account_add_wrap">
 																<div>*최근 한달 기준</div>
 																<button type="button" v-on:click="checkList('advs','addAdvs')">선택한 매체 추가</button>
+															</div>
+														</div>
+														<div class="account_right clearfix">
+															<button type="button" v-on:click="deleteAddAdvs('all')" title="전체삭제"><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
+															<ul id="adv-list-2">
+																<li v-for="addAdv in addAdvs" class="sticker_btn">
+																	<span>{{ addAdv.name }}</span> <span @click="deleteAddAdvs(addAdv)" :data-number="addAdv.number" title="삭제하기"><img src="../../assets/images/target/target_list_close.png" alt=""></span>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 키워드 -->
+											<div class="cate_contents" v-if="tabAction.tabActive4.subActive.keyword">
+												<div class="account_info">
+													<div class="account_title">"아래 키워드로 유입된 사람"중</div>
+													<div>
+														<ui-select :selectData="this.selectData2" :onClick="selectTarget"></ui-select>
+													</div>
+													<div class="account_date">
+														<input type="text"><span>일</span>
+													</div>
+												</div>
+												<div class="account_wrap">
+													<div class="account_inner_wrap clearfix">
+														<div class="account_left">
+															<div class="advertiser_search_result pop-scroll">
+																<div class="result_list_inner">
+																	<div class="result_thead">
+																		<ul>
+																			<li>
+																				<div class="result_check"><input type="checkbox" id="all_check" v-model="selectAll"><label for="all_check"></label></div>
+																				<div class="result_account">그룹명</div>
+																				<div class="result_group">키워드</div>
+																				<div class="result_switch">전환 수</div>
+																			</li>
+																		</ul>
+																	</div>
+																	<div class="result_tbody">
+																		<ul id="adv-list-1">
+																			<li v-for="adv in advs">
+																				<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.number" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.number"><label :for="'adv-check-' + adv.number"></label></div>
+																				<div class="result_account">{{ adv.name }}</div>
+																				<div class="result_group">{{ adv.campaign }}</div>
+																				<div class="result_switch">{{ adv.count }}</div>
+																			</li>
+																		</ul>
+																	</div>
+																</div>
+															</div>
+															<div class="account_add_wrap">
+																<div>*최근 한달 기준</div>
+																<button type="button" v-on:click="checkList('advs','addAdvs')">선택한 매체 추가</button>
+															</div>
+														</div>
+														<div class="account_right clearfix">
+															<button type="button" v-on:click="deleteAddAdvs('all')" title="전체삭제"><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
+															<ul id="adv-list-2">
+																<li v-for="addAdv in addAdvs" class="sticker_btn">
+																	<span>{{ addAdv.name }}</span> <span @click="deleteAddAdvs(addAdv)" :data-number="addAdv.number" title="삭제하기"><img src="../../assets/images/target/target_list_close.png" alt=""></span>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 엑셀 -->
+											<div class="cate_contents target_excel" v-if="tabAction.tabActive4.subActive.excel">
+												<div class="account_info">
+													<div class="account_title">"아래 등록 양식으로 유입된 사람"중</div>
+													<div>
+														<div class="select_btn">
+															<div class="select_contents">
+																<div class="select"><p>특정일 동안 미방문 고객</p></div>
+																<ul class="select_view">
+																	<li>이벤트1</li>
+																	<li>이벤트2</li>
+																	<li>이벤트3</li>
+																</ul>
+															</div>
+														</div>
+													</div>
+													<div class="account_date">
+														<input type="text"><span>일</span>
+													</div>
+												</div>
+												<div class="account_wrap">
+													<div class="account_inner_wrap clearfix">
+														<div class="account_left">
+															<strong>양식에 맞추어 엑셀을 입력해 주세요.</strong>
+															<p>양식에 맞추어 엑셀을 업로드 해주시면,</p>
+															<p>해당 파라미터를 타겟으로 만들 수 있습니다.</p>
+															<div class="excel_wrap">
+																<div class="download_wrap clearfix">
+																	<button><strong>엑셀업로드</strong></button>
+																	<button>양식 다운로드</button>
+																</div>
+																<div class="input_wrap clearfix">
+																	<div>
+																		<input type="text">
+																	</div>
+																	<button></button>
+																</div>
+																<button class="upload_btn view_alert"><strong>업로드</strong></button>
 															</div>
 														</div>
 														<div class="account_right clearfix">
@@ -296,7 +456,7 @@
 							</div>
 
 							<!-- 구글애널리틱스 탭 -->
-							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive5">
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive5.show">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -404,7 +564,7 @@
 							</div>
 
 							<!-- 구매 탭 -->
-							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive6">
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive6.show">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -449,7 +609,7 @@
 							</div>
 
 							<!-- 장바구니 탭 -->
-							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive7">
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive7.show">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -494,7 +654,7 @@
 							</div>
 
 							<!-- 회원가입 탭 -->
-							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive8">
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive8.show">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -539,7 +699,7 @@
 							</div>
 
 							<!-- 단계별 전환 -->
-							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabActive9">
+							<div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive9.show">
 								<div class="target_contents_inner">
 									<div class="target_thead">
 										<div class="main_title">
@@ -632,15 +792,41 @@ export default {
   },
   data () {
     return {
-    	tabActive1:true,
-    	tabActive2:false,
-    	tabActive3:false,
-    	tabActive4:false,
-    	tabActive5:false,
-    	tabActive6:false,
-    	tabActive7:false,
-    	tabActive8:false,
-    	tabActive9:false,
+    	tabAction:{
+	    	tabActive1:{
+	    		show:true
+	    	},
+	    	tabActive2:{
+	    		show:false
+	    	},
+	    	tabActive3:{
+	    		show:false
+	    	},
+	    	tabActive4:{
+	    		show:false,
+	    		subActive:{
+	    			media:true,
+	    			group:false,
+	    			keyword:false,
+	    			excel:false
+	    		}
+	    	},
+	    	tabActive5:{
+	    		show:false
+	    	},
+	    	tabActive6:{
+	    		show:false
+	    	},
+	    	tabActive7:{
+	    		show:false
+	    	},
+	    	tabActive8:{
+	    		show:false
+	    	},
+	    	tabActive9:{
+	    		show:false
+	    	}
+    	},
 
     	categoryName:'',
 
@@ -668,10 +854,10 @@ export default {
 
 
         advs:[
-        	{ "number": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
-		    { "number": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
-		    { "number": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
-		    { "number": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
+        	{ "number": "1", "name": "LF몰", "campaign":"페이스북1", "count":"3,716", "type_id":"13" },
+		    { "number": "2", "name": "LF몰2", "campaign":"페이스북2", "count":"3,716", "type_id":"11" },
+		    { "number": "3", "name": "LF몰3", "campaign":"페이스북3", "count":"3,716", "type_id":"15" },
+		    { "number": "4", "name": "LF몰4", "campaign":"페이스북4", "count":"3,716", "type_id":"17" }
         ],
         addAdvs:[],
         checkData:[],
@@ -679,6 +865,8 @@ export default {
     }
   },
   methods: {
+
+  	//타겟만들기 카테고리 탭
 	tabMove(activeNumber, beforeNumber) {
 		let tabArray = ['tabActive1','tabActive2','tabActive3','tabActive4','tabActive5','tabActive6','tabActive7','tabActive8','tabActive9']
 		let pageNum = (activeNumber == 0) ? '1':'2'
@@ -687,15 +875,28 @@ export default {
 
 		for(let i = 0; i < tabArray.length; i++) {
 			if(i == activeNumber) {
-				this[tabArray[i]] = true
+				this.tabAction[tabArray[i]].show = true
 			}else{
-				this[tabArray[i]] = false
+				this.tabAction[tabArray[i]].show = false
+			}
+		}
+	},
+	//네오 카테고리 유형 탭
+	neoTab(type) {
+		const types = ['media','group','keyword','excel']
+		for(let i = 0; i < types.length; i++) {
+			if(types[i] == type) {
+				this.tabAction['tabActive4'].subActive[type] = true
+			}else{
+				this.tabAction['tabActive4'].subActive[types[i]] = false
 			}
 		}
 	},
 	selectTarget(item) {
 		this.selectData.emptyText = item
 	},
+
+	//매체 삭제
 	deleteAddAdvs(item) {
 		let checkAdd = this.addAdvs
 		let addListEl = document.getElementById('adv-list-2')
@@ -710,6 +911,8 @@ export default {
 			this.advs.push(item)
 		}
 	},
+
+	//전체선택
 	allCheck(value,key1,key2,before,after) {
 		const me = this
 		var selected = []
@@ -721,7 +924,9 @@ export default {
         }
         me[key2] = selected;
 	},
+	//체크리스트 추가
 	checkList (before,after) {
+
 		const me = this
 
 		this.checkFilter(before, 'type1')
@@ -736,6 +941,8 @@ export default {
 		this.selected = []
 		me.checkData = []
 	},
+
+	//체크 중복 필터
 	checkFilter(type, type2) {
 		let elId = "adv-list-1"
 		let ul = document.getElementById(elId)

@@ -2,9 +2,6 @@
 	<header>
 
 
-		<transition name='modal'>
-			<SetupPop v-if="setupOn" @close="setupOn = false"></SetupPop>
-		</transition>
 
 
 		<div class="left_area"><a href="#/"><img src="../../assets/images/common/main_logo.jpg" alt="pickdata" /></a></div>
@@ -14,11 +11,11 @@
 				<p class="user_image"><img v-bind:src="userImage" alt=""></p>
 				<p>{{ userName }}</p>
 			</div>
-			<div class="user_setup" tabindex="-1" @blur="allCategory('blur')">
-				<p id="set_up" v-on:click="allCategory()"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></p>
-				<div class="setup_list" v-if="settingDes">
-					<p @click="setupOn = true">설정</p>
-					<p>로그아웃</p>
+			<div class="user_setup">
+				<p id="set_up"><router-link v-bind:to="{ path: '/setting' }"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></router-link></p>
+				<div class="setup_list">
+					<p><router-link v-bind:to="{ path: '/setting' }">설정</router-link></p>
+					<p><a href="javascript:void(0)" @click="logout">로그아웃</a></p>
 				</div>
 			</div>
 		</div>
@@ -44,19 +41,18 @@ export default {
 	},
 
 	methods:{
-		allCategory:function(type) {
-			if(type != 'blur') {
-				this.settingDes = !this.settingDes
-			}else{
-				this.settingDes = false
-			}
-		}
+		logout(){
+	  		if(confirm('픽데이터에서 로그아웃 하시겠습니까?') == true) {
+
+	  		}else{
+	  			return
+	  		}
+	  	}
 	},
 
 	data () {
 		return {
 			setupOn: false,
-			settingDes: false,
 			userName: '',
 			userImage: ''
 		}
