@@ -35,8 +35,8 @@
 						<div class="calender-inner-wrap">
 							<p id="date-desc" class="calender-date">{{ this.textDate }}</p>
 							<div class="calender-btn">
-								<button type="button" class="close_btn" @click.stop="cls">취소</button>
-								<button type="button" class="update_btn">업데이트</button>
+								<button type="button" class="close_btn" @click.stop="close">취소</button>
+								<button type="button" class="update_btn" @click="this.ok">업데이트</button>
 							</div>
 						</div>
 					</div>
@@ -147,7 +147,7 @@
 		  		this.dates[1] = today
 	  		}else if(set == '1') {
 	  			this.dates[0] = this.wk(1)
-	  			this.dates[1] = today
+	  			this.dates[1] = this.wk(1)
 	  		}else if(set == '7') {
 	  			this.dates[0] = this.wk(7)
 	  			this.dates[1] = today

@@ -60,6 +60,7 @@ export default {
       }
     },
     hide:function() {
+      this.pArrowUp = ''
       this.selectViewStyle.display = 'none'
     }
   }
