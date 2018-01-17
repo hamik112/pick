@@ -243,6 +243,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 								.depth5{width:400px!important;
 									li{width:100px!important; float:left;}
 								}
+								.normal_depth{width:250px!important;}
 								.table_head{letter-spacing:-4px;
 									.head_th{
 										li{width:120px; height:73px; line-height:73px; text-align:center; background:url(assets/images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%; border-right:1px solid #ededed; border-bottom:1px solid #ededed; font-weight:bold; display:inline-block; vertical-align:middle; letter-spacing:0px;
@@ -267,8 +268,8 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 												&:last-child{border-right:0px;}
 											}
 										}
-									&:nth-child(odd){background:#fff;}
-									&:nth-child(even){background:#f9fafc;}
+									&:nth-child(odd) li{background:#fff;}
+									&:nth-child(even) li{background:#f9fafc;}
 									}
 								}
 							}
