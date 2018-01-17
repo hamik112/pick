@@ -105,6 +105,7 @@ export default {
 		const response = res.data
 		const data = response.data
 		const success = response.success
+    console.log(data)
 
 		if (success === "YES") {
 		  if (data.length > 0) {
@@ -114,6 +115,7 @@ export default {
 			this.selectFbAdAccount = data[0]
 			this.fbAdAccounts = data
 			this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
+      localStorage.setItem('account_id', data[0].account_id)
 		  }
 		} else {
 		  throw('success: ' + success)

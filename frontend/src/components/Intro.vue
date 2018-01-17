@@ -11,11 +11,12 @@
 <script>
 
 import axios from 'axios'
-import { setUserId } from '../utils/auth'
+import { setUserId, setUserName, setUserImage } from '../utils/auth'
 
 export default {
   name: 'Intro',
   created () {
+    const me = this
     window.fbAsyncInit = function() {
       FB.init({
         appId      : '1456607077970548',
@@ -24,10 +25,7 @@ export default {
         xfbml      : true,  // parse social plugins on this page
         version    : 'v2.11' // use version 2.2
       });
-
-      // FB.getLoginStatus(function(response) {
-      //   this.fbCheckStatus(response);
-      // });
+      me.fbCheckStatus();
     };
     // Load the SDK asynchronously
     (function(d, s, id) {
@@ -60,20 +58,13 @@ export default {
       FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
           // Logged into your app and Facebook.
-          // testAPI();
-          var login_session = '{{ login_session }}';
-          if (login_session = 'None') {
-            // PASS
-          } else {
-            me.pickdataLogin(response);
-          }
+          me.pickdataLogin(response)
         } else if (response.status === 'not_authorized') {
           // The person is logged into Facebook, but not your app.
         } else {
           // The person is not logged into Facebook, so we're not sure if
           // they are logged into this app or not.
         }
-        console.log(response);
       });
     },
 
@@ -94,10 +85,10 @@ export default {
           var success = response.data.success;
           if (success == "YES") {
             setUserId(resp.id)
-            // console.log(me.$eventBus)
+            setUserName(resp.name)
+            setUserImage(resp.picture.data.url)
             me.$eventBus.$emit('pickdataLogin', resp)
             me.$router.push({name: 'TargetPick'})
-            // location.href = "#/pick";
           } else {
             alert(response.msg);
           }

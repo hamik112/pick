@@ -36,7 +36,7 @@ class AdSetDetail(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            account_id = request.query_params.get('account_id', "0")
+            account_id = request.query_params.get('account_id', '0')
 
             # account_id = 'act_349408409'
             ad_sets = AdSet.objects.filter(account_id=account_id)
