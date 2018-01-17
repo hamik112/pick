@@ -2,9 +2,6 @@
 	<header>
 
 
-		<transition name='modal'>
-			<SetupPop v-if="setupOn" @close="setupOn = false"></SetupPop>
-		</transition>
 
 
 		<div class="left_area"><a href="#/"><img src="../../assets/images/common/main_logo.jpg" alt="pickdata" /></a></div>
@@ -28,14 +25,9 @@
 <script>
 
 
-import SetupPop from '@/components/popup/Advertising_setup'
-
-
 export default {
   name: 'Header',
-  components:{
-  	'SetupPop':SetupPop
-  },
+  components:{},
   methods:{
   	logout(){
   		if(confirm('픽데이터에서 로그아웃 하시겠습니까?') == true) {
