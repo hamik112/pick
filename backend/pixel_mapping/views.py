@@ -50,16 +50,15 @@ class PixelMappingView(APIView):
             fb_ad_account_id = request.POST.get('fb_ad_account_id', 0)
             fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
 
-
             if fb_ad_account == None:
                 raise Exception('Not Exist fb_ad_account.')
 
-            facebook_pixel_event_names = request.POST.get('facebook_pixel_event_names', [])
-            pixel_mapping_category_ids = request.POST.get('pixel_mapping_category_ids', [])
+            facebook_pixel_event_names = request.POST.getlist('facebook_pixel_event_names', [])
+            pixel_mapping_category_ids = request.POST.getlist('pixel_mapping_category_ids', [])
 
             username = request.POST.get('username', 'TEST')
 
-            created_cnt = PixelMapping.create(PixelMapping, fb_ad_account, facebook_pixel_event_names=facebook_pixel_event_names, pixel_mapping_category_ids=pixel_mapping_category_ids)
+            created_cnt = PixelMapping.create_or_update(PixelMapping, fb_ad_account, facebook_pixel_event_names=facebook_pixel_event_names, pixel_mapping_category_ids=pixel_mapping_category_ids, username=username)
 
             response_data['success'] = 'YES'
             response_data['count'] = created_cnt

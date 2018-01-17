@@ -55,19 +55,19 @@ class PixelMapping(models.Model):
             # TODO return []
             return None
 
-    def create(self, fb_ad_account, facebook_pixel_event_names = [], pixel_mapping_category_ids = [], username = 'Test'):
+    def create_or_update(self, fb_ad_account, facebook_pixel_event_names = [], pixel_mapping_category_ids = [], username = 'Test'):
         created_cnt = 0
 
         # pixel_mapping_categories = PixelMappingCategory.get_pixel_mapping_categories(PixelMappingCategory)
         # pixel_mapping_category_serializer = PixelMappingCategorySerializer(pixel_mapping_categories, many=True)
 
-        print(facebook_pixel_event_names)
-        print(pixel_mapping_category_ids)
+        # print(facebook_pixel_event_names)
+        # print(pixel_mapping_category_ids)
 
         for idx, pixel_mapping_category_id in enumerate(pixel_mapping_category_ids):
-            print("for loop")
-            print(idx)
-            print(pixel_mapping_category_id)
+            # print("for loop")
+            # print(idx)
+            # print(pixel_mapping_category_id)
             pixel_mapping = PixelMapping()
 
             pixel_mapping.created_by = username
@@ -86,3 +86,4 @@ class PixelMapping(models.Model):
 
     class Meta:
         db_table = "pixel_mappings"
+        unique_together = ("fb_ad_account", "facebook_pixel_event_name", "pixel_mapping_category")

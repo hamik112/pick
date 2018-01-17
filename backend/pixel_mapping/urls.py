@@ -10,6 +10,4 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^$', views.PixelMappingView.as_view()),
     url(r'^default$', views.PixelMappingView.as_view()),
-
-
 ]

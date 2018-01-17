@@ -36,8 +36,8 @@ class NeoAccount(APIView):
         try:
 
             fb_ad_account_id = request.data.get('fb_ad_account_id', 0)
-            neo_adv_ids = request.data.get('neo_adv_ids', [])
-            neo_account_ids = request.data.get('neo_account_ids', [])
+            neo_adv_ids = request.data.getlist('neo_adv_ids', [])
+            neo_account_ids = request.data.getlist('neo_account_ids', [])
 
             create_cnt = NeoAccount.create_list(self, fb_ad_account_id, neo_adv_ids, neo_account_ids)
 
