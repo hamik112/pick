@@ -59,3 +59,23 @@ def get_my_ad_accounts(field = defult_fields()):
         msg['error'] = e._error
         raise Exception(msg)
 
+def get_my_ad_sets(account_id, limit=25, after=None, fields=ad_set_api.field_list()):
+    try:
+        ad_account = AdAccount(account_id)
+
+        params = default_params()
+        params['limit'] = limit
+
+        if after != None:
+            params['after'] = after
+
+        ad_sets = ad_account.get_ad_sets(fields=fields, params=params)
+
+        return ad_sets
+
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
