@@ -91,7 +91,7 @@
 												<div class="account_wrap">
 													<div class="advertiser_search">
 														<div class="search_title">광고주검색</div>
-														<div><input type="text" value="" placeholder="광고주를 검색하세요."></div>
+														<div><input type="text" v-model="searchKeyword" placeholder="광고주를 검색하세요."></div>
 														<div><button type="button" @click="listSearch()">조회</button></div>
 													</div>
 													<div class="advertiser_search_result pop-scroll">
@@ -107,7 +107,7 @@
 															</div>
 															<div class="result_tbody">
 																<ul id="adv-list-1">
-																	<li v-for="adv in advs">
+																	<li v-for="adv in searchedAdvs" :key="adv.id">
 																		<div class="result_check"><input type="checkbox" v-model="selected" :value="adv.id" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.id"><label :for="'adv-check-' + adv.id"></label></div>
 																		<div class="result_advertiser">{{ adv.name }}</div>
 																		<div class="result_account">{{ adv.advid }}</div>
@@ -302,7 +302,9 @@ export default {
 
 			tabListStep: 0,
 			ctCount:0,
-			categoryName: ''
+			categoryName: '',
+
+			searchKeyword: '',
 		}
 	},
 
@@ -469,6 +471,17 @@ export default {
 		currentFbAdAccount() {
 			return this.$store.state.currentFbAdAccount
 		},
+		searchedAdvs() {
+			if(this.searchKeyword === '') {
+				// 키워드가 없을때, 전체 리스트 반환
+				return this.advs
+			} else {
+				// 키워드를 포함한, 리스트 반환
+				return this.advs.filter(adv => {
+					return adv.name.match(this.searchKeyword)
+				})
+			}
+		}
 	}
 }
 </script>
