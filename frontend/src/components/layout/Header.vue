@@ -14,11 +14,11 @@
 				<p class="user_image"><img src="../../assets/images/common/test_img.jpg" alt=""></p>
 				<p>임준수</p>
 			</div>
-			<div class="user_setup" tabindex="-1" @blur="allCategory('blur')">
-				<p id="set_up" v-on:click="allCategory()"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></p>
-				<div class="setup_list" v-if="settingDes">
-					<p @click="setupOn = true">설정</p>
-					<p>로그아웃</p>
+			<div class="user_setup">
+				<p id="set_up"><router-link v-bind:to="{ path: '/setting' }"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></router-link></p>
+				<div class="setup_list">
+					<p><router-link v-bind:to="{ path: '/setting' }">설정</router-link></p>
+					<p><a href="javascript:void(0)" @click="logout">로그아웃</a></p>
 				</div>
 			</div>
 		</div>
@@ -37,18 +37,17 @@ export default {
   	'SetupPop':SetupPop
   },
   methods:{
-  	allCategory:function(type) {
-  		if(type != 'blur') {
-  			this.settingDes = !this.settingDes
+  	logout(){
+  		if(confirm('픽데이터에서 로그아웃 하시겠습니까?') == true) {
+
   		}else{
-  			this.settingDes = false
+  			return
   		}
   	}
   },
   data () {
     return {
-    	setupOn:false,
-    	settingDes:false
+    	setupOn:false
     }
   }
 }
