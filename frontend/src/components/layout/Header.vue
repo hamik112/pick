@@ -11,8 +11,8 @@
 		<div class="right_area">
 			<div class="user">
 				<p class="user_mask"></p>
-				<p class="user_image"><img src="../../assets/images/common/test_img.jpg" alt=""></p>
-				<p>임준수</p>
+				<p class="user_image"><img v-bind:src="userImage" alt=""></p>
+				<p>{{ userName }}</p>
 			</div>
 			<div class="user_setup" tabindex="-1" @blur="allCategory('blur')">
 				<p id="set_up" v-on:click="allCategory()"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></p>
@@ -27,34 +27,44 @@
 
 <script>
 
-
+import { getUserName, getUserImage } from '../../utils/auth'
 import SetupPop from '@/components/popup/Advertising_setup'
 
 
 export default {
-  name: 'Header',
-  components:{
-  	'SetupPop':SetupPop
-  },
-  methods:{
-  	allCategory:function(type) {
-  		if(type != 'blur') {
-  			this.settingDes = !this.settingDes
-  		}else{
-  			this.settingDes = false
-  		}
-  	}
-  },
-  data () {
-    return {
-    	setupOn:false,
-    	settingDes:false
-    }
-  }
+	name: 'Header',
+
+	components:{
+		'SetupPop': SetupPop
+	},
+
+	mounted () {
+		this.userName = getUserName()
+		this.userImage = getUserImage()
+	},
+
+	methods:{
+		allCategory:function(type) {
+			if(type != 'blur') {
+				this.settingDes = !this.settingDes
+			}else{
+				this.settingDes = false
+			}
+		}
+	},
+
+	data () {
+		return {
+			setupOn: false,
+			settingDes: false,
+			userName: '',
+			userImage: ''
+		}
+	}
 }
 </script>
 
 <style lang="css" scoped>
-	.user_setup { margin-left:44px; padding-left:0px !important; }
-	#set_up { cursor:pointer; }
+.user_setup { margin-left:44px; padding-left:0px !important; }
+#set_up { cursor:pointer; }
 </style>
