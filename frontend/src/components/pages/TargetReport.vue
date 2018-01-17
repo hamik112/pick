@@ -31,7 +31,7 @@
 											<div class="select_contents control-select">
 												<div class="select" v-on:click="sortSelectOnOff()"><p>열 맞춤 설정</p></div>
 												<ul class="select_view control_view" v-if="this.sortSelectData.onShow">
-													<li v-for="item in this.sortSelectData.listData"><input type="checkbox" v-bind:id="item.setting.checkId" v-on:change="sortSelectFilter(item)" checked><label v-bind:for="item.setting.checkId">{{ item.setting.name }}</label></li>
+													<li v-for="item in this.sortSelectData.listData"><input type="checkbox" v-bind:id="item.setting.checkId" v-on:change="sortSelectFilter(item)" :checked="item.setting.checked"><label v-bind:for="item.setting.checkId">{{ item.setting.name }}</label></li>
 												</ul>
 											</div>
 										</div>
@@ -44,7 +44,7 @@
 									</div>
 									<div class="target_report_contents">
 										<div class="report_contents_inner_wrap">
-											<table class="contents_inner">
+											<table class="contents_inner" :width="this.tablesAutoWidth">
 												<thead>
 													<tr>
 														<th rowspan="2" class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</th>
@@ -134,7 +134,7 @@
 															<span>10초 이상 View</span>
 															<span class="sort_btn"></span>
 														</td>
-														<td v-if="sortSelectData.listData[1].setting.show">
+														<td v-if="sortSelectData.listData[14].setting.show">
 															<span>10초 이상 VTR</span>
 															<span class="sort_btn"></span>
 														</td>
@@ -347,6 +347,8 @@ export default {
 				}
 			],
 
+			tablesAutoWidth:1280,
+
 
 
 			show: false,
@@ -384,7 +386,8 @@ export default {
 					setting:{
 						name:label[i],
 						checkId:'sort' + i,
-						show:true
+						show:true,
+						checked:true
 					}
 				}
 				this.sortSelectData.listData.push(setting)
@@ -402,7 +405,11 @@ export default {
 			this.sortSelectData.onShow = !this.sortSelectData.onShow
 		},
 		sortSelectFilter(item) {
+			item.setting.checked = !item.setting.checked
 			item.setting.show = !item.setting.show
+		},
+		sortTableAutoWidth(){
+
 		},
 		disabledDate (time) {
 			return time < this.min || time > this.max
