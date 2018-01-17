@@ -366,6 +366,34 @@ export default {
 				if (this.categoryName === '') {
 					alert('통계 및 계정 유형 분석을 선택해주세요.')
 					return false
+				} else {
+					console.log("선택된 페이스북 광고 계정: ", this.currentFbAdAccount.id)
+
+					let actAccountId = this.currentFbAdAccount.id;
+					let accountCategoryId = 0
+
+					if(this.categoryName === '대출') {
+						accountCategoryId = 1
+					} else if(this.categoryName === 'NGO') {
+						accountCategoryId = 2
+					} else if(this.categoryName === '카드') {
+						accountCategoryId = 3
+					} else if(this.categoryName === '여행') {
+						accountCategoryId = 4
+					} else if(this.categoryName === '쇼핑몰') {
+						accountCategoryId = 5
+					} else if(this.categoryName === '기타') {
+						accountCategoryId = 6
+					} else if(this.categoryName === '보험') {
+						accountCategoryId = 7
+					} else if(this.categoryName === '뷰티') {
+						accountCategoryId = 8
+					}
+
+					this.$http.post('/api/fb_ad_accounts/', {
+						act_account_id: actAccountId,
+						account_category_id: accountCategoryId,
+					})
 				}
 			}else if(beforeNumber === '1') {
 				if(this.addAdvs.length == 0) {
@@ -404,18 +432,21 @@ export default {
             set: function (value) {
                 this.allCheck(value,'advs','selected','advs','addAdvs')
             }
-	    },
-	    addSelectAll:{
-	        get: function () {
-	        	let advKeys = Object.keys(this.addAdvs)
-	        	if(advKeys.length != 0) {
-	            	return this.addAdvs ? this.addSelected.length == advKeys.length : false;
-	            }
-	        },
-	        set: function (value) {
-	            this.allCheck(value,'addAdvs','addSelected','addAdvs','advs')
-	        }
-	    }
+		},
+		addSelectAll:{
+				get: function () {
+					let advKeys = Object.keys(this.addAdvs)
+					if(advKeys.length != 0) {
+							return this.addAdvs ? this.addSelected.length == advKeys.length : false;
+						}
+				},
+				set: function (value) {
+						this.allCheck(value,'addAdvs','addSelected','addAdvs','advs')
+				}
+		},
+		currentFbAdAccount() {
+			return this.$store.state.currentFbAdAccount
+		},
 	}
 }
 </script>

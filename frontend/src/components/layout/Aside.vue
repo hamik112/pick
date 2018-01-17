@@ -109,6 +109,9 @@ export default {
 
 		if (success === "YES") {
 		  if (data.length > 0) {
+			// Vuex state
+			this.$store.state.currentFbAdAccount = data[0]
+			
 			this.selectFbAdAccount = data[0]
 			this.fbAdAccounts = data
 			this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
@@ -123,6 +126,9 @@ export default {
 	},
 
 	onClickFbAdAccount: function (fbAdAccount) {
+		// Vuex state
+		this.$store.state.currentFbAdAccount = fbAdAccount
+
 	  this.$eventBus.$emit('selectFbAdAccount', fbAdAccount)
 	  this.selectFbAdAccount = fbAdAccount
 	  this.isActive = false
