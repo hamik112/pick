@@ -21,12 +21,19 @@ class AdSetInsightByAccount(APIView):
         try:
             ad_set_insights = None
 
-            account_id = request.query_params.get('account_id', "0")
+            account_id = request.query_params.get('account_id', '0')
             page = request.query_params.get('page', '1')
             start = request.query_params.get('start', '0')
             limit = request.query_params.get('limit', '25')
 
-            ad_set_insights = AdSetInsight.objects.filter(account_id = account_id)
+            report_date = request.query_params.get('report_date', '2018-01-14')
+            # since = request.query_params.get('since', '2018-01-13')
+            # until = request.query_params.get('until', '2018-01-13')
+
+            # since = '2018-01-13 00:00'
+            # until = '2018-01-14'
+
+            ad_set_insights = AdSetInsight.objects.filter(account_id = account_id, date_start=report_date)
             paginator = Paginator(ad_set_insights, int(limit))
             try:
                 insights = paginator.page(int(page))
