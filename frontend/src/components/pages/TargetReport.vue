@@ -44,7 +44,7 @@
 									</div>
 									<div class="target_report_contents">
 										<div class="report_contents_inner_wrap">
-											<div class="contents_inner" :width="this.tablesAutoWidth">
+											<div id="report-list" class="contents_inner">
 												<div class="table_head">
 													<ul class="head_th clearfix">
 														<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
@@ -368,6 +368,9 @@ export default {
 	beforeMount() {
 		this.setDatas()
 	},
+	mounted() {
+		this.sortTableAutoWidth()
+	},
 	data () {
 		return {
 			categorySelectData: {
@@ -414,7 +417,7 @@ export default {
 				}
 			],
 
-			tablesAutoWidth:1280,
+			tablesAutoWidth:4880,
 
 
 
@@ -459,8 +462,6 @@ export default {
 				}
 				this.sortSelectData.listData.push(setting)
 			}
-
-
 		},
 		selectCategory(item) {
 			this.categorySelectData.emptyText = item
@@ -474,9 +475,11 @@ export default {
 		sortSelectFilter(item) {
 			item.setting.checked = !item.setting.checked
 			item.setting.show = !item.setting.show
+			this.sortTableAutoWidth()
 		},
 		sortTableAutoWidth(){
-
+			const listEl = document.getElementById('report-list')
+			listEl.style.width = this.tablesAutoWidth + 'px'
 		},
 		disabledDate (time) {
 			return time < this.min || time > this.max
