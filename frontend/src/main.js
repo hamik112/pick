@@ -5,9 +5,11 @@ import store from './store'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import qs from 'qs'
 
 Vue.prototype.$http = axios
 Vue.prototype.$eventBus = new Vue()
+Vue.prototype.$qs = qs
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */

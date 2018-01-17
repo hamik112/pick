@@ -389,11 +389,10 @@ export default {
 					} else if(this.categoryName === '뷰티') {
 						accountCategoryId = 8
 					}
-
-					this.$http.post('/api/fb_ad_accounts/', {
-						act_account_id: actAccountId,
-						account_category_id: accountCategoryId,
-					})
+					this.$http.post('/api/fb_ad_accounts/', this.$qs.stringify({
+							act_account_id: actAccountId,
+							account_category_id: accountCategoryId,
+					}))
 				}
 			}else if(activeNumber == '2' && beforeNumber === '1') {
 				if(this.addAdvs.length == 0) {
