@@ -256,6 +256,29 @@ export default {
 		'ui-select':Select
 	},
 
+	created() {
+		this.$http.get('/api/neo_db/search_neo_accounts?adv_name')
+			.then(res => {
+				const total_count = res.data.total_count
+				const data = res.data
+
+				for(let i = 0; i < total_count; i++) {
+					this.advs.push({
+						// 데이터
+						id: data.data[i].centeraccountid,
+						advertiserid: data.data[i].advertiserid,
+						type_id: data.data[i].centeraccountid,
+						// 화면
+						name: data.data[i].advertisername,
+						advid: data.data[i].accountnickname,
+					})
+				}
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	},
+
 	data () {
 		return {
 			tabActive1: true,
@@ -291,7 +314,7 @@ export default {
 			this.categorySelectData.emptyText = item
 		},
 		listSearch() {
-
+			
 			//리스트 검색시 노출
 			this.advs = [
 				{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
