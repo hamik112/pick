@@ -118,8 +118,8 @@
 													</div>
 												</div>
 												<div class="interlock_btn">
-													<button type="button" title="삭제" v-on:click="checkList('addAdvs','advs')"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
-													<button type="button" title="추가" v-on:click="checkList('advs','addAdvs')"><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
+													<button type="button" title="삭제" @click="checkList('addedAdvs', 'advs')"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
+													<button type="button" title="추가" @click="checkList('advs', 'addedAdvs')"><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
 												</div>
 												<div class="account_wrap">
 													<div class="advertiser_search">
@@ -138,10 +138,10 @@
 															</div>
 															<div class="result_tbody">
 																<ul id="adv-list-2">
-																	<li v-for="addAdv in addAdvs">
-																		<div class="result_check"><input type="checkbox" v-model="addSelected" :value="addAdv.id" class="result-checkbox" :data-type="'addAdvs'" :data-id="addAdv.type_id" :id="'addAdv-check-' + addAdv.id"><label :for="'addAdv-check-' + addAdv.id"></label></div>
-																		<div class="result_advertiser">{{ addAdv.name }}</div>
-																		<div class="result_account">{{ addAdv.advid }}</div>
+																	<li v-for="addedAdv in addedAdvs" :key="addedAdv.id">
+																		<div class="result_check"><input type="checkbox" v-model="addSelected" :value="addedAdv.id" class="result-checkbox" :data-type="'addedAdvs'" :data-id="addedAdv.type_id" :id="'addedAdv-check-' + addedAdv.id"><label :for="'addedAdv-check-' + addedAdv.id"></label></div>
+																		<div class="result_advertiser">{{ addedAdv.name }}</div>
+																		<div class="result_account">{{ addedAdv.advid }}</div>
 																	</li>
 																</ul>
 															</div>
@@ -294,7 +294,7 @@ export default {
 				]
 			},
 			advs: [],
-			addAdvs:[],
+			addedAdvs:[],
 			checkData:[],
 			addKey:[],
 			selected: [],
@@ -331,55 +331,62 @@ export default {
 			let checkData = me.checkData
 
 		},
-		checkFilter(type, type2) {
-			let elId = (type == 'advs') ? "adv-list-1":"adv-list-2"
-			let notEl = (type != 'advs') ? "adv-list-1":"adv-list-2"
-			let ul = document.getElementById(elId)
-			let notUl = document.getElementById(notEl)
-			let items = ul.getElementsByTagName("li")
-			let noItems = notUl.getElementsByTagName("li")
-			let itemsData = this[type]
+		checkFilter (currentList) {
+			// this[currentList] === this['advs' || 'addedAdvs']
+			let items = this[currentList]
 
-			for(let i = 0; i < noItems.length; i++) {
-				noItems[i].getElementsByTagName('input')[0].checked = false
+			let neoAccountList    = (currentList == 'advs') ? "adv-list-1" : "adv-list-2"
+			let linkedAccountList = (currentList != 'advs') ? "adv-list-1" : "adv-list-2"
+
+			let neoAccountListItems    = document.getElementById(neoAccountList).getElementsByTagName('li')
+			let linkedAccountListItems = document.getElementById(linkedAccountList).getElementsByTagName('li')
+
+			for(let i = 0; i < linkedAccountListItems.length; i++) {
+				// 연결된 네오 계정 리스트 체크 전체 해제
+				linkedAccountListItems[i].getElementsByTagName('input')[0].checked = false
 			}
-			for (let i = 0; i < items.length; i++) {
-				let checkBox = items[i].getElementsByTagName('input')[0].checked
-				if(checkBox == true) {
-					let checkItemsId = items[i].getElementsByTagName('input')[0].getAttribute('data-id')
-					for(let idx = 0; idx < itemsData.length; idx++) {
-						if(checkItemsId == itemsData[idx]['type_id']) {
-							this.checkData.push(itemsData[idx])
+
+			for (let i = 0; i < neoAccountListItems.length; i++) {
+				// 네오 계정 리스트 체크 유/무
+				let isChecked = neoAccountListItems[i].getElementsByTagName('input')[0].checked
+
+				if(isChecked === true) {
+					// 네오 계정 리스트가 체크 되어있을 경우
+					let checkedItemId = neoAccountListItems[i].getElementsByTagName('input')[0].getAttribute('data-id')
+
+					for(let i = 0; i < items.length; i++) {
+						if(checkedItemId == items[i]['type_id']) {
+							this.checkData.push(items[i])
 						}
 					}
 				}
 			}
 		},
-		checkList (before,after) {
+		checkList (before, after) {
 			const me = this
 
-			this.checkFilter(before, 'type1')
+			this.checkFilter(before)
 
-			me[after] = me[after].concat(me.checkData)
-			me.checkData.forEach(function(value, index) {
-				me[before] = me[before].filter(function(item) {
+			this[after] = this[after].concat(this.checkData)
+			this.checkData.forEach(value => {
+				me[before] = me[before].filter(item => {
 					return item !== value
 				})
 			})
-			//addList Count
-			this.ctCount = me['addAdvs'].length
-			document.getElementById('ct-count').innerText = this.ctCount
 
+			// 연결 계정 리스트 개수
+			this.ctCount = this.addedAdvs.length
+			document.getElementById('ct-count').innerText = this.ctCount
 
 			this.addSelected = []
 			this.selected = []
-			me.checkData = []
+			this.checkData = []
 		},
 		allCheck(value,key1,key2,before,after) {
 			const me = this
 			var selected = []
             if (value) {
-                this.checkFilter(key1, 'type2')
+                this.checkFilter(key1)
                 me[key1].forEach(function (item) {
                     selected.push(item.id)
                 });
@@ -420,10 +427,33 @@ export default {
 					})
 				}
 			}else if(activeNumber == '2' && beforeNumber === '1') {
-				if(this.addAdvs.length == 0) {
+				if(this.addedAdvs.length == 0) {
 					if(confirm('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?') === false) {
 						return false
 					}
+				} else {
+					console.log(this.currentFbAdAccount.id)
+					console.log(this.addedAdvs)
+
+					let neoAdvIds = []
+					let neoAccountIds = []
+
+					// 추가된 네오 계정 리스트
+					for(let i = 0; i < this.addedAdvs.length; i++) {
+						neoAdvIds.push(this.addedAdvs[i].advertiserid)
+						neoAccountIds.push(this.addedAdvs[i].id)
+					}
+
+					console.log(this.$store.state.currentFbAdAccount.account_id)
+					console.log('fb_ad_account_id: ' + localStorage.getItem('fb_ad_account_id'))
+					console.log(neoAdvIds)
+					console.log(neoAccountIds)
+
+					this.$http.post('/api/neo_account/', {
+						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+						neo_adv_ids: neoAdvIds,
+						neo_account_ids: neoAccountIds 
+					})
 				}
 			}
 			this.tabListStep = parseInt(activeNumber)
@@ -454,18 +484,18 @@ export default {
 	            }
             },
             set: function (value) {
-                this.allCheck(value,'advs','selected','advs','addAdvs')
+                this.allCheck(value,'advs','selected','advs','addedAdvs')
             }
 		},
 		addSelectAll:{
 				get: function () {
-					let advKeys = Object.keys(this.addAdvs)
+					let advKeys = Object.keys(this.addedAdvs)
 					if(advKeys.length != 0) {
-							return this.addAdvs ? this.addSelected.length == advKeys.length : false;
+							return this.addedAdvs ? this.addSelected.length == advKeys.length : false;
 						}
 				},
 				set: function (value) {
-						this.allCheck(value,'addAdvs','addSelected','addAdvs','advs')
+						this.allCheck(value,'addedAdvs','addSelected','addedAdvs','advs')
 				}
 		},
 		currentFbAdAccount() {
