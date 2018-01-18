@@ -152,8 +152,14 @@
 		},
 
 		created () {
+			console.log('created targetpick')
 			this.$eventBus.$on('selectFbAdAccount', this.selectFbAdAccount)
 		},
+
+		beforeDestroy () {
+			console.log('beforeDestroy targetpick')
+	    this.$eventBus.$off('selectFbAdAccount', this.selectFbAdAccount)
+	  },
 
 		methods: {
 			selectTarget (item) {
@@ -162,11 +168,6 @@
 
 			selectFbAdAccount (fbAdAccount) {
 				console.log('selectFbAdAccount', fbAdAccount)
-				this.checkFbAdAccount(fbAdAccount)
-			},
-
-			checkFbAdAccount (fbAdAccount) {
-				console.log('checkFbAdAccount', fbAdAccount)
 				this.isPick = false
 				this.isLoading = true
 				this.loadingTitle = '광고계정을 검사중입니다.'
