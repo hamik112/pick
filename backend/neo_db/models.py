@@ -50,6 +50,10 @@ class McCenterAdvertiser(models.Model):
         advs = McCenterAdvertiser.objects.using('neo_v1_db').filter(advertisername__contains=search_text)
         return advs
 
+    def get_advertisers_by_ids(self, adv_ids):
+        advs =  McCenterAdvertiser.objects.using('neo_v1_db').filter(advertiserid__in=adv_ids)
+        return advs
+
     class Meta:
         managed = False
         db_table = 'MC_CENTER_ADVERTISER'
@@ -81,6 +85,10 @@ class McCenterAccount(models.Model):
     enableautogathering = models.CharField(db_column='enableAutoGathering', max_length=6, blank=True, null=True)  # Field name made lowercase.
     neotouchauthkey = models.CharField(db_column='neoTouchAuthKey', max_length=255, blank=True, null=True)  # Field name made lowercase.
     bingompfser = models.CharField(db_column='bingoMpfSer', max_length=32, blank=True, null=True)  # Field name made lowercase.
+
+    def get_accounts_by_ids(self, account_ids):
+        advs =  McCenterAccount.objects.using('neo_v1_db').filter(centeraccountid__in=account_ids)
+        return advs
 
     class Meta:
         managed = False
