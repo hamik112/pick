@@ -134,8 +134,8 @@
 												<div class="generate_url_list">
 
 													<div v-for="(item, index) in fields" class="url_list clearfix">
-														<div class="url_select clearfix" :data-key="item.key">
-															<ui-select :selectData="item.select" @click="multiSelect(item, index)"></ui-select>
+														<div class="url_select clearfix">
+															<ui-select :selectData="item.select" :data-key="index" :onClick="multiSelect"></ui-select>
 														</div>
 														<div class="url_input">
 															<input type="text">
@@ -914,24 +914,8 @@ export default {
 		this.selectData.emptyText = item
 	},
 	multiSelect(item, index) {
-		// var wTile = event.target.parentElement.parentElement.parentElement.parentElement.getAttribute('data-key')
-
-		// {
-  //       		"number":"1",
-  //       		"key":"1",
-  //       		"select":{
-		//           emptyText: 'URL선택',
-		//           textList: [
-		//             '전체URL',
-		//             '부분URL'
-		//           ]
-		//         }
-  //       	}
-		// this.selectData.emptyText = item
-		console.log(item)
-		console.log(index)
-		console.log(event)
-		// this.fields[wTile].select.emptyText = item
+		var key = event.target.closest('.select_btn').getAttribute('data-key')
+		this.fields[key].select.emptyText = item
 	},
 
 	//매체 삭제
