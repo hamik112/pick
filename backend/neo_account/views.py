@@ -36,9 +36,9 @@ class NeoAccountView(APIView):
         try:
             print("POST")
             fb_ad_account_id = request.data.get('fb_ad_account_id', 0)
-            neo_adv_ids = request.POST.getlist('neo_adv_ids', [])
+            neo_adv_ids = request.data.get('neo_adv_ids', [])
             print(request)
-            neo_account_ids = request.POST.getlist('neo_account_ids', [])
+            neo_account_ids = request.data.get('neo_account_ids', [])
 
             print(neo_adv_ids)
             print(neo_account_ids)
