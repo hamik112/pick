@@ -54,16 +54,11 @@ class FbAdAccountList(APIView):
     def post(self, request, format=None):
         response_data = {}
         try:
-            act_account_id = request.POST.get('act_account_id', '')
-            account_category_id = request.POST.get('account_category_id', '')
-
-            print('act_account_id : ', act_account_id)
-            print('account_category_id : ', account_category_id)
+            act_account_id = request.data.get('act_account_id', '')
+            account_category_id = request.data.get('account_category_id', '')
 
             api_init_by_system_user()
             ad_account = ad_accounts.get_ad_account(act_account_id)
-
-            print(ad_account)
 
             ad_account_id = ad_account.get('account_id')
             act_account_id = ad_account.get('id')
