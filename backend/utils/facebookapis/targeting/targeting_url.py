@@ -3,25 +3,16 @@ from facebookads.adobjects.customaudience import CustomAudience
 from facebookads.exceptions import FacebookRequestError
 
 
-# 특정페이지 전체 방문자
-def create_specific_page_total_visitor_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                                 contain_list=[], eq_list=[]):
+# URL포함 전체 방문자
+def create_url_total_visitor_customers(account_id, name, pixel_id, retention_days=30, prefill=True, contain_list=[]):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        eq_filter = []
         for str in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
-            eq_filter.append({
-                "field": "url",
-                "operator": "eq",
                 "value": str
             })
 
@@ -51,28 +42,6 @@ def create_specific_page_total_visitor_customers(account_id, name, pixel_id, ret
                             ]
                         },
                         "template": "VISITORS_BY_URL"
-                    }, {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                }, {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
                     }
                 ]
             }
@@ -94,25 +63,16 @@ def create_specific_page_total_visitor_customers(account_id, name, pixel_id, ret
         raise Exception(msg)
 
 
-# 특정페이지 방문자 & 이용시간 상위 고객
-def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, retention_days=30, input_percent=25,
-                                    contain_list=[], eq_list=[]):
+# URL포함 방문자 & 이용시간 상위 고객
+def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, retention_days=30, input_percent=25, contain_list=[]):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        eq_filter = []
         for str in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
-            eq_filter.append({
-                "field": "url",
-                "operator": "eq",
                 "value": str
             })
 
@@ -154,39 +114,6 @@ def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, re
                                 "to": max_percent
                             }
                         }
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "TOP_TIME_SPENDERS",
-                        "aggregation": {
-                            "type": "time_spent",
-                            "method": "percentile",
-                            "operator": "in_range",
-                            "value": {
-                                "from": max_percent - input_percent,
-                                "to": max_percent
-                            }
-                        }
                     }
                 ]
             }
@@ -208,26 +135,17 @@ def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, re
         raise Exception(msg)
 
 
-# 특정페이지방문 & 특정일 동안 미방문 고객
-def create_non_visition_customers(account_id, name, pixel_id, prefill=True, retention_days=30, contain_list=[],
-                                  eq_list=[]):
+# URL포함 & 특정일 동안 미방문 고객
+def create_non_visition_customers(account_id, name, pixel_id, prefill=True, retention_days=30, contain_list=[]):
     try:
 
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        eq_filter = []
         for str in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
-            eq_filter.append({
-                "field": "url",
-                "operator": "eq",
                 "value": str
             })
 
@@ -254,30 +172,6 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
                                 {
                                     "operator": "or",
                                     "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
                                 }
                             ]
                         },
@@ -311,30 +205,6 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
                             ]
                         },
                         "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
                     }
                 ]
             }
@@ -357,22 +227,15 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
         raise Exception(msg)
 
 
-# 특정페이지방문 and 장바구니 고객
+# URL포함 and 장바구니 고객
 
-def create_specific_page_and_addtocart_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                                 addtocart_evnet_name="AddToCart", contain_list=[], eq_list=[]):
+def create_url_and_addtocart_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
+                                                 addtocart_evnet_name="AddToCart", contain_list=[]):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
         for str in contain_list:
-            contain_filters.append({
-                "field": "url",
-                "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
@@ -389,7 +252,6 @@ def create_specific_page_and_addtocart_customers(account_id, name, pixel_id, ret
                                 "type": "pixel",
                                 "id": pixel_id
                             }
-                            # ], "retention_seconds": retention_days * 24 * 60 * 60,
                         ], "retention_seconds": 15552000,
                         "filter": {
                             "operator": "and",
@@ -446,22 +308,14 @@ def create_specific_page_and_addtocart_customers(account_id, name, pixel_id, ret
         raise Exception(msg)
 
 
-# 특정페이지 방문 & 구매고객
-def create_specific_page_and_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                                purchase_event_name="Purchase", contain_list=[], eq_list=[]):
+# URL포함 & 구매고객
+def create_url_and_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
+                                                purchase_event_name="Purchase", contain_list=[]):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        eq_filter = []
         for str in contain_list:
-            contain_filters.append({
-                "field": "url",
-                "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
@@ -534,25 +388,17 @@ def create_specific_page_and_purchase_customers(account_id, name, pixel_id, rete
         raise Exception(msg)
 
 
-# 특정페이지방문 & 미구매고객
-def create_specific_page_and_non_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                                    purchase_event_name="Purchase", contain_list=[], eq_list=[]):
+# URL포함 & 미구매고객
+def create_url_and_non_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
+                                                    purchase_event_name="Purchase", contain_list=[]):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        eq_filter = []
         for str in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
-            eq_filter.append({
-                "field": "url",
-                "operator": "eq",
                 "value": str
             })
 
@@ -579,30 +425,6 @@ def create_specific_page_and_non_purchase_customers(account_id, name, pixel_id, 
                                 {
                                     "operator": "or",
                                     "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
                                 }
                             ]
                         },
@@ -653,21 +475,14 @@ def create_specific_page_and_non_purchase_customers(account_id, name, pixel_id, 
         raise Exception(msg)
 
 
-# 특정페이지방문 and 전환완료 고객
+# URL포함 and 전환완료 고객
 def create_specific_page_and_coversion_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                                 conversion_event_name="ViewContent", contain_list=[], eq_list=[]):
+                                                 conversion_event_name="ViewContent", contain_list=[]):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
         for str in contain_list:
-            contain_filters.append({
-                "field": "url",
-                "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
@@ -741,25 +556,17 @@ def create_specific_page_and_coversion_customers(account_id, name, pixel_id, ret
         raise Exception(msg)
 
 
-# 특정페이지방문 and 미 전환 고객
-def create_specific_page_and_non_coversion_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                                     conversion_event_name="ViewContent", contain_list=[], eq_list=[]):
+# URL포함 and 미 전환 고객
+def create_url_and_non_coversion_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
+                                                     conversion_event_name="ViewContent", contain_list=[]):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        eq_filter = []
         for str in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
-            eq_filter.append({
-                "field": "url",
-                "operator": "eq",
                 "value": str
             })
 
@@ -786,30 +593,6 @@ def create_specific_page_and_non_coversion_customers(account_id, name, pixel_id,
                                 {
                                     "operator": "or",
                                     "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
                                 }
                             ]
                         },
@@ -860,22 +643,14 @@ def create_specific_page_and_non_coversion_customers(account_id, name, pixel_id,
         raise Exception(msg)
 
 
-# 특정페이지방문 and 회원가입 고객
+# URL포함 and 회원가입 고객
 def create_specific_page_and_registration_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                                    registration_event_name="CompleteRegistration", contain_list=[],
-                                                    eq_list=[]):
+                                                    registration_event_name="CompleteRegistration", contain_list=[]):
     try:
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
         for str in contain_list:
-            contain_filters.append({
-                "field": "url",
-                "operator": "i_contains",
-                "value": str
-            })
-
-        for str in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",

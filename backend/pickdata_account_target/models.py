@@ -40,7 +40,7 @@ class PickdataAccountTarget(models.Model):
             logger.error(traceback.format_exc())
             return None
 
-    def create(self, username, fb_ad_account, target_audience_id, pixel_mapping_category, description, target_status=0):
+    def create(self, fb_ad_account, target_audience_id, pixel_mapping_category, description, target_status=0, username="TEST"):
         try:
             created_account_target = PickdataAccountTarget()
 

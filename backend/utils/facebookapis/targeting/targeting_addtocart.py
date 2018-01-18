@@ -78,7 +78,7 @@ def create_addtocart_and_non_purchase_customers(account_id, name, pixel_id, rete
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": "AddToCart"
+                                    "value": addtocart_evnet_name
                                 }
                             ]
                         }
@@ -102,7 +102,7 @@ def create_addtocart_and_non_purchase_customers(account_id, name, pixel_id, rete
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": "Purchase"
+                                    "value": puchase_event_name
                                 }
                             ]
                         }

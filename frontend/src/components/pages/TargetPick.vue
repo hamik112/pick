@@ -193,6 +193,7 @@
 					this.isPick = true
 					this.isLoading = false
 
+					localStorage.setItem('fb_ad_account_id', res.data.fb_ad_account.fb_ad_account_id)
 					this.getAccountTarget(fbAdAccount)
 				})
 				.catch(err => {
