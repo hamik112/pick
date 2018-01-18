@@ -58,29 +58,29 @@ class PixelMapping(models.Model):
     def create_or_update(self, fb_ad_account, facebook_pixel_event_names = [], pixel_mapping_category_ids = [], username = 'Test'):
         created_cnt = 0
 
-        # pixel_mapping_categories = PixelMappingCategory.get_pixel_mapping_categories(PixelMappingCategory)
-        # pixel_mapping_category_serializer = PixelMappingCategorySerializer(pixel_mapping_categories, many=True)
-
-        # print(facebook_pixel_event_names)
-        # print(pixel_mapping_category_ids)
+        fb_ad_account_id = fb_ad_account.id
 
         for idx, pixel_mapping_category_id in enumerate(pixel_mapping_category_ids):
-            # print("for loop")
-            # print(idx)
-            # print(pixel_mapping_category_id)
-            pixel_mapping = PixelMapping()
 
-            pixel_mapping.created_by = username
-            pixel_mapping.updated_by = username
+            try:
+                pixel_mapping = self.objects.get(fb_ad_account_id = fb_ad_account_id ,pixel_mapping_category_id=pixel_mapping_category_id)
 
-            pixel_mapping.fb_ad_account = fb_ad_account
+                pixel_mapping.updated_by = username
+                pixel_mapping.fb_ad_account = fb_ad_account
+                pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
+                pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
 
-            pixel_mapping.fb_ad_account = fb_ad_account
-            pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
+            except self.DoesNotExist:
+                pixel_mapping = PixelMapping()
 
-            pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
+                pixel_mapping.created_by = username
+                pixel_mapping.updated_by = username
+                pixel_mapping.fb_ad_account = fb_ad_account
+                pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
+                pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
 
             pixel_mapping.save()
+            created_cnt += 1
 
         return created_cnt
 
