@@ -168,58 +168,10 @@
 											</div>
 											<div class="event_mapping_wrap">
 												<ul>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
+													<li v-for="(item, index) in fields" class="select_btn">
+														<div class="select_title">{{ item.title }}</div>
 														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
-														</div>
-													</li>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
-														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
-														</div>
-													</li>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
-														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
-														</div>
-													</li>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
-														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
-														</div>
-													</li>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
-														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
-														</div>
-													</li>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
-														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
-														</div>
-													</li>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
-														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
-														</div>
-													</li>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
-														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
-														</div>
-													</li>
-													<li class="select_btn">
-														<div class="select_title">구매</div>
-														<div class="select_contents">
-															<div><ui-select :selectData="this.categorySelectData" :onClick="selectCategory"></ui-select></div>
+															<div><ui-select :selectData="item.select" :data-key="index" :onClick="multiSelect"></ui-select></div>
 														</div>
 													</li>
 												</ul>
@@ -293,6 +245,120 @@ export default {
 					'픽셀3'
 				]
 			},
+
+
+			fields:[
+	        	//sample
+	        	{
+	        		"title":'구매',
+	        		"number":0,
+	        		"key":0,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	},
+	        	{
+	        		"title":"장바구니",
+	        		"number":1,
+	        		"key":1,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	},
+	        	{
+	        		"title":"회원가입",
+	        		"number":2,
+	        		"key":2,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	},
+	        	{
+	        		"title":"전환완료",
+	        		"number":3,
+	        		"key":3,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	},
+	        	{
+	        		"title":"전환 1단계",
+	        		"number":4,
+	        		"key":4,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	},
+	        	{
+	        		"title":"전환 2단계",
+	        		"number":5,
+	        		"key":5,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	},
+	        	{
+	        		"title":"전환 3단계",
+	        		"number":6,
+	        		"key":6,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	},
+	        	{
+	        		"title":"전환 4단계",
+	        		"number":7,
+	        		"key":7,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	},
+	        	{
+	        		"title":"전환 5단계",
+	        		"number":8,
+	        		"key":8,
+	        		"select":{
+			          emptyText: '픽셀 이벤트를 선택해주세요.',
+			          textList: [
+			            '1',
+			            '2'
+			          ]
+			        }
+	        	}
+	        ],
+
 			advs: [],
 			addedAdvs:[],
 			checkData:[],
@@ -314,6 +380,10 @@ export default {
 		},
 		selectCategory (item) {
 			this.categorySelectData.emptyText = item
+		},
+		multiSelect(item, index) {
+			const key = event.target.closest('.select_btn').getAttribute('data-key')
+			this.fields[key].select.emptyText = item
 		},
 		listSearch() {
 			//리스트 검색시 노출
@@ -454,7 +524,7 @@ export default {
 					this.$http.post('/api/neo_account/', {
 						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
 						neo_adv_ids: neoAdvIds,
-						neo_account_ids: neoAccountIds 
+						neo_account_ids: neoAccountIds
 					})
 				}
 			}

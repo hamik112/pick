@@ -55,7 +55,7 @@
 										<div class="main_title">
 											<div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
 											<div class="title_info">
-												<p>NEO타겟</p>
+												<p>사이트방문</p>
 												<p>타겟의 속성을 정의하세요</p>
 											</div>
 										</div>
@@ -100,7 +100,7 @@
 										<div class="main_title">
 											<div><img src="../../assets/images/target/target_logo_02.png" alt="neo"></div>
 											<div class="title_info">
-												<p>NEO타겟</p>
+												<p>특정페이지 방문</p>
 												<p>타겟의 속성을 정의하세요</p>
 											</div>
 										</div>
@@ -142,7 +142,7 @@
 														</div>
 														<div class="url_btn clearfix">
 															<div class="add"><button type="button" @click="fieldBtn(item,'add')">+</button></div>
-															<div class="del"><button type="button" @click="fieldBtn(item,'del')">-</button></div>
+															<div class="del" v-if="index > 0"><button type="button" @click="fieldBtn(item,'del')">-</button></div>
 														</div>
 													</div>
 
@@ -442,7 +442,7 @@
 										<div class="main_title">
 											<div><img src="../../assets/images/target/target_logo_04.png" alt="neo"></div>
 											<div class="title_info">
-												<p>NEO타겟</p>
+												<p>구글애널리틱스</p>
 												<p>타겟의 속성을 정의하세요</p>
 											</div>
 										</div>
@@ -685,6 +685,7 @@
 										<div class="main_title">
 											<div><img src="../../assets/images/target/target_logo_08.png" alt="neo"></div>
 											<div class="title_info">
+												<p>단계별 전환</p>
 												<p>타겟의 속성을 정의하세요</p>
 											</div>
 										</div>
@@ -914,7 +915,7 @@ export default {
 		this.selectData.emptyText = item
 	},
 	multiSelect(item, index) {
-		var key = event.target.closest('.select_btn').getAttribute('data-key')
+		const key = event.target.closest('.select_btn').getAttribute('data-key')
 		this.fields[key].select.emptyText = item
 	},
 
