@@ -1,9 +1,5 @@
 <template>
 	<header>
-
-
-
-
 		<div class="left_area"><a href="#/"><img src="../../assets/images/common/main_logo.jpg" alt="pickdata" /></a></div>
 		<div class="right_area">
 			<div class="user">
@@ -42,12 +38,27 @@ export default {
 
 	methods:{
 		logout(){
-	  		if(confirm('픽데이터에서 로그아웃 하시겠습니까?') == true) {
-
-	  		}else{
-	  			return
-	  		}
-	  	}
+			if(confirm('픽데이터에서 로그아웃 하시겠습니까?') == true) {
+				this.$http.get('/api/users/signout')
+				.then(res => {
+					const success = res.data.success
+					if (success === 'YES') {
+						// logoput
+						this.$router.push({name: 'Intro'})
+					} else {
+						// except
+						console.log('msg', res.data.msg)
+						return
+					}
+				})
+				.catch(err => {
+					console.error('/api/users/signout', err)
+					return
+				})
+			} else {
+				return
+			}
+		}
 	},
 
 	data () {
