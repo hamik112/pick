@@ -277,7 +277,9 @@
 			.target_inner_tbody{padding:19px 17px; border:$Border_type01; min-height:245px;
 				/* url 버튼 */
 				.url_btn{display: inline-block; vertical-align: middle; margin:6px 0px;
-					div{float:left; width:26px; height:26px; line-height:26px; border:$Border_type01; margin-left:10px; cursor:pointer; background:url(assets/images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%; color: #385b95; font-weight: bold; text-indent: 9px;}
+					div{float:left; width:26px; height:26px; border:$Border_type01; margin-left:10px; background:url(assets/images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%; color: #385b95; font-weight: bold;
+						button { display:block; width:100%; line-height:26px; text-align:center; }
+					}
 				}
 				/* // url 버튼 */
 				/* 계정연동 하지 않았을 경우*/
