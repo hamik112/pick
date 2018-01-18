@@ -62,7 +62,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+												<ui-select :selectData="this.select1" data-key="select1" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -80,7 +80,7 @@
 												<div class="account_info">
 													<div class="account_title">"사이트 방문자"중</div>
 													<div>
-														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select2" data-key="select2" :onClick="selectTarget"></ui-select>
 													</div>
 												</div>
 											</div>
@@ -107,7 +107,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+												<ui-select :selectData="this.select3" data-key="select3" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -125,10 +125,10 @@
 												<div class="account_info">
 													<div class="account_title">"아래 그룹로 유입된 사람"중</div>
 													<div>
-														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select4" data-key="select4" :onClick="selectTarget"></ui-select>
 													</div>
 													<div class="account_date">
-														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select5" data-key="select5" :onClick="selectTarget"></ui-select>
 													</div>
 												</div>
 												<div class="generate_url_list">
@@ -171,7 +171,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+												<ui-select :selectData="this.select6" data-key="select6" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -192,16 +192,16 @@
 											<div class="contents_title">Neo 유형</div>
 											<ul>
 												<li>
-													<div class="result_check"><input type="radio" id="target_type01" @change="neoTab('media')" name="neo_type" value="media" checked><label for="target_type01">매체</label></div>
+													<div class="result_check"><input type="radio" id="target_type01" @change="wTabs(0,'wTab')" name="neo_type" value="media" checked><label for="target_type01">매체</label></div>
 												</li>
 												<li>
-													<div class="result_check"><input type="radio" id="target_type02" name="neo_type" @change="neoTab('group')" value="group"><label for="target_type02">그룹</label></div>
+													<div class="result_check"><input type="radio" id="target_type02" name="neo_type" @change="wTabs(1,'wTab')" value="group"><label for="target_type02">그룹</label></div>
 												</li>
 												<li>
-													<div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="neoTab('keyword')" value="keyword"><label for="target_type03">키워드</label></div>
+													<div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword"><label for="target_type03">키워드</label></div>
 												</li>
 												<li>
-													<div class="result_check"><input type="radio" id="target_type04" name="neo_type" @change="neoTab('excel')" value="excel"><label for="target_type04">엑셀업로드</label></div>
+													<div class="result_check"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel"><label for="target_type04">엑셀업로드</label></div>
 												</li>
 											</ul>
 										</div>
@@ -209,11 +209,11 @@
 									<div class="target_tbody">
 										<div class="target_inner_tbody clearfix">
 											<!-- 매체 -->
-											<div class="cate_contents" v-if="tabAction.tabActive4.subActive.media">
+											<div class="cate_contents" v-if="wTab.tab1">
 												<div class="account_info">
 													<div class="account_title">"아래 매체로 유입된 사람"중</div>
 													<div>
-														<ui-select :selectData="this.selectData2" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select7" data-key="select7" :onClick="selectTarget"></ui-select>
 													</div>
 													<div class="account_date">
 														<input type="text"><span>일</span>
@@ -263,11 +263,11 @@
 												</div>
 											</div>
 											<!-- 그룹 -->
-											<div class="cate_contents" v-if="tabAction.tabActive4.subActive.group">
+											<div class="cate_contents" v-if="wTab.tab2">
 												<div class="account_info">
 													<div class="account_title">"아래 그룹로 유입된 사람"중</div>
 													<div>
-														<ui-select :selectData="this.selectData2" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select8" data-key="select8" :onClick="selectTarget"></ui-select>
 													</div>
 													<div class="account_date">
 														<input type="text"><span>일</span>
@@ -317,11 +317,11 @@
 												</div>
 											</div>
 											<!-- 키워드 -->
-											<div class="cate_contents" v-if="tabAction.tabActive4.subActive.keyword">
+											<div class="cate_contents" v-if="wTab.tab3">
 												<div class="account_info">
 													<div class="account_title">"아래 키워드로 유입된 사람"중</div>
 													<div>
-														<ui-select :selectData="this.selectData2" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select9" data-key="select9" :onClick="selectTarget"></ui-select>
 													</div>
 													<div class="account_date">
 														<input type="text"><span>일</span>
@@ -371,20 +371,11 @@
 												</div>
 											</div>
 											<!-- 엑셀 -->
-											<div class="cate_contents target_excel" v-if="tabAction.tabActive4.subActive.excel">
+											<div class="cate_contents target_excel" v-if="wTab.tab4">
 												<div class="account_info">
 													<div class="account_title">"아래 등록 양식으로 유입된 사람"중</div>
 													<div>
-														<div class="select_btn">
-															<div class="select_contents">
-																<div class="select"><p>특정일 동안 미방문 고객</p></div>
-																<ul class="select_view">
-																	<li>이벤트1</li>
-																	<li>이벤트2</li>
-																	<li>이벤트3</li>
-																</ul>
-															</div>
-														</div>
+														<ui-select :selectData="this.select22" data-key="select22" :onClick="selectTarget"></ui-select>
 													</div>
 													<div class="account_date">
 														<input type="text"><span>일</span>
@@ -449,7 +440,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+												<ui-select :selectData="this.select21" data-key="select21" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -469,14 +460,14 @@
 													<div>
 														<div class="select_btn">
 															<div class="select_contents">
-																<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+																<ui-select :selectData="this.select10" data-key="select10" :onClick="selectTarget"></ui-select>
 															</div>
 														</div>
 													</div>
 													<div class="account_date">
 														<div class="select_btn">
 															<div class="select_contents">
-																<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+																<ui-select :selectData="this.select11" data-key="select11" :onClick="selectTarget"></ui-select>
 																<ul class="select_view">
 																	<li>25%</li>
 																	<li>50%</li>
@@ -491,7 +482,7 @@
 														<div class="url_select clearfix">
 															<div class="select_btn">
 																<div class="select_contents">
-																	<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+																	<ui-select :selectData="this.select12" data-key="select12" :onClick="selectTarget"></ui-select>
 																</div>
 															</div>
 														</div>
@@ -505,29 +496,51 @@
 										<div class="analytics_tab_wrap">
 											<div class="analytics_tab_widget clearfix">
 												<ul class="clearfix">
-													<li rel="tab_list_1" class="active">source</li>
-													<li rel="tab_list_2">medium</li>
-													<li rel="tab_list_3">campaign</li>
-													<li rel="tab_list_4">team</li>
-													<li rel="tab_list_5">content</li>
-													<li rel="tab_list_6">custom</li>
+													<li @click="wTabs(0,'wTab')" v-bind:class="[(wTab.tab1 === true) ? 'active' : '']">source</li>
+													<li @click="wTabs(1,'wTab')" v-bind:class="[(wTab.tab2 === true) ? 'active' : '']">medium</li>
+													<li @click="wTabs(2,'wTab')" v-bind:class="[(wTab.tab3 === true) ? 'active' : '']">campaign</li>
+													<li @click="wTabs(3,'wTab')" v-bind:class="[(wTab.tab4 === true) ? 'active' : '']">team</li>
+													<li @click="wTabs(4,'wTab')" v-bind:class="[(wTab.tab5 === true) ? 'active' : '']">content</li>
+													<li @click="wTabs(5,'wTab')" v-bind:class="[(wTab.tab6 === true) ? 'active' : '']">custom</li>
 												</ul>
 											</div>
 											<div class="analytics_tab_list">
-												<div class="list_close_btn"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
-												<div id="tab_list_1" class="analytics_tab_contents clearfix">
+												<div id="tab_list_1" class="analytics_tab_contents clearfix" v-if="wTab.tab1">
 													<ul>
-														<li class="sticker_btn"><span>naver</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-														<li class="sticker_btn"><span>daum</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-														<li class="sticker_btn"><span>google</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li v-for="(item,index) in gAddData.source" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
-													<div class="analytics_all_close"><img src="images/target/target_close_btn.png" alt=""></div>
+													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
 												</div>
-												<div id="tab_list_2" class="analytics_tab_contents clearfix"></div>
-												<div id="tab_list_3" class="analytics_tab_contents clearfix"></div>
-												<div id="tab_list_4" class="analytics_tab_contents clearfix"></div>
-												<div id="tab_list_5" class="analytics_tab_contents clearfix"></div>
-												<div id="tab_list_6" class="analytics_tab_contents clearfix"></div>
+												<div id="tab_list_2" class="analytics_tab_contents clearfix" v-if="wTab.tab2">
+													<ul>
+														<li v-for="(item,index) in gAddData.medium" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+													</ul>
+													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+												</div>
+												<div id="tab_list_3" class="analytics_tab_contents clearfix" v-if="wTab.tab3">
+													<ul>
+														<li v-for="(item,index) in gAddData.campaign" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+													</ul>
+													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+												</div>
+												<div id="tab_list_4" class="analytics_tab_contents clearfix" v-if="wTab.tab4">
+													<ul>
+														<li v-for="(item,index) in gAddData.team" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+													</ul>
+													<div class="analytics_all_close"><img src=../../assets/"images/target/target_close_btn.png" alt=""></div>
+												</div>
+												<div id="tab_list_5" class="analytics_tab_contents clearfix" v-if="wTab.tab5">
+													<ul>
+														<li v-for="(item,index) in gAddData.content" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+													</ul>
+													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+												</div>
+												<div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
+													<ul>
+														<li v-for="(item,index) in gAddData.custom" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+													</ul>
+													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+												</div>
 											</div>
 										</div>
 										<div class="btn_wrap">
@@ -557,7 +570,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+												<ui-select :selectData="this.select13" data-key="select13" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -575,7 +588,7 @@
 												<div class="account_info">
 													<div class="account_title">"사이트 방문자"중</div>
 													<div>
-														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select14" data-key="select14" :onClick="selectTarget"></ui-select>
 													</div>
 												</div>
 											</div>
@@ -602,7 +615,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+												<ui-select :selectData="this.select15" data-key="select15" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -620,7 +633,7 @@
 												<div class="account_info">
 													<div class="account_title">"사이트 방문자"중</div>
 													<div>
-														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select16" data-key="select16" :onClick="selectTarget"></ui-select>
 													</div>
 												</div>
 											</div>
@@ -647,7 +660,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+												<ui-select :selectData="this.select17" data-key="select17" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -665,7 +678,7 @@
 												<div class="account_info">
 													<div class="account_title">"사이트 방문자"중</div>
 													<div>
-														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select18" data-key="select18" :onClick="selectTarget"></ui-select>
 													</div>
 												</div>
 											</div>
@@ -692,7 +705,7 @@
 										<div class="use_wrap">
 											<div class="use_select">
 												<div class="contents_title">사용픽셀</div>
-												<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+												<ui-select :selectData="this.select19" data-key="select19" :onClick="selectTarget"></ui-select>
 											</div>
 											<div class="use_date">
 												<div>수집기간 : 최근</div>
@@ -715,7 +728,7 @@
 											<div class="target_generate">
 												<div class="account_info">
 													<div>
-														<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+														<ui-select :selectData="this.select20" data-key="select20" :onClick="selectTarget"></ui-select>
 													</div>
 													<div class="breakaway_wrap">
 														<input type="text">
@@ -771,11 +784,23 @@ export default {
   components:{
   	'ui-select': Select
   },
+  mounted() {
+
+  	//공용 서브 탭 초기화
+	this.wTab = {
+    	tab1:true,
+    	tab2:false,
+    	tab3:false,
+    	tab4:false,
+    	tab5:false,
+    	tab6:false
+    }
+  },
   data () {
     return {
     	tabAction:{
 	    	tabActive1:{
-	    		show:true
+	    		show:false
 	    	},
 	    	tabActive2:{
 	    		show:false
@@ -793,7 +818,7 @@ export default {
 	    		}
 	    	},
 	    	tabActive5:{
-	    		show:false
+	    		show:true
 	    	},
 	    	tabActive6:{
 	    		show:false
@@ -813,8 +838,9 @@ export default {
 
 
 
-
-    	selectData: {
+    	//싱글 셀렉트
+    	//사이트방문
+    	select1: {
           emptyText: '전체보기',
           textList: [
             '이벤트1',
@@ -822,9 +848,174 @@ export default {
             '이벤트3'
           ]
         },
-
-
-        selectData2: {
+        select2: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        //특정페이지
+        select3: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select4: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select5: {
+          emptyText: '선택',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        //네오
+        select6: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select7: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select8: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select9: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select22: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        //구글
+        select21: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select10: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select11: {
+          emptyText: '선택',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select12: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        //구매
+        select13: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select14: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        //장바구니
+        select15: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select16: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        //회원가입
+        select17: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select18: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        //단계별 전환
+        select19: {
+          emptyText: '특정일 동안 미방문 고객',
+          textList: [
+            '이벤트1',
+            '이벤트2',
+            '이벤트3'
+          ]
+        },
+        select20: {
           emptyText: '특정일 동안 미방문 고객',
           textList: [
             '이벤트1',
@@ -834,6 +1025,7 @@ export default {
         },
 
 
+        //sample
         advs:[
         	{ "number": "1", "name": "LF몰", "campaign":"페이스북1", "count":"3,716", "type_id":"13" },
 		    { "number": "2", "name": "LF몰2", "campaign":"페이스북2", "count":"3,716", "type_id":"11" },
@@ -843,6 +1035,129 @@ export default {
         addAdvs:[],
         checkData:[],
         selected:[],
+
+        //tabs
+        wTab:{
+        	tab1:true,
+        	tab2:false,
+        	tab3:false,
+        	tab4:false,
+        	tab5:false,
+        	tab6:false
+        },
+        //analytics sample
+        gData:{
+	        source:[
+	        	{
+	        		number:1,
+	        		name:"naver"
+	        	},
+	        	{
+	        		number:2,
+	        		name:"daum"
+	        	},
+	        	{
+	        		number:3,
+	        		name:"google"
+	        	}
+	        ],
+	    	medium:[],
+	    	compaign:[],
+	    	team:[],
+	    	content:[],
+	    	custom:[],
+        },
+
+
+        //analytics add sample
+        gAddData:{
+        	source:[
+        		{
+	        		number:1,
+	        		name:"naver"
+	        	},
+	        	{
+	        		number:2,
+	        		name:"daum"
+	        	},
+	        	{
+	        		number:3,
+	        		name:"google"
+	        	}
+        	],
+        	medium:[
+        		{
+	        		number:1,
+	        		name:"naver"
+	        	},
+	        	{
+	        		number:2,
+	        		name:"daum"
+	        	},
+	        	{
+	        		number:3,
+	        		name:"google"
+	        	}
+        	],
+        	campaign:[
+        		{
+	        		number:1,
+	        		name:"naver"
+	        	},
+	        	{
+	        		number:2,
+	        		name:"daum"
+	        	},
+	        	{
+	        		number:3,
+	        		name:"google"
+	        	}
+        	],
+        	team:[
+        		{
+	        		number:1,
+	        		name:"naver"
+	        	},
+	        	{
+	        		number:2,
+	        		name:"daum"
+	        	},
+	        	{
+	        		number:3,
+	        		name:"google"
+	        	}
+        	],
+        	content:[
+        		{
+	        		number:1,
+	        		name:"naver"
+	        	},
+	        	{
+	        		number:2,
+	        		name:"daum"
+	        	},
+	        	{
+	        		number:3,
+	        		name:"google"
+	        	}
+        	],
+        	custom:[
+        		{
+	        		number:1,
+	        		name:"naver"
+	        	},
+	        	{
+	        		number:2,
+	        		name:"daum"
+	        	},
+	        	{
+	        		number:3,
+	        		name:"google"
+	        	}
+        	]
+        },
+
+
 
         fields:[
         	//sample
@@ -911,9 +1226,23 @@ export default {
 			}
 		}
 	},
-	selectTarget(item) {
-		this.selectData.emptyText = item
+	//애널리틱스 탭
+	wTabs(num,obj) {
+		const tabs = Object.keys(this[obj])
+		for(let i = 0; i < tabs.length; i++) {
+			if(num == i) {
+				this.wTab[tabs[i]] = true
+			}else{
+				this.wTab[tabs[i]] = false
+			}
+		}
 	},
+	//개별 셀렉팅
+	selectTarget(item) {
+		const key = event.target.closest('.select_btn').getAttribute('data-key')
+		this[key].emptyText = item
+	},
+	//멀티 셀렉팅
 	multiSelect(item, index) {
 		const key = event.target.closest('.select_btn').getAttribute('data-key')
 		this.fields[key].select.emptyText = item
