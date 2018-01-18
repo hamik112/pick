@@ -132,40 +132,20 @@
 													</div>
 												</div>
 												<div class="generate_url_list">
-													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+
+													<div v-for="(item, index) in fields" class="url_list clearfix">
+														<div class="url_select clearfix" :data-key="item.key">
+															<ui-select :selectData="item.select" @click="multiSelect(item, index)"></ui-select>
 														</div>
 														<div class="url_input">
 															<input type="text">
 														</div>
 														<div class="url_btn clearfix">
-															<div>+</div>
-															<div>-</div>
+															<div class="add"><button type="button" @click="fieldBtn(item,'add')">+</button></div>
+															<div class="del"><button type="button" @click="fieldBtn(item,'del')">-</button></div>
 														</div>
 													</div>
-													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-														</div>
-														<div class="url_input">
-															<input type="text">
-														</div>
-														<div class="url_btn clearfix">
-															<div>-</div>
-														</div>
-													</div>
-													<div class="url_list clearfix">
-														<div class="url_select clearfix">
-															<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-														</div>
-														<div class="url_input">
-															<input type="text">
-														</div>
-														<div class="url_btn clearfix">
-															<div>+</div>
-														</div>
-													</div>
+
 												</div>
 											</div>
 										</div>
@@ -861,11 +841,49 @@ export default {
         ],
         addAdvs:[],
         checkData:[],
-        selected:[]
+        selected:[],
+
+        fields:[
+        	//sample
+        	{
+        		"number":0,
+        		"key":0,
+        		"select":{
+		          emptyText: 'URL선택',
+		          textList: [
+		            '전체URL',
+		            '부분URL'
+		          ]
+		        }
+        	}
+        ],
+
+
     }
   },
   methods: {
-
+  	//페이지 방문 추가 삭제
+  	fieldBtn(item,type) {
+  		let index = 0
+  		if(type === 'add') {
+  			index++
+  			let obj = {
+  				"number":index,
+        		"key":index,
+        		"select":{
+		          emptyText: 'URL선택',
+		          textList: [
+		            '전체URL',
+		            '부분URL'
+		          ]
+		        }
+  			}
+	  		this.fields.push(obj)
+  		}else{
+  			index--
+  			this.fields.splice(this.fields.indexOf(item), 1)
+  		}
+  	},
   	//타겟만들기 카테고리 탭
 	tabMove(activeNumber, beforeNumber) {
 		let tabArray = ['tabActive1','tabActive2','tabActive3','tabActive4','tabActive5','tabActive6','tabActive7','tabActive8','tabActive9']
@@ -895,6 +913,26 @@ export default {
 	selectTarget(item) {
 		this.selectData.emptyText = item
 	},
+	multiSelect(item, index) {
+		// var wTile = event.target.parentElement.parentElement.parentElement.parentElement.getAttribute('data-key')
+
+		// {
+  //       		"number":"1",
+  //       		"key":"1",
+  //       		"select":{
+		//           emptyText: 'URL선택',
+		//           textList: [
+		//             '전체URL',
+		//             '부분URL'
+		//           ]
+		//         }
+  //       	}
+		// this.selectData.emptyText = item
+		console.log(item)
+		console.log(index)
+		console.log(event)
+		// this.fields[wTile].select.emptyText = item
+	},
 
 	//매체 삭제
 	deleteAddAdvs(item) {
@@ -917,7 +955,7 @@ export default {
 		const me = this
 		var selected = []
         if (value) {
-            this.checkFilter(key1, 'type2')
+            this.checkFilter(key1)
             me[key1].forEach(function (item) {
                 selected.push(item.number)
             });
@@ -929,7 +967,7 @@ export default {
 
 		const me = this
 
-		this.checkFilter(before, 'type1')
+		this.checkFilter(before)
 
 		me[after] = me[after].concat(me.checkData)
 		me.checkData.forEach(function(value, index) {
@@ -943,7 +981,7 @@ export default {
 	},
 
 	//체크 중복 필터
-	checkFilter(type, type2) {
+	checkFilter(type) {
 		let elId = "adv-list-1"
 		let ul = document.getElementById(elId)
 		let items = ul.getElementsByTagName("li")
