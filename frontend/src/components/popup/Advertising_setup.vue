@@ -316,7 +316,6 @@ export default {
 			this.categorySelectData.emptyText = item
 		},
 		listSearch() {
-			
 			//리스트 검색시 노출
 			this.advs = [
 				{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
@@ -417,6 +416,9 @@ export default {
 					this.$http.post('/api/fb_ad_accounts/', {
 							act_account_id: actAccountId,
 							account_category_id: accountCategoryId,
+					})
+					.then(res => {
+							localStorage.setItem('fb_ad_account_id', res.data.data.id)
 					})
 				}
 			}else if(activeNumber == '2' && beforeNumber === '1') {
