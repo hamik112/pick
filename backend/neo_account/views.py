@@ -34,12 +34,16 @@ class NeoAccountView(APIView):
     def post(self, request, format=None):
         response_data = {}
         try:
-
+            print("POST")
             fb_ad_account_id = request.data.get('fb_ad_account_id', 0)
-            neo_adv_ids = request.data.getlist('neo_adv_ids', [])
-            neo_account_ids = request.data.getlist('neo_account_ids', [])
+            neo_adv_ids = request.POST.getlist('neo_adv_ids', [])
+            print(request)
+            neo_account_ids = request.POST.getlist('neo_account_ids', [])
 
-            create_cnt = NeoAccount.create_list(self, fb_ad_account_id, neo_adv_ids, neo_account_ids)
+            print(neo_adv_ids)
+            print(neo_account_ids)
+
+            create_cnt = NeoAccount.create_list(NeoAccount, fb_ad_account_id, neo_adv_ids, neo_account_ids)
 
             response_data['success'] = 'YES'
             response_data['count'] = create_cnt
