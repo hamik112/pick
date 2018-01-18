@@ -1,5 +1,10 @@
 <template>
 	<div id="main_wrap" class="clearfix">
+
+		<transition name='modal'>
+			<SetupPop v-if="setPop" @close="setPop = false"></SetupPop>
+		</transition>
+
 		<div id="container">
 			<div id="container_wrap">
 				<div class="setting_contents_wrap">
@@ -24,7 +29,7 @@
 							<p>픽셀이벤트 매핑</p>
 							<p>5개</p>
 						</div>
-						<div class="setting_btn">계정 설정 수정하기</div>
+						<div class="setting_btn"><button type="button" @click="setPop = true">계정 설정 수정하기</button></div>
 					</div>
 					<div>※ 기존 픽셀 연결과 다르게 변경하실 경우,  픽데이터에서 생성 완료 한 타겟 사용이 어려울 수 있습니다.</div>
 				</div>
@@ -34,13 +39,19 @@
 </template>
 
 <script>
+
+import SetupPop from '@/components/popup/Advertising_setup'
+
 export default {
 
   name: 'Setting',
+  components:{
+  	SetupPop:SetupPop
+  },
 
   data () {
     return {
-
+    	setPop:false
     }
   }
 }
