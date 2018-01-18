@@ -83,10 +83,14 @@ class Signin(APIView):
 
 class Signout(APIView):
     def get(self, request, format=None):
+        response_data = {}
         try:
             request.session['__user_id__'] = None
             request.session['__username__'] = None
             request.session.modified = True
+            response_data['success'] = 'YES'
         except KeyError as e:
             logger.error(e)
-        return HttpResponseRedirect('/')
+            response_data['success'] = 'NO'
+            response_data['msg'] = str(e)
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
