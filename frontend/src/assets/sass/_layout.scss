@@ -343,11 +343,13 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 /* 설정 */
 .setting_contents_wrap{padding:33px 28px;
 	.setting_wrap{background:#fff; border:1px solid #dadedf; padding:15px 17px; margin-bottom:15px;
-		.u_mask{width:72px; height:72px; position:absolute; top:0px; left:0px; z-index:1; background:url(assets/images/common/mask_type_01.png) 0 0 no-repeat;}
+		.u_mask{width:72px; height:72px; position:absolute; top:0px; left:0px; z-index:1; background:url(assets/images/common/mask_type_04.png) 0 0 no-repeat;}
 		> div{display:inline-block; vertical-align:middle;}
 		.user_info{position:relative; width:302px; letter-spacing: -4px; border-right:1px solid #dadedf;
 			div{font-size:12px; color:#949494; display:inline-block; vertical-align:middle; letter-spacing: 0px;
-				&:first-child{width:72px; height:72px; margin-right:17px;}
+				&:first-child{width:72px; height:72px; margin-right:17px;
+					img{width:72px; height:72px;}
+				}
 			}
 			strong{font-size:14px; color:#333;}
 
@@ -359,7 +361,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 			}
 		}
 		.user_event{border-right:0px;}
-		.setting_btn{width:159px; height:40px; line-height:39px; background:#375b96; text-align:center; color:#fff; border-radius:2px;}
+		.setting_btn{width:159px; height:40px; line-height:39px; background:#375b96; text-align:center; color:#fff; border-radius:2px; cursor:pointer;}
 	}
 }
 
