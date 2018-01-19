@@ -104,7 +104,7 @@ export default {
         console.log('DEBUG Call')
       }
       console.log('loadFbAdAccount', res)
-      this.$http.get('/api/fb_ad_accounts/')
+      this.$http.get('/fb_ad_accounts/')
       .then(res => {
         const response = res.data
         const data = response.data
@@ -126,7 +126,7 @@ export default {
         }
       })
       .catch(err => {
-        console.error('/api/fb_ad_accounts/', err)
+        console.error('/fb_ad_accounts/', err)
       })
     },
 

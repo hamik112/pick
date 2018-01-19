@@ -39,7 +39,7 @@ export default {
 	methods:{
 		logout(){
 			if(confirm('픽데이터에서 로그아웃 하시겠습니까?') == true) {
-				this.$http.get('/api/users/signout')
+				this.$http.get('/users/signout')
 				.then(res => {
 					const success = res.data.success
 					if (success === 'YES') {
@@ -52,7 +52,7 @@ export default {
 					}
 				})
 				.catch(err => {
-					console.error('/api/users/signout', err)
+					console.error('/users/signout', err)
 					return
 				})
 			} else {

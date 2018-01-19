@@ -73,7 +73,7 @@ export default {
       FB.api('/me?fields=id,name,email,birthday,gender,picture', function(resp) {
         console.log(res);
 
-        axios.post('api/users/signin', {
+        axios.post('/users/signin', {
             fb_username: resp.email,
             fb_id: resp.id,
             fb_name: resp.name,
@@ -139,7 +139,7 @@ export default {
 //   FB.api('/me?fields=id,name,email,birthday,gender,picture', function(resp) {
 //     console.log(res);
 //
-//     axios.post('api/users/signin', {
+//     axios.post('/users/signin', {
 //         fb_username: resp.email,
 //         fb_id: resp.id,
 //         fb_name: resp.name,
