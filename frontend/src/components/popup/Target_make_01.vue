@@ -681,15 +681,6 @@
                           <div>
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
-<<<<<<< HEAD
-                          <div class="account_date" v-if="subSelect">
-                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                          </div>
-                          <div class="account_date" v-if="subInput">
-                            <input type="text" v-if="subInput"><span>일</span>
-                          </div>
-=======
->>>>>>> jun
                         </div>
                       </div>
                     </div>
@@ -795,18 +786,9 @@
                       <div class="target_generate">
                         <div class="account_info">
                           <div>
-                            <ui-select :selectData="this.select20" data-key="select20" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser4" data-key="selectUser4" :onClick="selectTarget"></ui-select>
                           </div>
-<<<<<<< HEAD
-                          <div class="account_date" v-if="subSelect">
-                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                          </div>
-                          <div class="account_date" v-if="subInput">
-                            <input type="text" v-if="subInput"><span>일</span>
-                          </div>
-=======
->>>>>>> jun
-                          <div class="breakaway_wrap">
+                          <div class="value_input_wrap" v-if="subInput4">
                             <input type="text">
                             <p>단계 완료 후 이탈 고객</p>
                           </div>
@@ -904,6 +886,7 @@ export default {
       subInput:false,
       subInput2:false,
       subInput3:false,
+      subInput4:false,
 
       tabAction:{
         tabActive1:{
@@ -1033,6 +1016,18 @@ export default {
             '미 구매 고객',
             '전환 완료 고객',
             '미 전환 고객'
+          ]
+        },
+        selectUser4: {
+          emptyText: '전환 관련 속성 선택',
+          textList: [
+            '미 전환 고객',
+            '전환 1단계 완료 고객',
+            '전환 2단계 완료 고객',
+            '전환 3단계 완료 고객',
+            '전환 4단계 완료 고객',
+            '전환 5단계 완료 고객',
+            '특정 단계 완료(URL)'//단계완료 이탈 입력박스
           ]
         },
         selectSub: {
@@ -1320,10 +1315,11 @@ export default {
   selectTarget(item) {
     const key = event.target.closest('.select_btn').getAttribute('data-key')
     const textCheck = item.replace(/\s/gi, "")
-	this.subSelect = false
-	this.subInput = false
-	this.subInput2 = false
-	this.subInput3 = false
+  	this.subSelect = false
+  	this.subInput = false
+  	this.subInput2 = false
+  	this.subInput3 = false
+    this.subInput4 = false
     //서브 입력창 체크
     if(textCheck === '이용시간상위고객') {
     	this.subSelect = true
@@ -1333,6 +1329,8 @@ export default {
      	this.subInput2 = true
     }else if(textCheck === '특정구매금액이상구매고객') {
     	this.subInput3 = true
+    }else if(textCheck === '특정단계완료(URL)'){
+      this.subInput4 = true
     }
     this[key].emptyText = item
   },
