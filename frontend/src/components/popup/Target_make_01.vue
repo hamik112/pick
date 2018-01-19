@@ -785,6 +785,7 @@
                     <div class="target_inner_tbody clearfix">
                       <div class="target_generate">
                         <div class="account_info">
+                          <div class="account_title">전환 관련 속성 선택</div>
                           <div>
                             <ui-select :selectData="this.selectUser4" data-key="selectUser4" :onClick="selectTarget"></ui-select>
                           </div>
@@ -1001,7 +1002,7 @@ export default {
           ],
         },
         selectUser2: {
-          emptyText: '구매한 사람 중',
+          emptyText: '전체 고객',
           textList: [
             '전체 고객',
             '특정 구매횟수 이상 구매 고객', // 셀렉트박스 표시 (5/15/25 %)
@@ -1009,7 +1010,7 @@ export default {
           ]
         },
         selectUser3: {
-          emptyText: '장바구니 이용자중',
+          emptyText: '전체 고객',
           textList: [
             '전체 고객',
             '이용 시간 상위 고객', // 셀렉트박스 표시 (5/15/25 %)
@@ -1019,7 +1020,7 @@ export default {
           ]
         },
         selectUser4: {
-          emptyText: '전환 관련 속성 선택',
+          emptyText: '미 전환 고객',
           textList: [
             '미 전환 고객',
             '전환 1단계 완료 고객',
