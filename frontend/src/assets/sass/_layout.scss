@@ -342,7 +342,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 
 /* 설정 */
 .setting_contents_wrap{padding:33px 28px;
-	.setting_wrap{background:#fff; border:1px solid #dadedf; padding:15px 17px; margin-bottom:15px;
+	.setting_wrap{ min-width:1130px; background:#fff; border:1px solid #dadedf; padding:15px 17px; margin-bottom:15px;
 		.u_mask{width:72px; height:72px; position:absolute; top:0px; left:0px; z-index:1; background:url(assets/images/common/mask_type_04.png) 0 0 no-repeat;}
 		> div{display:inline-block; vertical-align:middle;}
 		.user_info{position:relative; width:302px; letter-spacing: -4px; border-right:1px solid #dadedf;
