@@ -118,12 +118,12 @@
 													</div>
 												</div>
 												<div class="interlock_btn">
-													<button type="button" title="삭제" @click="checkList('addedAdvs', 'advs')"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
-													<button type="button" title="추가" @click="checkList('advs', 'addedAdvs')"><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
+													<button type="button" title="삭제" @click="checkList('linkedAdvs', 'advs')"><img src="../../assets/images/icon/account_left.jpg" alt=""></button>
+													<button type="button" title="추가" @click="checkList('advs', 'linkedAdvs')"><img src="../../assets/images/icon/account_right.jpg" alt=""></button>
 												</div>
 												<div class="account_wrap">
 													<div class="advertiser_search">
-														<div class="search_title">연결계정 <span id="ct-count">{{ this.ctCount }}</span></div>
+														<div class="search_title">연결계정<span id="ct-count">{{ linkedAdvs.length }}</span></div>
 													</div>
 													<div class="advertiser_search_result pop-scroll">
 														<div>
@@ -138,10 +138,10 @@
 															</div>
 															<div class="result_tbody">
 																<ul id="adv-list-2">
-																	<li v-for="addedAdv in addedAdvs" :key="addedAdv.id">
-																		<div class="result_check"><input type="checkbox" v-model="addSelected" :value="addedAdv.id" class="result-checkbox" :data-type="'addedAdvs'" :data-id="addedAdv.type_id" :id="'addedAdv-check-' + addedAdv.id"><label :for="'addedAdv-check-' + addedAdv.id"></label></div>
-																		<div class="result_advertiser">{{ addedAdv.name }}</div>
-																		<div class="result_account">{{ addedAdv.advid }}</div>
+																	<li v-for="linkedAdv in linkedAdvs" :key="linkedAdv.id">
+																		<div class="result_check"><input type="checkbox" v-model="addSelected" :value="linkedAdv.id" class="result-checkbox" :data-type="'linkedAdvs'" :data-id="linkedAdv.type_id" :id="'linkedAdv-check-' + linkedAdv.id"><label :for="'linkedAdv-check-' + linkedAdv.id"></label></div>
+																		<div class="result_advertiser">{{ linkedAdv.name }}</div>
+																		<div class="result_account">{{ linkedAdv.advid }}</div>
 																	</li>
 																</ul>
 															</div>
@@ -212,18 +212,18 @@ export default {
 		// 네오 계정 리스트
 		this.$http.get('/api/neo_db/search_neo_accounts?adv_name')
 			.then(res => {
-				const total_count = res.data.total_count
-				const data = res.data
+				const totalCount = res.data.total_count
+				const data = res.data.data
 
-				for(let i = 0; i < total_count; i++) {
+				for(let i = 0; i < totalCount; i++) {
 					this.advs.push({
 						// 데이터
-						id: data.data[i].centeraccountid,
-						advertiserid: data.data[i].advertiserid,
-						type_id: data.data[i].centeraccountid,
+						id: data[i].centeraccountid,
+						advertiserid: data[i].advertiserid,
+						type_id: data[i].centeraccountid,
 						// 화면
-						name: data.data[i].advertisername,
-						advid: data.data[i].accountnickname,
+						name: data[i].advertisername,
+						advid: data[i].accountnickname,
 					})
 				}
 			})
@@ -232,16 +232,25 @@ export default {
 			})
 
 		// 연결된 네오 계정 리스트
-		// this.$http.get('/api/neo_account/', {
-		// 	params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
-		// })
-		// .then(res => {
-		// 	console.log('연결된 네오 계정')
-		// 	console.log(res)
-		// 	for(let i = 0; i < res.data.count; i++) {
-		// 		this.addedAdvs.push(res.data.data[i])
-		// 	}
-		// })
+		this.$http.get('/api/neo_account/', {
+			params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
+		})
+		.then(res => {
+			const totalCount = res.data.count
+			const data = res.data.data
+
+			for(let i = 0; i < totalCount; i++) {
+				this.linkedAdvs.push({
+					// 데이터
+					id: data[i].neo_account_id,
+					advertiserid: data[i].neo_adv_id,
+					type_id: data[i].neo_account_id,
+					// 화면
+					name: data[i].neo_adv_name,
+					advid: data[i].neo_account_name,
+				})
+			}
+		})
 
 		// 픽셀 맵핑 카테고리 목록 
 		this.$http.get('/api/pixel_mapping_category/')
@@ -294,10 +303,9 @@ export default {
 
 			// 네오 계정 연동
 			advs: [],
-			addedAdvs:[],
+			linkedAdvs:[],
+			checkedAdvs:[],
 			searchKeyword: '',
-			checkData:[],
-			ctCount:0,
 			selected: [],
 			addSelected:[],
 
@@ -318,12 +326,12 @@ export default {
 			this.pixelMappingCategories[key].select.selectedPixelEvent = item
 		},
 
-		checkFilter (currentList) {
-			// this[currentList] === this['advs' || 'addedAdvs']
-			let items = this[currentList]
+		checkFilter (beforeAdvs) {
+			// this[beforeAdvs] === this['advs' || 'linkedAdvs']
+			let items = this[beforeAdvs]
 
-			let neoAccountList    = (currentList == 'advs') ? "adv-list-1" : "adv-list-2"
-			let linkedAccountList = (currentList != 'advs') ? "adv-list-1" : "adv-list-2"
+			let neoAccountList    = (beforeAdvs == 'advs') ? "adv-list-1" : "adv-list-2"
+			let linkedAccountList = (beforeAdvs != 'advs') ? "adv-list-1" : "adv-list-2"
 
 			let neoAccountListItems    = document.getElementById(neoAccountList).getElementsByTagName('li')
 			let linkedAccountListItems = document.getElementById(linkedAccountList).getElementsByTagName('li')
@@ -343,31 +351,37 @@ export default {
 
 					for(let i = 0; i < items.length; i++) {
 						if(checkedItemId == items[i]['type_id']) {
-							this.checkData.push(items[i])
+							this.checkedAdvs.push(items[i])
 						}
 					}
 				}
 			}
 		},
-		checkList (before, after) {
+
+		checkList (beforeAdvs, afterAdvs) {
 			const me = this
+			this.checkFilter(beforeAdvs)
+			
+			if(afterAdvs === 'advs') {
+				// 연결된 계정을 제외한 네오 계정 리스트에 연결 해제된 advs(=checkedAdvs)를 맨 뒤에 추가
+				this[afterAdvs] = this.searchedAdvs.concat(this.checkedAdvs)
+			} else {
+				// 연결할 네오 계정 리스트 맨 뒤에 추가
+				this[afterAdvs] = this[afterAdvs].concat(this.checkedAdvs)
+			}
 
-			this.checkFilter(before)
-
-			this[after] = this[after].concat(this.checkData)
-			this.checkData.forEach(value => {
-				me[before] = me[before].filter(item => {
-					return item !== value
+			this.checkedAdvs.forEach(checkedAdv => {
+				me[beforeAdvs] = me[beforeAdvs].filter(beforeAdv => {
+					return beforeAdv !== checkedAdv
 				})
 			})
 
 			// 연결 계정 리스트 개수
-			this.ctCount = this.addedAdvs.length
-			document.getElementById('ct-count').innerText = this.ctCount
+			document.getElementById('ct-count').innerText = this.linkedAdvs.length
 
 			this.addSelected = []
 			this.selected = []
-			this.checkData = []
+			this.checkedAdvs = []
 		},
 		allCheck(value,key1,key2,before,after) {
 			const me = this
@@ -416,22 +430,19 @@ export default {
 							localStorage.setItem('fb_ad_account_id', res.data.data.id)
 					})
 				}
-			}else if(activeNumber == '2' && beforeNumber === '1') {
-				if(this.addedAdvs.length == 0) {
+			} else if (activeNumber == '2' && beforeNumber === '1') {
+				if(this.linkedAdvs.length == 0) {
 					if(confirm('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?') === false) {
 						return false
 					}
 				} else {
-					console.log(this.currentFbAdAccount.id)
-					console.log(this.addedAdvs)
-
 					let neoAdvIds = []
 					let neoAccountIds = []
 
 					// 추가된 네오 계정 리스트
-					for(let i = 0; i < this.addedAdvs.length; i++) {
-						neoAdvIds.push(this.addedAdvs[i].advertiserid)
-						neoAccountIds.push(this.addedAdvs[i].id)
+					for(let i = 0; i < this.linkedAdvs.length; i++) {
+						neoAdvIds.push(this.linkedAdvs[i].advertiserid)
+						neoAccountIds.push(this.linkedAdvs[i].id)
 					}
 
 					console.log(this.$store.state.currentFbAdAccount.account_id)
@@ -492,38 +503,50 @@ export default {
 
 	computed: {
 		selectAll: {
-	        get: function () {
-                let advKeys = Object.keys(this.advs)
-	        	if(advKeys.length != 0) {
-	            	return this.advs ? this.selected.length == advKeys.length : false;
-	            }
-            },
-            set: function (value) {
-                this.allCheck(value,'advs','selected','advs','addedAdvs')
-            }
+			get: function () {
+						let advKeys = Object.keys(this.advs)
+				if(advKeys.length != 0) {
+						return this.advs ? this.selected.length == advKeys.length : false;
+					}
+				},
+			set: function (value) {
+					this.allCheck(value, 'advs', 'selected', 'advs', 'linkedAdvs')
+			}
 		},
 		addSelectAll:{
-				get: function () {
-					let advKeys = Object.keys(this.addedAdvs)
-					if(advKeys.length != 0) {
-							return this.addedAdvs ? this.addSelected.length == advKeys.length : false;
-						}
-				},
-				set: function (value) {
-						this.allCheck(value,'addedAdvs','addSelected','addedAdvs','advs')
-				}
+			get: function () {
+				let advKeys = Object.keys(this.linkedAdvs)
+				if(advKeys.length != 0) {
+						return this.linkedAdvs ? this.addSelected.length == advKeys.length : false;
+					}
+			},
+			set: function (value) {
+					this.allCheck(value, 'linkedAdvs', 'addSelected', 'linkedAdvs', 'advs')
+			}
 		},
 		currentFbAdAccount() {
 			return this.$store.state.currentFbAdAccount
 		},
 		searchedAdvs() {
+			// 연결된 계정 아이디
+			let linkedAdvIds = []
+			for(let i = 0; i < this.linkedAdvs.length; i++) {
+				linkedAdvIds.push(this.linkedAdvs[i].id)
+			}
+
 			if(this.searchKeyword === '') {
-				// 키워드가 없을때, 전체 리스트 반환
-				return this.advs
-			} else {
-				// 키워드를 포함한, 리스트 반환
+				// 키워드가 없을때, 전체 리스트 반환(연결된 계정 제외)
 				return this.advs.filter(adv => {
+					return !linkedAdvIds.includes(adv.id)
+				})
+			} else {
+				// 키워드를 포함한, 리스트 반환(연결된 계정 제외)
+				let searchResultAdvs = this.advs.filter(adv => {
 					return adv.name.match(this.searchKeyword)
+				})
+
+				return searchResultAdvs.filter(searchResultAdv => {
+					return !linkedAdvIds.includes(searchResultAdv.id)
 				})
 			}
 		}
