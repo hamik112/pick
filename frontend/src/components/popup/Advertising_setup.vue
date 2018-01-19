@@ -267,7 +267,7 @@ export default {
 		})
 		// 픽셀 이벤트 목록
 		.then(() => {
-			this.$http.get('/api/fb_ad_accounts/ad_account_pixel_events', {
+			this.$http.get('/fb_ad_accounts/ad_account_pixel_events', {
 				params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
 			})
 			.then(res => {
@@ -478,7 +478,7 @@ export default {
 					this.$emit('close')
 
 					// 픽셀 이벤트 맵핑
-					this.$http.post('/api/pixel_mapping/', {
+					this.$http.post('/pixel_mapping/', {
 						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
 						facebook_pixel_event_names: facebookPixelEventNames,
 						pixel_mapping_category_ids: pixelMappingCategoryIds,
