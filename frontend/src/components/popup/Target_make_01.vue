@@ -507,39 +507,39 @@
 											<div class="analytics_tab_list">
 												<div id="tab_list_1" class="analytics_tab_contents clearfix" v-if="wTab.tab1">
 													<ul>
-														<li v-for="(item,index) in gAddData.source" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li v-for="(item,index) in gAddData.source" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'source')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
-													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+													<div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','source')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
 												</div>
 												<div id="tab_list_2" class="analytics_tab_contents clearfix" v-if="wTab.tab2">
 													<ul>
-														<li v-for="(item,index) in gAddData.medium" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li v-for="(item,index) in gAddData.medium" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'medium')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
-													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+													<div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','meidum')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
 												</div>
 												<div id="tab_list_3" class="analytics_tab_contents clearfix" v-if="wTab.tab3">
 													<ul>
-														<li v-for="(item,index) in gAddData.campaign" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li v-for="(item,index) in gAddData.campaign" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'campaign')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
-													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+													<div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','campaign')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
 												</div>
 												<div id="tab_list_4" class="analytics_tab_contents clearfix" v-if="wTab.tab4">
 													<ul>
-														<li v-for="(item,index) in gAddData.team" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li v-for="(item,index) in gAddData.team" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'team')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
-													<div class="analytics_all_close"><img src=../../assets/"images/target/target_close_btn.png" alt=""></div>
+													<div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','team')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
 												</div>
 												<div id="tab_list_5" class="analytics_tab_contents clearfix" v-if="wTab.tab5">
 													<ul>
-														<li v-for="(item,index) in gAddData.content" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li v-for="(item,index) in gAddData.content" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'content')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
-													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+													<div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','content')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
 												</div>
 												<div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
 													<ul>
-														<li v-for="(item,index) in gAddData.custom" class="sticker_btn"><span>{{ item.name }}</span><span><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+														<li v-for="(item,index) in gAddData.custom" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'custom')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
 													</ul>
-													<div class="analytics_all_close"><img src="../../assets/images/target/target_close_btn.png" alt=""></div>
+													<div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','custom')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
 												</div>
 											</div>
 										</div>
@@ -785,22 +785,12 @@ export default {
   	'ui-select': Select
   },
   mounted() {
-
-  	//공용 서브 탭 초기화
-	this.wTab = {
-    	tab1:true,
-    	tab2:false,
-    	tab3:false,
-    	tab4:false,
-    	tab5:false,
-    	tab6:false
-    }
   },
   data () {
     return {
     	tabAction:{
 	    	tabActive1:{
-	    		show:false
+	    		show:true
 	    	},
 	    	tabActive2:{
 	    		show:false
@@ -809,16 +799,10 @@ export default {
 	    		show:false
 	    	},
 	    	tabActive4:{
-	    		show:false,
-	    		subActive:{
-	    			media:true,
-	    			group:false,
-	    			keyword:false,
-	    			excel:false
-	    		}
+	    		show:false
 	    	},
 	    	tabActive5:{
-	    		show:true
+	    		show:false
 	    	},
 	    	tabActive6:{
 	    		show:false
@@ -1214,19 +1198,19 @@ export default {
 				this.tabAction[tabArray[i]].show = false
 			}
 		}
+
+		//공용 서브 탭 초기화
+		this.wTab = {
+	    	tab1:true,
+	    	tab2:false,
+	    	tab3:false,
+	    	tab4:false,
+	    	tab5:false,
+	    	tab6:false
+	    }
+
 	},
-	//네오 카테고리 유형 탭
-	neoTab(type) {
-		const types = ['media','group','keyword','excel']
-		for(let i = 0; i < types.length; i++) {
-			if(types[i] == type) {
-				this.tabAction['tabActive4'].subActive[type] = true
-			}else{
-				this.tabAction['tabActive4'].subActive[types[i]] = false
-			}
-		}
-	},
-	//애널리틱스 탭
+	//서브 공용 탭
 	wTabs(num,obj) {
 		const tabs = Object.keys(this[obj])
 		for(let i = 0; i < tabs.length; i++) {
@@ -1250,9 +1234,9 @@ export default {
 
 	//매체 삭제
 	deleteAddAdvs(item) {
-		let checkAdd = this.addAdvs
-		let addListEl = document.getElementById('adv-list-2')
-		let addlistLi = addListEl.getElementsByTagName('li')
+		const checkAdd = this.addAdvs
+		const addListEl = document.getElementById('adv-list-2')
+		const addlistLi = addListEl.getElementsByTagName('li')
 		if(item === 'all') {
 				for(let i = 0; i < addlistLi.length; i++) {
 					this.advs.push(checkAdd[i])
@@ -1261,6 +1245,19 @@ export default {
 		}else{
 			this.addAdvs.splice(this.addAdvs.indexOf(item), 1)
 			this.advs.push(item)
+		}
+	},
+
+	//구글애널리틱스 매체삭제
+	deleteAnalyData(item, key){
+		const elId = event.target.closest('.analytics_tab_contents').id
+		const addListEl = document.getElementById(elId)
+		const addlistLi = addListEl.getElementsByTagName('li')
+
+		if(item === 'all') {
+			this.gAddData[key].splice(0, addlistLi.length)
+		}else{
+			this.gAddData[key].splice(this.gAddData[key].indexOf(item), 1)
 		}
 	},
 
@@ -1313,6 +1310,8 @@ export default {
 			}
 		}
 	}
+
+
   },
   computed:{
   	selectAll: {
