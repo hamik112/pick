@@ -168,16 +168,16 @@
 											</div>
 											<div class="event_mapping_wrap">
 												<ul>
-													<li v-for="(item, index) in fields" :key="index" class="select_btn">
-														<div class="select_title">{{ item.title }}</div>
+													<li v-for="(pixelMappingCategory, index) in pixelMappingCategories" :key="index" class="select_btn">
+														<div class="select_title">{{ pixelMappingCategory.title }}</div>
 														<div class="select_contents">
-															<div><ui-select :selectData="item.select" :data-key="index" :onClick="multiSelect"></ui-select></div>
+															<div><ui-select :selectData="pixelMappingCategory.select" :data-key="index" :onClick="multiSelect"></ui-select></div>
 														</div>
 													</li>
 												</ul>
 												<div class="btn_wrap">
 													<button type="button" class="before_btn" @click="tabMove('1', '2')">이전</button>
-													<button class="next_btn" @click="success">완료</button>
+													<button class="next_btn" @click="success()">완료</button>
 												</div>
 											</div>
 										</div>
@@ -243,33 +243,41 @@ export default {
 		// 	}
 		// })
 
-		// 픽셀 이벤트 연동
-		this.$http.get('/fb_ad_accounts/ad_account_pixel_events', {
-			params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
-		})
+		// 픽셀 맵핑 카테고리 목록
+		this.$http.get('/pixel_mapping_category/')
 		.then(res => {
+			let categoryCount = res.data.count
 			const data = res.data.data
 
-			for(let i = 0; i < this.fieldTitles.length; i++) {
-				this.fields.push({
-					title: this.fieldTitles[i],
+			for(let i = 0; i < categoryCount; i++) {
+				this.pixelMappingCategories.push({
+					id: data[i].id,
+					title: data[i].category_label_kr,
 					number: i,
 					key: i,
 					select: {
 						// select 속성이 없을때 childe vue의 selectData.default()가 호출 됨
-						emptyText: '픽셀 이벤트를 선택해주세요.',
-						textList: ['미지정']
+						selectedPixelEvent: this.defaultPixelEvent,
+						pixelEvents: ['미지정']
 					}
 				})
 			}
 
-			return data
+			return
 		})
-		.then(data => {
-			this.fields.forEach(field => {
-				for(let i = 0; i < data.length; i++) {
-					field.select.textList.push(data[i].name)
-				}
+		// 픽셀 이벤트 목록
+		.then(() => {
+			this.$http.get('/api/fb_ad_accounts/ad_account_pixel_events', {
+				params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
+			})
+			.then(res => {
+				const data = res.data.data
+
+				this.pixelMappingCategories.forEach(category => {
+					for(let i = 0; i < data.length; i++) {
+						category.select.pixelEvents.push(data[i].name)
+					}
+				})
 			})
 		})
 	},
@@ -279,23 +287,23 @@ export default {
 			tabActive1: true,
 			tabActive2: false,
 			tabActive3: false,
+			tabListStep: 0,
 
+			// 카테고리 설정
+			categoryName: '',
 
+			// 네오 계정 연동
 			advs: [],
 			addedAdvs:[],
-
+			searchKeyword: '',
 			checkData:[],
-			addKey:[],
+			ctCount:0,
 			selected: [],
 			addSelected:[],
 
-			tabListStep: 0,
-			ctCount:0,
-			categoryName: '',
-
-			searchKeyword: '',
-			fieldTitles: [ '구매', '장바구니', '회원가입', '전환완료', '전환 1단계', '전환 2단계', '전환 3단계', '전환 4단계', '전환 5단계' ],
-			fields: [],
+			// 픽셀 이벤트 매핑
+			pixelMappingCategories: [],
+			defaultPixelEvent: '픽셀 이벤트를 선택해주세요.',
 		}
 	},
 
@@ -305,9 +313,9 @@ export default {
 		},
 
 		multiSelect (item, index) {
-			// 해당 fields의 픽셀 이벤트명을 변경하기 위함
+			// 해당 pixelMappingCategory의 pixelEvent를 변경하기 위함
 			const key = event.target.closest('.select_btn').getAttribute('data-key')
-			this.fields[key].select.emptyText = item
+			this.pixelMappingCategories[key].select.selectedPixelEvent = item
 		},
 
 		checkFilter (currentList) {
@@ -449,12 +457,37 @@ export default {
 			}
 		},
 		success () {
-			if(confirm('현재 매칭된 상태로 Target Pick 설정을 진행할까요?') === true) {
-				this.$emit('close')
-			}else{
-				return false
+			let facebookPixelEventNames = []
+			let pixelMappingCategoryIds = []
+
+			for(let i = 0; i < this.pixelMappingCategories.length; i++) {
+				// 선택된 픽셀 이벤트
+				let selectedPixelEvent = this.pixelMappingCategories[i].select.selectedPixelEvent
+
+				facebookPixelEventNames.push(selectedPixelEvent === '미지정' ? null : selectedPixelEvent)
+				pixelMappingCategoryIds.push(this.pixelMappingCategories[i].id)
 			}
-		}
+
+			if(facebookPixelEventNames.includes(this.defaultPixelEvent)) {
+				// 선택되지 않은 픽셀 이벤트가 있을 경우
+				alert('모든 항목이 매칭되지 않았습니다.')
+			} else {
+				// 모든 픽셀 이벤트가 설정 되었을 경우
+				if(confirm('현재 매칭된 상태로 Target Pick 설정을 진행할까요?') === true) {
+					// 광고 계정 설정창 닫기
+					this.$emit('close')
+
+					// 픽셀 이벤트 맵핑
+					this.$http.post('/api/pixel_mapping/', {
+						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+						facebook_pixel_event_names: facebookPixelEventNames,
+						pixel_mapping_category_ids: pixelMappingCategoryIds,
+					})
+				} else {
+					return false
+				}
+			}
+		},
 	},
 
 	computed: {
