@@ -22,22 +22,12 @@ export default {
   },
 
   props: {
-    emptyText: {
-      type: String,
-      default () {
-        return '선택 하세요'
-      }
-    },
     selectData: {
       type: Object,
       default () {
         return {
-          emptyText: 'Select..',
-          textList: [
-            'Select1',
-            'Select2',
-            'Select3'
-          ]
+          emptyText: '픽셀 이벤트가 없습니다.',
+          textList: []
         }
       }
     },

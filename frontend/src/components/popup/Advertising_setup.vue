@@ -168,7 +168,7 @@
 											</div>
 											<div class="event_mapping_wrap">
 												<ul>
-													<li v-for="(item, index) in fields" class="select_btn">
+													<li v-for="(item, index) in fields" :key="index" class="select_btn">
 														<div class="select_title">{{ item.title }}</div>
 														<div class="select_contents">
 															<div><ui-select :selectData="item.select" :data-key="index" :onClick="multiSelect"></ui-select></div>
@@ -209,6 +209,7 @@ export default {
 	},
 
 	created() {
+		// 네오 계정 리스트
 		this.$http.get('/api/neo_db/search_neo_accounts?adv_name')
 			.then(res => {
 				const total_count = res.data.total_count
@@ -229,6 +230,48 @@ export default {
 			.catch(err => {
 				console.log(err)
 			})
+
+		// 연결된 네오 계정 리스트
+		// this.$http.get('/api/neo_account/', {
+		// 	params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
+		// })
+		// .then(res => {
+		// 	console.log('연결된 네오 계정')
+		// 	console.log(res)
+		// 	for(let i = 0; i < res.data.count; i++) {
+		// 		this.addedAdvs.push(res.data.data[i])
+		// 	}
+		// })
+
+		// 픽셀 이벤트 연동
+		this.$http.get('/api/fb_ad_accounts/ad_account_pixel_events', {
+			params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
+		})
+		.then(res => {
+			const data = res.data.data
+
+			for(let i = 0; i < this.fieldTitles.length; i++) {
+				this.fields.push({
+					title: this.fieldTitles[i],
+					number: i,
+					key: i,
+					select: {
+						// select 속성이 없을때 childe vue의 selectData.default()가 호출 됨
+						emptyText: '픽셀 이벤트를 선택해주세요.',
+						textList: ['미지정']
+					}
+				})
+			}
+
+			return data
+		})
+		.then(data => {
+			this.fields.forEach(field => {
+				for(let i = 0; i < data.length; i++) {
+					field.select.textList.push(data[i].name)
+				}
+			})
+		})
 	},
 
 	data () {
@@ -236,131 +279,11 @@ export default {
 			tabActive1: true,
 			tabActive2: false,
 			tabActive3: false,
-
-			categorySelectData: {
-				emptyText: '픽셀 이벤트를 선택해주세요',
-				textList: [
-					'픽셀1',
-					'픽셀2',
-					'픽셀3'
-				]
-			},
-
-
-			fields:[
-	        	//sample
-	        	{
-	        		"title":'구매',
-	        		"number":0,
-	        		"key":0,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	},
-	        	{
-	        		"title":"장바구니",
-	        		"number":1,
-	        		"key":1,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	},
-	        	{
-	        		"title":"회원가입",
-	        		"number":2,
-	        		"key":2,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	},
-	        	{
-	        		"title":"전환완료",
-	        		"number":3,
-	        		"key":3,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	},
-	        	{
-	        		"title":"전환 1단계",
-	        		"number":4,
-	        		"key":4,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	},
-	        	{
-	        		"title":"전환 2단계",
-	        		"number":5,
-	        		"key":5,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	},
-	        	{
-	        		"title":"전환 3단계",
-	        		"number":6,
-	        		"key":6,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	},
-	        	{
-	        		"title":"전환 4단계",
-	        		"number":7,
-	        		"key":7,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	},
-	        	{
-	        		"title":"전환 5단계",
-	        		"number":8,
-	        		"key":8,
-	        		"select":{
-			          emptyText: '픽셀 이벤트를 선택해주세요.',
-			          textList: [
-			            '1',
-			            '2'
-			          ]
-			        }
-	        	}
-	        ],
+			
 
 			advs: [],
 			addedAdvs:[],
+			
 			checkData:[],
 			addKey:[],
 			selected: [],
@@ -371,6 +294,8 @@ export default {
 			categoryName: '',
 
 			searchKeyword: '',
+			fieldTitles: [ '구매', '장바구니', '회원가입', '전환완료', '전환 1단계', '전환 2단계', '전환 3단계', '전환 4단계', '전환 5단계' ],
+			fields: [],
 		}
 	},
 
@@ -378,28 +303,13 @@ export default {
 		clickSteop1Category (name) {
 			this.categoryName = name
 		},
-		selectCategory (item) {
-			this.categorySelectData.emptyText = item
-		},
-		multiSelect(item, index) {
+
+		multiSelect (item, index) {
+			// 해당 fields의 픽셀 이벤트명을 변경하기 위함
 			const key = event.target.closest('.select_btn').getAttribute('data-key')
 			this.fields[key].select.emptyText = item
 		},
-		listSearch() {
-			//리스트 검색시 노출
-			this.advs = [
-				{ "id": "1", "name": "LF몰", "advid": "LF_M_구글1", "type_id":"13" },
-			    { "id": "2", "name": "LF몰2", "advid": "LF_M_구글2", "type_id":"11" },
-			    { "id": "3", "name": "LF몰3", "advid": "LF_M_구글3", "type_id":"15" },
-			    { "id": "4", "name": "LF몰4", "advid": "LF_M_구글4", "type_id":"17" }
-			]
 
-		},
-		listSort(item) {
-			const me = this
-			let checkData = me.checkData
-
-		},
 		checkFilter (currentList) {
 			// this[currentList] === this['advs' || 'addedAdvs']
 			let items = this[currentList]
