@@ -1,0 +1,254 @@
+[
+  {
+    "model": "account_category.accountcategory",
+    "pk": 1,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\ub300\ucd9c",
+      "category_label_en": "loan"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 2,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "NGO",
+      "category_label_en": "ngo"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 3,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\uce74\ub4dc",
+      "category_label_en": "card"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 4,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\uc5ec\ud589",
+      "category_label_en": "travel"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 5,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\uc1fc\ud551\ubab0",
+      "category_label_en": "shoppingmall"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 6,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\uae30\ud0c0",
+      "category_label_en": "etc"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 7,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\ubcf4\ud5d8",
+      "category_label_en": "insurance"
+    }
+  },
+  {
+    "model": "account_category.accountcategory",
+    "pk": 8,
+    "fields": {
+      "created_at": "2018-01-02T18:10:45",
+      "updated_at": "2018-01-02T18:10:45",
+      "created_by": "TEST",
+      "updated_by": "TEST",
+      "category_label_kr": "\ubdf0\ud2f0",
+      "category_label_en": "beauty"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 1,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc0ac\uc774\ud2b8 \ubc29\ubb38",
+      "category_label_en": "visit pages"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 2,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\ud2b9\uc815\ud398\uc774\uc9c0 \ubc29\ubb38",
+      "category_label_en": "visit specific pages"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 3,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "NEO\ud0c0\uac9f",
+      "category_label_en": "neo target"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 4,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "UTM\ud0c0\uac9f",
+      "category_label_en": "utm target"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 5,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uad6c\ub9e4",
+      "category_label_en": "purchase"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 6,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc7a5\ubc14\uad6c\ub2c8",
+      "category_label_en": "add to cart"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 7,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\ud68c\uc6d0\uac00\uc785",
+      "category_label_en": "registration"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 8,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 \uc644\ub8cc",
+      "category_label_en": "conversion complete"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 9,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 1\ub2e8\uacc4",
+      "category_label_en": "conversion 1step"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 10,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 2\ub2e8\uacc4",
+      "category_label_en": "conversion 2step"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 11,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 3\ub2e8\uacc4",
+      "category_label_en": "conversion 3step"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 12,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 4\ub2e8\uacc4",
+      "category_label_en": "conversion 4step"
+    }
+  },
+  {
+    "model": "pixel_mapping_category.pixelmappingcategory",
+    "pk": 13,
+    "fields": {
+      "created_at": "2018-01-08T16:05:46",
+      "updated_at": "2018-01-08T16:05:46",
+      "created_by": "test",
+      "updated_by": "test",
+      "category_label_kr": "\uc804\ud658 5\ub2e8\uacc4",
+      "category_label_en": "conversion 5step"
+    }
+  }
+]
