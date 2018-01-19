@@ -257,8 +257,8 @@ export default {
 					key: i,
 					select: {
 						// select 속성이 없을때 childe vue의 selectData.default()가 호출 됨
-						selectedPixelEvent: this.defaultPixelEvent,
-						pixelEvents: ['미지정']
+						emptyText: this.defaultPixelEvent,
+						textList: ['미지정']
 					}
 				})
 			}
@@ -275,7 +275,7 @@ export default {
 
 				this.pixelMappingCategories.forEach(category => {
 					for(let i = 0; i < data.length; i++) {
-						category.select.pixelEvents.push(data[i].name)
+						category.select.textList.push(data[i].name)
 					}
 				})
 			})
@@ -315,7 +315,7 @@ export default {
 		multiSelect (item, index) {
 			// 해당 pixelMappingCategory의 pixelEvent를 변경하기 위함
 			const key = event.target.closest('.select_btn').getAttribute('data-key')
-			this.pixelMappingCategories[key].select.selectedPixelEvent = item
+			this.pixelMappingCategories[key].select.emptyText = item
 		},
 
 		checkFilter (currentList) {
@@ -462,7 +462,7 @@ export default {
 
 			for(let i = 0; i < this.pixelMappingCategories.length; i++) {
 				// 선택된 픽셀 이벤트
-				let selectedPixelEvent = this.pixelMappingCategories[i].select.selectedPixelEvent
+				let selectedPixelEvent = this.pixelMappingCategories[i].select.emptyText
 
 				facebookPixelEventNames.push(selectedPixelEvent === '미지정' ? null : selectedPixelEvent)
 				pixelMappingCategoryIds.push(this.pixelMappingCategories[i].id)
