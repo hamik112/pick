@@ -35,7 +35,7 @@
       </div>
       <div class="section_tab_widget clearfix">
         <ul>
-          <li rel="section_list_1" class="aside_section active" @click="goTargetPick"><router-link v-bind:to="{ path: '/pick' }"></router-link></li>
+          <li rel="section_list_1" class="aside_section active"><router-link v-bind:to="{ path: '/pick' }"></router-link></li>
           <li rel="section_list_2" class="aside_section"><router-link v-bind:to="{ path: '/report' }"></router-link></li>
           <li rel="section_list_3" class="aside_section"><router-link v-bind:to="{ path: '/library' }"></router-link></li>
         </ul>
@@ -139,11 +139,6 @@ export default {
       this.isActive = false
       this.isShowList = false
       localStorage.setItem('account_id', fbAdAccount.account_id)
-    },
-
-    goTargetPick () {
-      console.log("goTargetPick",this.selectFbAdAccount)
-      this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
     }
   }
 }
