@@ -243,7 +243,7 @@
                             <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
-                        <div class="account_wrap">
+                        <div class="account_wrap account_wrapper">
                           <div class="account_inner_wrap clearfix">
                             <div class="account_left">
                               <div class="advertiser_search_result pop-scroll">
@@ -300,7 +300,7 @@
                             <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
-                        <div class="account_wrap">
+                        <div class="account_wrap account_wrapper">
                           <div class="account_inner_wrap clearfix">
                             <div class="account_left">
                               <div class="advertiser_search_result pop-scroll">
@@ -357,7 +357,7 @@
                             <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
-                        <div class="account_wrap">
+                        <div class="account_wrap account_wrapper">
                           <div class="account_inner_wrap clearfix">
                             <div class="account_left">
                               <div class="advertiser_search_result pop-scroll">
@@ -414,7 +414,7 @@
                             <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
-                        <div class="account_wrap">
+                        <div class="account_wrap account_wrapper">
                           <div class="account_inner_wrap clearfix">
                             <div class="account_left">
                               <strong>양식에 맞추어 엑셀을 입력해 주세요.</strong>
@@ -622,10 +622,13 @@
                         <div class="account_info">
                           <div class="account_title">"사이트 방문자"중</div>
                           <div>
-                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser2" data-key="selectUser2" :onClick="selectTarget"></ui-select>
                           </div>
-                          <div class="account_date" v-if="subInput">
-                            <input type="text" v-if="subInput"><span></span>
+                          <div class="account_date" v-if="subInput2">
+                          	<input type="text"><span>회</span>
+                          </div>
+                          <div class="account_date" v-if="subInput3">
+                          	<input type="text"><span>원</span>
                           </div>
                         </div>
                       </div>
@@ -678,12 +681,15 @@
                           <div>
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
+<<<<<<< HEAD
                           <div class="account_date" v-if="subSelect">
                           <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
                             <input type="text" v-if="subInput"><span>일</span>
                           </div>
+=======
+>>>>>>> jun
                         </div>
                       </div>
                     </div>
@@ -733,7 +739,7 @@
                         <div class="account_info">
                           <div class="account_title">"사이트 방문자"중</div>
                           <div>
-                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser3" data-key="selectUser3" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
                           <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
@@ -791,12 +797,15 @@
                           <div>
                             <ui-select :selectData="this.select20" data-key="select20" :onClick="selectTarget"></ui-select>
                           </div>
+<<<<<<< HEAD
                           <div class="account_date" v-if="subSelect">
                           <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
                             <input type="text" v-if="subInput"><span>일</span>
                           </div>
+=======
+>>>>>>> jun
                           <div class="breakaway_wrap">
                             <input type="text">
                             <p>단계 완료 후 이탈 고객</p>
@@ -893,6 +902,8 @@ export default {
 
       subSelect:false,
       subInput:false,
+      subInput2:false,
+      subInput3:false,
 
       tabAction:{
         tabActive1:{
@@ -1005,6 +1016,24 @@ export default {
             'non_conversion',
             'registration'
           ],
+        },
+        selectUser2: {
+          emptyText: '구매한 사람 중',
+          textList: [
+            '전체 고객',
+            '특정 구매횟수 이상 구매 고객', // 셀렉트박스 표시 (5/15/25 %)
+            '특정 구매금액 이상 구매 고객', // 숫자 입력 텍스트필드 표시
+          ]
+        },
+        selectUser3: {
+          emptyText: '장바구니 이용자중',
+          textList: [
+            '전체 고객',
+            '이용 시간 상위 고객', // 셀렉트박스 표시 (5/15/25 %)
+            '미 구매 고객',
+            '전환 완료 고객',
+            '미 전환 고객'
+          ]
         },
         selectSub: {
           emptyText: '5%',
@@ -1273,6 +1302,8 @@ export default {
     //서브 셀렉터 초기화
     this.subSelect = false
     this.subInput = false
+    this.subInput2 = false
+    this.subInput3 = false
   },
   //서브 공용 탭
   wTabs(num,obj) {
@@ -1288,16 +1319,20 @@ export default {
   //개별 셀렉팅
   selectTarget(item) {
     const key = event.target.closest('.select_btn').getAttribute('data-key')
+    const textCheck = item.replace(/\s/gi, "")
+	this.subSelect = false
+	this.subInput = false
+	this.subInput2 = false
+	this.subInput3 = false
     //서브 입력창 체크
-    if(item === '이용 시간 상위 고객') {
-      this.subSelect = true
-      this.subInput = false
-    }else if(item === '특정일 동안 미방문 고객') {
-      this.subSelect = false
-      this.subInput = true
-    }else {
-      this.subSelect = false
-      this.subInput = false
+    if(textCheck === '이용시간상위고객') {
+    	this.subSelect = true
+    }else if(textCheck === '특정일동안미방문고객') {
+    	this.subInput = true
+    }else if(textCheck === '특정구매횟수이상구매고객') {
+     	this.subInput2 = true
+    }else if(textCheck === '특정구매금액이상구매고객') {
+    	this.subInput3 = true
     }
     this[key].emptyText = item
   },
