@@ -31,6 +31,7 @@ export default {
 
   watch: {
     '$route' (to, from) {
+      console.log('route', to, from)
       this.showLayout(to.name)
     }
   },
