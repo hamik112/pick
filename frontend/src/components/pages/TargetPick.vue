@@ -152,8 +152,14 @@
 		},
 
 		created () {
+			console.log('created targetpick')
 			this.$eventBus.$on('selectFbAdAccount', this.selectFbAdAccount)
 		},
+
+		beforeDestroy () {
+			console.log('beforeDestroy targetpick')
+	    this.$eventBus.$off('selectFbAdAccount', this.selectFbAdAccount)
+	  },
 
 		methods: {
 			selectTarget (item) {
@@ -162,11 +168,6 @@
 
 			selectFbAdAccount (fbAdAccount) {
 				console.log('selectFbAdAccount', fbAdAccount)
-				this.checkFbAdAccount(fbAdAccount)
-			},
-
-			checkFbAdAccount (fbAdAccount) {
-				console.log('checkFbAdAccount', fbAdAccount)
 				this.isPick = false
 				this.isLoading = true
 				this.loadingTitle = '광고계정을 검사중입니다.'
@@ -210,8 +211,12 @@
 				this.loadingTitle = '타겟을 가져오는 중입니다.'
 				this.loadingDescription = '조금만 기다려 주시면, 생성된 타겟을 가져옵니다.'
 
-				let url = '/api/pickdata_account_target/targetpick?fb_ad_account_id=2'
-				this.$http.get(url)
+				let url = '/api/pickdata_account_target/targetpick'
+				this.$http.get(url, {
+					params: {
+						fb_ad_account_id: localStorage.getItem('fb_ad_account_id')
+					}
+				})
 				.then(res => {
 					const response = res.data
 					const data = response.data
