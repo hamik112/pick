@@ -29,6 +29,7 @@
 		.interlock_btn{display:inline-block; vertical-align:middle; letter-spacing: 0px; margin:0px 14px;
 			button{display:block; margin:5px 0px;}
 		}
+		.account_wrapper{margin-top:12px;}
 		.account_wrap{width:370px; border:1px solid #d0d0d0; display:inline-block; vertical-align:middle; letter-spacing: 0px;
 			.advertiser_search{width:100%; display:table; padding:10px 22px 10px 10px; letter-spacing:-5px; border-bottom:1px solid #e1e1e1;
 				.search_title{height:40px; line-height:40px; font-size:14px; color:#444;
@@ -274,7 +275,7 @@
 			}
 		}
 		.target_tbody{
-			.target_inner_tbody{padding:19px 17px; border:$Border_type01; min-height:245px;
+			.target_inner_tbody{padding:19px 17px; border:$Border_type01;/* min-height:245px;*/
 				/* url 버튼 */
 				.url_btn{display: inline-block; vertical-align: middle; margin:6px 0px;
 					div{float:left; width:26px; height:26px; border:$Border_type01; margin-left:10px; background:url(assets/images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%; color: #385b95; font-weight: bold;
@@ -289,21 +290,22 @@
 					button{width:144px; height:33px; line-height:33px; color:#fff; background:#222933; margin-top:10px;}
 				}
 				/* 계정연동 하지 않았을 경우*/
-				.account_info{letter-spacing:-5px; margin-bottom:12px;
+				.account_info{letter-spacing:-5px;
 					> div{display:inline-block; vertical-align:middle; font-weight:bold; margin-right:10px; letter-spacing:0px;}
 					.select_contents{position:relative;
 						.select{width: 277px; height: 38px; line-height: 37px; border:$Border_type01; cursor:pointer;}
 						.select_view{width:100%; position:absolute; top:37px; left:0px; z-index:1; display:none;}
 					}
-					.account_title{width:250px;}
+					/*.account_title{width:250px;}*/
 					.account_date{
 						input{width: 79px; height: 38px; line-height: 37px; border:$Border_type01; border-radius: 2px; margin-right:9px;}
 					}
-					.breakaway_wrap{margin-right:0px; letter-spacing: -4px;
+					.value_input_wrap{margin-right:0px; letter-spacing: -4px;
 						input{width:79px; height:38px; line-height:37px; display:inline-block; vertical-align:middle; border:$Border_type01; letter-spacing: 0px;}
 						p{display:inline-block; vertical-align:middle; letter-spacing: 0px; margin-left:10px;}
 					}
 				}
+				.neo_contents_wrap{margin-top:12px;}
 				.account_wrap{width:100%; border:0px;
 					.account_inner_wrap{
 						.account_left{width:445px; float:left;
@@ -336,7 +338,7 @@
 					.account_date{
 						.select{width:100px;}
 					}
-					.generate_url_list{
+					.generate_url_list{margin-top:12px;
 						.url_list{margin-bottom:10px; letter-spacing: -4px;
 							&:last-child{margin-bottom:0px;}
 							.url_select{display:inline-block; vertical-align:middle; margin-right:10px; letter-spacing: 0px;
