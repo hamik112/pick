@@ -620,7 +620,7 @@
                     <div class="target_inner_tbody clearfix">
                       <div class="target_generate">
                         <div class="account_info">
-                          <div class="account_title">"사이트 방문자"중</div>
+                          <div class="account_title">"구매한 사람" 중</div>
                           <div>
                             <ui-select :selectData="this.selectUser2" data-key="selectUser2" :onClick="selectTarget"></ui-select>
                           </div>
@@ -677,7 +677,7 @@
                     <div class="target_inner_tbody clearfix">
                       <div class="target_generate">
                         <div class="account_info">
-                          <div class="account_title">"사이트 방문자"중</div>
+                          <div class="account_title">"장바구니 이용자" 중</div>
                           <div>
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
@@ -728,7 +728,7 @@
                     <div class="target_inner_tbody clearfix">
                       <div class="target_generate">
                         <div class="account_info">
-                          <div class="account_title">"사이트 방문자"중</div>
+                          <div class="account_title">"회원가입한 사람" 중</div>
                           <div>
                             <ui-select :selectData="this.selectUser3" data-key="selectUser3" :onClick="selectTarget"></ui-select>
                           </div>
