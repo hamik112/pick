@@ -35,7 +35,7 @@
       </div>
       <div class="section_tab_widget clearfix">
         <ul>
-          <li rel="section_list_1" class="aside_section active" @click="goTargetPick"><router-link v-bind:to="{ path: '/pick' }"></router-link></li>
+          <li rel="section_list_1" class="aside_section active"><router-link v-bind:to="{ path: '/pick' }"></router-link></li>
           <li rel="section_list_2" class="aside_section"><router-link v-bind:to="{ path: '/report' }"></router-link></li>
           <li rel="section_list_3" class="aside_section"><router-link v-bind:to="{ path: '/library' }"></router-link></li>
         </ul>
@@ -104,7 +104,7 @@ export default {
         console.log('DEBUG Call')
       }
       console.log('loadFbAdAccount', res)
-      this.$http.get('/api/fb_ad_accounts/')
+      this.$http.get('/fb_ad_accounts/')
       .then(res => {
         const response = res.data
         const data = response.data
@@ -126,7 +126,7 @@ export default {
         }
       })
       .catch(err => {
-        console.error('/api/fb_ad_accounts/', err)
+        console.error('/fb_ad_accounts/', err)
       })
     },
 
@@ -139,11 +139,6 @@ export default {
       this.isActive = false
       this.isShowList = false
       localStorage.setItem('account_id', fbAdAccount.account_id)
-    },
-
-    goTargetPick () {
-      console.log("goTargetPick",this.selectFbAdAccount)
-      this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
     }
   }
 }
