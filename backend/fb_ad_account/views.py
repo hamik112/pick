@@ -160,6 +160,30 @@ class AccountPixelEvent(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+class AccountPixel(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            api_init_by_system_user()
+            pixels = ads_pixels.get_account_pixels(fb_ad_account.act_account_id)
+
+            response_data['success'] = 'YES'
+            response_data['data'] = pixels
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
 class FbAdAccountCategory(APIView):
     def get(self, request, fb_account_id, format=None):
         response_data = {}

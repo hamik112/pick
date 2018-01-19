@@ -210,7 +210,7 @@ export default {
 
 	created() {
 		// 네오 계정 리스트
-		this.$http.get('/api/neo_db/search_neo_accounts?adv_name')
+		this.$http.get('/neo_db/search_neo_accounts?adv_name')
 			.then(res => {
 				const totalCount = res.data.total_count
 				const data = res.data.data
@@ -232,7 +232,7 @@ export default {
 			})
 
 		// 연결된 네오 계정 리스트
-		this.$http.get('/api/neo_account/', {
+		this.$http.get('/neo_account/', {
 			params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
 		})
 		.then(res => {
@@ -252,8 +252,8 @@ export default {
 			}
 		})
 
-		// 픽셀 맵핑 카테고리 목록 
-		this.$http.get('/api/pixel_mapping_category/')
+		// 픽셀 맵핑 카테고리 목록
+		this.$http.get('/pixel_mapping_category/')
 		.then(res => {
 			let categoryCount = res.data.count
 			const data = res.data.data
@@ -266,8 +266,8 @@ export default {
 					key: i,
 					select: {
 						// select 속성이 없을때 childe vue의 selectData.default()가 호출 됨
-						selectedPixelEvent: this.defaultPixelEvent,
-						pixelEvents: ['미지정']
+						emptyText: this.defaultPixelEvent,
+						textList: ['미지정']
 					}
 				})
 			}
@@ -276,7 +276,7 @@ export default {
 		})
 		// 픽셀 이벤트 목록
 		.then(() => {
-			this.$http.get('/api/fb_ad_accounts/ad_account_pixel_events', {
+			this.$http.get('/fb_ad_accounts/ad_account_pixel_events', {
 				params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
 			})
 			.then(res => {
@@ -284,7 +284,7 @@ export default {
 
 				this.pixelMappingCategories.forEach(category => {
 					for(let i = 0; i < data.length; i++) {
-						category.select.pixelEvents.push(data[i].name)
+						category.select.textList.push(data[i].name)
 					}
 				})
 			})
@@ -323,7 +323,7 @@ export default {
 		multiSelect (item, index) {
 			// 해당 pixelMappingCategory의 pixelEvent를 변경하기 위함
 			const key = event.target.closest('.select_btn').getAttribute('data-key')
-			this.pixelMappingCategories[key].select.selectedPixelEvent = item
+			this.pixelMappingCategories[key].select.emptyText = item
 		},
 
 		checkFilter (beforeAdvs) {
@@ -422,7 +422,7 @@ export default {
 					} else if(this.categoryName === '뷰티') {
 						accountCategoryId = 8
 					}
-					this.$http.post('/api/fb_ad_accounts/', {
+					this.$http.post('/fb_ad_accounts/', {
 							act_account_id: actAccountId,
 							account_category_id: accountCategoryId,
 					})
@@ -450,7 +450,7 @@ export default {
 					console.log(neoAdvIds)
 					console.log(neoAccountIds)
 
-					this.$http.post('/api/neo_account/', {
+					this.$http.post('/neo_account/', {
 						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
 						neo_adv_ids: neoAdvIds,
 						neo_account_ids: neoAccountIds
@@ -473,8 +473,8 @@ export default {
 
 			for(let i = 0; i < this.pixelMappingCategories.length; i++) {
 				// 선택된 픽셀 이벤트
-				let selectedPixelEvent = this.pixelMappingCategories[i].select.selectedPixelEvent
-				
+				let selectedPixelEvent = this.pixelMappingCategories[i].select.emptyText
+
 				facebookPixelEventNames.push(selectedPixelEvent === '미지정' ? null : selectedPixelEvent)
 				pixelMappingCategoryIds.push(this.pixelMappingCategories[i].id)
 			}
@@ -489,7 +489,7 @@ export default {
 					this.$emit('close')
 
 					// 픽셀 이벤트 맵핑
-					this.$http.post('/api/pixel_mapping/', {
+					this.$http.post('/pixel_mapping/', {
 						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
 						facebook_pixel_event_names: facebookPixelEventNames,
 						pixel_mapping_category_ids: pixelMappingCategoryIds,

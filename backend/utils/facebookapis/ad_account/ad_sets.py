@@ -46,6 +46,30 @@ def field_list():
 
     return fields
 
+def adset_targeting_field():
+    fields = [
+        'id',
+        'campaign{id,name,objective}',
+        'name',
+        'targeting'
+    ]
+
+    return fields
+
+def get_ad_set(adset_id):
+    try:
+        adset = AdSet(adset_id)
+        adset.remote_read(fields=adset_targeting_field())
+
+        return adset._json
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
+
+
 def get_my_ad_sets(account_id, limit=25, after=None, fields=field_list()):
     try:
         ad_account = AdAccount(account_id)
@@ -92,7 +116,7 @@ def get_insight_by_ad_set(ad_set_id, params={}):
     try:
         ad_set = AdSet(ad_set_id)
         ad_insights = ad_set.get_insights(fields=insight_fields(), params=params)
-        
+
         return ad_insights
 
     except FacebookRequestError as e:

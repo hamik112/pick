@@ -73,6 +73,12 @@
                       <div class="contents_title">타겟이름</div>
                       <div><input type="text"></div>
                     </div>
+                    <div class="target_data">
+                      <div class="contents_title">타겟 모수</div>
+                      <div>
+                        <span>12,000</span>명
+                      </div>
+                    </div>
                   </div>
                   <div class="target_tbody">
                     <div class="target_inner_tbody clearfix">
@@ -80,7 +86,13 @@
                         <div class="account_info">
                           <div class="account_title">"사이트 방문자"중</div>
                           <div>
-                            <ui-select :selectData="this.select2" data-key="select2" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                       </div>
@@ -89,7 +101,7 @@
                 </div>
                 <div class="btn_wrap">
                   <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                  <button class="next_btn">타겟 만들기</button>
+                  <button class="next_btn" @click="createVisitSite()">타겟 만들기</button>
                 </div>
               </div>
 
@@ -118,6 +130,12 @@
                       <div class="contents_title">타겟이름</div>
                       <div><input type="text"></div>
                     </div>
+                    <div class="target_data">
+                      <div class="contents_title">타겟 모수</div>
+                      <div>
+                        <span>12,000</span>명
+                      </div>
+                    </div>
                   </div>
                   <div class="target_tbody">
                     <div class="target_inner_tbody clearfix">
@@ -125,10 +143,13 @@
                         <div class="account_info">
                           <div class="account_title">"아래 그룹로 유입된 사람"중</div>
                           <div>
-                            <ui-select :selectData="this.select4" data-key="select4" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
-                          <div class="account_date">
-                            <ui-select :selectData="this.select5" data-key="select5" :onClick="selectTarget"></ui-select>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="generate_url_list">
@@ -210,13 +231,16 @@
                     <div class="target_inner_tbody clearfix">
                       <!-- 매체 -->
                       <div class="cate_contents" v-if="wTab.tab1">
-                        <div class="account_info">
+                        <div class="account_info target_generate">
                           <div class="account_title">"아래 매체로 유입된 사람"중</div>
                           <div>
-                            <ui-select :selectData="this.select7" data-key="select7" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
-                          <div class="account_date">
-                            <input type="text"><span>일</span>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="account_wrap">
@@ -264,13 +288,16 @@
                       </div>
                       <!-- 그룹 -->
                       <div class="cate_contents" v-if="wTab.tab2">
-                        <div class="account_info">
+                        <div class="account_info target_generate">
                           <div class="account_title">"아래 그룹로 유입된 사람"중</div>
                           <div>
-                            <ui-select :selectData="this.select8" data-key="select8" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
-                          <div class="account_date">
-                            <input type="text"><span>일</span>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="account_wrap">
@@ -318,13 +345,16 @@
                       </div>
                       <!-- 키워드 -->
                       <div class="cate_contents" v-if="wTab.tab3">
-                        <div class="account_info">
+                        <div class="account_info target_generate">
                           <div class="account_title">"아래 키워드로 유입된 사람"중</div>
                           <div>
                             <ui-select :selectData="this.select9" data-key="select9" :onClick="selectTarget"></ui-select>
                           </div>
-                          <div class="account_date">
-                            <input type="text"><span>일</span>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="account_wrap">
@@ -372,13 +402,16 @@
                       </div>
                       <!-- 엑셀 -->
                       <div class="cate_contents target_excel" v-if="wTab.tab4">
-                        <div class="account_info">
+                        <div class="account_info target_generate">
                           <div class="account_title">"아래 등록 양식으로 유입된 사람"중</div>
                           <div>
-                            <ui-select :selectData="this.select22" data-key="select22" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
-                          <div class="account_date">
-                            <input type="text"><span>일</span>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="account_wrap">
@@ -419,11 +452,11 @@
                   <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
                   <button class="next_btn">타겟 만들기</button>
                 </div>
-                <div class="btn_wrap">
+                <!-- <div class="btn_wrap">
                   <button class="before_btn close_pop" @click="$emit('close')">취소</button>
                   <button class="delete_btn">타겟 삭제</button>
                   <button class="adjust_btn">타겟 수정</button>
-                </div>
+                </div> -->
               </div>
 
               <!-- 구글애널리틱스 탭 -->
@@ -451,6 +484,12 @@
                       <div class="contents_title">타겟이름</div>
                       <div><input type="text"></div>
                     </div>
+                    <div class="target_data">
+                      <div class="contents_title">타겟 모수</div>
+                      <div>
+                        <span>12,000</span>명
+                      </div>
+                    </div>
                   </div>
                   <div class="target_tbody">
                     <div class="target_inner_tbody google_body clearfix">
@@ -460,36 +499,30 @@
                           <div>
                             <div class="select_btn">
                               <div class="select_contents">
-                                <ui-select :selectData="this.select10" data-key="select10" :onClick="selectTarget"></ui-select>
+                                <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                               </div>
                             </div>
                           </div>
-                          <div class="account_date">
-                            <div class="select_btn">
-                              <div class="select_contents">
-                                <ui-select :selectData="this.select11" data-key="select11" :onClick="selectTarget"></ui-select>
-                                <ul class="select_view">
-                                  <li>25%</li>
-                                  <li>50%</li>
-                                  <li>75%</li>
-                                </ul>
-                              </div>
-                            </div>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="generate_url_list">
-                          <div class="url_list clearfix">
+                          <form id="google_url_form" class="url_list clearfix" v-on:submit.prevent="addAnalyData">
                             <div class="url_select clearfix">
                               <div class="select_btn">
                                 <div class="select_contents">
-                                  <ui-select :selectData="this.select12" data-key="select12" :onClick="selectTarget"></ui-select>
+                                  <ui-select id="utm_key" :selectData="this.select12" data-key="select12" :onClick="selectTarget"></ui-select>
                                 </div>
                               </div>
                             </div>
                             <div class="url_input">
-                              <input type="text" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
+                              <input id="utm_name" type="text" value="" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
                             </div>
-                          </div>
+                          </form>
                         </div>
                       </div>
                     </div>
@@ -507,50 +540,45 @@
                       <div class="analytics_tab_list">
                         <div id="tab_list_1" class="analytics_tab_contents clearfix" v-if="wTab.tab1">
                           <ul>
-                            <li v-for="(item,index) in gAddData.source" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'source')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+                            <li v-for="(item,index) in gAddData.utm_source" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_source')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                           </ul>
-                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','source')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_source')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                         </div>
                         <div id="tab_list_2" class="analytics_tab_contents clearfix" v-if="wTab.tab2">
                           <ul>
-                            <li v-for="(item,index) in gAddData.medium" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'medium')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+                            <li v-for="(item,index) in gAddData.utm_medium" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_medium')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                           </ul>
-                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','meidum')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_meidum')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                         </div>
                         <div id="tab_list_3" class="analytics_tab_contents clearfix" v-if="wTab.tab3">
                           <ul>
-                            <li v-for="(item,index) in gAddData.campaign" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'campaign')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+                            <li v-for="(item,index) in gAddData.utm_campaign" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_campaign')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                           </ul>
-                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','campaign')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_campaign')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                         </div>
                         <div id="tab_list_4" class="analytics_tab_contents clearfix" v-if="wTab.tab4">
                           <ul>
-                            <li v-for="(item,index) in gAddData.team" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'team')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+                            <li v-for="(item,index) in gAddData.utm_team" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_team')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                           </ul>
-                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','team')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_team')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                         </div>
                         <div id="tab_list_5" class="analytics_tab_contents clearfix" v-if="wTab.tab5">
                           <ul>
-                            <li v-for="(item,index) in gAddData.content" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'content')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+                            <li v-for="(item,index) in gAddData.utm_content" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_content')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                           </ul>
                           <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','content')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                         </div>
                         <div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
                           <ul>
-                            <li v-for="(item,index) in gAddData.custom" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'custom')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+                            <li v-for="(item,index) in gAddData.utm_custom" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_custom')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                           </ul>
-                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','custom')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                          <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_custom')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                         </div>
                       </div>
                     </div>
                     <div class="btn_wrap">
                       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
                       <button class="next_btn">타겟 만들기</button>
-                    </div>
-                    <div class="btn_wrap">
-                      <button class="before_btn close_pop" @click="$emit('close')">취소</button>
-                      <button class="delete_btn">타겟 삭제</button>
-                      <button class="adjust_btn">타겟 수정</button>
                     </div>
                   </div>
                 </div>
@@ -581,6 +609,12 @@
                       <div class="contents_title">타겟이름</div>
                       <div><input type="text"></div>
                     </div>
+                    <div class="target_data">
+                      <div class="contents_title">타겟 모수</div>
+                      <div>
+                        <span>12,000</span>명
+                      </div>
+                    </div>
                   </div>
                   <div class="target_tbody">
                     <div class="target_inner_tbody clearfix">
@@ -588,7 +622,10 @@
                         <div class="account_info">
                           <div class="account_title">"사이트 방문자"중</div>
                           <div>
-                            <ui-select :selectData="this.select14" data-key="select14" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span></span>
                           </div>
                         </div>
                       </div>
@@ -626,6 +663,12 @@
                       <div class="contents_title">타겟이름</div>
                       <div><input type="text"></div>
                     </div>
+                    <div class="target_data">
+                      <div class="contents_title">타겟 모수</div>
+                      <div>
+                        <span>12,000</span>명
+                      </div>
+                    </div>
                   </div>
                   <div class="target_tbody">
                     <div class="target_inner_tbody clearfix">
@@ -633,7 +676,13 @@
                         <div class="account_info">
                           <div class="account_title">"사이트 방문자"중</div>
                           <div>
-                            <ui-select :selectData="this.select16" data-key="select16" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                       </div>
@@ -671,6 +720,12 @@
                       <div class="contents_title">타겟이름</div>
                       <div><input type="text"></div>
                     </div>
+                    <div class="target_data">
+                      <div class="contents_title">타겟 모수</div>
+                      <div>
+                        <span>12,000</span>명
+                      </div>
+                    </div>
                   </div>
                   <div class="target_tbody">
                     <div class="target_inner_tbody clearfix">
@@ -678,7 +733,13 @@
                         <div class="account_info">
                           <div class="account_title">"사이트 방문자"중</div>
                           <div>
-                            <ui-select :selectData="this.select18" data-key="select18" :onClick="selectTarget"></ui-select>
+                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                       </div>
@@ -729,6 +790,12 @@
                         <div class="account_info">
                           <div>
                             <ui-select :selectData="this.select20" data-key="select20" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subSelect">
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          </div>
+                          <div class="account_date" v-if="subInput">
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                           <div class="breakaway_wrap">
                             <input type="text">
@@ -785,9 +852,48 @@ export default {
     'ui-select': Select
   },
   mounted() {
+    let emptyText = ''
+    let textList = []
+    let keyList = []
+
+    this.$http.get('/fb_ad_accounts/ad_account_pixels', {
+      params: {
+        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id')
+      }
+    })
+    .then(res => {
+      const response = res.data
+      const data = response.data
+      const success = response.success
+      if (success === 'YES') {
+        data.forEach(function(item, index) {
+          textList.push(item.name)
+          keyList.push(item.id)
+          if (index === 0) {
+            emptyText = item.name
+          }
+        })
+      } else {
+        console.log('/fb_ad_accounts/ad_account_pixels fail')
+      }
+      return [emptyText, textList, keyList]
+    })
+    .then(([emptyText, textList, keyList]) => {
+      // 픽셀 셀렉트 박스 전체에 세팅 필요
+      this.select1.emptyText = emptyText
+      this.select1.textList = textList
+      this.select1.keyList = keyList
+    })
+    .catch(err => {
+      console.error('/fb_ad_accounts/ad_account_pixels', err)
+    })
   },
   data () {
     return {
+
+      subSelect:false,
+      subInput:false,
+
       tabAction:{
         tabActive1:{
           show:true
@@ -832,24 +938,8 @@ export default {
             '이벤트3'
           ]
         },
-        select2: {
-          emptyText: '특정일 동안 미방문 고객',
-          textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
-          ]
-        },
         //특정페이지
         select3: {
-          emptyText: '특정일 동안 미방문 고객',
-          textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
-          ]
-        },
-        select4: {
           emptyText: '특정일 동안 미방문 고객',
           textList: [
             '이벤트1',
@@ -874,31 +964,7 @@ export default {
             '이벤트3'
           ]
         },
-        select7: {
-          emptyText: '특정일 동안 미방문 고객',
-          textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
-          ]
-        },
-        select8: {
-          emptyText: '특정일 동안 미방문 고객',
-          textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
-          ]
-        },
         select9: {
-          emptyText: '특정일 동안 미방문 고객',
-          textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
-          ]
-        },
-        select22: {
           emptyText: '특정일 동안 미방문 고객',
           textList: [
             '이벤트1',
@@ -915,7 +981,7 @@ export default {
             '이벤트3'
           ]
         },
-        select10: {
+        selectUser: {
           emptyText: '전체 고객',
           textList: [
             '전체 고객',
@@ -927,14 +993,25 @@ export default {
             '전환완료 고객',
             '미 전환 고객',
             '회원가입 고객'
-          ]
+          ],
+          keyList: [
+            'total',
+            'usage_time_top', // 셀렉트박스 표시 (5/15/25 %)
+            'non_visit', // 숫자 입력 텍스트필드 표시
+            'purchase',
+            'non_purchase',
+            'add_to_cart',
+            'conversion',
+            'non_conversion',
+            'registration'
+          ],
         },
-        select11: {
-          emptyText: '선택',
+        selectSub: {
+          emptyText: '5%',
           textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
+            '5%',
+            '15%',
+            '25%'
           ]
         },
         select12: {
@@ -945,19 +1022,11 @@ export default {
             'utm_campaign',
             'utm_term',
             'utm_content',
-            'Custome'
+            'utm_custom'
           ]
         },
         //구매
         select13: {
-          emptyText: '특정일 동안 미방문 고객',
-          textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
-          ]
-        },
-        select14: {
           emptyText: '특정일 동안 미방문 고객',
           textList: [
             '이벤트1',
@@ -974,24 +1043,8 @@ export default {
             '이벤트3'
           ]
         },
-        select16: {
-          emptyText: '특정일 동안 미방문 고객',
-          textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
-          ]
-        },
         //회원가입
         select17: {
-          emptyText: '특정일 동안 미방문 고객',
-          textList: [
-            '이벤트1',
-            '이벤트2',
-            '이벤트3'
-          ]
-        },
-        select18: {
           emptyText: '특정일 동안 미방문 고객',
           textList: [
             '이벤트1',
@@ -1020,10 +1073,10 @@ export default {
 
         //sample
         advs:[
-          { "number": "1", "name": "LF몰", "campaign":"페이스북1", "count":"3,716", "type_id":"13" },
-        { "number": "2", "name": "LF몰2", "campaign":"페이스북2", "count":"3,716", "type_id":"11" },
-        { "number": "3", "name": "LF몰3", "campaign":"페이스북3", "count":"3,716", "type_id":"15" },
-        { "number": "4", "name": "LF몰4", "campaign":"페이스북4", "count":"3,716", "type_id":"17" }
+            { "number": "1", "name": "LF몰", "campaign":"페이스북1", "count":"3,716", "type_id":"13" },
+          { "number": "2", "name": "LF몰2", "campaign":"페이스북2", "count":"3,716", "type_id":"11" },
+          { "number": "3", "name": "LF몰3", "campaign":"페이스북3", "count":"3,716", "type_id":"15" },
+          { "number": "4", "name": "LF몰4", "campaign":"페이스북4", "count":"3,716", "type_id":"17" }
         ],
         addAdvs:[],
         checkData:[],
@@ -1040,31 +1093,31 @@ export default {
         },
         //analytics sample
         gData:{
-          source:[
-            {
-              number:1,
-              name:"naver"
-            },
-            {
-              number:2,
-              name:"daum"
-            },
-            {
-              number:3,
-              name:"google"
-            }
-          ],
-        medium:[],
-        compaign:[],
-        team:[],
-        content:[],
-        custom:[],
+      utm_source:[
+        {
+          number:1,
+          name:"naver"
+        },
+        {
+          number:2,
+          name:"daum"
+        },
+        {
+          number:3,
+          name:"google"
+        }
+      ],
+          utm_medium:[],
+          utm_compaign:[],
+          utm_team:[],
+          utm_content:[],
+          utm_custom:[],
         },
 
 
         //analytics add sample
         gAddData:{
-          source:[
+          utm_source:[
             {
               number:1,
               name:"naver"
@@ -1078,7 +1131,7 @@ export default {
               name:"google"
             }
           ],
-          medium:[
+          utm_medium:[
             {
               number:1,
               name:"naver"
@@ -1092,7 +1145,7 @@ export default {
               name:"google"
             }
           ],
-          campaign:[
+          utm_campaign:[
             {
               number:1,
               name:"naver"
@@ -1106,7 +1159,7 @@ export default {
               name:"google"
             }
           ],
-          team:[
+          utm_team:[
             {
               number:1,
               name:"naver"
@@ -1120,7 +1173,7 @@ export default {
               name:"google"
             }
           ],
-          content:[
+          utm_content:[
             {
               number:1,
               name:"naver"
@@ -1134,7 +1187,7 @@ export default {
               name:"google"
             }
           ],
-          custom:[
+          utm_custom:[
             {
               number:1,
               name:"naver"
@@ -1192,8 +1245,8 @@ export default {
         index--
         this.fields.splice(this.fields.indexOf(item), 1)
       }
-    },
-    //타겟만들기 카테고리 탭
+  },
+  //타겟만들기 카테고리 탭
   tabMove(activeNumber, beforeNumber) {
     let tabArray = ['tabActive1','tabActive2','tabActive3','tabActive4','tabActive5','tabActive6','tabActive7','tabActive8','tabActive9']
     let pageNum = (activeNumber == 0) ? '1':'2'
@@ -1207,7 +1260,7 @@ export default {
         this.tabAction[tabArray[i]].show = false
       }
     }
-
+    //리셋 데이터
     //공용 서브 탭 초기화
     this.wTab = {
         tab1:true,
@@ -1216,8 +1269,10 @@ export default {
         tab4:false,
         tab5:false,
         tab6:false
-      }
-
+    },
+    //서브 셀렉터 초기화
+    this.subSelect = false
+    this.subInput = false
   },
   //서브 공용 탭
   wTabs(num,obj) {
@@ -1233,6 +1288,17 @@ export default {
   //개별 셀렉팅
   selectTarget(item) {
     const key = event.target.closest('.select_btn').getAttribute('data-key')
+    //서브 입력창 체크
+    if(item === '이용 시간 상위 고객') {
+      this.subSelect = true
+      this.subInput = false
+    }else if(item === '특정일 동안 미방문 고객') {
+      this.subSelect = false
+      this.subInput = true
+    }else {
+      this.subSelect = false
+      this.subInput = false
+    }
     this[key].emptyText = item
   },
   //멀티 셀렉팅
@@ -1256,7 +1322,36 @@ export default {
       this.advs.push(item)
     }
   },
+  //구글애널리틱스 매체 추가
+  addAnalyData() {
+    const elId = event.target.id
+    const utmKey = document.getElementById('utm_key').getElementsByClassName('select')[0].innerText.replace(/\s/gi, "")
+    const utmName = document.getElementById('utm_name').value
+    const gData = this.gAddData[utmKey]
+    const keyData = this.select12.textList
+    const newData = {
+      number:gData.length + 1,
+      name:utmName
+    }
+    //선택필드 탭 활성화
+    for(let i = 0; i < keyData.length; i++) {
+      if(keyData[i] === utmKey) {
+        this.wTabs(i,'wTab')
+        break
+      }
+    }
+    //동일 이름 체크
+    for(let i = 0; i < gData.length; i++) {
+      if(gData[i].name === utmName) {
+        alert('같은 UTM값이 존재합니다.')
+        break
+        return false
+      }
+    }
+    gData.push(newData)
 
+    return false
+  },
   //구글애널리틱스 매체삭제
   deleteAnalyData(item, key){
     const elId = event.target.closest('.analytics_tab_contents').id
@@ -1318,6 +1413,35 @@ export default {
         }
       }
     }
+  },
+
+  createVisitSite () {
+    let params = {
+      target_type: 'visit_site',
+      pixel_id: '',
+      name: '',
+      rentention_days: 0,
+
+      detail: '',
+      input_percent: 0
+    }
+
+    console.log(params)
+
+    // this.$http.post('/pickdata_account_target/custom_target', params)
+    // .then((response) => {
+    //   var success = response.data.success;
+    //   if (success == "YES") {
+    //
+    //   } else {
+    //
+    //   }
+    //   this.$emit('close')
+    // })
+    // .catch(err => {
+    //   this.$emit('close')
+    //   console.log('/pickdata_account_target/custom_target: ', err)
+    // })
   }
 
 
