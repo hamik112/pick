@@ -419,11 +419,6 @@
 									<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
 									<button class="next_btn">타겟 만들기</button>
 								</div>
-								<div class="btn_wrap">
-									<button class="before_btn close_pop" @click="$emit('close')">취소</button>
-									<button class="delete_btn">타겟 삭제</button>
-									<button class="adjust_btn">타겟 수정</button>
-								</div>
 							</div>
 
 							<!-- 구글애널리틱스 탭 -->
@@ -547,11 +542,11 @@
 											<button class="before_btn close_pop" @click="tabMove(0)">취소</button>
 											<button class="next_btn">타겟 만들기</button>
 										</div>
-										<div class="btn_wrap">
+										<!-- <div class="btn_wrap">
 											<button class="before_btn close_pop" @click="$emit('close')">취소</button>
 											<button class="delete_btn">타겟 삭제</button>
 											<button class="adjust_btn">타겟 수정</button>
-										</div>
+										</div> -->
 									</div>
 								</div>
 							</div>
