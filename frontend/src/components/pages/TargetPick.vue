@@ -152,12 +152,14 @@
 		},
 
 		created () {
-			console.log('created targetpick')
 			this.$eventBus.$on('selectFbAdAccount', this.selectFbAdAccount)
+			const fbAdAccount = this.$store.state.currentFbAdAccount
+			if (fbAdAccount !== '') {
+				this.selectFbAdAccount(fbAdAccount)
+			}
 		},
 
 		beforeDestroy () {
-			console.log('beforeDestroy targetpick')
 	    this.$eventBus.$off('selectFbAdAccount', this.selectFbAdAccount)
 	  },
 
