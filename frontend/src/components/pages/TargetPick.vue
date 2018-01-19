@@ -213,7 +213,9 @@
 
 				let url = '/api/pickdata_account_target/targetpick'
 				this.$http.get(url, {
-					fb_ad_account_id: localStorage.getItem('fb_ad_account_id')
+					params: {
+						fb_ad_account_id: localStorage.getItem('fb_ad_account_id')
+					}
 				})
 				.then(res => {
 					const response = res.data
