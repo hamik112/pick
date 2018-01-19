@@ -89,10 +89,10 @@
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                       </div>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="btn_wrap">
                   <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                  <button class="next_btn">타겟 만들기</button>
+                  <button class="next_btn" @click="createVisitSite()">타겟 만들기</button>
                 </div>
               </div>
 
@@ -146,10 +146,10 @@
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="generate_url_list">
@@ -237,10 +237,10 @@
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="account_wrap">
@@ -294,10 +294,10 @@
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="account_wrap">
@@ -351,10 +351,10 @@
                             <ui-select :selectData="this.select9" data-key="select9" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="account_wrap">
@@ -408,10 +408,10 @@
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="account_wrap">
@@ -504,10 +504,10 @@
                             </div>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                         <div class="generate_url_list">
@@ -625,7 +625,7 @@
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span></span>
+                            <input type="text" v-if="subInput"><span></span>
                           </div>
                         </div>
                       </div>
@@ -679,10 +679,10 @@
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                       </div>
@@ -736,10 +736,10 @@
                             <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                         </div>
                       </div>
@@ -792,10 +792,10 @@
                             <ui-select :selectData="this.select20" data-key="select20" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subSelect">
-                        	<ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
+                          <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
                           </div>
                           <div class="account_date" v-if="subInput">
-                          	<input type="text" v-if="subInput"><span>일</span>
+                            <input type="text" v-if="subInput"><span>일</span>
                           </div>
                           <div class="breakaway_wrap">
                             <input type="text">
@@ -852,6 +852,41 @@ export default {
     'ui-select': Select
   },
   mounted() {
+    let emptyText = ''
+    let textList = []
+    let keyList = []
+
+    this.$http.get('/fb_ad_accounts/ad_account_pixels', {
+      params: {
+        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id')
+      }
+    })
+    .then(res => {
+      const response = res.data
+      const data = response.data
+      const success = response.success
+      if (success === 'YES') {
+        data.forEach(function(item, index) {
+          textList.push(item.name)
+          keyList.push(item.id)
+          if (index === 0) {
+            emptyText = item.name
+          }
+        })
+      } else {
+        console.log('/fb_ad_accounts/ad_account_pixels fail')
+      }
+      return [emptyText, textList, keyList]
+    })
+    .then(([emptyText, textList, keyList]) => {
+      // 픽셀 셀렉트 박스 전체에 세팅 필요
+      this.select1.emptyText = emptyText
+      this.select1.textList = textList
+      this.select1.keyList = keyList
+    })
+    .catch(err => {
+      console.error('/fb_ad_accounts/ad_account_pixels', err)
+    })
   },
   data () {
     return {
@@ -958,7 +993,18 @@ export default {
             '전환완료 고객',
             '미 전환 고객',
             '회원가입 고객'
-          ]
+          ],
+          keyList: [
+            'total',
+            'usage_time_top', // 셀렉트박스 표시 (5/15/25 %)
+            'non_visit', // 숫자 입력 텍스트필드 표시
+            'purchase',
+            'non_purchase',
+            'add_to_cart',
+            'conversion',
+            'non_conversion',
+            'registration'
+          ],
         },
         selectSub: {
           emptyText: '5%',
@@ -1028,9 +1074,9 @@ export default {
         //sample
         advs:[
             { "number": "1", "name": "LF몰", "campaign":"페이스북1", "count":"3,716", "type_id":"13" },
-	        { "number": "2", "name": "LF몰2", "campaign":"페이스북2", "count":"3,716", "type_id":"11" },
-	        { "number": "3", "name": "LF몰3", "campaign":"페이스북3", "count":"3,716", "type_id":"15" },
-	        { "number": "4", "name": "LF몰4", "campaign":"페이스북4", "count":"3,716", "type_id":"17" }
+          { "number": "2", "name": "LF몰2", "campaign":"페이스북2", "count":"3,716", "type_id":"11" },
+          { "number": "3", "name": "LF몰3", "campaign":"페이스북3", "count":"3,716", "type_id":"15" },
+          { "number": "4", "name": "LF몰4", "campaign":"페이스북4", "count":"3,716", "type_id":"17" }
         ],
         addAdvs:[],
         checkData:[],
@@ -1047,25 +1093,25 @@ export default {
         },
         //analytics sample
         gData:{
-			utm_source:[
-				{
-				  number:1,
-				  name:"naver"
-				},
-				{
-				  number:2,
-				  name:"daum"
-				},
-				{
-				  number:3,
-				  name:"google"
-				}
-			],
-	        utm_medium:[],
-	        utm_compaign:[],
-	        utm_team:[],
-	        utm_content:[],
-	        utm_custom:[],
+      utm_source:[
+        {
+          number:1,
+          name:"naver"
+        },
+        {
+          number:2,
+          name:"daum"
+        },
+        {
+          number:3,
+          name:"google"
+        }
+      ],
+          utm_medium:[],
+          utm_compaign:[],
+          utm_team:[],
+          utm_content:[],
+          utm_custom:[],
         },
 
 
@@ -1244,11 +1290,14 @@ export default {
     const key = event.target.closest('.select_btn').getAttribute('data-key')
     //서브 입력창 체크
     if(item === '이용 시간 상위 고객') {
-    	this.subSelect = true
-    	this.subInput = false
+      this.subSelect = true
+      this.subInput = false
     }else if(item === '특정일 동안 미방문 고객') {
-    	this.subSelect = false
-    	this.subInput = true
+      this.subSelect = false
+      this.subInput = true
+    }else {
+      this.subSelect = false
+      this.subInput = false
     }
     this[key].emptyText = item
   },
@@ -1275,33 +1324,33 @@ export default {
   },
   //구글애널리틱스 매체 추가
   addAnalyData() {
-  	const elId = event.target.id
-  	const utmKey = document.getElementById('utm_key').getElementsByClassName('select')[0].innerText.replace(/\s/gi, "")
-  	const utmName = document.getElementById('utm_name').value
-  	const gData = this.gAddData[utmKey]
-  	const keyData = this.select12.textList
-  	const newData = {
-  		number:gData.length + 1,
-  		name:utmName
-  	}
-  	//선택필드 탭 활성화
-  	for(let i = 0; i < keyData.length; i++) {
-  		if(keyData[i] === utmKey) {
-  			this.wTabs(i,'wTab')
-  			break
-  		}
-  	}
-  	//동일 이름 체크
-  	for(let i = 0; i < gData.length; i++) {
-  		if(gData[i].name === utmName) {
-  			alert('같은 UTM값이 존재합니다.')
-  			break
-  			return false
-  		}
-  	}
-  	gData.push(newData)
+    const elId = event.target.id
+    const utmKey = document.getElementById('utm_key').getElementsByClassName('select')[0].innerText.replace(/\s/gi, "")
+    const utmName = document.getElementById('utm_name').value
+    const gData = this.gAddData[utmKey]
+    const keyData = this.select12.textList
+    const newData = {
+      number:gData.length + 1,
+      name:utmName
+    }
+    //선택필드 탭 활성화
+    for(let i = 0; i < keyData.length; i++) {
+      if(keyData[i] === utmKey) {
+        this.wTabs(i,'wTab')
+        break
+      }
+    }
+    //동일 이름 체크
+    for(let i = 0; i < gData.length; i++) {
+      if(gData[i].name === utmName) {
+        alert('같은 UTM값이 존재합니다.')
+        break
+        return false
+      }
+    }
+    gData.push(newData)
 
-  	return false
+    return false
   },
   //구글애널리틱스 매체삭제
   deleteAnalyData(item, key){
@@ -1364,6 +1413,35 @@ export default {
         }
       }
     }
+  },
+
+  createVisitSite () {
+    let params = {
+      target_type: 'visit_site',
+      pixel_id: '',
+      name: '',
+      rentention_days: 0,
+
+      detail: '',
+      input_percent: 0
+    }
+
+    console.log(params)
+
+    // this.$http.post('/pickdata_account_target/custom_target', params)
+    // .then((response) => {
+    //   var success = response.data.success;
+    //   if (success == "YES") {
+    //
+    //   } else {
+    //
+    //   }
+    //   this.$emit('close')
+    // })
+    // .catch(err => {
+    //   this.$emit('close')
+    //   console.log('/pickdata_account_target/custom_target: ', err)
+    // })
   }
 
 
