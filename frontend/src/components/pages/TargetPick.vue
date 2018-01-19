@@ -152,12 +152,14 @@
 		},
 
 		created () {
-			console.log('created targetpick')
 			this.$eventBus.$on('selectFbAdAccount', this.selectFbAdAccount)
+			const fbAdAccount = this.$store.state.currentFbAdAccount
+			if (fbAdAccount !== '') {
+				this.selectFbAdAccount(fbAdAccount)
+			}
 		},
 
 		beforeDestroy () {
-			console.log('beforeDestroy targetpick')
 	    this.$eventBus.$off('selectFbAdAccount', this.selectFbAdAccount)
 	  },
 
@@ -174,7 +176,7 @@
 				this.loadingDescription = '조금만 기다려 주시면, 확인이 완료됩니다.'
 
 				const account_id = fbAdAccount.account_id
-				let url = '/api/fb_ad_accounts/confirm_ad_account?act_account_id=act_' + account_id
+				let url = '/fb_ad_accounts/confirm_ad_account?act_account_id=act_' + account_id
 				this.$http.get(url)
 				.then(res => {
 					const bool_default_pixel = res.data.bool_default_pixel
@@ -200,7 +202,7 @@
 				.catch(err => {
 					this.isPick = true
 					this.isLoading = false
-					console.error('/api/pickdata_account_target/targetpick', err)
+					console.error('/pickdata_account_target/targetpick', err)
 				})
 			},
 
@@ -211,7 +213,7 @@
 				this.loadingTitle = '타겟을 가져오는 중입니다.'
 				this.loadingDescription = '조금만 기다려 주시면, 생성된 타겟을 가져옵니다.'
 
-				let url = '/api/pickdata_account_target/targetpick'
+				let url = '/pickdata_account_target/targetpick'
 				this.$http.get(url, {
 					params: {
 						fb_ad_account_id: localStorage.getItem('fb_ad_account_id')
@@ -272,7 +274,7 @@
 				.catch(err => {
 					this.isPick = true
 					this.isLoading = false
-					console.error('/api/pickdata_account_target/targetpick', err)
+					console.error('/pickdata_account_target/targetpick', err)
 				})
 			}
 		}

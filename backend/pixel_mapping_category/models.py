@@ -9,6 +9,14 @@ class PixelMappingCategory(models.Model):
     category_label_kr = models.CharField(max_length=128)
     category_label_en = models.CharField(max_length=128)
 
+    def get_default_pixel_mapping_categories(self):
+        try:
+            exclude_list = ['visit pages', 'visit specific pages', 'neo target', 'utm target']
+            pixel_mapping_categories = PixelMappingCategory.objects.exclude(category_label_en__in=exclude_list)
+            return pixel_mapping_categories
+        except Exception as e:
+            return None
+
     def get_pixel_mapping_categories(self):
         try:
             pixel_mapping_categories = PixelMappingCategory.objects.all()
