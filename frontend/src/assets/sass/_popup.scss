@@ -48,8 +48,8 @@
 					.result_check{width:40px;
 						input{width:100%;}
 					}
-					.result_advertiser{width:117px;}
-					.result_account{width:191px;}
+					.result_advertiser{ overflow:hidden; width:117px; text-overflow:ellipsis; white-space: nowrap;}
+					.result_account{ overflow:hidden; width:191px; text-overflow:ellipsis; white-space: nowrap; }
 				}
 				.result_thead{background:#fdfdfd; font-weight:bold;
 				}
