@@ -142,7 +142,7 @@ export default {
     },
 
     goTargetPick () {
-      console.log("goTargetPick", this.selectFbAdAccount)
+      console.log("goTargetPick",this.selectFbAdAccount)
       this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
     }
   }
