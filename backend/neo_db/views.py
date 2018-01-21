@@ -94,6 +94,7 @@ def get_roi_report(request):
         day = settings.ROI_REPORT_DAYS
 
         neo_accounts = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id)
+        print("neo_accounts : ", neo_accounts)
 
         adv_id = None
         account_ids = []
@@ -104,6 +105,8 @@ def get_roi_report(request):
 
         if adv_id == None:
             raise Exception('No NeoAccount.')
+
+        print("adv_id : ", adv_id)
 
         if neo_report_type == "account":
             roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day)
