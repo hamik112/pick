@@ -25,7 +25,7 @@ import logging
 import traceback
 import pprint
 
-from utils.facebookapis.api_init import (api_init, api_init_by_system_user)
+from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_init_session)
 from utils.facebookapis.ad_account import (ad_accounts, ads_pixels)
 
 logger = logging.getLogger(__name__)
@@ -35,8 +35,9 @@ class FbAdAccountList(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            api_init_by_system_user()
+            # api_init_by_system_user()
             # TODO Session token
+            api_init_session(request)
 
             me_accounts = ad_accounts.get_my_ad_accounts()
 
