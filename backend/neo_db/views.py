@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from neo_db.models import (McCenterAdvertiser, McCenterAccount, McRoiReport)
 from neo_db.serializers import (McCenterAdvertiserSerializer, McCenterAccountSerializer, McRoiReportSerializer)
-
+from django.conf import settings
+from neo_account.models import NeoAccount
 
 import json
 import logging
@@ -83,23 +84,35 @@ def search_neo_accounts_by_adv_name(request):
 def get_roi_report(request):
     response_data = {}
     try:
-        adv_id = request.GET.get('adv_id', 0)
+        fb_ad_account_id = request.GET.get('fb_ad_account_id', 0)
+        # adv_id = request.GET.get('adv_id', 0)
         neo_report_type = request.GET.get('type', '')
 
-        if adv_id == 0:
-            raise Exception('No Advertiser ID.')
+        if fb_ad_account_id == 0:
+            raise Exception('No fb_ad_account_id ID.')
 
-        print("adv_id : ", adv_id)
-        day = 1150
+        day = settings.ROI_REPORT_DAYS
+
+        neo_accounts = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id)
+
+        adv_id = None
+        account_ids = []
+
+        for neo_account in neo_accounts:
+            adv_id = neo_account.get('neo_adv_id')
+            account_ids.append(neo_account.get('neo_account_id'))
+
+        if adv_id == None:
+            raise Exception('No NeoAccount.')
 
         if neo_report_type == "account":
-            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, day=day)
+            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day)
         elif neo_report_type == "campaign":
-            roi_report = McRoiReport.get_campaign_roi_report(McRoiReport, adv_id, day=day)
+            roi_report = McRoiReport.get_campaign_roi_report(McRoiReport, adv_id, account_ids, day=day)
         elif neo_report_type == "keyword":
-            roi_report = McRoiReport.get_keyword_roi_report(McRoiReport, adv_id, day=day)
+            roi_report = McRoiReport.get_keyword_roi_report(McRoiReport, adv_id, account_ids, day=day)
         else:
-            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, day=day)
+            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day)
 
         response_data['success'] = 'YES'
         response_data['total_count'] = len(roi_report)
