@@ -264,7 +264,7 @@
                                         <div class="result_check"><input type="checkbox" v-model="selected" :value="neoAccount.centeraccountid" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.type_id" :id="'neoAccount-check-' + neoAccount.centeraccountid"><label :for="'neoAccount-check-' + neoAccount.centeraccountid"></label></div>
                                         <div class="result_account">{{ neoAccount.advname }}</div>
                                         <div class="result_group">{{ neoAccount.accountname }}</div>
-                                        <div class="result_switch">{{ neoAccount.count }}</div>
+                                        <div class="result_switch">{{ neoAccount.count_formatter }}</div>
                                       </li>
                                     </ul>
                                   </div>
@@ -321,7 +321,7 @@
                                         <div class="result_check"><input type="checkbox" v-model="selected" :value="neoCampaign.campaignid" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.type_id" :id="'neoCampaign-check-' + neoCampaign.campaignid"><label :for="'neoCampaign-check-' + neoCampaign.campaignid"></label></div>
                                         <div class="result_account">{{ neoCampaign.advname }}</div>
                                         <div class="result_group">{{ neoCampaign.campaignname }}</div>
-                                        <div class="result_switch">{{ neoCampaign.count }}</div>
+                                        <div class="result_switch">{{ neoCampaign.count_formatter }}</div>
                                       </li>
                                     </ul>
                                   </div>
@@ -378,7 +378,7 @@
                                         <div class="result_check"><input type="checkbox" v-model="selected" :value="neoKeyword.keywordid" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.type_id" :id="'neoKeyword-check-' + neoKeyword.keywordid"><label :for="'neoKeyword-check-' + neoKeyword.keywordid"></label></div>
                                         <div class="result_account">{{ neoKeyword.advname }}</div>
                                         <div class="result_group">{{ neoKeyword.keywordname }}</div>
-                                        <div class="result_switch">{{ neoKeyword.count }}</div>
+                                        <div class="result_switch">{{ neoKeyword.count_formatter }}</div>
                                       </li>
                                     </ul>
                                   </div>
@@ -836,6 +836,7 @@
 
 // UI
 import Select from '@/components/ui/Select'
+import { numberFormatter } from '../../components/utils/Formatter'
 
 export default {
 
@@ -888,6 +889,9 @@ export default {
       return data
     })
     .then(data => {
+      data.forEach(function(item, index) {
+        item['count_formatter'] = numberFormatter(item['count'])
+      })
       this.neoAccounts = data
       console.log(this.neoAccounts)
     })
@@ -913,6 +917,9 @@ export default {
       return data
     })
     .then(data => {
+      data.forEach(function(item, index) {
+        item['count_formatter'] = numberFormatter(item['count'])
+      })
       this.neoCampaigns = data
       console.log(this.neoCampaigns)
     })
@@ -938,6 +945,9 @@ export default {
       return data
     })
     .then(data => {
+      data.forEach(function(item, index) {
+        item['count_formatter'] = numberFormatter(item['count'])
+      })
       this.neoKeywords = data
       console.log(this.neoKeywords)
     })
