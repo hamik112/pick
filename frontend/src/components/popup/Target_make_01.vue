@@ -203,12 +203,12 @@
                       <div class="contents_title">타겟이름</div>
                       <div><input type="text"></div>
                     </div>
-                    <div class="target_data">
+                    <!--div class="target_data">
                       <div class="contents_title">타겟 모수</div>
                       <div>
                         <span>12,000</span>명
                       </div>
-                    </div>
+                    </div-->
                     <div class="target_type">
                       <div class="contents_title">Neo 유형</div>
                       <ul>
@@ -260,11 +260,11 @@
                                   </div>
                                   <div class="result_tbody">
                                     <ul id="adv-list-1">
-                                      <li v-for="adv in advs">
-                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="adv.number" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.number"><label :for="'adv-check-' + adv.number"></label></div>
-                                        <div class="result_account">{{ adv.name }}</div>
-                                        <div class="result_group">{{ adv.campaign }}</div>
-                                        <div class="result_switch">{{ adv.count }}</div>
+                                      <li v-for="neoAccount in neoAccounts">
+                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoAccount.number" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.type_id" :id="'neoAccount-check-' + neoAccount.number"><label :for="'neoAccount-check-' + neoAccountww.number"></label></div>
+                                        <div class="result_account">{{ neoAccount.name }}</div>
+                                        <div class="result_group">{{ neoAccount.campaign }}</div>
+                                        <div class="result_switch">{{ neoAccount.count }}</div>
                                       </li>
                                     </ul>
                                   </div>
@@ -317,11 +317,11 @@
                                   </div>
                                   <div class="result_tbody">
                                     <ul id="adv-list-1">
-                                      <li v-for="adv in advs">
-                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="adv.number" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.number"><label :for="'adv-check-' + adv.number"></label></div>
-                                        <div class="result_account">{{ adv.name }}</div>
-                                        <div class="result_group">{{ adv.campaign }}</div>
-                                        <div class="result_switch">{{ adv.count }}</div>
+                                      <li v-for="neoCampaign in neoCampaigns">
+                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoCampaign.number" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.type_id" :id="'neoCampaign-check-' + neoCampaign.number"><label :for="'neoCampaign-check-' + neoCampaign.number"></label></div>
+                                        <div class="result_account">{{ neoCampaign.name }}</div>
+                                        <div class="result_group">{{ neoCampaign.campaign }}</div>
+                                        <div class="result_switch">{{ neoCampaign.count }}</div>
                                       </li>
                                     </ul>
                                   </div>
@@ -374,11 +374,11 @@
                                   </div>
                                   <div class="result_tbody">
                                     <ul id="adv-list-1">
-                                      <li v-for="adv in advs">
-                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="adv.number" class="result-checkbox" :data-type="'advs'" :data-id="adv.type_id" :id="'adv-check-' + adv.number"><label :for="'adv-check-' + adv.number"></label></div>
-                                        <div class="result_account">{{ adv.name }}</div>
-                                        <div class="result_group">{{ adv.campaign }}</div>
-                                        <div class="result_switch">{{ adv.count }}</div>
+                                      <li v-for="neoKeyword in neoKeywords">
+                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoKeyword.number" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.type_id" :id="'neoKeyword-check-' + neoKeyword.number"><label :for="'neoKeyword-check-' + neoKeyword.number"></label></div>
+                                        <div class="result_account">{{ neoKeyword.name }}</div>
+                                        <div class="result_group">{{ neoKeyword.campaign }}</div>
+                                        <div class="result_switch">{{ neoKeyword.count }}</div>
                                       </li>
                                     </ul>
                                   </div>
@@ -868,6 +868,73 @@ export default {
       } else {
         console.log('/fb_ad_accounts/ad_account_pixels fail')
       }
+    })
+
+    this.$http.get('/neo_db/get_roi_report', {
+      params: {
+        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id'),
+        'type': 'account'
+      }
+    })
+    .then(res => {
+      const response = res.data
+      const data = response.data
+      const success = response.success
+      if (success === 'YES') {
+          console.log(data)
+      } else {
+        console.log('/neo_db/get_roi_report fail')
+      }
+      return [emptyText, textList, keyList]
+    })
+    .then(([emptyText, textList, keyList]) => {
+
+
+    })
+    .catch(err => {
+      console.error('/neo_db/get_roi_report', err)
+    })
+
+    this.$http.get('/neo_db/get_roi_report', {
+      params: {
+        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id'),
+        'type': 'campaign'
+      }
+    })
+    .then(res => {
+      const response = res.data
+      const data = response.data
+      const success = response.success
+      if (success === 'YES') {
+          console.log(data)
+      } else {
+        console.log('/neo_db/get_roi_report fail')
+      }
+      return [emptyText, textList, keyList]
+    })
+    .then(([emptyText, textList, keyList]) => {
+
+
+    })
+    .catch(err => {
+      console.error('/neo_db/get_roi_report', err)
+    })
+
+    this.$http.get('/neo_db/get_roi_report', {
+      params: {
+        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id'),
+        'type': 'keyword'
+      }
+    })
+    .then(res => {
+      const response = res.data
+      const data = response.data
+      const success = response.success
+      if (success === 'YES') {
+          console.log(data)
+      } else {
+        console.log('/neo_db/get_roi_report fail')
+      }
       return [emptyText, textList, keyList]
     })
     .then(([emptyText, textList, keyList]) => {
@@ -875,10 +942,19 @@ export default {
       this.select1.emptyText = emptyText
       this.select1.textList = textList
       this.select1.keyList = keyList
+
+      this.select6.emptyText = emptyText
+      this.select6.textList = textList
+      this.select6.keyList = keyList
+
+      this.select21.emptyText = emptyText
+      this.select21.textList = textList
+      this.select21.keyList = keyList
     })
     .catch(err => {
-      console.error('/fb_ad_accounts/ad_account_pixels', err)
+      console.error('/neo_db/get_roi_report', err)
     })
+
   },
   data () {
     return {
@@ -1098,11 +1174,21 @@ export default {
 
         //sample
         advs:[
-            { "number": "1", "name": "LF몰", "campaign":"페이스북1", "count":"3,716", "type_id":"13" },
+          { "number": "1", "name": "LF몰", "campaign":"페이스북1", "count":"3,716", "type_id":"13" },
           { "number": "2", "name": "LF몰2", "campaign":"페이스북2", "count":"3,716", "type_id":"11" },
           { "number": "3", "name": "LF몰3", "campaign":"페이스북3", "count":"3,716", "type_id":"15" },
           { "number": "4", "name": "LF몰4", "campaign":"페이스북4", "count":"3,716", "type_id":"17" }
         ],
+
+        neoAccounts:[
+        ],
+
+        neoCampaigns:[
+        ],
+
+        neoKeywords:[
+        ],
+
         addAdvs:[],
         checkData:[],
         selected:[],
@@ -1356,6 +1442,7 @@ export default {
       this.advs.push(item)
     }
   },
+
   //구글애널리틱스 매체 추가
   addAnalyData() {
     const elId = event.target.id
@@ -1477,7 +1564,6 @@ export default {
     //   console.log('/pickdata_account_target/custom_target: ', err)
     // })
   }
-
 
   },
   computed:{

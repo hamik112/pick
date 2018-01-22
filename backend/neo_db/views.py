@@ -107,15 +107,21 @@ def get_roi_report(request):
             raise Exception('No NeoAccount.')
 
         print("adv_id : ", adv_id)
+        adv_name = McCenterAdvertiser.get_advertiser(McCenterAdvertiser, adv_id)
+
+        adv_info = {
+            "adv_id": adv_id,
+            "adv_name": adv_name
+        }
 
         if neo_report_type == "account":
-            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day)
+            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
         elif neo_report_type == "campaign":
-            roi_report = McRoiReport.get_campaign_roi_report(McRoiReport, adv_id, account_ids, day=day)
+            roi_report = McRoiReport.get_campaign_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
         elif neo_report_type == "keyword":
-            roi_report = McRoiReport.get_keyword_roi_report(McRoiReport, adv_id, account_ids, day=day)
+            roi_report = McRoiReport.get_keyword_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
         else:
-            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day)
+            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
 
         response_data['success'] = 'YES'
         response_data['total_count'] = len(roi_report)
