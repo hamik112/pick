@@ -1418,7 +1418,7 @@ export default {
         target_type: 'visit_site',
         pixel_id: this.findSelectKey('adAccountPixels'),
         name: this.visitSiteName,
-        rentention_days: this.visitSiteDay,
+        retention_days: this.visitSiteDay,
 
         detail: this.findSelectKey('selectUser'),
         input_percent: this.findSelectKey('selectSub')
