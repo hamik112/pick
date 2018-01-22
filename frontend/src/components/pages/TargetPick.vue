@@ -17,16 +17,16 @@
 					<div class="tab-contents-widget">
 						<div id="section_list_1" class="section_tab_contents clearfix">
 							<div class="target_aside">
-								<ul>
-									<li class="on">전체<span>{{ targetCount.totalCount }}</span></li>
-									<li>사이트방문<span>{{ targetCount.visitPagesCount }}</span></li>
-									<li>특정페이지 방문<span>{{ targetCount.visitSpecificPagesCount }}</span></li>
-									<li>NEO 타겟<span>{{ targetCount.neoTargetCount }}</span></li>
-									<li>UTM 티켓<span>{{ targetCount.utmTargetCount }}</span></li>
-									<li>구매<span>{{ targetCount.purchaseCount }}</span></li>
-									<li>장바구니<span>{{ targetCount.addToCartCount }}</span></li>
-									<li>회원가입<span>{{ targetCount.registrationCount }}</span></li>
-									<li>단계별전환<span>{{ targetCount.conversionCount }}</span></li>
+								<ul id="target_aside_ul">
+									<li><a id="p-menu0" href="javascript:void(0)" @click="tPickMenu('total')" :class="[(this.targetOn == 'total') ? 'on' : '']">전체<span>{{ targetCount.totalCount }}</span></a></li>
+									<li><a id="p-menu1" href="javascript:void(0)" @click="tPickMenu('visitPages')" :class="[(this.targetOn == 'visitPages') ? 'on' : '']">사이트방문<span>{{ targetCount.visitPagesCount }}</span></a></li>
+									<li><a id="p-menu2" href="javascript:void(0)" @click="tPickMenu('visitSpecificPages')" :class="[(this.targetOn == 'visitSpecificPages') ? 'on' : '']">특정페이지 방문<span>{{ targetCount.visitSpecificPagesCount }}</span></a></li>
+									<li><a id="p-menu3" href="javascript:void(0)" @click="tPickMenu('neoTarget')" :class="[(this.targetOn == 'neoTarget') ? 'on' : '']">NEO 타겟<span>{{ targetCount.neoTargetCount }}</span></a></li>
+									<li><a id="p-menu4" href="javascript:void(0)" @click="tPickMenu('utmTarget')" :class="[(this.targetOn == 'utmTarget') ? 'on' : '']">UTM 티켓<span>{{ targetCount.utmTargetCount }}</span></a></li>
+									<li><a id="p-menu5" href="javascript:void(0)" @click="tPickMenu('purchase')" :class="[(this.targetOn == 'purchase') ? 'on' : '']">구매<span>{{ targetCount.purchaseCount }}</span></a></li>
+									<li><a id="p-menu6" href="javascript:void(0)" @click="tPickMenu('addToCart')" :class="[(this.targetOn == 'addToCart') ? 'on' : '']">장바구니<span>{{ targetCount.addToCartCount }}</span></a></li>
+									<li><a id="p-menu7" href="javascript:void(0)" @click="tPickMenu('registration')" :class="[(this.targetOn == 'registration') ? 'on' : '']">회원가입<span>{{ targetCount.registrationCount }}</span></a></li>
+									<li><a id="p-menu8" href="javascript:void(0)" @click="tPickMenu('conversion')" :class="[(this.targetOn == 'conversion') ? 'on' : '']">단계별전환<span>{{ targetCount.conversionCount }}</span></a></li>
 								</ul>
 							</div>
 							<div class="target_contents_wrap">
@@ -36,7 +36,7 @@
 								</div>
 								<div class="target_contents">
 									<ul>
-										<li v-for="item in this.targetList.total" @click="chartModal = true">
+										<li v-for="item in this.targetList[this.targetOn]" @click="chartModal = true">
 											<div class="target_icon">
 												<div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']"></div>
 												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']"></div>
@@ -98,6 +98,7 @@
 				chartModal: false,
 				makeModal1: false,
 				makeModal2: false,
+				targetOn:'total',
 				selectData: {
 					emptyText: '전체보기',
 					textList: [
@@ -152,24 +153,26 @@
 		},
 
 		created () {
-			this.$eventBus.$on('selectFbAdAccount', this.selectFbAdAccount)
+			this.$eventBus.$on('getTargetPick', this.getTargetPick)
 			const fbAdAccount = this.$store.state.currentFbAdAccount
 			if (fbAdAccount !== '') {
-				this.selectFbAdAccount(fbAdAccount)
+				this.getTargetPick(fbAdAccount)
 			}
 		},
 
 		beforeDestroy () {
-	    this.$eventBus.$off('selectFbAdAccount', this.selectFbAdAccount)
-	  },
+		    this.$eventBus.$off('getTargetPick', this.getTargetPick)
+		},
 
 		methods: {
 			selectTarget (item) {
 				this.selectData.emptyText = item
 			},
-
-			selectFbAdAccount (fbAdAccount) {
-				console.log('selectFbAdAccount', fbAdAccount)
+			tPickMenu(type) {
+				//매뉴 온오프 or 리스트 필터
+				this.targetOn = type
+			},
+			getTargetPick (fbAdAccount) {
 				this.isPick = false
 				this.isLoading = true
 				this.loadingTitle = '광고계정을 검사중입니다.'
@@ -181,18 +184,21 @@
 				.then(res => {
 					const bool_default_pixel = res.data.bool_default_pixel
 					const bool_fb_ad_account = res.data.bool_fb_ad_account
-					if (bool_fb_ad_account == false) {
-						// Advertising_setup popup 호출
-						this.setupPop = true
-					} else {
-						this.setupPop = false
-					}
+
 					if (bool_default_pixel == false) {
             // default_pixel alert popup
 						this.pixelNone = true
 					} else {
 						this.pixelNone = false
+
+						if (bool_fb_ad_account == false) {
+							// Advertising_setup popup 호출
+							this.setupPop = true
+						} else {
+							this.setupPop = false
+						}
 					}
+
 					this.isPick = true
 					this.isLoading = false
 
@@ -207,7 +213,7 @@
 			},
 
 			getAccountTarget (fbAdAccount) {
-				console.log('getAccountTarget', fbAdAccount)
+				// console.log('getAccountTarget', fbAdAccount)
 				this.isPick = false
 				this.isLoading = true
 				this.loadingTitle = '타겟을 가져오는 중입니다.'

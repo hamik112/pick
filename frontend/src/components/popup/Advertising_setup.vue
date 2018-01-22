@@ -13,8 +13,8 @@
 								<div class="ad_mask"></div>
 								<div class="ad_image"><img src="../../assets/images/common/test_img.jpg" alt=""></div>
 								<div class="ad_info">
-									<strong>프리메라 NEW</strong>
-									<div>계정번호:1059484622123515</div>
+									<strong>{{account_name}}</strong>
+									<div>계정번호:{{account_id}}</div>
 								</div>
 							</div>
 							<div class="list-tab-widget">
@@ -308,6 +308,8 @@ export default {
 			searchKeyword: '',
 			selected: [],
 			addSelected:[],
+			account_name: localStorage.getItem('account_name'),
+			account_id: localStorage.getItem('account_id'),
 
 			// 픽셀 이벤트 매핑
 			pixelMappingCategories: [],
@@ -361,7 +363,7 @@ export default {
 		checkList (beforeAdvs, afterAdvs) {
 			const me = this
 			this.checkFilter(beforeAdvs)
-			
+
 			if(afterAdvs === 'advs') {
 				// 연결된 계정을 제외한 네오 계정 리스트에 연결 해제된 advs(=checkedAdvs)를 맨 뒤에 추가
 				this[afterAdvs] = this.searchedAdvs.concat(this.checkedAdvs)
@@ -427,7 +429,8 @@ export default {
 							account_category_id: accountCategoryId,
 					})
 					.then(res => {
-							localStorage.setItem('fb_ad_account_id', res.data.data.id)
+						// 페이스북 광고 계정 정보 갱신
+						this.$eventBus.$emit('getFbAdAccountInfo')
 					})
 				}
 			} else if (activeNumber == '2' && beforeNumber === '1') {
@@ -445,15 +448,14 @@ export default {
 						neoAccountIds.push(this.linkedAdvs[i].id)
 					}
 
-					console.log(this.$store.state.currentFbAdAccount.account_id)
-					console.log('fb_ad_account_id: ' + localStorage.getItem('fb_ad_account_id'))
-					console.log(neoAdvIds)
-					console.log(neoAccountIds)
-
 					this.$http.post('/neo_account/', {
 						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
 						neo_adv_ids: neoAdvIds,
 						neo_account_ids: neoAccountIds
+					})
+					.then(res => {
+						// 페이스북 광고 계정 정보 갱신
+						this.$eventBus.$emit('getFbAdAccountInfo')
 					})
 				}
 			}
@@ -485,15 +487,37 @@ export default {
 			} else {
 				// 모든 픽셀 이벤트가 설정 되었을 경우
 				if(confirm('현재 매칭된 상태로 Target Pick 설정을 진행할까요?') === true) {
-					// 광고 계정 설정창 닫기
+					// 페이스북 광고 계정 설정창 닫기
 					this.$emit('close')
+					// 페이스북 광고 계정 정보 갱신
+					this.$eventBus.$emit('getFbAdAccountInfo')
 
 					// 픽셀 이벤트 맵핑
 					this.$http.post('/pixel_mapping/', {
 						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
 						facebook_pixel_event_names: facebookPixelEventNames,
 						pixel_mapping_category_ids: pixelMappingCategoryIds,
+					}).then(res =>{
+						const response = res.data
+						const data = response.data
+						const success = response.success
+						if (success === 'YES') {
+							this.$http.get('/fb_ad_accounts/'+ localStorage.getItem('fb_ad_account_id') +'/default_target')
+							.then(res =>{
+								const response = res.data
+								const success = response.success
+								if (success === 'YES') {
+									alert('default_target create success')
+								}else{
+									alert('default_target create fail')
+								}
+							})
+						} else {
+							alert('default_target create fail')
+						}
 					})
+
+
 				} else {
 					return false
 				}

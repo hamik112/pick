@@ -132,8 +132,12 @@ class McRoiReport(models.Model):
     centerroiname = models.CharField(db_column='centerRoiName', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     def get_media_roi_report(self, adv_id, account_ids, day=30, adv_info={"adv_id": 0,"adv_name": ""}):
-
+        print("adv_id : ", adv_id)
+        print("account_ids : ", account_ids)
+        print("adv_info : ", adv_info)
+        print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + str(adv_id))
         McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
+        print()
         # roi_report = McRoiReport.objects.using('neo_v1_db').all()
         roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname').annotate(count=Count('roireportid')).order_by('-count')[:200]
         # print(roi_report.query)
@@ -154,6 +158,10 @@ class McRoiReport(models.Model):
         return return_data
 
     def get_campaign_roi_report(self, adv_id, account_ids, day=30, adv_info={"adv_id": 0,"adv_name": ""}):
+        print("adv_id : ", adv_id)
+        print("account_ids : ", account_ids)
+        print("adv_info : ", adv_info)
+        print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + str(adv_id))
         McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
         roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname', 'campaignid', 'campaignname').annotate(count=Count('roireportid')).order_by('-count')[:200]
         # print(roi_report.query)
@@ -177,6 +185,10 @@ class McRoiReport(models.Model):
 
 
     def get_keyword_roi_report(self, adv_id, account_ids, day=30, adv_info={"adv_id": 0,"adv_name": ""}):
+        print("adv_id : ", adv_id)
+        print("account_ids : ", account_ids)
+        print("adv_info : ", adv_info)
+        print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + "MC_ROI_REPORT_ADV_" + str(adv_id))
         McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
         roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname', 'campaignid', 'campaignname', 'keywordid', 'keywordname').annotate(count=Count('roireportid')).order_by('-count')[:200]
         return_data = []

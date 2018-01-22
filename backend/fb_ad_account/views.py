@@ -21,6 +21,10 @@ from utils.facebookapis.targeting import targeting_registration
 from utils.facebookapis.targeting import targeting_step
 from utils.facebookapis.targeting import targeting_purchase
 
+from django.conf import settings
+
+facebook_app_id = settings.FACEBOOK_APP_ID
+
 import json
 import logging
 import traceback
@@ -36,9 +40,10 @@ class FbAdAccountList(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            api_init_by_system_user()
-            # TODO Session token
-            # api_init_session(request)
+            if facebook_app_id == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
 
             me_accounts = ad_accounts.get_my_ad_accounts()
 
@@ -62,7 +67,10 @@ class FbAdAccountList(APIView):
             print('act_account_id : ', act_account_id)
             print('account_category_id : ', account_category_id)
 
-            api_init_by_system_user()
+            if facebook_app_id == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
             ad_account = ad_accounts.get_ad_account(act_account_id)
 
             ad_account_id = ad_account.get('account_id')
@@ -86,8 +94,10 @@ class CheckAccountId(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            api_init_by_system_user()
-            # TODO Session token
+            if facebook_app_id == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
 
             account_id = request.query_params.get('act_account_id', None)
 
@@ -187,7 +197,10 @@ class AccountPixelEvent(APIView):
             if fb_ad_account == None:
                 raise Exception('Not Exist fb_ad_account.')
 
-            api_init_by_system_user()
+            if facebook_app_id == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
             events = ads_pixels.get_account_pixel_events(fb_ad_account.act_account_id)
 
             response_data['success'] = 'YES'
@@ -210,7 +223,10 @@ class AccountPixel(APIView):
             if fb_ad_account == None:
                 raise Exception('Not Exist fb_ad_account.')
 
-            api_init_by_system_user()
+            if facebook_app_id == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
             pixels = ads_pixels.get_account_pixels(fb_ad_account.act_account_id)
 
             response_data['success'] = 'YES'
@@ -283,7 +299,10 @@ class FbAdAccountDefaultTarget(APIView):
             ad_account_name = fb_ad_account.name
             act_account_id = fb_ad_account.act_account_id
 
-            api_init_by_system_user()
+            if facebook_app_id == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
             default_pixel = ads_pixels.get_account_default_pixel(act_account_id)
 
             if default_pixel == None:

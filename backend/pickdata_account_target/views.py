@@ -7,12 +7,16 @@ from pixel_mapping_category.models import PixelMappingCategory
 from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
 
-from utils.facebookapis.api_init import (api_init, api_init_by_system_user)
+from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_init_session)
 from utils.facebookapis.ad_account import custom_audiences
 from utils.common.string_formatter import string_to_literal
 
 from utils.facebookapis.targeting import targeting_visitor, targeting_specific_page_visitor, targeting_url, \
     targeting_purchase, targeting_addtocart, targeting_registration
+
+from django.conf import settings
+
+facebook_app_id = settings.FACEBOOK_APP_ID
 
 import json
 import logging
@@ -30,7 +34,10 @@ class TargetPick(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            api_init_by_system_user()
+            if facebook_app_id == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
 
             fb_ad_account_id = request.query_params.get('fb_ad_account_id', None)
             target_type = request.query_params.get('target_type', None)
@@ -153,20 +160,21 @@ class CustomTarget(APIView):
     def post(self, request, format=None):
         response_data = {}
         try:
-            fb_ad_account_id = request.POST.get('fb_ad_account_id', 0)
+            print(request.data)
+            fb_ad_account_id = request.data.get('fb_ad_account_id', 0)
             fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
 
             if fb_ad_account == None:
                 raise Exception('Not Exist fb_ad_account.')
 
             # visit_site, visit_specific_pages, neo_target, utm_target, purchase, add_to_cart, registration,
-            target_type = request.POST.get('target_type', None)
-            pixel_id = request.POST.get('pixel_id', 0)
-            name = request.POST.get('name', None)
-            retention_days = request.POST.get('retention_days', 30)
+            target_type = request.data.get('target_type', None)
+            pixel_id = request.data.get('pixel_id', 0)
+            name = request.data.get('name', None)
+            retention_days = request.data.get('retention_days', 30)
 
             if target_type == "visit_site":
-                detail = request.POST.get('detail', '')
+                detail = request.data.get('detail', '')
                 pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
                                                                                                   'visit pages')
 
@@ -186,7 +194,7 @@ class CustomTarget(APIView):
 
                 # 이용 시간 상위 고객
                 elif detail == "usage_time_top":
-                    input_percent = request.POST.get('input_percent', 25)
+                    input_percent = request.data.get('input_percent', 25)
                     created_target = targeting_visitor.create_usage_time_top_customers(fb_ad_account.act_account_id,
                                                                                        name, pixel_id,
                                                                                        retention_days=retention_days,
@@ -299,9 +307,9 @@ class CustomTarget(APIView):
 
             elif target_type == "visit_specific_pages":
 
-                contain_list = request.POST.getlist('contain_list', [])
-                eq_list = request.POST.getlist('eq_list', [])
-                detail = request.POST.get('detail', '')
+                contain_list = request.data.getlist('contain_list', [])
+                eq_list = request.data.getlist('eq_list', [])
+                detail = request.data.get('detail', '')
                 custom_data = {
                     "contain_list": contain_list,
                     "eq_list": eq_list,
@@ -327,7 +335,7 @@ class CustomTarget(APIView):
 
                 # 이용 시간 상위 고객
                 elif detail == "usage_time_top":
-                    input_percent = request.POST.get('input_percent', 25)
+                    input_percent = request.data.get('input_percent', 25)
                     created_target = targeting_specific_page_visitor.create_usage_time_top_customers(
                         fb_ad_account.act_account_id,
                         name, pixel_id,
@@ -453,10 +461,10 @@ class CustomTarget(APIView):
                     raise Exception("No valid detail parameter")
 
             elif target_type == "neo_target":
-                neo_type = request.POST.get('neo_type')
-                keywords = request.POST.getlist('keywords')
-                neo_ids = request.POST.getlist('neo_ids')
-                detail = request.POST.get('detail', '')
+                neo_type = request.data.get('neo_type')
+                keywords = request.data.getlist('keywords')
+                neo_ids = request.data.getlist('neo_ids')
+                detail = request.data.get('detail', '')
 
                 custom_data = {
                     "neo_type": neo_type,
@@ -487,7 +495,7 @@ class CustomTarget(APIView):
 
                 # 이용 시간 상위 고객
                 elif detail == "usage_time_top":
-                    input_percent = request.POST.get('input_percent', 25)
+                    input_percent = request.data.get('input_percent', 25)
                     created_target = targeting_url.create_usage_time_top_customers(fb_ad_account.act_account_id, name,
                                                                                    pixel_id,
                                                                                    retention_days=retention_days,
@@ -624,15 +632,15 @@ class CustomTarget(APIView):
 
 
             elif target_type == "utm_target":
-                sources = request.POST.getlist('sources')
-                mediums = request.POST.getlist('mediums')
-                campaigns = request.POST.getlist('campaigns')
-                terms = request.POST.getlist('terms')
-                contents = request.POST.getlist('contents')
-                customs = request.POST.getlist('customs')
+                sources = request.data.getlist('sources')
+                mediums = request.data.getlist('mediums')
+                campaigns = request.data.getlist('campaigns')
+                terms = request.data.getlist('terms')
+                contents = request.data.getlist('contents')
+                customs = request.data.getlist('customs')
                 utm_ids = sources + mediums + campaigns + terms + contents + customs
 
-                detail = request.POST.get('detail', '')
+                detail = request.data.get('detail', '')
 
                 custom_data = {
                     "sources": sources,
@@ -666,7 +674,7 @@ class CustomTarget(APIView):
 
                 # 이용 시간 상위 고객
                 elif detail == "usage_time_top":
-                    input_percent = request.POST.get('input_percent', 25)
+                    input_percent = request.data.get('input_percent', 25)
                     created_target = targeting_url.create_usage_time_top_customers(fb_ad_account.act_account_id, name,
                                                                                    pixel_id,
                                                                                    retention_days=retention_days,
@@ -802,7 +810,7 @@ class CustomTarget(APIView):
                     raise Exception("No valid detail parameter")
 
             elif target_type == "purchase":
-                detail = request.POST.get('detail', '')
+                detail = request.data.get('detail', '')
 
                 pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
                                                                                                   'purchase')
@@ -821,7 +829,7 @@ class CustomTarget(APIView):
                     }
 
                 elif detail == "purchase_count":
-                    purchase_count = request.POST.get('purchase_count', 0)
+                    purchase_count = request.data.get('purchase_count', 0)
                     created_target = targeting_purchase.create_more_than_x_timtes_purchase_customers(
                         fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
                         purchase_evnet_name="Purchase", purchase_cnt=purchase_count)
@@ -838,7 +846,7 @@ class CustomTarget(APIView):
 
 
                 elif detail == "purchase_amount":
-                    purchase_amount = request.POST.get('purchase_amount', 0)
+                    purchase_amount = request.data.get('purchase_amount', 0)
                     created_target = targeting_purchase.create_more_than_x_amount_purchjase_customers(
                         fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
                         purchase_evnet_name="Purchase", minimum_val=purchase_amount)
@@ -856,7 +864,7 @@ class CustomTarget(APIView):
                     raise Exception("No valid detail parameter")
 
             elif target_type == "add_to_cart":
-                detail = request.POST.get('detail', '')
+                detail = request.data.get('detail', '')
 
                 pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
                                                                                                   'add to cart')
@@ -888,7 +896,7 @@ class CustomTarget(APIView):
                     raise Exception("No valid detail parameter")
 
             elif target_type == "registration":
-                detail = request.POST.get('detail', '')
+                detail = request.data.get('detail', '')
 
                 pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
                                                                                                   'registration')
@@ -906,7 +914,7 @@ class CustomTarget(APIView):
                         "type": "custom",
                     }
                 elif detail == "usage_time_top":
-                    input_percent = request.POST.get('input_percent', 25)
+                    input_percent = request.data.get('input_percent', 25)
                     created_target = targeting_registration.create_regestration_usage_time_top_customers(
                         fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
                         regestration_event_name="CompleteRegistration", input_percent=input_percent)

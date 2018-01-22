@@ -9,8 +9,8 @@
           <div class="u_mask"></div>
           <div class="u_logo"><img src="../../assets/images/common/test_img.jpg" alt=""></div>
           <div class="u_info">
-            <pre id="ad_list_cate" href="javascript:void(0);" v-on:click="onClick" v-bind:class="{active: isActive}">{{ selectFbAdAccount.name }}</pre>
-            <pre>{{ selectFbAdAccount.account_id }}</pre>
+            <pre id="ad_list_cate" href="javascript:void(0);" @click="onClick()" v-bind:class="{active: isActive}">{{ selectedFbAdAccount.name }}</pre>
+            <pre>{{ selectedFbAdAccount.account_id }}</pre>
           </div>
         </div>
         <div class="user_ad_list">
@@ -21,7 +21,7 @@
             </div>
             <div class="ad_search_list">
               <ul>
-                <li v-for="fbAdAccount in fbAdAccountList" :key="fbAdAccount.id" @click="onClickFbAdAccount(fbAdAccount)">
+                <li v-for="fbAdAccount in fbAdAccountList" :key="fbAdAccount.id" @click="selectFbAdAccount(fbAdAccount)">
                   <div class="list_image"></div>
                   <div class="list_info">
                     <strong>{{ fbAdAccount.name }}</strong>
@@ -60,22 +60,22 @@ export default {
       isActive: false,
       isShowList: false,
       searchName: '',
-      selectFbAdAccount: {},
+      selectedFbAdAccount: {},
       fbAdAccounts: []
     }
   },
 
   created () {
-    this.$eventBus.$on('pickdataLogin', this.loadFbAdAccount)
+    this.$eventBus.$on('pickdataLogin', this.loadFbAdAccounts)
   },
 
   mounted () {
     // DEBUG mounted
-    this.loadFbAdAccount()
+    this.loadFbAdAccounts()
   },
 
   beforeDestroy () {
-    this.$eventBus.$off('pickdataLogin', this.loadFbAdAccount)
+    this.$eventBus.$off('pickdataLogin', this.loadFbAdAccounts)
   },
 
   computed: {
@@ -99,27 +99,32 @@ export default {
       this.isShowList = !this.isShowList
     },
 
-    loadFbAdAccount (res) {
+    // 페이스북 광고 계정 로드
+    loadFbAdAccounts (res) {
       if (res == null) {
         console.log('DEBUG Call')
       }
-      console.log('loadFbAdAccount', res)
+
+      // 페이스북 광고 계정 리스트 가져오기
       this.$http.get('/fb_ad_accounts/')
       .then(res => {
         const response = res.data
         const data = response.data
         const success = response.success
-        console.log(data)
 
         if (success === "YES") {
+          // 데이터가 존재 할 때
           if (data.length > 0) {
-            // Vuex state
-            this.$store.state.currentFbAdAccount = data[0]
-
-            this.selectFbAdAccount = data[0]
+            // 페이스북 광고 계정 리스트
             this.fbAdAccounts = data
-            this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
+
+            // 현재 페이스북 광고 계정 설정
+            this.$store.state.currentFbAdAccount = data[0]
+            this.selectedFbAdAccount = data[0]
+            
+            this.$eventBus.$emit('getTargetPick', this.selectedFbAdAccount)
             localStorage.setItem('account_id', data[0].account_id)
+            localStorage.setItem('account_name', data[0].name)
           }
         } else {
           throw('success: ' + success)
@@ -130,15 +135,33 @@ export default {
       })
     },
 
-    onClickFbAdAccount (fbAdAccount) {
-      // Vuex state
+    // 페이스북 광고 계정 선택
+    selectFbAdAccount (fbAdAccount) {
+      // 현재 페이스북 광고 계정 설정
       this.$store.state.currentFbAdAccount = fbAdAccount
-
-      this.$eventBus.$emit('selectFbAdAccount', fbAdAccount)
-      this.selectFbAdAccount = fbAdAccount
+      this.selectedFbAdAccount = fbAdAccount
+      
+      // 리스트 속성
       this.isActive = false
       this.isShowList = false
-      localStorage.setItem('account_id', fbAdAccount.account_id)
+
+      // 페이스북 광고 계정 아이디 찾기위한 로직
+      this.$http.get('/fb_ad_accounts/confirm_ad_account', {
+        params: {
+          act_account_id: fbAdAccount.id
+        }
+      })
+      .then(res => {
+        // 선택된 페이스북 광고 계정 아이디 저장
+        localStorage.setItem('fb_ad_account_id', res.data.fb_ad_account.fb_ad_account_id)
+        localStorage.setItem('account_id', fbAdAccount.account_id)
+        localStorage.setItem('account_name', fbAdAccount.name)
+        
+        // 페이스북 광고 계장 정보 갱신
+        this.$eventBus.$emit('getFbAdAccountInfo')
+        // Target Pick 갱신
+        this.$eventBus.$emit('getTargetPick', fbAdAccount)
+      })
     }
   }
 }
