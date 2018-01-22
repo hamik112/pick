@@ -639,7 +639,30 @@ class CustomTarget(APIView):
                 terms = request.data.get('terms')
                 contents = request.data.get('contents')
                 customs = request.data.get('customs')
-                utm_ids = sources + mediums + campaigns + terms + contents + customs
+
+                convert_sources = []
+                convert_mediums = []
+                convert_campaigns = []
+                convert_terms = []
+                convert_contents = []
+
+                for source in sources:
+                    convert_sources.append("utm_source="+source)
+
+                for medium in mediums:
+                    convert_mediums.append("utm_medium=" + medium)
+
+                for campaign in campaigns:
+                    convert_campaigns.append("utm_campaign=" + campaign)
+
+                for term in terms:
+                    convert_terms.append("utm_term="+term)
+
+                for content in contents:
+                    convert_contents.append("utm_content="+content)
+
+                utm_ids = convert_sources + convert_mediums + convert_campaigns + convert_terms + convert_contents + customs
+
 
                 detail = request.data.get('detail', '')
 
