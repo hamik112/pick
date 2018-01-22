@@ -7,12 +7,16 @@ from pixel_mapping_category.models import PixelMappingCategory
 from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
 
-from utils.facebookapis.api_init import (api_init, api_init_by_system_user)
+from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_init_session)
 from utils.facebookapis.ad_account import custom_audiences
 from utils.common.string_formatter import string_to_literal
 
 from utils.facebookapis.targeting import targeting_visitor, targeting_specific_page_visitor, targeting_url, \
     targeting_purchase, targeting_addtocart, targeting_registration
+
+from django.conf import settings
+
+facebook_app_id = settings.FACEBOOK_APP_ID
 
 import json
 import logging
@@ -30,7 +34,10 @@ class TargetPick(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            api_init_by_system_user()
+            if facebook_app_id == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
 
             fb_ad_account_id = request.query_params.get('fb_ad_account_id', None)
             target_type = request.query_params.get('target_type', None)
