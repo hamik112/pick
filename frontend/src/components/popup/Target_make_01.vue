@@ -66,12 +66,12 @@
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
-                        <div><input type="text"><span>일</span></div>
+                        <div><input type="text" v-model="visitSiteDay"><span>일</span></div>
                       </div>
                     </div>
                     <div class="target_name">
                       <div class="contents_title">타겟이름</div>
-                      <div><input type="text"></div>
+                      <div><input type="text" v-model="visitSiteName"></div>
                     </div>
                     <div class="target_data">
                       <div class="contents_title">타겟 모수</div>
@@ -958,6 +958,9 @@ export default {
   },
   data () {
     return {
+      visitSiteName: '',
+      visitSiteDay: '90',
+
       subSelect:false,
       subInput:false,
       subInput2:false,
@@ -1089,6 +1092,11 @@ export default {
           '5%',
           '15%',
           '25%'
+        ],
+        keyList: [
+          '5',
+          '15',
+          '25'
         ]
       },
       select12: {
@@ -1394,33 +1402,42 @@ export default {
       }
     },
 
+    findSelectKey (selectName) {
+      /*
+      Select Key 가져오기
+      */
+      const emptyText = this[selectName].emptyText
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return keyList[textList.indexOf(emptyText)]
+    },
+
     createVisitSite () {
       let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
         target_type: 'visit_site',
-        pixel_id: '',
-        name: '',
-        rentention_days: 0,
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.visitSiteName,
+        rentention_days: this.visitSiteDay,
 
-        detail: '',
-        input_percent: 0
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
       }
 
-      console.log(params)
-
-      // this.$http.post('/pickdata_account_target/custom_target', params)
-      // .then((response) => {
-      //   var success = response.data.success;
-      //   if (success == "YES") {
-      //
-      //   } else {
-      //
-      //   }
-      //   this.$emit('close')
-      // })
-      // .catch(err => {
-      //   this.$emit('close')
-      //   console.log('/pickdata_account_target/custom_target: ', err)
-      // })
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+        } else {
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
     },
 
     checkListNeo (elId, uniqueKey, mainListName, checkListName, addListName, selectedListName) {
