@@ -10,6 +10,7 @@ from neo_account.models import NeoAccount
 from pixel_mapping.models import PixelMapping
 from pixel_mapping_category.models import PixelMappingCategory
 from pickdata_account_target.models import PickdataAccountTarget
+from account_category.models import AccountCategory
 
 
 from utils.facebookapis.ad_account import ads_pixels
@@ -25,7 +26,7 @@ import logging
 import traceback
 import pprint
 
-from utils.facebookapis.api_init import (api_init, api_init_by_system_user)
+from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_init_session)
 from utils.facebookapis.ad_account import (ad_accounts, ads_pixels)
 
 logger = logging.getLogger(__name__)
@@ -37,6 +38,7 @@ class FbAdAccountList(APIView):
         try:
             api_init_by_system_user()
             # TODO Session token
+            # api_init_session(request)
 
             me_accounts = ad_accounts.get_my_ad_accounts()
 
@@ -137,6 +139,44 @@ class CheckAccountId(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+class FbAdAccountDetail(APIView):
+    def get(self, request, pk, format=None):
+        response_data = {}
+        try:
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, pk)
+
+            if fb_ad_account == None:
+                response_data['success'] = 'YES'
+            else:
+                neo_account_list = []
+                pixel_event_mapping_list = []
+
+                account_category = AccountCategory.objects.get(pk=fb_ad_account.account_category_id)
+
+                if fb_ad_account != None:
+                    neo_account_list = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id=fb_ad_account.id)
+                    pixel_evnet_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
+
+                    from pixel_mapping.serializers import PixelMappingMergeSerializer
+
+                    pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
+                    pixel_event_mapping_list = pixel_evnet_mapping_se.data
+
+                response_data['success'] = 'YES'
+                response_data['account_category_id'] = fb_ad_account.account_category_id
+                response_data['account_category_name'] = account_category.category_label_kr
+                response_data['neo_account_list'] = neo_account_list
+                response_data['neo_account_count'] = len(neo_account_list)
+                response_data['pixel_event_mappings'] = pixel_event_mapping_list
+                response_data['pixel_event_mapping_count'] = len(pixel_event_mapping_list)
+
+        except Exception as e:
+            logger.error(e)
+            response_data['success'] = 'NO'
+            response_data['msg'] = str(e)
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 class AccountPixelEvent(APIView):
     def get(self, request, format=None):
         response_data = {}
@@ -159,6 +199,30 @@ class AccountPixelEvent(APIView):
             response_data['success'] = 'NO'
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+class AccountPixel(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            api_init_by_system_user()
+            pixels = ads_pixels.get_account_pixels(fb_ad_account.act_account_id)
+
+            response_data['success'] = 'YES'
+            response_data['data'] = pixels
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 class FbAdAccountCategory(APIView):
     def get(self, request, fb_account_id, format=None):

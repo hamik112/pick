@@ -46,3 +46,4 @@ FACEBOOK_DEFAULT_SCOPE = ['email', 'user_about_me', 'user_birthday', 'user_websi
 FACEBOOK_APP_VERSION = 'v2.10'
 
 AD_IMAGE_PATH = os.path.join(PROJECT_DIR, 'static/image/ad/')
+ROI_REPORT_DAYS = 30

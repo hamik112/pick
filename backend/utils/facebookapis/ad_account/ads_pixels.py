@@ -78,6 +78,30 @@ def get_account_pixel_events(account_id):
         msg['error'] = e._error
         raise Exception(msg)
 
+def get_account_pixels(account_id):
+    try:
+        ad_account = AdAccount(fbid=account_id)
+        ads_pixels = ad_account.get_ads_pixels(fields=[
+            AdsPixel.Field.id,
+            AdsPixel.Field.name
+        ])
+
+        account_pixels = []
+
+        for ad_pixel in ads_pixels:
+            account_pixels.append(ad_pixel._json)
+
+        return account_pixels
+
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
+
+
+
 # GET Account Default pixel
 def get_account_default_pixel(account_id):
     try:

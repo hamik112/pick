@@ -14,9 +14,9 @@ DATABASES = {
     'neo_v1_db': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'neo_v1_beta',
-        'USER': 'neo',
-        'PASSWORD': 'em4s1905',
-        'HOST': '211.215.18.253',  # Or an IP Address that your DB is hosted on
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
@@ -42,3 +42,4 @@ FACEBOOK_DEFAULT_SCOPE = ['email', 'user_about_me', 'user_birthday', 'user_websi
 FACEBOOK_APP_VERSION = 'v2.10'
 
 AD_IMAGE_PATH = os.path.join(PROJECT_DIR, 'static/image/ad/')
+ROI_REPORT_DAYS = 1200

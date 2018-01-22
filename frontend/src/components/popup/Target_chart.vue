@@ -45,13 +45,13 @@
 										<div>
 											<h2>인구 통계학적 특성</h2>
 											<div class="graph_type01">
-												<ui-charts></ui-charts>
+												<ui-charts :chartData="this.chart1"></ui-charts>
 											</div>
 										</div>
 										<div>
 											<h2>노출위치</h2>
 											<div class="graph_type02">
-												<ui-charts></ui-charts>
+												<ui-charts :chartData="this.chart2"></ui-charts>
 											</div>
 										</div>
 									</div>
@@ -86,6 +86,98 @@ export default {
   },
   data () {
 	return {
+		//charts Data sample
+		chart1: {
+        	legend:['모든남성 50%(3,250)','모든 여성 50%(3,250)'],
+			xAxis: ['13-17세','18-24세','25-34세','35-44세','45-54세','55-64세','65세이상'],
+			yAxis:{
+                'type':'value',
+                'name':'%',
+                'max':100
+            },
+			series:[
+				{
+		            name:'모든남성 50%(3,250)',
+		            type:'bar',
+		            data:[22, 63, 78, 33, 27, 25, 31],
+		            barWidth: '10%',
+
+		            itemStyle:{
+				       	normal: {
+				       		label : {
+						        show: true,
+						        position: 'insideRight',
+						        formatter: '{c}%'
+						    },
+		                    color: '#58cefc'
+		                }
+		            }
+		        },
+		        {
+		            name:'모든 여성 50%(3,250)',
+		            type:'bar',
+		            data:[33, 22, 44, 66, 23, 87, 21],
+		            barWidth: '10%',
+		            itemStyle:{
+				       	normal: {
+				       		label : {
+						        show: true,
+						        position: 'insideLeft',
+						        formatter: '{c}%'
+						    },
+		                    color: '#ff81c0'
+		                }
+		            }
+		        }
+			]
+	    },
+	    chart2:{
+	    	//네임
+        	legend:['PC','Mobile'],
+        	//X데이터 네임
+			xAxis: ['FaceBook','Audience Network','Instagram','Messanger'],
+			yAxis:{
+                'type':'value',
+                'name':'K',
+                'max':6
+            },
+			//순차적 데이터
+			series:[
+				{
+		            name:'PC',
+		            type:'bar',
+		            data:[4.3, 2.5, 5.0, 2.2, 1.6],
+		            barWidth: '5%',
+		            itemStyle:{
+				       	normal: {
+				       		label : {
+						        show: true,
+						        position: 'insideRight',
+						        formatter: '{c}K'
+						    },
+		                    color: '#267aa9'
+		                }
+		            }
+		        },
+		        {
+		            name:'Mobile',
+		            type:'bar',
+		            data:[2.6, 5.9, 4.0, 5.4, 3.7],
+		            barWidth: '5%',
+		            itemStyle:{
+		            	normal: {
+		            		label : {
+						        show: true,
+						        position: 'insideLeft',
+						        formatter: '{c}K'
+						    },
+		            		color:'#45ceb4'
+		            	}
+		            }
+		        }
+			]
+	    },
+		//calendar
 		show: false,
 		time: new Date(),
 		range: [new Date(),new Date()],
@@ -107,6 +199,8 @@ export default {
 				}
 			}
 		}
+
+
 	}
   }
 }

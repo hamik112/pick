@@ -61,26 +61,26 @@ class PixelMapping(models.Model):
         fb_ad_account_id = fb_ad_account.id
 
         for idx, pixel_mapping_category_id in enumerate(pixel_mapping_category_ids):
+            if facebook_pixel_event_names[idx] != None:
+                try:
+                    pixel_mapping = self.objects.get(fb_ad_account_id = fb_ad_account_id ,pixel_mapping_category_id=pixel_mapping_category_id)
 
-            try:
-                pixel_mapping = self.objects.get(fb_ad_account_id = fb_ad_account_id ,pixel_mapping_category_id=pixel_mapping_category_id)
+                    pixel_mapping.updated_by = username
+                    pixel_mapping.fb_ad_account = fb_ad_account
+                    pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
+                    pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
 
-                pixel_mapping.updated_by = username
-                pixel_mapping.fb_ad_account = fb_ad_account
-                pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
-                pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
+                except self.DoesNotExist:
+                    pixel_mapping = PixelMapping()
 
-            except self.DoesNotExist:
-                pixel_mapping = PixelMapping()
+                    pixel_mapping.created_by = username
+                    pixel_mapping.updated_by = username
+                    pixel_mapping.fb_ad_account = fb_ad_account
+                    pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
+                    pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
 
-                pixel_mapping.created_by = username
-                pixel_mapping.updated_by = username
-                pixel_mapping.fb_ad_account = fb_ad_account
-                pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
-                pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
-
-            pixel_mapping.save()
-            created_cnt += 1
+                pixel_mapping.save()
+                created_cnt += 1
 
         return created_cnt
 
