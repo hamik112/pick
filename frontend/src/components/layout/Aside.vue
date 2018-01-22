@@ -120,6 +120,7 @@ export default {
             this.fbAdAccounts = data
             this.$eventBus.$emit('selectFbAdAccount', this.selectFbAdAccount)
             localStorage.setItem('account_id', data[0].account_id)
+            localStorage.setItem('account_name', data[0].name)
           }
         } else {
           throw('success: ' + success)
@@ -139,6 +140,7 @@ export default {
       this.isActive = false
       this.isShowList = false
       localStorage.setItem('account_id', fbAdAccount.account_id)
+      localStorage.setItem('account_name', fbAdAccount.name)
     }
   }
 }
