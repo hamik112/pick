@@ -10,6 +10,7 @@ from ad_set_insight.models import AdSetInsight
 from ad_set_insight.serializers import AdSetInsightSerializer
 
 from facebookads.adobjects.adset import AdSet
+from facebookads.adobjects.customconversion import CustomConversion
 from utils.facebookapis.api_init import (api_init, api_init_by_system_user)
 from utils.facebookapis.ad_account import ad_sets as ad_sets_api
 
@@ -42,8 +43,8 @@ class AdSetInsightByAccount(APIView):
             since = request.query_params.get('since', '2018-01-13')
             until = request.query_params.get('until', '2018-01-14')
 
-            # since = '2018-01-13'
-            # until = '2018-01-14'
+            since = '2017-12-14'
+            until = '2017-12-15'
             start = datetime.strptime(since, '%Y-%m-%d')
             end = datetime.strptime(until, '%Y-%m-%d')
             diff = end - start
@@ -94,6 +95,7 @@ class AdSetInsightByAccount(APIView):
                     report_dict[key] = result
 
             # Django model aggregation values
+            pixel_group = []
             target_insights = []
             for insight in ad_set_insights:
                 result = {}
@@ -164,24 +166,93 @@ class AdSetInsightByAccount(APIView):
                 result['conversions'] = conversions
 
                 # Custom Event 계산 추가
+                pixels = []
                 for key, items in report_dict.items():
                     if key == adset_id:
                         if items != None:
                             action_sort = sorted(items, key=itemgetter('action_type'))
                             for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
                                 # print(key)
+                                if 'offsite_conversion.custom.' in key:
+                                    pixel_id = key[26:]
+                                    pixels.append(pixel_id)
+
                                 v_list = []
                                 for v in value:
                                     v = list(v.values())
                                     v.remove(key)
                                     v_list += v
+
+
                                 v_list = list(map(int, v_list))
                                 result[key] = sum(v_list)
 
                 target_insights.append(result)
 
+            pixel_group += pixels
+            pixel_group = list(set(pixels))
+
+            custom_pixel = []
+            for pix in pixel_group:
+                custom = CustomConversion(pix)
+                result = custom.remote_read(fields=['id', 'name'])
+                custom_pixel.append(result._json)
+
             # TODO 인사이트 필요한 나머지 데이터 추가
             print(target_insights)
+
+            for data in target_insights:
+                for key, items in data.items():
+                    # 기본 픽셀 이벤트 네이밍
+                    result = {}
+                    if 'fb_pixel_complete_registration' in key:
+                        result['name'] = 'CompleteRegistration'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_add_to_wishlist' in key:
+                        result['name'] = 'AddToWishList'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_add_to_cart' in key:
+                        result['name'] = 'AddToCart'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_view_content' in key:
+                        result['name'] = 'ViewContent'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_search' in key:
+                        result['name'] = 'Search'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_initiate_checkout' in key:
+                        result['name'] = 'InitiateCheckout'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_add_payment_info' in key:
+                        result['name'] = 'AddPaymentInfo'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_purchase' in key:
+                        result['name'] = 'Purchase'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_lead' in key:
+                        result['name'] = 'Lead'
+                        result['value'] = items
+                        data[key] = result
+                    if 'fb_pixel_custom' in key:
+                        result['name'] = 'Custom'
+                        result['value'] = items
+                        data[key] = result
+
+                    # Custom Event Name
+                    for p in custom_pixel:
+                        if p['id'] in key:
+                            output = {}
+                            output['value'] = items
+                            output['name'] = p['name']
+                            data[key] = output
 
             response_data['success'] = 'YES'
             response_data['total_count'] = len(target_insights)
