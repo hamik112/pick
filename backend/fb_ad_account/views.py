@@ -37,6 +37,7 @@ class FbAdAccountList(APIView):
         response_data = {}
         try:
             # api_init_by_system_user()
+            print(request.session)
             # TODO Session token
             api_init_session(request)
 
