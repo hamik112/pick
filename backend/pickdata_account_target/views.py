@@ -463,8 +463,8 @@ class CustomTarget(APIView):
 
             elif target_type == "neo_target":
                 neo_type = request.data.get('neo_type')
-                keywords = request.data.getlist('keywords')
-                neo_ids = request.data.getlist('neo_ids')
+                keywords = request.data.get('keywords')
+                neo_ids = request.data.get('neo_ids')
                 detail = request.data.get('detail', '')
 
                 custom_data = {
