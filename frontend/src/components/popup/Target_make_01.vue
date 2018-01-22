@@ -836,7 +836,7 @@
 
 // UI
 import Select from '@/components/ui/Select'
-import { numberFormatter } from '../../components/utils/Formatter'
+import { numberFormatter } from '@/components/utils/Formatter'
 
 export default {
   name: 'TargetMake01',
@@ -998,11 +998,9 @@ export default {
 
       //싱글 셀렉트
       adAccountPixels: {
-        emptyText: '전체보기',
+        emptyText: '불러오는 중 입니다.',
         textList: [
-          '이벤트1',
-          '이벤트2',
-          '이벤트3'
+          '불러오는 중 입니다.'
         ]
       },
       //사이트방문\
