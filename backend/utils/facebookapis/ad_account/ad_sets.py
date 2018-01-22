@@ -201,6 +201,7 @@ def insight_fields():
         'unique_outbound_clicks',
         'unique_outbound_clicks_ctr',
         'unique_social_clicks',
+        'video_3_sec_watched_actions',
         'video_10_sec_watched_actions',
         # 'video_15_sec_watched_actions',
         'video_30_sec_watched_actions',
