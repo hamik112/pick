@@ -429,7 +429,8 @@ export default {
 							account_category_id: accountCategoryId,
 					})
 					.then(res => {
-							localStorage.setItem('fb_ad_account_id', res.data.data.id)
+						// 페이스북 광고 계정 정보 갱신
+						this.$eventBus.$emit('getFbAdAccountInfo')
 					})
 				}
 			} else if (activeNumber == '2' && beforeNumber === '1') {
@@ -447,15 +448,14 @@ export default {
 						neoAccountIds.push(this.linkedAdvs[i].id)
 					}
 
-					console.log(this.$store.state.currentFbAdAccount.account_id)
-					console.log('fb_ad_account_id: ' + localStorage.getItem('fb_ad_account_id'))
-					console.log(neoAdvIds)
-					console.log(neoAccountIds)
-
 					this.$http.post('/neo_account/', {
 						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
 						neo_adv_ids: neoAdvIds,
 						neo_account_ids: neoAccountIds
+					})
+					.then(res => {
+						// 페이스북 광고 계정 정보 갱신
+						this.$eventBus.$emit('getFbAdAccountInfo')
 					})
 				}
 			}
@@ -487,8 +487,10 @@ export default {
 			} else {
 				// 모든 픽셀 이벤트가 설정 되었을 경우
 				if(confirm('현재 매칭된 상태로 Target Pick 설정을 진행할까요?') === true) {
-					// 광고 계정 설정창 닫기
+					// 페이스북 광고 계정 설정창 닫기
 					this.$emit('close')
+					// 페이스북 광고 계정 정보 갱신
+					this.$eventBus.$emit('getFbAdAccountInfo')
 
 					// 픽셀 이벤트 맵핑
 					this.$http.post('/pixel_mapping/', {

@@ -153,15 +153,15 @@
 		},
 
 		created () {
-			this.$eventBus.$on('selectFbAdAccount', this.selectFbAdAccount)
+			this.$eventBus.$on('getTargetPick', this.getTargetPick)
 			const fbAdAccount = this.$store.state.currentFbAdAccount
 			if (fbAdAccount !== '') {
-				this.selectFbAdAccount(fbAdAccount)
+				this.getTargetPick(fbAdAccount)
 			}
 		},
 
 		beforeDestroy () {
-		    this.$eventBus.$off('selectFbAdAccount', this.selectFbAdAccount)
+		    this.$eventBus.$off('getTargetPick', this.getTargetPick)
 		},
 
 		methods: {
@@ -172,8 +172,7 @@
 				//매뉴 온오프 or 리스트 필터
 				this.targetOn = type
 			},
-			selectFbAdAccount (fbAdAccount) {
-				// console.log('selectFbAdAccount', fbAdAccount)
+			getTargetPick (fbAdAccount) {
 				this.isPick = false
 				this.isLoading = true
 				this.loadingTitle = '광고계정을 검사중입니다.'

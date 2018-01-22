@@ -53,6 +53,10 @@ export default {
 		this.getFbAdAccountInfo()
 	},
 
+	beforeDestroy () {
+		this.$eventBus.$off('getFbAdAccountInfo', this.getFbAdAccountInfo)
+	},
+
   data () {
     return {
 			setPop: false,
@@ -68,48 +72,30 @@ export default {
 	methods: {
 		getFbAdAccountInfo () {
 			let fbAdAccountId = localStorage.getItem('fb_ad_account_id')
-			this.$http.get(`/fb_ad_accounts/${fbAdAccountId}`)
-				.then(res => {
-					const fbAdAccount = this.$store.state.currentFbAdAccount
-					const data = res.data
-					
-					this.fbAdAccountName = fbAdAccount.name
-					this.fbAdAccountAdAccountId = fbAdAccount.account_id
-					this.fbAdAccountUsingCategory = data.account_category_name
-					this.fbAdAccountConnectedNeoAccountCount = data.neo_account_count
-					this.fbAdAccountPixelEventMappingCount = data.pixel_event_mapping_count
+			
+			const fbAdAccount = this.$store.state.currentFbAdAccount
+			this.fbAdAccountName = fbAdAccount.name
+			this.fbAdAccountAdAccountId = fbAdAccount.account_id
 
-					console.log(this.fbAdAccountName)
-					console.log(this.fbAdAccountAdAccountId)
-					console.log(this.fbAdAccountUsingCategory)
-					console.log(this.fbAdAccountConnectedNeoAccountCount)
-					console.log(this.fbAdAccountPixelEventMappingCount)
-			})
-			.catch(err => {
-				console.log(err)
-			})
+			if (fbAdAccountId === 'undefined') {
+				this.fbAdAccountUsingCategory = '없음'
+				this.fbAdAccountConnectedNeoAccountCount = 0
+				this.fbAdAccountPixelEventMappingCount = 0
+			} else {
+				this.$http.get(`/fb_ad_accounts/${fbAdAccountId}`)
+					.then(res => {
+						const data = res.data
+
+						this.fbAdAccountUsingCategory = data.account_category_name
+						this.fbAdAccountConnectedNeoAccountCount = data.neo_account_count
+						this.fbAdAccountPixelEventMappingCount = data.pixel_event_mapping_count
+				})
+				.catch(err => {
+					console.log(err)
+				})
+			}
 		}
 	}
-
-	// computed: {
-	// 	fbAdAccountSet () {
-	// 		let fbAdAccountId = localStorage.getItem('fb_ad_account_id')
-	// 		this.$http.get(`/fb_ad_accounts/${fbAdAccountId}`)
-	// 			.then(res => {
-	// 				const fbAdAccount = this.$store.state.currentFbAdAccount
-	// 				const data = res.data
-					
-	// 				this.fbAdAccountName = fbAdAccount.name
-	// 				this.fbAdAccountAdAccountId = fbAdAccount.account_id
-	// 				this.fbAdAccountUsingCategory = data.account_category_name
-	// 				this.fbAdAccountConnectedNeoAccountCount = data.neo_account_count
-	// 				this.fbAdAccountPixelEventMappingCount = data.pixel_event_mapping_count
-	// 		})
-	// 		.catch(err => {
-	// 			console.log(err)
-	// 		})
-	// 	}
-	// }
 }
 </script>
 
