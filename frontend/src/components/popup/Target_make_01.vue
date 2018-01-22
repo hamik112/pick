@@ -252,8 +252,8 @@
                                     <ul>
                                       <li>
                                         <div class="result_check"><input type="checkbox" id="all_check" v-model="selectAll"><label for="all_check"></label></div>
-                                        <div class="result_account">계정명</div>
-                                        <div class="result_group">캠페인명</div>
+                                        <div class="result_account">광고주명</div>
+                                        <div class="result_group">매체명</div>
                                         <div class="result_switch">전환 수</div>
                                       </li>
                                     </ul>
@@ -261,9 +261,9 @@
                                   <div class="result_tbody">
                                     <ul id="adv-list-1">
                                       <li v-for="neoAccount in neoAccounts">
-                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoAccount.number" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.type_id" :id="'neoAccount-check-' + neoAccount.number"><label :for="'neoAccount-check-' + neoAccountww.number"></label></div>
-                                        <div class="result_account">{{ neoAccount.name }}</div>
-                                        <div class="result_group">{{ neoAccount.campaign }}</div>
+                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoAccount.centeraccountid" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.type_id" :id="'neoAccount-check-' + neoAccount.centeraccountid"><label :for="'neoAccount-check-' + neoAccount.centeraccountid"></label></div>
+                                        <div class="result_account">{{ neoAccount.advname }}</div>
+                                        <div class="result_group">{{ neoAccount.accountname }}</div>
                                         <div class="result_switch">{{ neoAccount.count }}</div>
                                       </li>
                                     </ul>
@@ -309,7 +309,7 @@
                                     <ul>
                                       <li>
                                         <div class="result_check"><input type="checkbox" id="all_check" v-model="selectAll"><label for="all_check"></label></div>
-                                        <div class="result_account">계정명</div>
+                                        <div class="result_account">광고주명</div>
                                         <div class="result_group">그룹명</div>
                                         <div class="result_switch">전환 수</div>
                                       </li>
@@ -318,9 +318,9 @@
                                   <div class="result_tbody">
                                     <ul id="adv-list-1">
                                       <li v-for="neoCampaign in neoCampaigns">
-                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoCampaign.number" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.type_id" :id="'neoCampaign-check-' + neoCampaign.number"><label :for="'neoCampaign-check-' + neoCampaign.number"></label></div>
-                                        <div class="result_account">{{ neoCampaign.name }}</div>
-                                        <div class="result_group">{{ neoCampaign.campaign }}</div>
+                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoCampaign.campaignid" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.type_id" :id="'neoCampaign-check-' + neoCampaign.campaignid"><label :for="'neoCampaign-check-' + neoCampaign.campaignid"></label></div>
+                                        <div class="result_account">{{ neoCampaign.advname }}</div>
+                                        <div class="result_group">{{ neoCampaign.campaignname }}</div>
                                         <div class="result_switch">{{ neoCampaign.count }}</div>
                                       </li>
                                     </ul>
@@ -366,7 +366,7 @@
                                     <ul>
                                       <li>
                                         <div class="result_check"><input type="checkbox" id="all_check" v-model="selectAll"><label for="all_check"></label></div>
-                                        <div class="result_account">그룹명</div>
+                                        <div class="result_account">광고주명</div>
                                         <div class="result_group">키워드</div>
                                         <div class="result_switch">전환 수</div>
                                       </li>
@@ -375,9 +375,9 @@
                                   <div class="result_tbody">
                                     <ul id="adv-list-1">
                                       <li v-for="neoKeyword in neoKeywords">
-                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoKeyword.number" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.type_id" :id="'neoKeyword-check-' + neoKeyword.number"><label :for="'neoKeyword-check-' + neoKeyword.number"></label></div>
-                                        <div class="result_account">{{ neoKeyword.name }}</div>
-                                        <div class="result_group">{{ neoKeyword.campaign }}</div>
+                                        <div class="result_check"><input type="checkbox" v-model="selected" :value="neoKeyword.keywordid" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.type_id" :id="'neoKeyword-check-' + neoKeyword.keywordid"><label :for="'neoKeyword-check-' + neoKeyword.keywordid"></label></div>
+                                        <div class="result_account">{{ neoKeyword.advname }}</div>
+                                        <div class="result_group">{{ neoKeyword.keywordname }}</div>
                                         <div class="result_switch">{{ neoKeyword.count }}</div>
                                       </li>
                                     </ul>
@@ -881,18 +881,18 @@ export default {
       const data = response.data
       const success = response.success
       if (success === 'YES') {
-          console.log(data)
+        // success
       } else {
-        console.log('/neo_db/get_roi_report fail')
+        throw('success: ' + success)
       }
-      return [emptyText, textList, keyList]
+      return data
     })
-    .then(([emptyText, textList, keyList]) => {
-
-
+    .then(data => {
+      this.neoAccounts = data
+      console.log(this.neoAccounts)
     })
     .catch(err => {
-      console.error('/neo_db/get_roi_report', err)
+      console.error('/neo_db/get_roi_report type: account ', err)
     })
 
     this.$http.get('/neo_db/get_roi_report', {
@@ -906,18 +906,18 @@ export default {
       const data = response.data
       const success = response.success
       if (success === 'YES') {
-          console.log(data)
+        // success
       } else {
-        console.log('/neo_db/get_roi_report fail')
+        throw('success: ' + success)
       }
-      return [emptyText, textList, keyList]
+      return data
     })
-    .then(([emptyText, textList, keyList]) => {
-
-
+    .then(data => {
+      this.neoCampaigns = data
+      console.log(this.neoCampaigns)
     })
     .catch(err => {
-      console.error('/neo_db/get_roi_report', err)
+      console.error('/neo_db/get_roi_report type: campaign ', err)
     })
 
     this.$http.get('/neo_db/get_roi_report', {
@@ -931,28 +931,18 @@ export default {
       const data = response.data
       const success = response.success
       if (success === 'YES') {
-          console.log(data)
+        // success~
       } else {
-        console.log('/neo_db/get_roi_report fail')
+        throw('success: ' + success)
       }
-      return [emptyText, textList, keyList]
+      return data
     })
-    .then(([emptyText, textList, keyList]) => {
-      // 픽셀 셀렉트 박스 전체에 세팅 필요
-      this.select1.emptyText = emptyText
-      this.select1.textList = textList
-      this.select1.keyList = keyList
-
-      this.select6.emptyText = emptyText
-      this.select6.textList = textList
-      this.select6.keyList = keyList
-
-      this.select21.emptyText = emptyText
-      this.select21.textList = textList
-      this.select21.keyList = keyList
+    .then(data => {
+      this.neoKeywords = data
+      console.log(this.neoKeywords)
     })
     .catch(err => {
-      console.error('/neo_db/get_roi_report', err)
+      console.error('/neo_db/get_roi_report type: keyword', err)
     })
 
   },
