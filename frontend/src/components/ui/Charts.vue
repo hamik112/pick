@@ -15,7 +15,18 @@ export default {
 	  IEcharts
 	},
 	props: {
-
+		chartData: {
+	      type: Object,
+	      default () {
+	        return {
+	        	tooltip:{},
+	        	legend:[],
+				xAxis: [],
+				yAxis:{},
+				series:[]
+	        }
+	      }
+	    }
 	},
 	data: () => ({
 	  loading: true,
@@ -82,7 +93,7 @@ export default {
             }
 	    },
 	    legend: {
-	        data:['테스트1','테스트2'],
+	        data:[],
 	        bottom: 10
 	    },
 	    grid: {
@@ -93,37 +104,32 @@ export default {
             containLabel: true
         },
 	    xAxis: {
-	      data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+	      data: [],
 	      axisPointer: {
-	            type: 'shadow'
-	        }
+	          type: 'shadow'
+	      }
 	    },
 	    yAxis: {},
-	    series: [
-		    {
-	            name:'테스트1',
-	            type:'bar',
-	            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
-	        },
-	        {
-	            name:'테스트2',
-	            type:'bar',
-	            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
-	        }
-	    ]
+	    series: [],
+	    colors:['#5793f3', '#d14a61', '#675bba']
 	  }
 	}),
 	methods: {
 	  doRandom() {
-	    const that = this;
-	    let data = [];
-	    for (let i = 0, min = 5, max = 99; i < 6; i++) {
-	      data.push(Math.floor(Math.random() * (max + 1 - min) + min));
-	    }
-	    that.bar.series[0].data = data;
+	    // const that = this
+	    // let data = []
+	    // for (let i = 0, min = 5, max = 99; i < 6; i++) {
+	    //   data.push(Math.floor(Math.random() * (max + 1 - min) + min))
+	    // }
+	    // that.bar.series[0].data = data;
 	  },
 	  onReady(instance) {
-	    console.log(instance);
+	  	const bar = this.bar
+
+	  	bar.legend.data = this.chartData.legend
+	    bar.xAxis.data = this.chartData.xAxis
+	    bar.yAxis = this.chartData.yAxis
+	    bar.series = this.chartData.series
 	  },
 	  onClick(event, instance, echarts) {
 	    console.log(arguments);
