@@ -124,6 +124,8 @@ export default {
             
             this.$eventBus.$emit('selectFbAdAccount', this.selectedFbAdAccount)
             // localStorage.setItem('account_id', data[0].account_id)
+            localStorage.setItem('account_id', data[0].account_id)
+            localStorage.setItem('account_name', data[0].name)
           }
         } else {
           throw('success: ' + success)
@@ -147,7 +149,9 @@ export default {
       this.$eventBus.$emit('selectFbAdAccount', fbAdAccount)
       this.$eventBus.$emit('getFbAdAccountInfo')
       // localStorage.setItem('account_id', fbAdAccount.account_id)
-      localStorage.setItem('fb_ad_account_id', 3)
+
+      localStorage.setItem('account_id', fbAdAccount.account_id)
+      localStorage.setItem('account_name', fbAdAccount.name)
     }
   }
 }
