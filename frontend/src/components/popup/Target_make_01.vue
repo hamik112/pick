@@ -123,12 +123,12 @@
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
-                        <div><input type="text"><span>일</span></div>
+                        <div><input type="text" v-model="visitSpecificPagesDay"><span>일</span></div>
                       </div>
                     </div>
                     <div class="target_name">
                       <div class="contents_title">타겟이름</div>
-                      <div><input type="text"></div>
+                      <div><input type="text" v-model="visitSpecificPagesName"></div>
                     </div>
                     <div class="target_data">
                       <div class="contents_title">타겟 모수</div>
@@ -196,12 +196,12 @@
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
-                        <div><input type="text"><span>일</span></div>
+                        <div><input type="text" v-model="neoTargetDay"><span>일</span></div>
                       </div>
                     </div>
                     <div class="target_name">
                       <div class="contents_title">타겟이름</div>
-                      <div><input type="text"></div>
+                      <div><input type="text" v-model="neoTargetName"></div>
                     </div>
                     <!--div class="target_data">
                     <div class="contents_title">타겟 모수</div>
@@ -213,16 +213,16 @@
                   <div class="contents_title">Neo 유형</div>
                   <ul>
                     <li>
-                      <div class="result_check"><input type="radio" id="target_type01" @change="wTabs(0,'wTab')" name="neo_type" value="media" checked><label for="target_type01">매체</label></div>
+                      <div class="result_check"><input type="radio" id="target_type01" @change="wTabs(0,'wTab')" name="neo_type" value="media" v-model="neoTargetType" checked><label for="target_type01">매체</label></div>
                     </li>
                     <li>
-                      <div class="result_check"><input type="radio" id="target_type02" name="neo_type" @change="wTabs(1,'wTab')" value="group"><label for="target_type02">그룹</label></div>
+                      <div class="result_check"><input type="radio" id="target_type02" name="neo_type" @change="wTabs(1,'wTab')" value="group" v-model="neoTargetType"><label for="target_type02">그룹</label></div>
                     </li>
                     <li>
-                      <div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword"><label for="target_type03">키워드</label></div>
+                      <div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword" v-model="neoTargetType"><label for="target_type03">키워드</label></div>
                     </li>
                     <li>
-                      <div class="result_check"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel"><label for="target_type04">엑셀업로드</label></div>
+                      <div class="result_check" v-show="false"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel" v-model="neoTargetType"><label for="target_type04">엑셀업로드</label></div>
                     </li>
                   </ul>
                 </div>
@@ -450,7 +450,7 @@
             </div>
             <div class="btn_wrap">
               <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-              <button class="next_btn">타겟 만들기</button>
+              <button class="next_btn" @click="createNeoTarget()">타겟 만들기</button>
             </div>
             <!-- <div class="btn_wrap">
             <button class="before_btn close_pop" @click="$emit('close')">취소</button>
@@ -958,8 +958,15 @@ export default {
   },
   data () {
     return {
+      visitSiteDay: '30',
       visitSiteName: '',
-      visitSiteDay: '90',
+
+      visitSpecificPagesDay: '30',
+      visitSpecificPagesName: '',
+
+      neoTargetDay: '30',
+      neoTargetName: '',
+      neoTargetType: 'media',
 
       subSelect:false,
       subInput:false,
@@ -1412,6 +1419,15 @@ export default {
       return keyList[textList.indexOf(emptyText)]
     },
 
+    findSelectedNeoKey (listName, key) {
+      let result = []
+      const data = this[listName]
+      data.forEach(function (item, index) {
+        result.push(item[key])
+      })
+      return result
+    },
+
     createVisitSite () {
       let params = {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
@@ -1429,6 +1445,51 @@ export default {
         var success = response.data.success;
         if (success == "YES") {
           // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createNeoTarget () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'visit_site',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.neoTargetName,
+        retention_days: this.neoTargetDay,
+        neo_type: this.neoTargetType,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      if (this.neoTargetType === 'media') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoAccounts', 'accountname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoAccounts', 'param')
+      } else if (this.neoTargetType === 'group') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoCampaigns', 'campaignname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoCampaigns', 'param')
+      } else if (this.neoTargetType === 'keyword') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoKeywords', 'keywordname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoKeywords', 'param')
+      } else {
+        console.log('this.neoTargetType', this.neoTargetType)
+        return
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
         } else {
           throw('success: ' + success)
         }

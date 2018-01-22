@@ -172,6 +172,7 @@ class CustomTarget(APIView):
             pixel_id = request.data.get('pixel_id', 0)
             name = request.data.get('name', None)
             retention_days = request.data.get('retention_days', 30)
+            retention_days = int(retention_days)
 
             if target_type == "visit_site":
                 detail = request.data.get('detail', '')
@@ -462,8 +463,8 @@ class CustomTarget(APIView):
 
             elif target_type == "neo_target":
                 neo_type = request.data.get('neo_type')
-                keywords = request.data.getlist('keywords')
-                neo_ids = request.data.getlist('neo_ids')
+                keywords = request.data.get('keywords')
+                neo_ids = request.data.get('neo_ids')
                 detail = request.data.get('detail', '')
 
                 custom_data = {

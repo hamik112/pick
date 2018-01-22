@@ -1,5 +1,5 @@
 <template>
-	<div id="main_wrap" class="clearfix">
+	<div id="main_wrap" class="clearfix" >
 
 		<transition name='modal'>
 			<TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
@@ -138,7 +138,7 @@
 					purchaseCount: 0,
 					neoTargetCount: 0
 				},
-				isPick: true,
+				isPick: false,
 				isLoading: false,
 				loadingTitle: '',
 				loadingDescription: ''
@@ -154,6 +154,7 @@
 
 		created () {
 			this.$eventBus.$on('getTargetPick', this.getTargetPick)
+			this.$eventBus.$on('getAccountTarget', this.getAccountTarget)
 			const fbAdAccount = this.$store.state.currentFbAdAccount
 			if (fbAdAccount !== '') {
 				this.getTargetPick(fbAdAccount)
@@ -162,6 +163,7 @@
 
 		beforeDestroy () {
 		    this.$eventBus.$off('getTargetPick', this.getTargetPick)
+				this.$eventBus.$off('getAccountTarget', this.getAccountTarget)
 		},
 
 		methods: {
@@ -188,25 +190,29 @@
 					if (bool_default_pixel == false) {
             // default_pixel alert popup
 						this.pixelNone = true
+						this.isPick = false
 					} else {
 						this.pixelNone = false
 
 						if (bool_fb_ad_account == false) {
 							// Advertising_setup popup 호출
+							this.isPick = false
 							this.setupPop = true
 						} else {
 							this.setupPop = false
+							//this.isPick = true
+
+							localStorage.setItem('fb_ad_account_id', res.data.fb_ad_account.fb_ad_account_id)
+							this.getAccountTarget(fbAdAccount)
 						}
 					}
 
-					this.isPick = true
+					//this.isPick = true
 					this.isLoading = false
 
-					localStorage.setItem('fb_ad_account_id', res.data.fb_ad_account.fb_ad_account_id)
-					this.getAccountTarget(fbAdAccount)
 				})
 				.catch(err => {
-					this.isPick = true
+					//this.isPick = true
 					this.isLoading = false
 					console.error('/pickdata_account_target/targetpick', err)
 				})
@@ -278,7 +284,7 @@
 					this.isLoading = false
 				})
 				.catch(err => {
-					this.isPick = true
+					//this.isPick = true
 					this.isLoading = false
 					console.error('/pickdata_account_target/targetpick', err)
 				})
