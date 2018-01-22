@@ -589,7 +589,7 @@
                 <div class="target_contents_inner">
                   <div class="target_thead">
                     <div class="main_title">
-                      <div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
+                      <div><img src="../../assets/images/target/target_logo_05.png" alt="buy"></div>
                       <div class="title_info">
                         <p>구매</p>
                         <p>타겟의 속성을 정의하세요</p>
@@ -646,7 +646,7 @@
                 <div class="target_contents_inner">
                   <div class="target_thead">
                     <div class="main_title">
-                      <div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
+                      <div><img src="../../assets/images/target/target_logo_06.png" alt="cart"></div>
                       <div class="title_info">
                         <p>장바구니</p>
                         <p>타겟의 속성을 정의하세요</p>
@@ -697,7 +697,7 @@
                 <div class="target_contents_inner">
                   <div class="target_thead">
                     <div class="main_title">
-                      <div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
+                      <div><img src="../../assets/images/target/target_logo_07.png" alt="member"></div>
                       <div class="title_info">
                         <p>회원가입</p>
                         <p>타겟의 속성을 정의하세요</p>
