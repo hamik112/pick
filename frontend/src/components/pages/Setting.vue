@@ -2,7 +2,7 @@
 	<div id="main_wrap" class="clearfix">
 
 		<transition name='modal'>
-			<SetupPop v-if="setPop" @close="setPop = false"></SetupPop>
+			<advertising-setup v-if="setPop" @close="setPop = false"></advertising-setup>
 		</transition>
 
 		<div id="container">
@@ -13,21 +13,21 @@
 							<div class="u_logo"><img src="../../assets/images/common/test_img.jpg" alt=""></div>
 							<div class="u_mask"></div>
 							<div>
-								<strong>프리메라프리메라</strong>
-								<p>계정번호 : 1051325123890</p>
+								<strong>{{ fbAdAccountName }}</strong>
+								<p>계정번호 : {{ fbAdAccountAdAccountId }}</p>
 							</div>
 						</div>
 						<div class="user_pixel">
 							<p>사용 픽셀</p>
-							<p>금융</p>
+							<p>{{ fbAdAccountUsingCategory }}</p>
 						</div>
 						<div class="user_id">
 							<p>연결된 네오 계정</p>
-							<p>3개</p>
+							<p>{{ fbAdAccountConnectedNeoAccountCount }}개</p>
 						</div>
 						<div class="user_event">
 							<p>픽셀이벤트 매핑</p>
-							<p>5개</p>
+							<p>{{ fbAdAccountPixelEventMappingCount }}개</p>
 						</div>
 						<div class="setting_btn"><button type="button" @click="setPop = true">계정 설정 수정하기</button></div>
 					</div>
@@ -40,20 +40,76 @@
 
 <script>
 
-import SetupPop from '@/components/popup/Advertising_setup'
+import AdvertisingSetup from '@/components/popup/Advertising_setup'
 
 export default {
-
   name: 'Setting',
-  components:{
-  	SetupPop:SetupPop
-  },
+  components: {
+  	AdvertisingSetup
+	},
+	
+	created () {
+		this.$eventBus.$on('getFbAdAccountInfo', this.getFbAdAccountInfo)
+		this.getFbAdAccountInfo()
+	},
 
   data () {
     return {
-    	setPop:false
+			setPop: false,
+
+			fbAdAccountName: '',
+			fbAdAccountAdAccountId: '',
+			fbAdAccountUsingCategory: '',
+			fbAdAccountConnectedNeoAccountCount: 0,
+			fbAdAccountPixelEventMappingCount: 0,
     }
-  }
+	},
+
+	methods: {
+		getFbAdAccountInfo () {
+			let fbAdAccountId = localStorage.getItem('fb_ad_account_id')
+			this.$http.get(`/fb_ad_accounts/${fbAdAccountId}`)
+				.then(res => {
+					const fbAdAccount = this.$store.state.currentFbAdAccount
+					const data = res.data
+					
+					this.fbAdAccountName = fbAdAccount.name
+					this.fbAdAccountAdAccountId = fbAdAccount.account_id
+					this.fbAdAccountUsingCategory = data.account_category_name
+					this.fbAdAccountConnectedNeoAccountCount = data.neo_account_count
+					this.fbAdAccountPixelEventMappingCount = data.pixel_event_mapping_count
+
+					console.log(this.fbAdAccountName)
+					console.log(this.fbAdAccountAdAccountId)
+					console.log(this.fbAdAccountUsingCategory)
+					console.log(this.fbAdAccountConnectedNeoAccountCount)
+					console.log(this.fbAdAccountPixelEventMappingCount)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+		}
+	}
+
+	// computed: {
+	// 	fbAdAccountSet () {
+	// 		let fbAdAccountId = localStorage.getItem('fb_ad_account_id')
+	// 		this.$http.get(`/fb_ad_accounts/${fbAdAccountId}`)
+	// 			.then(res => {
+	// 				const fbAdAccount = this.$store.state.currentFbAdAccount
+	// 				const data = res.data
+					
+	// 				this.fbAdAccountName = fbAdAccount.name
+	// 				this.fbAdAccountAdAccountId = fbAdAccount.account_id
+	// 				this.fbAdAccountUsingCategory = data.account_category_name
+	// 				this.fbAdAccountConnectedNeoAccountCount = data.neo_account_count
+	// 				this.fbAdAccountPixelEventMappingCount = data.pixel_event_mapping_count
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err)
+	// 		})
+	// 	}
+	// }
 }
 </script>
 

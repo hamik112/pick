@@ -13,8 +13,8 @@
 								<div class="ad_mask"></div>
 								<div class="ad_image"><img src="../../assets/images/common/test_img.jpg" alt=""></div>
 								<div class="ad_info">
-									<strong>프리메라 NEW</strong>
-									<div>계정번호:1059484622123515</div>
+									<strong>{{account_name}}</strong>
+									<div>계정번호:{{account_id}}</div>
 								</div>
 							</div>
 							<div class="list-tab-widget">
@@ -308,6 +308,8 @@ export default {
 			searchKeyword: '',
 			selected: [],
 			addSelected:[],
+			account_name: localStorage.getItem('account_name'),
+			account_id: localStorage.getItem('account_id'),
 
 			// 픽셀 이벤트 매핑
 			pixelMappingCategories: [],
