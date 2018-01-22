@@ -1,0 +1,42 @@
+//타겟 픽 리스트 사이즈 변경
+@media screen and (min-width:2000px) {
+	.target_contents_wrap{
+		.target_contents{
+			ul{
+				li{width:266px !important; margin-right:15px !important;
+				}
+			 }
+		}
+	}
+}
+@media screen and (max-width:1800px) {
+	.target_contents_wrap{
+		.target_contents{
+			ul{
+				li{width:24% !important;
+				}
+			 }
+		}
+	}
+}
+@media screen and (max-width:1470px) {
+	.target_contents_wrap{
+		.target_contents{
+			ul{
+				li{width:32.3% !important;
+				}
+			 }
+		}
+	}
+}
+@media screen and (max-width:1280px) {
+	.target_contents_wrap{
+		.target_contents{
+			ul{
+				li{width:49% !important;
+				}
+			 }
+		}
+	}
+}
+// ------------------------------------
