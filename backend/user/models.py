@@ -1,6 +1,10 @@
 from django.db import models
 
-# Create your models here.
+import traceback
+import logging
+
+logger = logging.getLogger(__name__)
+
 class User(models.Model):
     LANGUAGE_KOREAN = 'ko'
     LANGUAGE_ENGLISH = 'en'
@@ -20,6 +24,20 @@ class User(models.Model):
     age = models.IntegerField(default=0)
     gender = models.CharField(max_length=16, null=True, default=None)
     picture_url = models.CharField(max_length=255, blank=True, default='')
+
+    def find_by_username(self, username):
+        if username == '0':
+            return None
+        try:
+            user = self.objects.get(username=username)
+            return user
+        except self.DoesNotExist:
+            return None
+        except Exception as e:
+            print(traceback.format_exc())
+            logger.error(traceback.format_exc())
+            # TODO return []
+            return None
 
     class Meta:
         db_table = "users"
