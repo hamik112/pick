@@ -477,12 +477,12 @@
                 </div>
                 <div class="use_date">
                   <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
+                  <div><input type="text" v-model="utmTargetDay"><span>일</span></div>
                 </div>
               </div>
               <div class="target_name">
                 <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
+                <div><input type="text" v-model="utmTargetName"></div>
               </div>
               <div class="target_data">
                 <div class="contents_title">타겟 모수</div>
@@ -520,7 +520,7 @@
                         </div>
                       </div>
                       <div class="url_input">
-                        <input id="utm_name" type="text" value="" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
+                        <input id="utm_name" type="text" v-model="inputUtmName" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
                       </div>
                     </form>
                   </div>
@@ -558,15 +558,15 @@
                   </div>
                   <div id="tab_list_4" class="analytics_tab_contents clearfix" v-if="wTab.tab4">
                     <ul>
-                      <li v-for="(item,index) in gAddData.utm_team" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_team')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+                      <li v-for="(item,index) in gAddData.utm_term" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_term')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                     </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_team')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_term')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                   </div>
                   <div id="tab_list_5" class="analytics_tab_contents clearfix" v-if="wTab.tab5">
                     <ul>
                       <li v-for="(item,index) in gAddData.utm_content" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_content')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                     </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','content')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_content')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                   </div>
                   <div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
                     <ul>
@@ -578,7 +578,7 @@
               </div>
               <div class="btn_wrap">
                 <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                <button class="next_btn">타겟 만들기</button>
+                <button class="next_btn" @click="createUtmTarget()">타겟 만들기</button>
               </div>
             </div>
           </div>
@@ -968,6 +968,10 @@ export default {
       neoTargetName: '',
       neoTargetType: 'media',
 
+      utmTargetDay: '30',
+      utmTargetName: '',
+      inputUtmName: '',
+
       subSelect:false,
       subInput:false,
       subInput2:false,
@@ -1152,43 +1156,19 @@ export default {
         ],
         utm_medium:[],
         utm_compaign:[],
-        utm_team:[],
+        utm_term:[],
         utm_content:[],
         utm_custom:[],
       },
 
       //analytics add sample
       gAddData:{
-        utm_source:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_medium:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_campaign:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_team:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_content:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_custom:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ]
+        utm_source:[],
+        utm_medium:[],
+        utm_campaign:[],
+        utm_term:[],
+        utm_content:[],
+        utm_custom:[]
       },
 
       fields:[
@@ -1341,10 +1321,12 @@ export default {
         if(gData[i].name === utmName) {
           alert('같은 UTM값이 존재합니다.')
           break
+          this.inputUtmName = ''
           return false
         }
       }
       gData.push(newData)
+      this.inputUtmName = ''
 
       return false
     },
@@ -1447,6 +1429,14 @@ export default {
       }
     },
 
+    convertUtmName (data) {
+      let result = []
+      data.forEach(function (item, index) {
+        result.push(item['name'])
+      })
+      return result
+    },
+
     createVisitSite () {
       let params = {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
@@ -1466,6 +1456,7 @@ export default {
           // success
           this.$eventBus.$emit('getAccountTarget')
         } else {
+          alert('사이트방문 타겟 생성 실패')
           throw('success: ' + success)
         }
         this.$emit('close')
@@ -1499,6 +1490,7 @@ export default {
           // success
           this.$eventBus.$emit('getAccountTarget')
         } else {
+          alert('특정페이지 방문 타겟 생성 실패')
           throw('success: ' + success)
         }
         this.$emit('close')
@@ -1543,6 +1535,44 @@ export default {
           // success
           this.$eventBus.$emit('getAccountTarget')
         } else {
+          alert('NEO 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createUtmTarget () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'utm_target',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.utmTargetName,
+        retention_days: this.utmTargetDay,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub'),
+
+        sources: this.convertUtmName(this.gAddData.utm_source),
+        mediums: this.convertUtmName(this.gAddData.utm_medium),
+        campaigns: this.convertUtmName(this.gAddData.utm_campaign),
+        terms: this.convertUtmName(this.gAddData.utm_term),
+        contents: this.convertUtmName(this.gAddData.utm_content),
+        customs: this.convertUtmName(this.gAddData.utm_custom)
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('구글애널리틱스 타겟 생성 실패')
           throw('success: ' + success)
         }
         this.$emit('close')
