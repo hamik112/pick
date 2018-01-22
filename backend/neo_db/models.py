@@ -135,7 +135,7 @@ class McRoiReport(models.Model):
 
         McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
         # roi_report = McRoiReport.objects.using('neo_v1_db').all()
-        roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('','centeraccountid', 'accountname').annotate(count=Count('roireportid')).order_by('-count')[:200]
+        roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname').annotate(count=Count('roireportid')).order_by('-count')[:200]
         # print(roi_report.query)
         # print(roi_report)
 
