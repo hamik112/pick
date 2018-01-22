@@ -18,6 +18,10 @@ import json
 import logging
 import traceback
 from datetime import datetime
+from itertools import groupby
+from operator import itemgetter
+import itertools
+import operator
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +50,7 @@ class AdSetInsightByAccount(APIView):
             date_diff = diff.days + 1
 
             # TODO 기간 나타내는 방법
-            ad_set_insights = AdSetInsight.objects.filter(account_id = account_id, date_stop__range=(since, until)
+            ad_set_insights = AdSetInsight.objects.filter(account_id=account_id, date_stop__range=(since, until)
                                                             ).values('adset_id'
                                                             ).annotate(call_to_action_clicks=Sum('call_to_action_clicks'),
                                                             inline_link_clicks=Sum('inline_link_clicks'),
@@ -63,9 +67,35 @@ class AdSetInsightByAccount(APIView):
                                                             inline_link_click_ctr=Sum('inline_link_click_ctr')/int(date_diff)
                                                             ).order_by('adset_id')
 
+            # Custom Event SORT/SUM
+            actions_insights = AdSetInsight.objects.filter(account_id=account_id,date_stop__range=(since,until)).values('adset_id', 'date_stop', 'actions')
+            actions_insights_list = []
+            for action_insight in actions_insights:
+                report = {}
+                report['adset_id'] = action_insight['adset_id']
+                report['date_stop'] = action_insight['date_stop']
+                if action_insight['actions'] != None:
+                    actions = eval(action_insight['actions'])
+                    report['actions'] = actions
+                else:
+                    report['actions'] = None
+                actions_insights_list.append(report)
+
+            actions_insights_list = sorted(actions_insights_list, key=itemgetter('adset_id'))
+
+            report_dict = {}
+            for key, value in itertools.groupby(actions_insights_list, key=itemgetter('adset_id')):
+                result = []
+                for i in value:
+                    if i.get('actions') != None:
+                        result += i.get('actions')
+                    else:
+                        result += ''
+                    report_dict[key] = result
+
+            # Django model aggregation values
             target_insights = []
             for insight in ad_set_insights:
-                # logger.info(insight)
                 result = {}
                 # target report data
                 adset_id = insight['adset_id']
@@ -87,11 +117,11 @@ class AdSetInsightByAccount(APIView):
                 if 'genders' in targeting:
                     genders = targeting['genders']
                     gender = ''.join(str(g) for g in genders)
-                    if gender == "1":
+                    if gender == '1':
                         gender = 'male'
-                    elif gender == "2":
+                    elif gender == '2':
                         gender = 'female'
-                    elif gender == "0":
+                    elif gender == '0':
                         gender = 'all'
                     else:
                         gender = ''
@@ -132,6 +162,21 @@ class AdSetInsightByAccount(APIView):
                 result['ctr'] = ctr
                 result['cpp'] = cpp
                 result['conversions'] = conversions
+
+                # Custom Event 계산 추가
+                for key, items in report_dict.items():
+                    if key == adset_id:
+                        if items != None:
+                            action_sort = sorted(items, key=itemgetter('action_type'))
+                            for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
+                                # print(key)
+                                v_list = []
+                                for v in value:
+                                    v = list(v.values())
+                                    v.remove(key)
+                                    v_list += v
+                                v_list = list(map(int, v_list))
+                                result[key] = sum(v_list)
 
                 target_insights.append(result)
 
