@@ -184,18 +184,21 @@
 				.then(res => {
 					const bool_default_pixel = res.data.bool_default_pixel
 					const bool_fb_ad_account = res.data.bool_fb_ad_account
-					if (bool_fb_ad_account == false) {
-						// Advertising_setup popup 호출
-						this.setupPop = true
-					} else {
-						this.setupPop = false
-					}
+
 					if (bool_default_pixel == false) {
             // default_pixel alert popup
 						this.pixelNone = true
 					} else {
 						this.pixelNone = false
+
+						if (bool_fb_ad_account == false) {
+							// Advertising_setup popup 호출
+							this.setupPop = true
+						} else {
+							this.setupPop = false
+						}
 					}
+
 					this.isPick = true
 					this.isLoading = false
 
