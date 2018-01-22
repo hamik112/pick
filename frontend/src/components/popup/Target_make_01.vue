@@ -159,7 +159,7 @@
                               <ui-select :selectData="item.select" :data-key="index" :onClick="multiSelect"></ui-select>
                             </div>
                             <div class="url_input">
-                              <input type="text">
+                              <input type="text" v-model="item.url">
                             </div>
                             <div class="url_btn clearfix">
                               <div class="add"><button type="button" @click="fieldBtn(item,'add')">+</button></div>
@@ -174,7 +174,7 @@
                 </div>
                 <div class="btn_wrap">
                   <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                  <button class="next_btn">타겟 만들기</button>
+                  <button class="next_btn" @click="createVisitSpecificPages()">타겟 만들기</button>
                 </div>
               </div>
 
@@ -1194,10 +1194,11 @@ export default {
       fields:[
         //sample
         {
+          "url": '',
           "number":0,
           "key":0,
           "select":{
-            emptyText: 'URL선택',
+            emptyText: '전체URL',
             textList: [
               '전체URL',
               '부분URL'
@@ -1214,10 +1215,11 @@ export default {
       if(type === 'add') {
         index++
         let obj = {
+          "url": '',
           "number":index,
           "key":index,
           "select":{
-            emptyText: 'URL선택',
+            emptyText: '전체URL',
             textList: [
               '전체URL',
               '부분URL'
@@ -1428,6 +1430,23 @@ export default {
       return result
     },
 
+    findVisitSpecificPagesParam () {
+      const data = this.fields
+      let eqList = []
+      let containList = []
+      data.forEach(function (item, index) {
+        if (item.select.emptyText === '전체URL') {
+          eqList.push(item.url)
+        } else if (item.select.emptyText === '부분URL') {
+          containList.push(item.url)
+        }
+      })
+      return {
+        eqList: eqList,
+        containList: containList
+      }
+    },
+
     createVisitSite () {
       let params = {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
@@ -1457,10 +1476,43 @@ export default {
       })
     },
 
+    createVisitSpecificPages () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'visit_specific_pages',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.visitSpecificPagesName,
+        retention_days: this.visitSpecificPagesDay,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      const urlParams = this.findVisitSpecificPagesParam()
+      params['eq_list'] = urlParams['eqList']
+      params['contain_list'] = urlParams['containList']
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
     createNeoTarget () {
       let params = {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'visit_site',
+        target_type: 'neo_target',
         pixel_id: this.findSelectKey('adAccountPixels'),
         name: this.neoTargetName,
         retention_days: this.neoTargetDay,
