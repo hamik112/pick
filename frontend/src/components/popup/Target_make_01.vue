@@ -1274,7 +1274,7 @@ export default {
       this.subInput3 = false
       this.subInput4 = false
       //서브 입력창 체크
-      if(textCheck === '이용시간상위고객') {
+      if(textCheck === '이용시간상위고객' || key === 'selectSub') {
         this.subSelect = true
       }else if(textCheck === '특정일동안미방문고객') {
         this.subInput = true
