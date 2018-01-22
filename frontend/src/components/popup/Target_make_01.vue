@@ -602,12 +602,12 @@
                 </div>
                 <div class="use_date">
                   <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
+                  <div><input type="text" v-model="purchaseDay"><span>일</span></div>
                 </div>
               </div>
               <div class="target_name">
                 <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
+                <div><input type="text" v-model="purchaseName"></div>
               </div>
               <div class="target_data">
                 <div class="contents_title">타겟 모수</div>
@@ -625,10 +625,10 @@
                       <ui-select :selectData="this.selectUser2" data-key="selectUser2" :onClick="selectTarget"></ui-select>
                     </div>
                     <div class="account_date" v-if="subInput2">
-                      <input type="text"><span>회</span>
+                      <input type="text" v-model="purchaseCount"><span>회</span>
                     </div>
                     <div class="account_date" v-if="subInput3">
-                      <input type="text"><span>원</span>
+                      <input type="text" v-model="purchaseAmount"><span>원</span>
                     </div>
                   </div>
                 </div>
@@ -637,7 +637,7 @@
           </div>
           <div class="btn_wrap">
             <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-            <button class="next_btn">타겟 만들기</button>
+            <button class="next_btn" @click="createPurchase()">타겟 만들기</button>
           </div>
         </div>
 
@@ -659,12 +659,12 @@
                 </div>
                 <div class="use_date">
                   <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
+                  <div><input type="text" v-model="addToCartDay"><span>일</span></div>
                 </div>
               </div>
               <div class="target_name">
                 <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
+                <div><input type="text" v-model="addToCartName"></div>
               </div>
               <div class="target_data">
                 <div class="contents_title">타겟 모수</div>
@@ -679,7 +679,7 @@
                   <div class="account_info">
                     <div class="account_title">"장바구니 이용자" 중</div>
                     <div>
-                      <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
+                      <ui-select :selectData="this.selectAddToCartUser" data-key="selectAddToCartUser" :onClick="selectTarget"></ui-select>
                     </div>
                   </div>
                 </div>
@@ -688,7 +688,7 @@
           </div>
           <div class="btn_wrap">
             <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-            <button class="next_btn">타겟 만들기</button>
+            <button class="next_btn" @click="createAddToCart">타겟 만들기</button>
           </div>
         </div>
 
@@ -710,12 +710,12 @@
                 </div>
                 <div class="use_date">
                   <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
+                  <div><input type="text" v-model="registrationDay"><span>일</span></div>
                 </div>
               </div>
               <div class="target_name">
                 <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
+                <div><input type="text" v-model="registrationName"></div>
               </div>
               <div class="target_data">
                 <div class="contents_title">타겟 모수</div>
@@ -745,7 +745,7 @@
           </div>
           <div class="btn_wrap">
             <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-            <button class="next_btn">타겟 만들기</button>
+            <button class="next_btn" @click="createRegistration()">타겟 만들기</button>
           </div>
         </div>
 
@@ -972,6 +972,17 @@ export default {
       utmTargetName: '',
       inputUtmName: '',
 
+      purchaseDay: '30',
+      purchaseName: '',
+      purchaseCount: '0',
+      purchaseAmount: '0',
+
+      addToCartDay: '30',
+      addToCartName: '',
+
+      registrationDay: '30',
+      registrationName: '',
+
       subSelect:false,
       subInput:false,
       subInput2:false,
@@ -1042,6 +1053,17 @@ export default {
         ]
       },
       //구글
+      selectAddToCartUser: {
+        emptyText: '전체 고객',
+        textList: [
+          '전체 고객',
+          '미 구매 고객'
+        ],
+        keyList: [
+          'total',
+          'non_purchase'
+        ]
+      },
       selectUser: {
         emptyText: '전체 고객',
         textList: [
@@ -1073,6 +1095,11 @@ export default {
           '전체 고객',
           '특정 구매횟수 이상 구매 고객', // 셀렉트박스 표시 (5/15/25 %)
           '특정 구매금액 이상 구매 고객', // 숫자 입력 텍스트필드 표시
+        ],
+        keyList: [
+          'total',
+          'purchase_count',
+          'purchase_amount'
         ]
       },
       selectUser3: {
@@ -1083,6 +1110,13 @@ export default {
           '미 구매 고객',
           '전환 완료 고객',
           '미 전환 고객'
+        ],
+        keyList: [
+          'total',
+          'usage_time_top',
+          'non_purchase',
+          'conversion',
+          'non_conversion'
         ]
       },
       selectUser4: {
@@ -1573,6 +1607,96 @@ export default {
           this.$eventBus.$emit('getAccountTarget')
         } else {
           alert('구글애널리틱스 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createPurchase () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'purchase',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.purchaseName,
+        retention_days: this.purchaseDay,
+
+        detail: this.findSelectKey('selectUser2'),
+        purchase_count: this.purchaseCount,
+        purchase_amount: this.purchaseAmount
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('구매 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createAddToCart () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'add_to_cart',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.addToCartName,
+        retention_days: this.addToCartDay,
+
+        detail: this.findSelectKey('selectAddToCartUser')
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('장바구니 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createRegistration () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'registration',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.registrationName,
+        retention_days: this.registrationDay,
+
+        detail: this.findSelectKey('selectUser3'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('회원가입 타겟 생성 실패')
           throw('success: ' + success)
         }
         this.$emit('close')
