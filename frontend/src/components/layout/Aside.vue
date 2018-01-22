@@ -122,8 +122,7 @@ export default {
             this.$store.state.currentFbAdAccount = data[0]
             this.selectedFbAdAccount = data[0]
             
-            this.$eventBus.$emit('selectFbAdAccount', this.selectedFbAdAccount)
-            // localStorage.setItem('account_id', data[0].account_id)
+            this.$eventBus.$emit('getTargetPick', this.selectedFbAdAccount)
             localStorage.setItem('account_id', data[0].account_id)
             localStorage.setItem('account_name', data[0].name)
           }
@@ -146,12 +145,23 @@ export default {
       this.isActive = false
       this.isShowList = false
 
-      this.$eventBus.$emit('selectFbAdAccount', fbAdAccount)
-      this.$eventBus.$emit('getFbAdAccountInfo')
-      // localStorage.setItem('account_id', fbAdAccount.account_id)
-
-      localStorage.setItem('account_id', fbAdAccount.account_id)
-      localStorage.setItem('account_name', fbAdAccount.name)
+      // 페이스북 광고 계정 아이디 찾기위한 로직
+      this.$http.get('/fb_ad_accounts/confirm_ad_account', {
+        params: {
+          act_account_id: fbAdAccount.id
+        }
+      })
+      .then(res => {
+        // 선택된 페이스북 광고 계정 아이디 저장
+        localStorage.setItem('fb_ad_account_id', res.data.fb_ad_account.fb_ad_account_id)
+        localStorage.setItem('account_id', fbAdAccount.account_id)
+        localStorage.setItem('account_name', fbAdAccount.name)
+        
+        // 페이스북 광고 계장 정보 갱신
+        this.$eventBus.$emit('getFbAdAccountInfo')
+        // Target Pick 갱신
+        this.$eventBus.$emit('getTargetPick', fbAdAccount)
+      })
     }
   }
 }
