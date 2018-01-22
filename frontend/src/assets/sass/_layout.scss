@@ -152,11 +152,15 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 			}
 			.target_aside{background:$basic_type01; position:absolute; top:0px; left:165px; height:100%; @include boxSizing; z-index:1;
 				ul{
-					li{width:160px; height:64px; line-height:64px; border-bottom:1px solid #eff2f7; font-size:15px; color:#666; padding-left:19px; cursor:pointer;
-						span{width:28px; height:16px; line-height:1.6; background:#c9cdd1; border-radius:4px; color:$basic_type01; text-align:center; margin-left:8px; display:inline-block; vertical-align:middle; font-size:12px;}
-					}
-					li.on{background:#375b96; color:$basic_type01;
-						span{background:$basic_type01; color:#375b96;}
+					li{width:160px; height:64px; line-height:64px; border-bottom:1px solid #eff2f7; font-size:15px; cursor:pointer;
+						&:first-child { border-top:1px solid #eff2f7; }
+						a {display:block; color:#666; padding-left:19px;
+							span{width:28px; height:16px; line-height:1.6; background:#c9cdd1; border-radius:4px; color:$basic_type01; text-align:center; margin-left:8px; display:inline-block; vertical-align:middle; font-size:12px;}
+							&.on{background:#375b96; color:$basic_type01;
+								span{background:$basic_type01; color:#375b96;}
+							}
+
+						}
 					}
 				}
 			}
@@ -204,7 +208,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 					.data_select{width:39.5%; float:left;
 						.select_btn{width:100%; height:40px; line-height:38px;  cursor:pointer;}
 					}
-					.select_view{position:absolute; top: 37px; left: 0px; background: #f9f9f9; border: 1px solid #d0d0d0; text-indent: 12px; height:122px; overflow-y:scroll; z-index:1;
+					.select_view{position:absolute; top: 37px; left: 0px; background: #f9f9f9; border: 1px solid #d0d0d0; text-indent: 12px; max-height:122px; overflow-y:scroll; z-index:1;
 						li:hover{background:#375b96; color:#fff;}
 					}
 					.report_search{width:10.5%; background:#375b96; color:$basic_type01; height:40px; line-height:40px; margin-top:27px; float:left; border-radius:2px;}

@@ -313,9 +313,9 @@
 								.result_thead,.result_tbody{
 									> div{height:42px; line-height:42px; border-right:$Border_type01; border-bottom:$Border_type01;}
 									li{width:423px;
-										.result_account{width: 124px;}
-										.result_group{width:93px;}
-										.result_switch{width:166px;}
+										.result_account{ overflow:hidden; width: 124px; text-overflow:ellipsis; white-space: nowrap;}
+										.result_group{ overflow:hidden; width:93px; text-overflow:ellipsis; white-space: nowrap;}
+										.result_switch{ overflow:hidden; width:166px; text-overflow:ellipsis; white-space: nowrap;}
 									}
 								}
 							}
