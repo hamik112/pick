@@ -172,6 +172,7 @@ class CustomTarget(APIView):
             pixel_id = request.data.get('pixel_id', 0)
             name = request.data.get('name', None)
             retention_days = request.data.get('retention_days', 30)
+            retention_days = int(retention_days)
 
             if target_type == "visit_site":
                 detail = request.data.get('detail', '')

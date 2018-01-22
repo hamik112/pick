@@ -154,6 +154,7 @@
 
 		created () {
 			this.$eventBus.$on('getTargetPick', this.getTargetPick)
+			this.$eventBus.$on('getAccountTarget', this.getAccountTarget)
 			const fbAdAccount = this.$store.state.currentFbAdAccount
 			if (fbAdAccount !== '') {
 				this.getTargetPick(fbAdAccount)
@@ -162,6 +163,7 @@
 
 		beforeDestroy () {
 		    this.$eventBus.$off('getTargetPick', this.getTargetPick)
+				this.$eventBus.$off('getAccountTarget', this.getAccountTarget)
 		},
 
 		methods: {
