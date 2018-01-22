@@ -40,11 +40,12 @@ class AdSetInsightByAccount(APIView):
             start = request.query_params.get('start', '0')
             limit = request.query_params.get('limit', '25')
 
+            # 13일 14일 포함 확인
             since = request.query_params.get('since', '2018-01-13')
             until = request.query_params.get('until', '2018-01-14')
 
-            since = '2017-12-14'
-            until = '2017-12-15'
+            # since = '2017-12-14'
+            # until = '2017-12-15'
             start = datetime.strptime(since, '%Y-%m-%d')
             end = datetime.strptime(until, '%Y-%m-%d')
             diff = end - start
@@ -69,9 +70,12 @@ class AdSetInsightByAccount(APIView):
                                                             ).order_by('adset_id')
 
             # Custom Event SORT/SUM
-            actions_insights = AdSetInsight.objects.filter(account_id=account_id,date_stop__range=(since,until)).values('adset_id', 'date_stop', 'actions')
+            actions_insights = AdSetInsight.objects.filter(account_id=account_id,date_stop__range=(since,until)).values('adset_id', 'date_stop', 'actions', 'video_10_sec_watched_actions', 'video_30_sec_watched_actions')
             actions_insights_list = []
+            video_10_sec_insights_list = []
+            video_30_sec_insights_list = []
             for action_insight in actions_insights:
+                # action 전체
                 report = {}
                 report['adset_id'] = action_insight['adset_id']
                 report['date_stop'] = action_insight['date_stop']
@@ -80,9 +84,34 @@ class AdSetInsightByAccount(APIView):
                     report['actions'] = actions
                 else:
                     report['actions'] = None
+
+                # video_10_sec_view
+                video_10sec_report = {}
+                video_10sec_report['adset_id'] = action_insight['adset_id']
+                video_10sec_report['date_stop'] = action_insight['date_stop']
+                if action_insight['video_10_sec_watched_actions'] != None:
+                    actions = eval(action_insight['video_10_sec_watched_actions'])
+                    video_10sec_report['video_10_sec_watched_actions'] = actions
+                else:
+                    video_10sec_report['video_10_sec_watched_actions'] = None
+
+                # video_30_sec_view
+                video_30sec_report = {}
+                video_30sec_report['adset_id'] = action_insight['adset_id']
+                video_30sec_report['date_stop'] = action_insight['date_stop']
+                if action_insight['video_30_sec_watched_actions'] != None:
+                    actions = eval(action_insight['video_30_sec_watched_actions'])
+                    video_30sec_report['video_30_sec_watched_actions'] = actions
+                else:
+                    video_30sec_report['video_30_sec_watched_actions'] = None
+
                 actions_insights_list.append(report)
+                video_10_sec_insights_list.append(video_10sec_report)
+                video_30_sec_insights_list.append(video_30sec_report)
 
             actions_insights_list = sorted(actions_insights_list, key=itemgetter('adset_id'))
+            video_10_sec_insights_list = sorted(video_10_sec_insights_list, key=itemgetter('adset_id'))
+            video_30_sec_insights_list = sorted(video_30_sec_insights_list, key=itemgetter('adset_id'))
 
             report_dict = {}
             for key, value in itertools.groupby(actions_insights_list, key=itemgetter('adset_id')):
@@ -93,6 +122,28 @@ class AdSetInsightByAccount(APIView):
                     else:
                         result += ''
                     report_dict[key] = result
+
+            # video_10sec
+            report_dict_video_10_sec = {}
+            for key, value in itertools.groupby(video_10_sec_insights_list, key=itemgetter('adset_id')):
+                result = []
+                for i in value:
+                    if i.get('video_10_sec_watched_actions') != None:
+                        result += i.get('video_10_sec_watched_actions')
+                    else:
+                        result += ''
+                    report_dict_video_10_sec[key] = result
+
+            # video_30sec
+            report_dict_video_30_sec = {}
+            for key, value in itertools.groupby(video_30_sec_insights_list, key=itemgetter('adset_id')):
+                result = []
+                for i in value:
+                    if i.get('video_30_sec_watched_actions') != None:
+                        result += i.get('video_30_sec_watched_actions')
+                    else:
+                        result += ''
+                    report_dict_video_30_sec[key] = result
 
             # Django model aggregation values
             pixel_group = []
@@ -167,12 +218,12 @@ class AdSetInsightByAccount(APIView):
 
                 # Custom Event 계산 추가
                 pixels = []
+                # 모든 action event total -
                 for key, items in report_dict.items():
                     if key == adset_id:
                         if items != None:
                             action_sort = sorted(items, key=itemgetter('action_type'))
                             for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
-                                # print(key)
                                 if 'offsite_conversion.custom.' in key:
                                     pixel_id = key[26:]
                                     pixels.append(pixel_id)
@@ -187,23 +238,54 @@ class AdSetInsightByAccount(APIView):
                                 v_list = list(map(int, v_list))
                                 result[key] = sum(v_list)
 
+                # actions field로는 video_view total 만 가져올수있으므로 따로 다시 기간 adset_id별로 분류+합 해야한다.
+
+                # 10_sec_video_view total
+                for key, items in report_dict_video_10_sec.items():
+                    if key == adset_id:
+                        if items != None:
+                            action_sort = sorted(items, key=itemgetter('action_type'))
+                            for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
+                                v_list = []
+                                for v in value:
+                                    v = list(v.values())
+                                    v.remove(key)
+                                    v_list += v
+
+
+                                v_list = list(map(int, v_list))
+                                result['video_10_sec_watched_actions'] = sum(v_list)
+
+                # 30_sec_video_view total
+                for key, items in report_dict_video_30_sec.items():
+                    if key == adset_id:
+                        if items != None:
+                            action_sort = sorted(items, key=itemgetter('action_type'))
+                            for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
+                                v_list = []
+                                for v in value:
+                                    v = list(v.values())
+                                    v.remove(key)
+                                    v_list += v
+
+                                v_list = list(map(int, v_list))
+                                result['video_30_sec_watched_actions'] = sum(v_list)
+
                 target_insights.append(result)
 
             pixel_group += pixels
             pixel_group = list(set(pixels))
 
+            # pixel id, 이름 호출
             custom_pixel = []
             for pix in pixel_group:
                 custom = CustomConversion(pix)
                 result = custom.remote_read(fields=['id', 'name'])
                 custom_pixel.append(result._json)
 
-            # TODO 인사이트 필요한 나머지 데이터 추가
-            print(target_insights)
-
+            # 기본 픽셀 이벤트 네이밍
             for data in target_insights:
                 for key, items in data.items():
-                    # 기본 픽셀 이벤트 네이밍
                     result = {}
                     if 'fb_pixel_complete_registration' in key:
                         result['name'] = 'CompleteRegistration'
