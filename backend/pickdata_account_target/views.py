@@ -308,8 +308,8 @@ class CustomTarget(APIView):
 
             elif target_type == "visit_specific_pages":
 
-                contain_list = request.data.getlist('contain_list', [])
-                eq_list = request.data.getlist('eq_list', [])
+                contain_list = request.data.get('contain_list', [])
+                eq_list = request.data.get('eq_list', [])
                 detail = request.data.get('detail', '')
                 custom_data = {
                     "contain_list": contain_list,
@@ -633,13 +633,36 @@ class CustomTarget(APIView):
 
 
             elif target_type == "utm_target":
-                sources = request.data.getlist('sources')
-                mediums = request.data.getlist('mediums')
-                campaigns = request.data.getlist('campaigns')
-                terms = request.data.getlist('terms')
-                contents = request.data.getlist('contents')
-                customs = request.data.getlist('customs')
-                utm_ids = sources + mediums + campaigns + terms + contents + customs
+                sources = request.data.get('sources')
+                mediums = request.data.get('mediums')
+                campaigns = request.data.get('campaigns')
+                terms = request.data.get('terms')
+                contents = request.data.get('contents')
+                customs = request.data.get('customs')
+
+                convert_sources = []
+                convert_mediums = []
+                convert_campaigns = []
+                convert_terms = []
+                convert_contents = []
+
+                for source in sources:
+                    convert_sources.append("utm_source="+source)
+
+                for medium in mediums:
+                    convert_mediums.append("utm_medium=" + medium)
+
+                for campaign in campaigns:
+                    convert_campaigns.append("utm_campaign=" + campaign)
+
+                for term in terms:
+                    convert_terms.append("utm_term="+term)
+
+                for content in contents:
+                    convert_contents.append("utm_content="+content)
+
+                utm_ids = convert_sources + convert_mediums + convert_campaigns + convert_terms + convert_contents + customs
+
 
                 detail = request.data.get('detail', '')
 

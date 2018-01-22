@@ -168,6 +168,100 @@
 
 		methods: {
 			selectTarget (item) {
+				console.log(item)
+				let target_type = ""
+
+				if(item == "전체보기"){
+					target_type="all"
+				}else if (item == "전체보기"){
+					target_type="all"
+				}else if (item == "기본 타겟만 보기"){
+					target_type="default"
+				}else if (item == "생성 타겟만 보기"){
+					target_type="created"
+				}else if (item == "타겟팅 완료된 타겟만 보기"){
+					target_type="targeting_completed"
+				}else if (item == "타겟팅 진행중인 타겟만 보기"){
+					target_type="targeting_progress"
+				}else if (item == "인구통계데이터가 있는 타겟만 보기"){
+					target_type="demographic"
+				}else{
+					target_type="all"
+				}
+
+				this.isPick = false
+				this.isLoading = true
+				this.loadingTitle = '타겟을 가져오는 중입니다.'
+				this.loadingDescription = '조금만 기다려 주시면, 생성된 타겟을 가져옵니다.'
+
+				let url = '/pickdata_account_target/targetpick'
+				this.$http.get(url, {
+					params: {
+						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+						target_type: target_type
+					}
+				})
+				.then(res => {
+					const response = res.data
+					const data = response.data
+					const success = response.success
+					if (success === "YES") {
+						const total = data.total.data
+						const visitPages = data['visit pages'].data
+						const visitSpecificPages = data['visit specific pages'].data
+						const neoTarget = data['neo target'].data
+						const utmTarget = data['utm target'].data
+						const purchase = data.purchase.data
+						const addToCart = data['add to cart'].data
+						const registration = data.registration.data
+						const conversion = data.conversion.data
+
+						const totalCount = data.total.count
+						const visitPagesCount = data['visit pages'].count
+						const visitSpecificPagesCount = data['visit specific pages'].count
+						const neoTargetCount = data['neo target'].count
+						const utmTargetCount = data['utm target'].count
+						const purchaseCount = data.purchase.count
+						const addToCartCount = data['add to cart'].count
+						const registrationCount = data.registration.count
+						const conversionCount = data.conversion.count
+
+						this.targetList.total = total
+						this.targetList.visitPages = visitPages
+						this.targetList.visitSpecificPages = visitSpecificPages
+						this.targetList.neoTarget = neoTarget
+						this.targetList.utmTarget = utmTarget
+						this.targetList.purchase = purchase
+						this.targetList.addToCart = addToCart
+						this.targetList.registration = registration
+						this.targetList.conversion = conversion
+
+						this.targetCount.totalCount = totalCount
+						this.targetCount.visitPagesCount = visitPagesCount
+						this.targetCount.visitSpecificPagesCount = visitSpecificPagesCount
+						this.targetCount.neoTargetCount = neoTargetCount
+						this.targetCount.utmTargetCount = utmTargetCount
+						this.targetCount.purchaseCount = purchaseCount
+						this.targetCount.addToCartCount = addToCartCount
+						this.targetCount.registrationCount = registrationCount
+						this.targetCount.conversionCount = conversionCount
+
+						console.log(addToCart)
+						this.isPick = true
+						this.isLoading = false
+					} else {
+						throw('success: ' + success)
+						this.isPick = true
+						this.isLoading = false
+					}
+				})
+				.catch(err => {
+					//this.isPick = true
+					this.isLoading = false
+					console.error('/pickdata_account_target/targetpick', err)
+				})
+
+
 				this.selectData.emptyText = item
 			},
 			tPickMenu(type) {
@@ -198,8 +292,10 @@
 							// Advertising_setup popup 호출
 							this.isPick = false
 							this.setupPop = true
+							this.isLoading = false
 						} else {
 							this.setupPop = false
+							this.isLoading = false
 							//this.isPick = true
 
 							localStorage.setItem('fb_ad_account_id', res.data.fb_ad_account.fb_ad_account_id)
@@ -208,7 +304,7 @@
 					}
 
 					//this.isPick = true
-					this.isLoading = false
+					//this.isLoading = false
 
 				})
 				.catch(err => {
@@ -277,14 +373,16 @@
 						this.targetCount.conversionCount = conversionCount
 
 						console.log(addToCart)
+						this.isPick = true
+						this.isLoading = false
 					} else {
 						throw('success: ' + success)
+						this.isPick = true
+						this.isLoading = false
 					}
-					this.isPick = true
-					this.isLoading = false
 				})
 				.catch(err => {
-					//this.isPick = true
+					this.isPick = true
 					this.isLoading = false
 					console.error('/pickdata_account_target/targetpick', err)
 				})
