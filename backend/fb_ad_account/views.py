@@ -10,6 +10,7 @@ from neo_account.models import NeoAccount
 from pixel_mapping.models import PixelMapping
 from pixel_mapping_category.models import PixelMappingCategory
 from pickdata_account_target.models import PickdataAccountTarget
+from account_category.models import AccountCategory
 
 
 from utils.facebookapis.ad_account import ads_pixels
@@ -137,6 +138,44 @@ class CheckAccountId(APIView):
             response_data['success'] = 'NO'
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+class FbAdAccountDetail(APIView):
+    def get(self, request, pk, format=None):
+        response_data = {}
+        try:
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, pk)
+
+            if fb_ad_account == None:
+                response_data['success'] = 'YES'
+            else:
+                neo_account_list = []
+                pixel_event_mapping_list = []
+
+                account_category = AccountCategory.objects.get(pk=fb_ad_account.account_category_id)
+
+                if fb_ad_account != None:
+                    neo_account_list = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id=fb_ad_account.id)
+                    pixel_evnet_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
+
+                    from pixel_mapping.serializers import PixelMappingMergeSerializer
+
+                    pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
+                    pixel_event_mapping_list = pixel_evnet_mapping_se.data
+
+                response_data['success'] = 'YES'
+                response_data['account_category_id'] = fb_ad_account.account_category_id
+                response_data['account_category_name'] = account_category.category_label_kr
+                response_data['neo_account_list'] = neo_account_list
+                response_data['neo_account_count'] = len(neo_account_list)
+                response_data['pixel_event_mappings'] = pixel_event_mapping_list
+                response_data['pixel_event_mapping_count'] = len(pixel_event_mapping_list)
+
+        except Exception as e:
+            logger.error(e)
+            response_data['success'] = 'NO'
+            response_data['msg'] = str(e)
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 class AccountPixelEvent(APIView):
     def get(self, request, format=None):
