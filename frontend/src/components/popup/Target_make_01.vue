@@ -62,7 +62,7 @@
                     <div class="use_wrap">
                       <div class="use_select">
                         <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.select1" data-key="select1" :onClick="selectTarget"></ui-select>
+                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
@@ -119,7 +119,7 @@
                     <div class="use_wrap">
                       <div class="use_select">
                         <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.select3" data-key="select3" :onClick="selectTarget"></ui-select>
+                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
@@ -192,7 +192,7 @@
                     <div class="use_wrap">
                       <div class="use_select">
                         <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.select6" data-key="select6" :onClick="selectTarget"></ui-select>
+                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
@@ -473,7 +473,7 @@
                     <div class="use_wrap">
                       <div class="use_select">
                         <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.select21" data-key="select21" :onClick="selectTarget"></ui-select>
+                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
@@ -598,7 +598,7 @@
                     <div class="use_wrap">
                       <div class="use_select">
                         <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.select13" data-key="select13" :onClick="selectTarget"></ui-select>
+                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
@@ -655,7 +655,7 @@
                     <div class="use_wrap">
                       <div class="use_select">
                         <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.select15" data-key="select15" :onClick="selectTarget"></ui-select>
+                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
@@ -706,7 +706,7 @@
                     <div class="use_wrap">
                       <div class="use_select">
                         <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.select17" data-key="select17" :onClick="selectTarget"></ui-select>
+                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
@@ -763,7 +763,7 @@
                     <div class="use_wrap">
                       <div class="use_select">
                         <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.select19" data-key="select19" :onClick="selectTarget"></ui-select>
+                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
@@ -866,6 +866,10 @@ export default {
             emptyText = item.name
           }
         })
+
+        this.adAccountPixels.emptyText = emptyText
+        this.adAccountPixels.textList = textList
+        this.adAccountPixels.keyList = keyList
       } else {
         console.log('/fb_ad_accounts/ad_account_pixels fail')
       }
@@ -893,7 +897,6 @@ export default {
         item['count_formatter'] = numberFormatter(item['count'])
       })
       this.neoAccounts = data
-      console.log(this.neoAccounts)
     })
     .catch(err => {
       console.error('/neo_db/get_roi_report type: account ', err)
@@ -921,7 +924,6 @@ export default {
         item['count_formatter'] = numberFormatter(item['count'])
       })
       this.neoCampaigns = data
-      console.log(this.neoCampaigns)
     })
     .catch(err => {
       console.error('/neo_db/get_roi_report type: campaign ', err)
@@ -949,7 +951,6 @@ export default {
         item['count_formatter'] = numberFormatter(item['count'])
       })
       this.neoKeywords = data
-      console.log(this.neoKeywords)
     })
     .catch(err => {
       console.error('/neo_db/get_roi_report type: keyword', err)
@@ -1000,6 +1001,14 @@ export default {
 
 
       //싱글 셀렉트
+      adAccountPixels: {
+        emptyText: '전체보기',
+        textList: [
+          '이벤트1',
+          '이벤트2',
+          '이벤트3'
+        ]
+      },
       //사이트방문
       select1: {
           emptyText: '전체보기',
