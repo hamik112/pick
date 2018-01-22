@@ -34,7 +34,7 @@ class TargetPick(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            if facebook_app_id == "284297631740545":
+            if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()

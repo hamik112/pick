@@ -40,7 +40,7 @@ class FbAdAccountList(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            if facebook_app_id == "284297631740545":
+            if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()
@@ -67,7 +67,7 @@ class FbAdAccountList(APIView):
             print('act_account_id : ', act_account_id)
             print('account_category_id : ', account_category_id)
 
-            if facebook_app_id == "284297631740545":
+            if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()
@@ -94,7 +94,7 @@ class CheckAccountId(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            if facebook_app_id == "284297631740545":
+            if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()
@@ -197,7 +197,7 @@ class AccountPixelEvent(APIView):
             if fb_ad_account == None:
                 raise Exception('Not Exist fb_ad_account.')
 
-            if facebook_app_id == "284297631740545":
+            if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()
@@ -223,7 +223,7 @@ class AccountPixel(APIView):
             if fb_ad_account == None:
                 raise Exception('Not Exist fb_ad_account.')
 
-            if facebook_app_id == "284297631740545":
+            if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()
@@ -299,7 +299,7 @@ class FbAdAccountDefaultTarget(APIView):
             ad_account_name = fb_ad_account.name
             act_account_id = fb_ad_account.act_account_id
 
-            if facebook_app_id == "284297631740545":
+            if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()
