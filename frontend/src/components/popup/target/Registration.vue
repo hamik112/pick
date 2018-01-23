@@ -168,9 +168,7 @@ export default {
         input_percent: this.findSelectKey('selectSub')
       }
 
-      console.log('params', params)
-      // this.$http.post('/pickdata_account_target/custom_target', params)
-      this.$http.post('/pickdata_account_target/custom_target', {})
+      this.$http.post('/pickdata_account_target/custom_target', params)
       .then((response) => {
         var success = response.data.success;
         if (success == "YES") {
