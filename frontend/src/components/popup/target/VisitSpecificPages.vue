@@ -257,7 +257,7 @@ export default {
 
       this.$http.post('/pickdata_account_target/custom_target', params)
       .then((response) => {
-        var success = response.data.success;
+        var success = response.data.success
         if (success == "YES") {
           // success
           this.$eventBus.$emit('getAccountTarget')
