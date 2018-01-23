@@ -47,63 +47,8 @@
                 </div>
               </div>
 
-
               <!-- 사이트 방문 탭 -->
-              <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive2.show">
-                <div class="target_contents_inner">
-                  <div class="target_thead">
-                    <div class="main_title">
-                      <div><img src="../../assets/images/target/target_logo_01.png" alt="neo"></div>
-                      <div class="title_info">
-                        <p>사이트방문</p>
-                        <p>타겟의 속성을 정의하세요</p>
-                      </div>
-                    </div>
-                    <div class="use_wrap">
-                      <div class="use_select">
-                        <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="use_date">
-                        <div>수집기간 : 최근</div>
-                        <div><input type="text" v-model="visitSiteDay"><span>일</span></div>
-                      </div>
-                    </div>
-                    <div class="target_name">
-                      <div class="contents_title">타겟이름</div>
-                      <div><input type="text" v-model="visitSiteName"></div>
-                    </div>
-                    <div class="target_data">
-                      <div class="contents_title">타겟 모수</div>
-                      <div>
-                        <span>12,000</span>명
-                      </div>
-                    </div>
-                  </div>
-                  <div class="target_tbody">
-                    <div class="target_inner_tbody clearfix">
-                      <div class="target_generate">
-                        <div class="account_info">
-                          <div class="account_title">"사이트 방문자"중</div>
-                          <div>
-                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
-                          </div>
-                          <div class="account_date" v-if="subSelect">
-                            <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                          </div>
-                          <div class="account_date" v-if="subInput">
-                            <input type="text" v-if="subInput"><span>일</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="btn_wrap">
-                  <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                  <button class="next_btn" @click="createVisitSite()">타겟 만들기</button>
-                </div>
-              </div>
+              <visit-site :isShow="tabAction.tabActive2.show" :adAccountPixels="this.adAccountPixels" :tabMove="tabMove"></visit-site>
 
               <!-- 특정 페이지 방문 탭 -->
               <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive3.show">
@@ -837,11 +782,13 @@
 // UI
 import Select from '@/components/ui/Select'
 import { numberFormatter } from '@/components/utils/Formatter'
+import VisitSite from '@/components/popup/target/VisitSite'
 
 export default {
   name: 'TargetMake01',
   components:{
-    'ui-select': Select
+    'ui-select': Select,
+    'visit-site': VisitSite
   },
   mounted() {
     let emptyText = ''
