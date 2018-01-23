@@ -123,8 +123,6 @@ export default {
             this.selectedFbAdAccount = data[0]
             
             this.$eventBus.$emit('getTargetPick', this.selectedFbAdAccount)
-            localStorage.setItem('account_id', data[0].account_id)
-            localStorage.setItem('account_name', data[0].name)
           }
         } else {
           throw('success: ' + success)

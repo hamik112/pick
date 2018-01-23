@@ -13,8 +13,8 @@
 								<div class="ad_mask"></div>
 								<div class="ad_image"><img src="../../assets/images/common/test_img.jpg" alt=""></div>
 								<div class="ad_info">
-									<strong>{{account_name}}</strong>
-									<div>계정번호:{{account_id}}</div>
+									<strong>{{ this.currentFbAdAccount.name }}</strong>
+									<div>계정번호:{{ this.currentFbAdAccount.account_id }}</div>
 								</div>
 							</div>
 							<div class="list-tab-widget">
@@ -300,18 +300,22 @@ export default {
 
 			// 카테고리 설정
 			categoryName: '',
+			actAccountId: 0,
+			accountCategoryId: 0,
 
 			// 네오 계정 연동
+			neoAdvIds: [],
+			neoAccountIds: [],
 			advs: [],
 			linkedAdvs:[],
 			checkedAdvs:[],
 			searchKeyword: '',
 			selected: [],
 			addSelected:[],
-			account_name: localStorage.getItem('account_name'),
-			account_id: localStorage.getItem('account_id'),
 
 			// 픽셀 이벤트 매핑
+			facebookPixelEventNames: [],
+			pixelMappingCategoryIds: [],
 			pixelMappingCategories: [],
 			defaultPixelEvent: '픽셀 이벤트를 선택해주세요.',
 		}
@@ -397,66 +401,44 @@ export default {
             me[key2] = selected;
 		},
 		tabMove (activeNumber, beforeNumber) {
+			// (1) 카테고리 설정
 			if (beforeNumber === '0') {
 				if (this.categoryName === '') {
 					alert('통계 및 계정 유형 분석을 선택해주세요.')
 					return false
 				} else {
-					console.log("선택된 페이스북 광고 계정: ", this.currentFbAdAccount.id)
-
-					let actAccountId = this.currentFbAdAccount.id;
-					let accountCategoryId = 0
+					this.actAccountId = this.currentFbAdAccount.id
 
 					if(this.categoryName === '대출') {
-						accountCategoryId = 1
+						this.accountCategoryId = 1
 					} else if(this.categoryName === 'NGO') {
-						accountCategoryId = 2
+						this.accountCategoryId = 2
 					} else if(this.categoryName === '카드') {
-						accountCategoryId = 3
+						this.accountCategoryId = 3
 					} else if(this.categoryName === '여행') {
-						accountCategoryId = 4
+						this.accountCategoryId = 4
 					} else if(this.categoryName === '쇼핑몰') {
-						accountCategoryId = 5
+						this.accountCategoryId = 5
 					} else if(this.categoryName === '기타') {
-						accountCategoryId = 6
+						this.accountCategoryId = 6
 					} else if(this.categoryName === '보험') {
-						accountCategoryId = 7
+						this.accountCategoryId = 7
 					} else if(this.categoryName === '뷰티') {
-						accountCategoryId = 8
+						this.accountCategoryId = 8
 					}
-					this.$http.post('/fb_ad_accounts/', {
-							act_account_id: actAccountId,
-							account_category_id: accountCategoryId,
-					})
-					.then(res => {
-						// 페이스북 광고 계정 정보 갱신
-						this.$eventBus.$emit('getFbAdAccountInfo')
-					})
 				}
+			// (2) 네오 계정 연동
 			} else if (activeNumber == '2' && beforeNumber === '1') {
 				if(this.linkedAdvs.length == 0) {
 					if(confirm('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?') === false) {
 						return false
 					}
 				} else {
-					let neoAdvIds = []
-					let neoAccountIds = []
-
 					// 추가된 네오 계정 리스트
 					for(let i = 0; i < this.linkedAdvs.length; i++) {
-						neoAdvIds.push(this.linkedAdvs[i].advertiserid)
-						neoAccountIds.push(this.linkedAdvs[i].id)
+						this.neoAdvIds.push(this.linkedAdvs[i].advertiserid)
+						this.neoAccountIds.push(this.linkedAdvs[i].id)
 					}
-
-					this.$http.post('/neo_account/', {
-						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-						neo_adv_ids: neoAdvIds,
-						neo_account_ids: neoAccountIds
-					})
-					.then(res => {
-						// 페이스북 광고 계정 정보 갱신
-						this.$eventBus.$emit('getFbAdAccountInfo')
-					})
 				}
 			}
 			this.tabListStep = parseInt(activeNumber)
@@ -470,54 +452,61 @@ export default {
 			}
 		},
 		success () {
-			let facebookPixelEventNames = []
-			let pixelMappingCategoryIds = []
-
+			// (3) 픽셀 이벤트 맵핑
 			for(let i = 0; i < this.pixelMappingCategories.length; i++) {
 				// 선택된 픽셀 이벤트
 				let selectedPixelEvent = this.pixelMappingCategories[i].select.emptyText
 
-				facebookPixelEventNames.push(selectedPixelEvent === '미지정' ? null : selectedPixelEvent)
-				pixelMappingCategoryIds.push(this.pixelMappingCategories[i].id)
+				this.facebookPixelEventNames.push(selectedPixelEvent === '미지정' ? null : selectedPixelEvent)
+				this.pixelMappingCategoryIds.push(this.pixelMappingCategories[i].id)
 			}
 
-			if(facebookPixelEventNames.includes(this.defaultPixelEvent)) {
+			if(this.facebookPixelEventNames.includes(this.defaultPixelEvent)) {
 				// 선택되지 않은 픽셀 이벤트가 있을 경우
 				alert('모든 항목이 매칭되지 않았습니다.')
 			} else {
 				// 모든 픽셀 이벤트가 설정 되었을 경우
 				if(confirm('현재 매칭된 상태로 Target Pick 설정을 진행할까요?') === true) {
-					// 페이스북 광고 계정 설정창 닫기
-					this.$emit('close')
-					// 페이스북 광고 계정 정보 갱신
-					this.$eventBus.$emit('getFbAdAccountInfo')
-
-					// 픽셀 이벤트 맵핑
-					this.$http.post('/pixel_mapping/', {
-						fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-						facebook_pixel_event_names: facebookPixelEventNames,
-						pixel_mapping_category_ids: pixelMappingCategoryIds,
-					}).then(res =>{
-						const response = res.data
-						const data = response.data
-						const success = response.success
-						if (success === 'YES') {
-							this.$http.get('/fb_ad_accounts/'+ localStorage.getItem('fb_ad_account_id') +'/default_target')
-							.then(res =>{
-								const response = res.data
-								const success = response.success
-								if (success === 'YES') {
-									alert('default_target create success')
-								}else{
-									alert('default_target create fail')
-								}
-							})
-						} else {
-							alert('default_target create fail')
-						}
+					// 카테고리 설정 POST
+					this.$http.post('/fb_ad_accounts/', {
+							act_account_id: this.actAccountId,
+							account_category_id: this.accountCategoryId,
 					})
+					.then(() => {
+						// 네오 계정 연동 POST
+						this.$http.post('/neo_account/', {
+							fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+							neo_adv_ids: this.neoAdvIds,
+							neo_account_ids: this.neoAccountIds
+						})
+						.then(() => {
+							// 페이스북 광고 계정 정보 갱신
+							this.$eventBus.$emit('getFbAdAccountInfo')
+						})
 
+						return
+					})
+					.then(() => {
+						// 픽셀 이벤트 맵핑 POST
+						this.$http.post('/pixel_mapping/', {
+							fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+							facebook_pixel_event_names: this.facebookPixelEventNames,
+							pixel_mapping_category_ids: this.pixelMappingCategoryIds,
+						})
 
+						return
+					})
+					.then(() => {
+						this.neoAdvIds = []
+						this.neoAccountIds = []
+						this.facebookPixelEventNames = []
+						this.pixelMappingCategoryIds = []
+
+						// 페이스북 광고 계정 정보 갱신
+						this.$eventBus.$emit('getFbAdAccountInfo')
+						// 페이스북 광고 계정 설정창 닫기
+						this.$emit('close')
+					})
 				} else {
 					return false
 				}
