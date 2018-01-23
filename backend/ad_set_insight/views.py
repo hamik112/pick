@@ -6,6 +6,10 @@ from django.shortcuts import render
 from django.db.models import Count, Min, Sum, Avg
 from rest_framework.views import APIView
 
+from account_category.models import AccountCategory
+from pixel_mapping.models import PixelMapping
+from pixel_mapping_category.models import PixelMappingCategory
+from fb_ad_account.models import FbAdAccount
 from ad_set_insight.models import AdSetInsight
 from ad_set_insight.serializers import AdSetInsightSerializer
 
@@ -35,7 +39,26 @@ class AdSetInsightByAccount(APIView):
 
             ad_set_insights = None
 
-            account_id = request.query_params.get('account_id', '0')
+            fb_account_id = request.query_params.get('account_id', '0')
+            account = FbAdAccount.find_by_ad_account_id(FbAdAccount, fb_account_id)
+            if fb_account_id == None or account == None:
+                raise Exception("Not Existing FbAdAccount.")
+            # 카테고리
+            account_category = AccountCategory.objects.get(pk=account.account_category_id)
+            account_category_name = account_category.category_label_kr
+            # 픽셀매핑
+            pixel_mapping_category_list = []
+            pixel_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, account.id)
+            for pm in pixel_mapping:
+                pixel_dict = {}
+                pixel_dict['fb_event'] = pm.facebook_pixel_event_name
+                pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_id(PixelMappingCategory, pm.pixel_mapping_category_id)
+                pixel_dict['name'] = pixel_mapping_category.category_label_kr
+                pixel_dict['custom_event'] =pixel_mapping_category.category_label_en
+                pixel_mapping_category_list.append(pixel_dict)
+
+            print(pixel_mapping_category_list)
+
             page = request.query_params.get('page', '1')
             start = request.query_params.get('start', '0')
             limit = request.query_params.get('limit', '25')
@@ -52,7 +75,7 @@ class AdSetInsightByAccount(APIView):
             date_diff = diff.days + 1
 
             # TODO 기간 나타내는 방법
-            ad_set_insights = AdSetInsight.objects.filter(account_id=account_id, date_stop__range=(since, until)
+            ad_set_insights = AdSetInsight.objects.filter(account_id=fb_account_id, date_stop__range=(since, until)
                                                             ).values('adset_id'
                                                             ).annotate(call_to_action_clicks=Sum('call_to_action_clicks'),
                                                             inline_link_clicks=Sum('inline_link_clicks'),
@@ -70,7 +93,7 @@ class AdSetInsightByAccount(APIView):
                                                             ).order_by('adset_id')
 
             # Custom Event SORT/SUM
-            actions_insights = AdSetInsight.objects.filter(account_id=account_id,date_stop__range=(since,until)).values('adset_id', 'date_stop', 'actions', 'video_10_sec_watched_actions', 'video_30_sec_watched_actions')
+            actions_insights = AdSetInsight.objects.filter(account_id=fb_account_id,date_stop__range=(since,until)).values('adset_id', 'date_stop', 'actions', 'video_10_sec_watched_actions', 'video_30_sec_watched_actions')
             actions_insights_list = []
             video_10_sec_insights_list = []
             video_30_sec_insights_list = []
@@ -170,6 +193,15 @@ class AdSetInsightByAccount(APIView):
                 else:
                     interests = []
 
+                custom_audience_list = []
+                if 'custom_audiences' in targeting:
+                    custom_audiences = targeting.get('custom_audiences')
+                    for ca in custom_audiences:
+                        name = ca['name']
+                        custom_audience_list.append(name)
+                else:
+                    custom_audience_list = []
+
                 g = ''
                 if 'genders' in targeting:
                     genders = targeting['genders']
@@ -203,6 +235,8 @@ class AdSetInsightByAccount(APIView):
                 inline_link_click_ctr = insight.get('inline_link_click_ctr')
 
                 # result['targeting'] = targeting
+                result['custom_audience'] = custom_audience_list
+                result['account_category'] = account_category_name
                 result['interest_num'] = len(interests)
                 result['interest_list'] = interest_list
                 result['age'] = age
@@ -223,6 +257,7 @@ class AdSetInsightByAccount(APIView):
                 result['conversions'] = conversions
                 result['frequency'] = frequency
                 result['inline_link_click_ctr'] = inline_link_click_ctr
+                result['pickdata_custom_pixel_event'] = []
 
                 # Custom Event 계산 추가
                 pixels = []
@@ -242,8 +277,8 @@ class AdSetInsightByAccount(APIView):
                                     v.remove(key)
                                     v_list += v
 
-
                                 v_list = list(map(int, v_list))
+                                key = key + '_event'
                                 result[key] = sum(v_list)
 
                 # actions field로는 video_view total 만 가져올수있으므로 따로 다시 기간 adset_id별로 분류+합 해야한다.
@@ -259,7 +294,6 @@ class AdSetInsightByAccount(APIView):
                                     v = list(v.values())
                                     v.remove(key)
                                     v_list += v
-
 
                                 v_list = list(map(int, v_list))
                                 result['video_10_sec_watched_actions'] = sum(v_list)
@@ -343,6 +377,25 @@ class AdSetInsightByAccount(APIView):
                             output['value'] = items
                             output['name'] = p['name']
                             data[key] = output
+
+            # Pixel Mapping (FB 이벤트명과 Pickdata CUSTOM EVENT 이름 매핑)
+            for da in target_insights:
+                result = []
+                for key, items in da.items():
+                    if '_event' in key:
+                        if type(items) is dict:
+                            # result = []
+                            for pix in pixel_mapping_category_list:
+                                if items['name'] == pix['fb_event']:
+                                    # print(pix['fb_event'])
+                                    custom = {}
+                                    custom['custom_name'] = pix['name']
+                                    custom['fb_event'] = items['name']
+                                    custom['value'] = items['value']
+                                    print(custom)
+                                    result.append(custom)
+                da['pickdata_custom_pixel_event'] = result
+                # TODO 여러개일때 왜 한개만 들어가는지 체크..
 
             response_data['success'] = 'YES'
             response_data['total_count'] = len(target_insights)

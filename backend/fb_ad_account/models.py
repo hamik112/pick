@@ -70,7 +70,7 @@ class FbAdAccount(models.Model):
         if ad_account_id == '0':
             return None
         try:
-            fb_ad_account = self.objects.get(act_account_id=ad_account_id)
+            fb_ad_account = self.objects.get(ad_account_id=ad_account_id)
 
             return fb_ad_account
         except self.DoesNotExist:
