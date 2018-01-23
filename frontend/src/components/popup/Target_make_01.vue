@@ -66,12 +66,12 @@
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
-                        <div><input type="text"><span>일</span></div>
+                        <div><input type="text" v-model="visitSiteDay"><span>일</span></div>
                       </div>
                     </div>
                     <div class="target_name">
                       <div class="contents_title">타겟이름</div>
-                      <div><input type="text"></div>
+                      <div><input type="text" v-model="visitSiteName"></div>
                     </div>
                     <div class="target_data">
                       <div class="contents_title">타겟 모수</div>
@@ -123,12 +123,12 @@
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
-                        <div><input type="text"><span>일</span></div>
+                        <div><input type="text" v-model="visitSpecificPagesDay"><span>일</span></div>
                       </div>
                     </div>
                     <div class="target_name">
                       <div class="contents_title">타겟이름</div>
-                      <div><input type="text"></div>
+                      <div><input type="text" v-model="visitSpecificPagesName"></div>
                     </div>
                     <div class="target_data">
                       <div class="contents_title">타겟 모수</div>
@@ -159,7 +159,7 @@
                               <ui-select :selectData="item.select" :data-key="index" :onClick="multiSelect"></ui-select>
                             </div>
                             <div class="url_input">
-                              <input type="text">
+                              <input type="text" v-model="item.url">
                             </div>
                             <div class="url_btn clearfix">
                               <div class="add"><button type="button" @click="fieldBtn(item,'add')">+</button></div>
@@ -174,7 +174,7 @@
                 </div>
                 <div class="btn_wrap">
                   <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                  <button class="next_btn">타겟 만들기</button>
+                  <button class="next_btn" @click="createVisitSpecificPages()">타겟 만들기</button>
                 </div>
               </div>
 
@@ -196,12 +196,12 @@
                       </div>
                       <div class="use_date">
                         <div>수집기간 : 최근</div>
-                        <div><input type="text"><span>일</span></div>
+                        <div><input type="text" v-model="neoTargetDay"><span>일</span></div>
                       </div>
                     </div>
                     <div class="target_name">
                       <div class="contents_title">타겟이름</div>
-                      <div><input type="text"></div>
+                      <div><input type="text" v-model="neoTargetName"></div>
                     </div>
                     <!--div class="target_data">
                     <div class="contents_title">타겟 모수</div>
@@ -213,16 +213,16 @@
                   <div class="contents_title">Neo 유형</div>
                   <ul>
                     <li>
-                      <div class="result_check"><input type="radio" id="target_type01" @change="wTabs(0,'wTab')" name="neo_type" value="media" checked><label for="target_type01">매체</label></div>
+                      <div class="result_check"><input type="radio" id="target_type01" @change="wTabs(0,'wTab')" name="neo_type" value="media" v-model="neoTargetType" checked><label for="target_type01">매체</label></div>
                     </li>
                     <li>
-                      <div class="result_check"><input type="radio" id="target_type02" name="neo_type" @change="wTabs(1,'wTab')" value="group"><label for="target_type02">그룹</label></div>
+                      <div class="result_check"><input type="radio" id="target_type02" name="neo_type" @change="wTabs(1,'wTab')" value="group" v-model="neoTargetType"><label for="target_type02">그룹</label></div>
                     </li>
                     <li>
-                      <div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword"><label for="target_type03">키워드</label></div>
+                      <div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword" v-model="neoTargetType"><label for="target_type03">키워드</label></div>
                     </li>
                     <li>
-                      <div class="result_check"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel"><label for="target_type04">엑셀업로드</label></div>
+                      <div class="result_check" v-show="false"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel" v-model="neoTargetType"><label for="target_type04">엑셀업로드</label></div>
                     </li>
                   </ul>
                 </div>
@@ -450,7 +450,7 @@
             </div>
             <div class="btn_wrap">
               <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-              <button class="next_btn">타겟 만들기</button>
+              <button class="next_btn" @click="createNeoTarget()">타겟 만들기</button>
             </div>
             <!-- <div class="btn_wrap">
             <button class="before_btn close_pop" @click="$emit('close')">취소</button>
@@ -477,12 +477,12 @@
                 </div>
                 <div class="use_date">
                   <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
+                  <div><input type="text" v-model="utmTargetDay"><span>일</span></div>
                 </div>
               </div>
               <div class="target_name">
                 <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
+                <div><input type="text" v-model="utmTargetName"></div>
               </div>
               <div class="target_data">
                 <div class="contents_title">타겟 모수</div>
@@ -520,7 +520,7 @@
                         </div>
                       </div>
                       <div class="url_input">
-                        <input id="utm_name" type="text" value="" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
+                        <input id="utm_name" type="text" v-model="inputUtmName" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
                       </div>
                     </form>
                   </div>
@@ -558,15 +558,15 @@
                   </div>
                   <div id="tab_list_4" class="analytics_tab_contents clearfix" v-if="wTab.tab4">
                     <ul>
-                      <li v-for="(item,index) in gAddData.utm_team" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_team')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
+                      <li v-for="(item,index) in gAddData.utm_term" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_term')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                     </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_team')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_term')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                   </div>
                   <div id="tab_list_5" class="analytics_tab_contents clearfix" v-if="wTab.tab5">
                     <ul>
                       <li v-for="(item,index) in gAddData.utm_content" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_content')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
                     </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','content')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
+                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_content')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
                   </div>
                   <div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
                     <ul>
@@ -578,7 +578,7 @@
               </div>
               <div class="btn_wrap">
                 <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                <button class="next_btn">타겟 만들기</button>
+                <button class="next_btn" @click="createUtmTarget()">타겟 만들기</button>
               </div>
             </div>
           </div>
@@ -602,12 +602,12 @@
                 </div>
                 <div class="use_date">
                   <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
+                  <div><input type="text" v-model="purchaseDay"><span>일</span></div>
                 </div>
               </div>
               <div class="target_name">
                 <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
+                <div><input type="text" v-model="purchaseName"></div>
               </div>
               <div class="target_data">
                 <div class="contents_title">타겟 모수</div>
@@ -625,10 +625,10 @@
                       <ui-select :selectData="this.selectUser2" data-key="selectUser2" :onClick="selectTarget"></ui-select>
                     </div>
                     <div class="account_date" v-if="subInput2">
-                      <input type="text"><span>회</span>
+                      <input type="text" v-model="purchaseCount"><span>회</span>
                     </div>
                     <div class="account_date" v-if="subInput3">
-                      <input type="text"><span>원</span>
+                      <input type="text" v-model="purchaseAmount"><span>원</span>
                     </div>
                   </div>
                 </div>
@@ -637,7 +637,7 @@
           </div>
           <div class="btn_wrap">
             <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-            <button class="next_btn">타겟 만들기</button>
+            <button class="next_btn" @click="createPurchase()">타겟 만들기</button>
           </div>
         </div>
 
@@ -659,12 +659,12 @@
                 </div>
                 <div class="use_date">
                   <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
+                  <div><input type="text" v-model="addToCartDay"><span>일</span></div>
                 </div>
               </div>
               <div class="target_name">
                 <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
+                <div><input type="text" v-model="addToCartName"></div>
               </div>
               <div class="target_data">
                 <div class="contents_title">타겟 모수</div>
@@ -679,7 +679,7 @@
                   <div class="account_info">
                     <div class="account_title">"장바구니 이용자" 중</div>
                     <div>
-                      <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
+                      <ui-select :selectData="this.selectAddToCartUser" data-key="selectAddToCartUser" :onClick="selectTarget"></ui-select>
                     </div>
                   </div>
                 </div>
@@ -688,7 +688,7 @@
           </div>
           <div class="btn_wrap">
             <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-            <button class="next_btn">타겟 만들기</button>
+            <button class="next_btn" @click="createAddToCart">타겟 만들기</button>
           </div>
         </div>
 
@@ -710,12 +710,12 @@
                 </div>
                 <div class="use_date">
                   <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
+                  <div><input type="text" v-model="registrationDay"><span>일</span></div>
                 </div>
               </div>
               <div class="target_name">
                 <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
+                <div><input type="text" v-model="registrationName"></div>
               </div>
               <div class="target_data">
                 <div class="contents_title">타겟 모수</div>
@@ -745,7 +745,7 @@
           </div>
           <div class="btn_wrap">
             <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-            <button class="next_btn">타겟 만들기</button>
+            <button class="next_btn" @click="createRegistration()">타겟 만들기</button>
           </div>
         </div>
 
@@ -958,6 +958,31 @@ export default {
   },
   data () {
     return {
+      visitSiteDay: '30',
+      visitSiteName: '',
+
+      visitSpecificPagesDay: '30',
+      visitSpecificPagesName: '',
+
+      neoTargetDay: '30',
+      neoTargetName: '',
+      neoTargetType: 'media',
+
+      utmTargetDay: '30',
+      utmTargetName: '',
+      inputUtmName: '',
+
+      purchaseDay: '30',
+      purchaseName: '',
+      purchaseCount: '0',
+      purchaseAmount: '0',
+
+      addToCartDay: '30',
+      addToCartName: '',
+
+      registrationDay: '30',
+      registrationName: '',
+
       subSelect:false,
       subInput:false,
       subInput2:false,
@@ -1028,6 +1053,17 @@ export default {
         ]
       },
       //구글
+      selectAddToCartUser: {
+        emptyText: '전체 고객',
+        textList: [
+          '전체 고객',
+          '미 구매 고객'
+        ],
+        keyList: [
+          'total',
+          'non_purchase'
+        ]
+      },
       selectUser: {
         emptyText: '전체 고객',
         textList: [
@@ -1059,6 +1095,11 @@ export default {
           '전체 고객',
           '특정 구매횟수 이상 구매 고객', // 셀렉트박스 표시 (5/15/25 %)
           '특정 구매금액 이상 구매 고객', // 숫자 입력 텍스트필드 표시
+        ],
+        keyList: [
+          'total',
+          'purchase_count',
+          'purchase_amount'
         ]
       },
       selectUser3: {
@@ -1069,6 +1110,13 @@ export default {
           '미 구매 고객',
           '전환 완료 고객',
           '미 전환 고객'
+        ],
+        keyList: [
+          'total',
+          'usage_time_top',
+          'non_purchase',
+          'conversion',
+          'non_conversion'
         ]
       },
       selectUser4: {
@@ -1089,6 +1137,11 @@ export default {
           '5%',
           '15%',
           '25%'
+        ],
+        keyList: [
+          '5',
+          '15',
+          '25'
         ]
       },
       select12: {
@@ -1137,52 +1190,29 @@ export default {
         ],
         utm_medium:[],
         utm_compaign:[],
-        utm_team:[],
+        utm_term:[],
         utm_content:[],
         utm_custom:[],
       },
 
       //analytics add sample
       gAddData:{
-        utm_source:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_medium:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_campaign:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_team:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_content:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ],
-        utm_custom:[
-          { number:1, name:"naver" },
-          { number:2, name:"daum" },
-          { number:3, name:"google" }
-        ]
+        utm_source:[],
+        utm_medium:[],
+        utm_campaign:[],
+        utm_term:[],
+        utm_content:[],
+        utm_custom:[]
       },
 
       fields:[
         //sample
         {
+          "url": '',
           "number":0,
           "key":0,
           "select":{
-            emptyText: 'URL선택',
+            emptyText: '전체URL',
             textList: [
               '전체URL',
               '부분URL'
@@ -1199,10 +1229,11 @@ export default {
       if(type === 'add') {
         index++
         let obj = {
+          "url": '',
           "number":index,
           "key":index,
           "select":{
-            emptyText: 'URL선택',
+            emptyText: '전체URL',
             textList: [
               '전체URL',
               '부분URL'
@@ -1266,7 +1297,7 @@ export default {
       this.subInput3 = false
       this.subInput4 = false
       //서브 입력창 체크
-      if(textCheck === '이용시간상위고객') {
+      if(textCheck === '이용시간상위고객' || key === 'selectSub') {
         this.subSelect = true
       }else if(textCheck === '특정일동안미방문고객') {
         this.subInput = true
@@ -1324,10 +1355,12 @@ export default {
         if(gData[i].name === utmName) {
           alert('같은 UTM값이 존재합니다.')
           break
+          this.inputUtmName = ''
           return false
         }
       }
       gData.push(newData)
+      this.inputUtmName = ''
 
       return false
     },
@@ -1394,33 +1427,284 @@ export default {
       }
     },
 
+    findSelectKey (selectName) {
+      /*
+      Select Key 가져오기
+      */
+      const emptyText = this[selectName].emptyText
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return keyList[textList.indexOf(emptyText)]
+    },
+
+    findSelectedNeoKey (listName, key) {
+      let result = []
+      const data = this[listName]
+      data.forEach(function (item, index) {
+        result.push(item[key])
+      })
+      return result
+    },
+
+    findVisitSpecificPagesParam () {
+      const data = this.fields
+      let eqList = []
+      let containList = []
+      data.forEach(function (item, index) {
+        if (item.select.emptyText === '전체URL') {
+          eqList.push(item.url)
+        } else if (item.select.emptyText === '부분URL') {
+          containList.push(item.url)
+        }
+      })
+      return {
+        eqList: eqList,
+        containList: containList
+      }
+    },
+
+    convertUtmName (data) {
+      let result = []
+      data.forEach(function (item, index) {
+        result.push(item['name'])
+      })
+      return result
+    },
+
     createVisitSite () {
       let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
         target_type: 'visit_site',
-        pixel_id: '',
-        name: '',
-        rentention_days: 0,
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.visitSiteName,
+        retention_days: this.visitSiteDay,
 
-        detail: '',
-        input_percent: 0
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
       }
 
-      console.log(params)
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('사이트방문 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
 
-      // this.$http.post('/pickdata_account_target/custom_target', params)
-      // .then((response) => {
-      //   var success = response.data.success;
-      //   if (success == "YES") {
-      //
-      //   } else {
-      //
-      //   }
-      //   this.$emit('close')
-      // })
-      // .catch(err => {
-      //   this.$emit('close')
-      //   console.log('/pickdata_account_target/custom_target: ', err)
-      // })
+    createVisitSpecificPages () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'visit_specific_pages',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.visitSpecificPagesName,
+        retention_days: this.visitSpecificPagesDay,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      const urlParams = this.findVisitSpecificPagesParam()
+      params['eq_list'] = urlParams['eqList']
+      params['contain_list'] = urlParams['containList']
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('특정페이지 방문 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createNeoTarget () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'neo_target',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.neoTargetName,
+        retention_days: this.neoTargetDay,
+        neo_type: this.neoTargetType,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      if (this.neoTargetType === 'media') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoAccounts', 'accountname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoAccounts', 'param')
+      } else if (this.neoTargetType === 'group') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoCampaigns', 'campaignname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoCampaigns', 'param')
+      } else if (this.neoTargetType === 'keyword') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoKeywords', 'keywordname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoKeywords', 'param')
+      } else {
+        console.log('this.neoTargetType', this.neoTargetType)
+        return
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('NEO 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createUtmTarget () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'utm_target',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.utmTargetName,
+        retention_days: this.utmTargetDay,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub'),
+
+        sources: this.convertUtmName(this.gAddData.utm_source),
+        mediums: this.convertUtmName(this.gAddData.utm_medium),
+        campaigns: this.convertUtmName(this.gAddData.utm_campaign),
+        terms: this.convertUtmName(this.gAddData.utm_term),
+        contents: this.convertUtmName(this.gAddData.utm_content),
+        customs: this.convertUtmName(this.gAddData.utm_custom)
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('구글애널리틱스 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createPurchase () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'purchase',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.purchaseName,
+        retention_days: this.purchaseDay,
+
+        detail: this.findSelectKey('selectUser2'),
+        purchase_count: this.purchaseCount,
+        purchase_amount: this.purchaseAmount
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('구매 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createAddToCart () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'add_to_cart',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.addToCartName,
+        retention_days: this.addToCartDay,
+
+        detail: this.findSelectKey('selectAddToCartUser')
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('장바구니 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createRegistration () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'registration',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.registrationName,
+        retention_days: this.registrationDay,
+
+        detail: this.findSelectKey('selectUser3'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success;
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('회원가입 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
     },
 
     checkListNeo (elId, uniqueKey, mainListName, checkListName, addListName, selectedListName) {

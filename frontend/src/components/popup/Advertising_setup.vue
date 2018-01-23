@@ -277,7 +277,8 @@ export default {
 		// 픽셀 이벤트 목록
 		.then(() => {
 			this.$http.get('/fb_ad_accounts/ad_account_pixel_events', {
-				params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
+				//params: {fb_ad_account_id: localStorage.getItem('fb_ad_account_id')}
+				params: {act_account_id: 'act_'+localStorage.getItem('account_id')}
 			})
 			.then(res => {
 				const data = res.data.data
