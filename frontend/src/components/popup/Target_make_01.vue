@@ -48,80 +48,20 @@
               </div>
 
               <!-- 사이트 방문 탭 -->
-              <visit-site :isShow="tabAction.tabActive2.show" :adAccountPixels="this.adAccountPixels" :tabMove="tabMove"></visit-site>
+              <visit-site
+                :isShow="tabAction.tabActive2.show"
+                :adAccountPixels="this.adAccountPixels"
+                :tabMove="tabMove"
+                @close="$emit('close')"></visit-site>
 
               <!-- 특정 페이지 방문 탭 -->
-              <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive3.show">
-                <div class="target_contents_inner">
-                  <div class="target_thead">
-                    <div class="main_title">
-                      <div><img src="../../assets/images/target/target_logo_02.png" alt="neo"></div>
-                      <div class="title_info">
-                        <p>특정페이지 방문</p>
-                        <p>타겟의 속성을 정의하세요</p>
-                      </div>
-                    </div>
-                    <div class="use_wrap">
-                      <div class="use_select">
-                        <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="use_date">
-                        <div>수집기간 : 최근</div>
-                        <div><input type="text" v-model="visitSpecificPagesDay"><span>일</span></div>
-                      </div>
-                    </div>
-                    <div class="target_name">
-                      <div class="contents_title">타겟이름</div>
-                      <div><input type="text" v-model="visitSpecificPagesName"></div>
-                    </div>
-                    <div class="target_data">
-                      <div class="contents_title">타겟 모수</div>
-                      <div>
-                        <span>12,000</span>명
-                      </div>
-                    </div>
-                  </div>
-                  <div class="target_tbody">
-                    <div class="target_inner_tbody clearfix">
-                      <div class="target_generate">
-                        <div class="account_info">
-                          <div class="account_title">"아래 그룹로 유입된 사람"중</div>
-                          <div>
-                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
-                          </div>
-                          <div class="account_date" v-if="subSelect">
-                            <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                          </div>
-                          <div class="account_date" v-if="subInput">
-                            <input type="text" v-if="subInput"><span>일</span>
-                          </div>
-                        </div>
-                        <div class="generate_url_list">
+              <visit-specific-pages
+                :isShow="tabAction.tabActive3.show"
+                :adAccountPixels="this.adAccountPixels"
+                :tabMove="tabMove"
+                @close="$emit('close')"></visit-specific-pages>
 
-                          <div v-for="(item, index) in fields" class="url_list clearfix">
-                            <div class="url_select clearfix">
-                              <ui-select :selectData="item.select" :data-key="index" :onClick="multiSelect"></ui-select>
-                            </div>
-                            <div class="url_input">
-                              <input type="text" v-model="item.url">
-                            </div>
-                            <div class="url_btn clearfix">
-                              <div class="add"><button type="button" @click="fieldBtn(item,'add')">+</button></div>
-                              <div class="del" v-if="index > 0"><button type="button" @click="fieldBtn(item,'del')">-</button></div>
-                            </div>
-                          </div>
 
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="btn_wrap">
-                  <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                  <button class="next_btn" @click="createVisitSpecificPages()">타겟 만들기</button>
-                </div>
-              </div>
 
               <!-- 네오 탭 -->
               <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive4.show">
@@ -783,12 +723,14 @@
 import Select from '@/components/ui/Select'
 import { numberFormatter } from '@/components/utils/Formatter'
 import VisitSite from '@/components/popup/target/VisitSite'
+import VisitSpecificPages from '@/components/popup/target/VisitSpecificPages'
 
 export default {
   name: 'TargetMake01',
   components:{
     'ui-select': Select,
-    'visit-site': VisitSite
+    'visit-site': VisitSite,
+    'visit-specific-pages': VisitSpecificPages
   },
   mounted() {
     let emptyText = ''
