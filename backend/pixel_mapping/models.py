@@ -82,6 +82,8 @@ class PixelMapping(models.Model):
                 pixel_mapping.save()
                 created_cnt += 1
 
+
+        self.objects.exclude(pixel_mapping_category_id__in = pixel_mapping_category_ids).delete()
         return created_cnt
 
     class Meta:
