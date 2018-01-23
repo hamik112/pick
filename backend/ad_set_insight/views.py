@@ -334,7 +334,7 @@ class AdSetInsightByAccount(APIView):
                         result['value'] = items
                         data[key] = result
                     if 'fb_pixel_add_to_wishlist' in key:
-                        result['name'] = 'AddToWishList'
+                        result['name'] = 'AddToWishlist'
                         result['value'] = items
                         data[key] = result
                     if 'fb_pixel_add_to_cart' in key:
@@ -395,7 +395,6 @@ class AdSetInsightByAccount(APIView):
                                     print(custom)
                                     result.append(custom)
                 da['pickdata_custom_pixel_event'] = result
-                # TODO 여러개일때 왜 한개만 들어가는지 체크..
 
             response_data['success'] = 'YES'
             response_data['total_count'] = len(target_insights)
