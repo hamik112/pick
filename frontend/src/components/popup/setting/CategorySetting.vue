@@ -1,0 +1,88 @@
+<template>
+  <div id="tab-list-1" class="basic-tab-contents category_setup clearfix">
+    <div class="cate_prologue">
+      <strong>현재 선택된 광고 계정의 카테고리를 지정해주세요</strong>
+      <p>통계 및 계정 유형 분석을 위해 반드시 선택하셔야 합니다.</p>
+    </div>
+    <div class="cate_contents_widget">
+      <ul class="target_pick_01">
+        <li @click="selectCategory('보험')" v-bind:class="[this.categoryName === '보험' ? 'Click_on' : '']">
+          <span>보험</span>
+        </li>
+        <li @click="selectCategory('대출')" v-bind:class="[this.categoryName === '대출' ? 'Click_on' : '']">
+          <span>대출</span>
+        </li>
+        <li @click="selectCategory('카드')" v-bind:class="[this.categoryName === '카드' ? 'Click_on' : '']">
+          <span>카드</span>
+        </li>
+        <li @click="selectCategory('NGO')" v-bind:class="[this.categoryName === 'NGO' ? 'Click_on' : '']">
+          <span>NGO</span>
+        </li>
+      </ul>
+      <ul class="target_pick_02">
+        <li @click="selectCategory('쇼핑몰')" v-bind:class="[this.categoryName === '쇼핑몰' ? 'Click_on' : '']">
+          <span>쇼핑몰</span>
+        </li>
+        <li @click="selectCategory('여행')" v-bind:class="[this.categoryName === '여행' ? 'Click_on' : '']">
+          <span>여행</span>
+        </li>
+        <li @click="selectCategory('뷰티')" v-bind:class="[this.categoryName === '뷰티' ? 'Click_on' : '']">
+          <span>뷰티</span>
+        </li>
+        <li @click="selectCategory('기타')" v-bind:class="[this.categoryName === '기타' ? 'Click_on' : '']">
+          <span>기타</span>
+        </li>
+      </ul>
+    </div>
+    <div class="btn_wrap">
+      <button type="button" class="next_btn" @click="confirm()">다음</button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      categoryName: ''
+    }
+  },
+
+  methods: {
+    selectCategory (name) {
+      this.categoryName = name
+    },
+
+    confirm () {
+      if (this.categoryName === '') {
+        alert('통계 및 계정 유형 분석을 선택해주세요.')
+      } else {
+        if(this.categoryName === '대출') {
+          this.accountCategoryId = 1
+        } else if(this.categoryName === 'NGO') {
+          this.accountCategoryId = 2
+        } else if(this.categoryName === '카드') {
+          this.accountCategoryId = 3
+        } else if(this.categoryName === '여행') {
+          this.accountCategoryId = 4
+        } else if(this.categoryName === '쇼핑몰') {
+          this.accountCategoryId = 5
+        } else if(this.categoryName === '기타') {
+          this.accountCategoryId = 6
+        } else if(this.categoryName === '보험') {
+          this.accountCategoryId = 7
+        } else if(this.categoryName === '뷰티') {
+          this.accountCategoryId = 8
+        }
+
+        let currentStep = [false, true, false]
+        this.$emit('setCategory', currentStep, this.accountCategoryId)
+      }
+    },
+  }
+}
+</script>
+
+<style>
+
+</style>

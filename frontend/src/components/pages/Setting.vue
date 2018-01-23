@@ -1,10 +1,8 @@
 <template>
 	<div id="main_wrap" class="clearfix">
-
 		<transition name='modal'>
-			<advertising-setup v-if="setPop" @close="setPop = false"></advertising-setup>
+			<advertising-setup v-if="popupStatus" @close="popupStatus = false"></advertising-setup>
 		</transition>
-
 		<div id="container">
 			<div id="container_wrap">
 				<div class="setting_contents_wrap">
@@ -29,7 +27,7 @@
 							<p>픽셀이벤트 매핑</p>
 							<p>{{ fbAdAccountPixelEventMappingCount }}개</p>
 						</div>
-						<div class="setting_btn"><button type="button" @click="setPop = true">계정 설정 수정하기</button></div>
+						<div class="setting_btn"><button type="button" @click="popupStatus = true">계정 설정 수정하기</button></div>
 					</div>
 					<div>※ 기존 픽셀 연결과 다르게 변경하실 경우,  픽데이터에서 생성 완료 한 타겟 사용이 어려울 수 있습니다.</div>
 				</div>
@@ -39,13 +37,12 @@
 </template>
 
 <script>
-
 import AdvertisingSetup from '@/components/popup/Advertising_setup'
 
 export default {
   name: 'Setting',
   components: {
-  	AdvertisingSetup
+		AdvertisingSetup
 	},
 	
 	created () {
@@ -59,7 +56,7 @@ export default {
 
   data () {
     return {
-			setPop: false,
+			popupStatus: false,
 
 			fbAdAccountName: '',
 			fbAdAccountAdAccountId: '',
