@@ -273,7 +273,7 @@ class AdSetInsightByAccount(APIView):
 
                 target_insights.append(result)
 
-            pixel_group += pixels
+                pixel_group += pixels
             pixel_group = list(set(pixels))
 
             # pixel id, 이름 호출
