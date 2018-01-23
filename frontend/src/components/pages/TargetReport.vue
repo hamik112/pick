@@ -3,7 +3,7 @@
 		<div id="container">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
-					<div class="tab-contents-widget">
+					<div id="report-widget" class="tab-contents-widget">
 						<div id="section_list_2" class="section_tab_contents clearfix">
 							<div class="target_contents_wrap">
 								<div class="target_search_wrap clearfix">
@@ -223,17 +223,17 @@
 													</ul>
 												</div>
 												<div class="table_body">
-													<div  class="table_body_inner" v-for="data in listData">
+													<div class="table_body_inner" v-for="(item, index) in listData.data">
 														<ul class="body_th clearfix">
 															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
-															<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">CTR</li>
-															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">CPC</li>
-															<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">1번</li>
-															<li class="line-5" v-if="sortSelectData.listData[4].setting.show">2번</li>
-															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">3번</li>
+															<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">{{ item.campaign_name }}</li>
+															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">{{ item.report_date }}</li>
+															<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">{{ item.adset_name }}</li>
+															<li class="line-5" v-if="sortSelectData.listData[4].setting.show">{{ item.age }} 세</li>
+															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
 															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
-																<span>4번</span>
-																<div class="interest_view">
+																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 번</span>
+																<div :id="'interest-sub-' + index" class="interest_view">
 																	<ul class="clearfix">
 																		<li>겉옷</li>
 																		<li>데님</li>
@@ -247,22 +247,22 @@
 																		<li>슈트</li>
 																	</ul>
 																	<div class="inter_clip_copy">클립보드로 복사하기</div>
-																	<div class="inter_close">닫기</div>
+																	<div class="inter_close" @click="tootip('close')">닫기</div>
 																</div>
 															</li>
-															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">5번</li>
-															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">6번</li>
-															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">3초 이상 View</li>
-															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">3초 이상 VTR</li>
+															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">맛춤타겟</li>
+															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">광고비</li>
+															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
+															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">도달</li>
 															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">3초 이상 CPV</li>
 															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li>10초 이상 VTR</li>
-																			<li>10초 이상 CPV</li>
-																			<li>10초 이상 CPV</li>
+																			<li>{{ item.link_click }}</li>
+																			<li>{{ item.ctr }}</li>
+																			<li>{{ item.cpc }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -370,6 +370,11 @@ export default {
 	},
 	mounted() {
 		this.sortTableAutoWidth()
+		this.wResize()
+		window.addEventListener('resize', this.wResize)
+	},
+	beforeDestroy() {
+		window.removeEventListener('resize', this.wResize)
 	},
 	data () {
 		return {
@@ -402,20 +407,120 @@ export default {
 				listData: [],
 			},
 
-			listData:[
-				{
-					number:1,
-					name:'첫번째'
-				},
-				{
-					number:2,
-					name:'두번째'
-				},
-				{
-					number:3,
-					name:'세번째'
-				}
-			],
+			listData:{
+				data: [
+					{
+						ctr: 1.4480365,
+						'offsite_conversion.fb_pixel_purchase': {
+							name: "Purchase",
+							value: 28
+						},
+						video_view: 6323,
+						post_engagement: 7337,
+						adset_id: "6094357712857",
+						'offsite_conversion.fb_pixel_add_to_cart': {
+							name: "AddToCart",
+							value: 113
+						},
+						impressions: 78272,
+						clicks: 1135,
+						age: "21-54",
+						gender: "all",
+						offsite_conversion: 286,
+						cpc: 387.2416865,
+						report_date: "2018-01-13 ~ 2018-01-14",
+						reach: 43202,
+						conversions: 7481,
+						post_reaction: 12,
+						'offsite_conversion.fb_pixel_add_payment_info': {
+							name: "AddPaymentInfo",
+							value: 2
+						},
+						objective: "CONVERSIONS",
+						page_engagement: 7338,
+						landing_page_view: 485,
+						link_click: 995,
+						spend: 437104,
+						interest_num: 0,
+						'offsite_conversion.custom.164727177414087': {
+							name: "온리유 발급",
+							value: 2
+						},
+						'offsite_conversion.custom.601949109998868': {
+							name: "톡톡카드_자세히보기",
+							value: 28
+						},
+						like: 1,
+						adset_name: "톡톡_방문자_30일",
+						cpp: 10118.428927,
+						video_30_sec_watched_actions: 990,
+						video_10_sec_watched_actions: 1237,
+						campaign_name: "전환_톡톡_F",
+						inline_link_clicks: 995,
+						'offsite_conversion.custom.741750505927957': {
+							name: "톡톡카드_발급",
+							value: 113
+						},
+						post: 7
+					},
+					{
+						ctr: 1.4480365,
+						'offsite_conversion.fb_pixel_purchase': {
+							name: "Purchase",
+							value: 28
+						},
+						video_view: 6323,
+						post_engagement: 7337,
+						adset_id: "6094357712857",
+						'offsite_conversion.fb_pixel_add_to_cart': {
+							name: "AddToCart",
+							value: 113
+						},
+						impressions: 78272,
+						clicks: 1135,
+						age: "21-54",
+						gender: "all",
+						offsite_conversion: 286,
+						cpc: 387.2416865,
+						report_date: "2018-01-13 ~ 2018-01-14",
+						reach: 43202,
+						conversions: 7481,
+						post_reaction: 12,
+						'offsite_conversion.fb_pixel_add_payment_info': {
+							name: "AddPaymentInfo",
+							value: 2
+						},
+						objective: "CONVERSIONS",
+						page_engagement: 7338,
+						landing_page_view: 485,
+						link_click: 995,
+						spend: 437104,
+						interest_num: 0,
+						'offsite_conversion.custom.164727177414087': {
+							name: "온리유 발급",
+							value: 2
+						},
+						'offsite_conversion.custom.601949109998868': {
+							name: "톡톡카드_자세히보기",
+							value: 28
+						},
+						like: 1,
+						adset_name: "톡톡_방문자_30일",
+						cpp: 10118.428927,
+						video_30_sec_watched_actions: 990,
+						video_10_sec_watched_actions: 1237,
+						campaign_name: "전환_톡톡_F",
+						inline_link_clicks: 995,
+						'offsite_conversion.custom.741750505927957': {
+							name: "톡톡카드_발급",
+							value: 113
+						},
+						post: 7
+					}
+				],
+				total_count: 1,
+				success: "YES"
+			},
 
 			tablesAutoWidth:4880,
 
@@ -444,8 +549,27 @@ export default {
 			}
 		}
 	},
-
 	methods: {
+		wResize(){
+			const wSize = window.innerWidth - 185
+			const el = document.getElementById('report-widget')
+			el.style = "width:" + wSize + 'px'
+		},
+		tootip(index) {
+			const tools = document.getElementsByClassName('interest_view')
+			const subId = event.target.className
+			const subEl = document.getElementById(subId)
+			for(let i = 0; i < tools.length; i++) {
+				tools[i].style = "display:none"
+			}
+			if(index != 'close') {
+				if(subEl.style.display == 'block') {
+					subEl.style = "display:none"
+				}else{
+					subEl.style = "display:block"
+				}
+			}
+		},
 		setDatas() {
 
 			const label = ['광고주','캠페인명','기간','광고세트','연령','성별','관심사 개수','맞춤타겟 이름','광고비','노출','도달','도달빈도','사이트 유입 지표','슬라이드 소재 클릭 지표','영상캠페인 지표','전환 지표','페이지 참여 지표']
