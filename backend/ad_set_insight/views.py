@@ -274,7 +274,7 @@ class AdSetInsightByAccount(APIView):
                 target_insights.append(result)
 
                 pixel_group += pixels
-            pixel_group = list(set(pixels))
+            pixel_group = list(set(pixel_group))
 
             # pixel id, 이름 호출
             custom_pixel = []
