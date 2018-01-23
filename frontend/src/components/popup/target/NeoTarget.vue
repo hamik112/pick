@@ -569,51 +569,6 @@ export default {
       return result
     },
 
-    createNeoTarget () {
-      let params = {
-        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'neo_target',
-        pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.neoTargetName,
-        retention_days: this.neoTargetDay,
-        neo_type: this.neoTargetType,
-
-        detail: this.findSelectKey('selectUser'),
-        input_percent: this.findSelectKey('selectSub')
-      }
-
-      if (this.neoTargetType === 'media') {
-        params['keywords'] = this.findSelectedNeoKey('addNeoAccounts', 'accountname')
-        params['neo_ids'] = this.findSelectedNeoKey('addNeoAccounts', 'param')
-      } else if (this.neoTargetType === 'group') {
-        params['keywords'] = this.findSelectedNeoKey('addNeoCampaigns', 'campaignname')
-        params['neo_ids'] = this.findSelectedNeoKey('addNeoCampaigns', 'param')
-      } else if (this.neoTargetType === 'keyword') {
-        params['keywords'] = this.findSelectedNeoKey('addNeoKeywords', 'keywordname')
-        params['neo_ids'] = this.findSelectedNeoKey('addNeoKeywords', 'param')
-      } else {
-        console.log('this.neoTargetType', this.neoTargetType)
-        return
-      }
-
-      this.$http.post('/pickdata_account_target/custom_target', params)
-      .then((response) => {
-        var success = response.data.success;
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          alert('NEO 타겟 생성 실패')
-          throw('success: ' + success)
-        }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target: ', err)
-      })
-    },
-
     checkListNeo (elId, uniqueKey, mainListName, checkListName, addListName, selectedListName) {
       /*
       체크 된 리스트 옮기기
@@ -676,6 +631,51 @@ export default {
       }
     },
 
+    createNeoTarget () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'neo_target',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.neoTargetName,
+        retention_days: this.neoTargetDay,
+        neo_type: this.neoTargetType,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      if (this.neoTargetType === 'media') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoAccounts', 'accountname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoAccounts', 'param')
+      } else if (this.neoTargetType === 'group') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoCampaigns', 'campaignname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoCampaigns', 'param')
+      } else if (this.neoTargetType === 'keyword') {
+        params['keywords'] = this.findSelectedNeoKey('addNeoKeywords', 'keywordname')
+        params['neo_ids'] = this.findSelectedNeoKey('addNeoKeywords', 'param')
+      } else {
+        console.log('this.neoTargetType', this.neoTargetType)
+        return
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('NEO 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
     // TODO 제거 또는 변경 필요
     deleteAddAdvs(item) {
       const checkAdd = this.addAdvs
@@ -691,7 +691,6 @@ export default {
         this.advs.push(item)
       }
     }
-
   }
 }
 </script>

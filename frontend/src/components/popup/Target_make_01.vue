@@ -61,8 +61,6 @@
                 :tabMove="tabMove"
                 @close="$emit('close')"></visit-specific-pages>
 
-
-
               <!-- 네오 탭 -->
               <neo-target
                 :isShow="tabAction.tabActive4.show"
@@ -70,132 +68,14 @@
                 :tabMove="tabMove"
                 @close="$emit('close')"></neo-target>
 
-
-
         <!-- 구글애널리틱스 탭 -->
-        <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive5.show">
-          <div class="target_contents_inner">
-            <div class="target_thead">
-              <div class="main_title">
-                <div><img src="../../assets/images/target/target_logo_04.png" alt="neo"></div>
-                <div class="title_info">
-                  <p>구글애널리틱스</p>
-                  <p>타겟의 속성을 정의하세요</p>
-                </div>
-              </div>
-              <div class="use_wrap">
-                <div class="use_select">
-                  <div class="contents_title">사용픽셀</div>
-                  <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                </div>
-                <div class="use_date">
-                  <div>수집기간 : 최근</div>
-                  <div><input type="text" v-model="utmTargetDay"><span>일</span></div>
-                </div>
-              </div>
-              <div class="target_name">
-                <div class="contents_title">타겟이름</div>
-                <div><input type="text" v-model="utmTargetName"></div>
-              </div>
-              <div class="target_data">
-                <div class="contents_title">타겟 모수</div>
-                <div>
-                  <span>12,000</span>명
-                </div>
-              </div>
-            </div>
-            <div class="target_tbody">
-              <div class="target_inner_tbody google_body clearfix">
-                <div class="target_generate google_analytics">
-                  <div class="account_info">
-                    <div class="account_title">"아래 UTM 속성으로 유입된 사람" 중</div>
-                    <div>
-                      <div class="select_btn">
-                        <div class="select_contents">
-                          <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="account_date" v-if="subSelect">
-                      <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                    </div>
-                    <div class="account_date" v-if="subInput">
-                      <input type="text" v-if="subInput"><span>일</span>
-                    </div>
-                  </div>
-                  <div class="generate_url_list">
-                    <form id="google_url_form" class="url_list clearfix" v-on:submit.prevent="addAnalyData">
-                      <div class="url_select clearfix">
-                        <div class="select_btn">
-                          <div class="select_contents">
-                            <ui-select id="utm_key" :selectData="this.select12" data-key="select12" :onClick="selectTarget"></ui-select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="url_input">
-                        <input id="utm_name" type="text" v-model="inputUtmName" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="analytics_tab_wrap">
-                <div class="analytics_tab_widget clearfix">
-                  <ul class="clearfix">
-                    <li @click="wTabs(0,'wTab')" v-bind:class="[(wTab.tab1 === true) ? 'active' : '']">source</li>
-                    <li @click="wTabs(1,'wTab')" v-bind:class="[(wTab.tab2 === true) ? 'active' : '']">medium</li>
-                    <li @click="wTabs(2,'wTab')" v-bind:class="[(wTab.tab3 === true) ? 'active' : '']">campaign</li>
-                    <li @click="wTabs(3,'wTab')" v-bind:class="[(wTab.tab4 === true) ? 'active' : '']">team</li>
-                    <li @click="wTabs(4,'wTab')" v-bind:class="[(wTab.tab5 === true) ? 'active' : '']">content</li>
-                    <li @click="wTabs(5,'wTab')" v-bind:class="[(wTab.tab6 === true) ? 'active' : '']">custom</li>
-                  </ul>
-                </div>
-                <div class="analytics_tab_list">
-                  <div id="tab_list_1" class="analytics_tab_contents clearfix" v-if="wTab.tab1">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_source" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_source')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_source')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_2" class="analytics_tab_contents clearfix" v-if="wTab.tab2">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_medium" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_medium')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_meidum')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_3" class="analytics_tab_contents clearfix" v-if="wTab.tab3">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_campaign" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_campaign')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_campaign')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_4" class="analytics_tab_contents clearfix" v-if="wTab.tab4">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_term" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_term')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_term')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_5" class="analytics_tab_contents clearfix" v-if="wTab.tab5">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_content" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_content')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_content')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_custom" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_custom')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_custom')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                </div>
-              </div>
-              <div class="btn_wrap">
-                <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                <button class="next_btn" @click="createUtmTarget()">타겟 만들기</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <utm-target
+          :isShow="tabAction.tabActive5.show"
+          :adAccountPixels="this.adAccountPixels"
+          :tabMove="tabMove"
+          @close="$emit('close')"></utm-target>
+
+        
 
         <!-- 구매 탭 -->
         <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive6.show">
@@ -447,12 +327,13 @@
 
 <script>
 
+import { numberFormatter } from '@/components/utils/Formatter'
 // UI
 import Select from '@/components/ui/Select'
-import { numberFormatter } from '@/components/utils/Formatter'
 import VisitSite from '@/components/popup/target/VisitSite'
 import VisitSpecificPages from '@/components/popup/target/VisitSpecificPages'
 import NeoTarget from '@/components/popup/target/NeoTarget'
+import UtmTarget from '@/components/popup/target/UtmTarget'
 
 export default {
   name: 'TargetMake01',
@@ -460,7 +341,8 @@ export default {
     'ui-select': Select,
     'visit-site': VisitSite,
     'visit-specific-pages': VisitSpecificPages,
-    'neo-target': NeoTarget
+    'neo-target': NeoTarget,
+    'utm-target': UtmTarget
   },
   mounted() {
     let emptyText = ''
@@ -493,7 +375,7 @@ export default {
       }
     })
 
-    
+
 
   },
   data () {
