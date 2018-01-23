@@ -38,8 +38,10 @@
 									<ul>
 										<li v-for="item in this.targetList[this.targetOn]">
 											<div class="target_icon">
-												<div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
-												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div>
+												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
+												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
+												<div class="icon_target" @click="makeModal1 = true"></div>
+												<div class="icon_gragh" @click="chartModal = true"></div>
 											</div>
 											<div class="target_info">
 												<p>{{ item.name }}</p>
