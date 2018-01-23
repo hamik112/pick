@@ -75,64 +75,14 @@
           :tabMove="tabMove"
           @close="$emit('close')"></utm-target>
 
-        
-
         <!-- 구매 탭 -->
-        <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive6.show">
-          <div class="target_contents_inner">
-            <div class="target_thead">
-              <div class="main_title">
-                <div><img src="../../assets/images/target/target_logo_05.png" alt="buy"></div>
-                <div class="title_info">
-                  <p>구매</p>
-                  <p>타겟의 속성을 정의하세요</p>
-                </div>
-              </div>
-              <div class="use_wrap">
-                <div class="use_select">
-                  <div class="contents_title">사용픽셀</div>
-                  <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                </div>
-                <div class="use_date">
-                  <div>수집기간 : 최근</div>
-                  <div><input type="text" v-model="purchaseDay"><span>일</span></div>
-                </div>
-              </div>
-              <div class="target_name">
-                <div class="contents_title">타겟이름</div>
-                <div><input type="text" v-model="purchaseName"></div>
-              </div>
-              <div class="target_data">
-                <div class="contents_title">타겟 모수</div>
-                <div>
-                  <span>12,000</span>명
-                </div>
-              </div>
-            </div>
-            <div class="target_tbody">
-              <div class="target_inner_tbody clearfix">
-                <div class="target_generate">
-                  <div class="account_info">
-                    <div class="account_title">"구매한 사람" 중</div>
-                    <div>
-                      <ui-select :selectData="this.selectUser2" data-key="selectUser2" :onClick="selectTarget"></ui-select>
-                    </div>
-                    <div class="account_date" v-if="subInput2">
-                      <input type="text" v-model="purchaseCount"><span>회</span>
-                    </div>
-                    <div class="account_date" v-if="subInput3">
-                      <input type="text" v-model="purchaseAmount"><span>원</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="btn_wrap">
-            <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-            <button class="next_btn" @click="createPurchase()">타겟 만들기</button>
-          </div>
-        </div>
+        <purchase
+          :isShow="tabAction.tabActive6.show"
+          :adAccountPixels="this.adAccountPixels"
+          :tabMove="tabMove"
+          @close="$emit('close')"></purchase>
+
+        
 
         <!-- 장바구니 탭 -->
         <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive7.show">
@@ -334,6 +284,7 @@ import VisitSite from '@/components/popup/target/VisitSite'
 import VisitSpecificPages from '@/components/popup/target/VisitSpecificPages'
 import NeoTarget from '@/components/popup/target/NeoTarget'
 import UtmTarget from '@/components/popup/target/UtmTarget'
+import Purchase from '@/components/popup/target/Purchase'
 
 export default {
   name: 'TargetMake01',
@@ -342,7 +293,8 @@ export default {
     'visit-site': VisitSite,
     'visit-specific-pages': VisitSpecificPages,
     'neo-target': NeoTarget,
-    'utm-target': UtmTarget
+    'utm-target': UtmTarget,
+    'purchase': Purchase
   },
   mounted() {
     let emptyText = ''

@@ -12,7 +12,7 @@
         <div class="use_wrap">
           <div class="use_select">
             <div class="contents_title">사용픽셀</div>
-            <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectOnClick"></ui-select>
+            <ui-select :selectData="adAccountPixels" data-key="adAccountPixels" :onClick="selectOnClick"></ui-select>
           </div>
           <div class="use_date">
             <div>수집기간 : 최근</div>
@@ -54,7 +54,7 @@
                 <div class="url_select clearfix">
                   <div class="select_btn">
                     <div class="select_contents">
-                      <ui-select id="utm_key" :selectData="this.select12" data-key="select12" :onClick="selectOnClick"></ui-select>
+                      <ui-select id="utm_key" :selectData="this.selectUtmType" data-key="selectUtmType" :onClick="selectOnClick"></ui-select>
                     </div>
                   </div>
                 </div>
@@ -213,7 +213,7 @@ export default {
           '25'
         ]
       },
-      select12: {
+      selectUtmType: {
         emptyText: 'utm_source',
         textList: [
           'utm_source',
@@ -252,7 +252,7 @@ export default {
       const utmKey = document.getElementById('utm_key').getElementsByClassName('select')[0].innerText.replace(/\s/gi, "")
       const utmName = document.getElementById('utm_name').value
       const gData = this.gAddData[utmKey]
-      const keyData = this.select12.textList
+      const keyData = this.selectUtmType.textList
       const newData = {
         number: gData.length + 1,
         name: utmName
