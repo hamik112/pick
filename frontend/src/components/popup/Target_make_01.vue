@@ -48,486 +48,34 @@
               </div>
 
               <!-- 사이트 방문 탭 -->
-              <visit-site :isShow="tabAction.tabActive2.show" :adAccountPixels="this.adAccountPixels" :tabMove="tabMove"></visit-site>
+              <visit-site
+                :isShow="tabAction.tabActive2.show"
+                :adAccountPixels="this.adAccountPixels"
+                :tabMove="tabMove"
+                @close="$emit('close')"></visit-site>
 
               <!-- 특정 페이지 방문 탭 -->
-              <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive3.show">
-                <div class="target_contents_inner">
-                  <div class="target_thead">
-                    <div class="main_title">
-                      <div><img src="../../assets/images/target/target_logo_02.png" alt="neo"></div>
-                      <div class="title_info">
-                        <p>특정페이지 방문</p>
-                        <p>타겟의 속성을 정의하세요</p>
-                      </div>
-                    </div>
-                    <div class="use_wrap">
-                      <div class="use_select">
-                        <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="use_date">
-                        <div>수집기간 : 최근</div>
-                        <div><input type="text" v-model="visitSpecificPagesDay"><span>일</span></div>
-                      </div>
-                    </div>
-                    <div class="target_name">
-                      <div class="contents_title">타겟이름</div>
-                      <div><input type="text" v-model="visitSpecificPagesName"></div>
-                    </div>
-                    <div class="target_data">
-                      <div class="contents_title">타겟 모수</div>
-                      <div>
-                        <span>12,000</span>명
-                      </div>
-                    </div>
-                  </div>
-                  <div class="target_tbody">
-                    <div class="target_inner_tbody clearfix">
-                      <div class="target_generate">
-                        <div class="account_info">
-                          <div class="account_title">"아래 그룹로 유입된 사람"중</div>
-                          <div>
-                            <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
-                          </div>
-                          <div class="account_date" v-if="subSelect">
-                            <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                          </div>
-                          <div class="account_date" v-if="subInput">
-                            <input type="text" v-if="subInput"><span>일</span>
-                          </div>
-                        </div>
-                        <div class="generate_url_list">
-
-                          <div v-for="(item, index) in fields" class="url_list clearfix">
-                            <div class="url_select clearfix">
-                              <ui-select :selectData="item.select" :data-key="index" :onClick="multiSelect"></ui-select>
-                            </div>
-                            <div class="url_input">
-                              <input type="text" v-model="item.url">
-                            </div>
-                            <div class="url_btn clearfix">
-                              <div class="add"><button type="button" @click="fieldBtn(item,'add')">+</button></div>
-                              <div class="del" v-if="index > 0"><button type="button" @click="fieldBtn(item,'del')">-</button></div>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="btn_wrap">
-                  <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                  <button class="next_btn" @click="createVisitSpecificPages()">타겟 만들기</button>
-                </div>
-              </div>
+              <visit-specific-pages
+                :isShow="tabAction.tabActive3.show"
+                :adAccountPixels="this.adAccountPixels"
+                :tabMove="tabMove"
+                @close="$emit('close')"></visit-specific-pages>
 
               <!-- 네오 탭 -->
-              <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive4.show">
-                <div class="target_contents_inner">
-                  <div class="target_thead">
-                    <div class="main_title">
-                      <div><img src="../../assets/images/target/target_logo_03.png" alt="neo"></div>
-                      <div class="title_info">
-                        <p>NEO타겟</p>
-                        <p>타겟의 속성을 정의하세요</p>
-                      </div>
-                    </div>
-                    <div class="use_wrap">
-                      <div class="use_select">
-                        <div class="contents_title">사용픽셀</div>
-                        <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="use_date">
-                        <div>수집기간 : 최근</div>
-                        <div><input type="text" v-model="neoTargetDay"><span>일</span></div>
-                      </div>
-                    </div>
-                    <div class="target_name">
-                      <div class="contents_title">타겟이름</div>
-                      <div><input type="text" v-model="neoTargetName"></div>
-                    </div>
-                    <!--div class="target_data">
-                    <div class="contents_title">타겟 모수</div>
-                    <div>
-                    <span>12,000</span>명
-                  </div>
-                </div-->
-                <div class="target_type">
-                  <div class="contents_title">Neo 유형</div>
-                  <ul>
-                    <li>
-                      <div class="result_check"><input type="radio" id="target_type01" @change="wTabs(0,'wTab')" name="neo_type" value="media" v-model="neoTargetType" checked><label for="target_type01">매체</label></div>
-                    </li>
-                    <li>
-                      <div class="result_check"><input type="radio" id="target_type02" name="neo_type" @change="wTabs(1,'wTab')" value="group" v-model="neoTargetType"><label for="target_type02">그룹</label></div>
-                    </li>
-                    <li>
-                      <div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword" v-model="neoTargetType"><label for="target_type03">키워드</label></div>
-                    </li>
-                    <li>
-                      <div class="result_check" v-show="false"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel" v-model="neoTargetType"><label for="target_type04">엑셀업로드</label></div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="target_tbody">
-                <div class="target_inner_tbody clearfix">
-                  <!-- 매체 -->
-                  <div class="cate_contents" v-if="wTab.tab1">
-                    <div class="account_info target_generate">
-                      <div class="account_title">"아래 매체로 유입된 사람"중</div>
-                      <div>
-                        <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="account_date" v-if="subSelect">
-                        <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="account_date" v-if="subInput">
-                        <input type="text" v-if="subInput"><span>일</span>
-                      </div>
-                    </div>
-                    <div class="account_wrap account_wrapper">
-                      <div class="account_inner_wrap clearfix">
-                        <div class="account_left">
-                          <div class="advertiser_search_result pop-scroll">
-                            <div class="result_list_inner">
-                              <div class="result_thead">
-                                <ul>
-                                  <li>
-                                    <div class="result_check"><input type="checkbox" id="all_check" v-model="selectAllNeoAccounts"><label for="all_check"></label></div>
-                                    <div class="result_account">광고주명</div>
-                                    <div class="result_group">매체명</div>
-                                    <div class="result_switch">전환 수</div>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="result_tbody">
-                                <ul id="list-neoaccount">
-                                  <li v-for="neoAccount in neoAccounts">
-                                    <div class="result_check"><input type="checkbox" v-model="selectedNeoAccounts" :value="neoAccount.centeraccountid" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.centeraccountid" :id="'neoAccount-check-' + neoAccount.centeraccountid"><label :for="'neoAccount-check-' + neoAccount.centeraccountid"></label></div>
-                                    <div class="result_account">{{ neoAccount.advname }}</div>
-                                    <div class="result_group">{{ neoAccount.accountname }}</div>
-                                    <div class="result_switch">{{ neoAccount.count_formatter }}</div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="account_add_wrap">
-                            <div>*최근 한달 기준</div>
-                            <button type="button" v-on:click="checkListNeo('list-neoaccount', 'centeraccountid', 'neoAccounts', 'checkDataNeoAccounts', 'addNeoAccounts', 'selectedNeoAccounts')">선택한 매체 추가</button>
-                          </div>
-                        </div>
-                        <div class="account_right clearfix">
-                          <button type="button" v-on:click="deleteListNeo('add-list-neoaccount', 'neoAccounts', 'addNeoAccounts', 'all')" title="전체삭제"><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
-                          <ul id="add-list-neoaccount">
-                            <li v-for="addNeoAccount in addNeoAccounts" class="sticker_btn">
-                              <span>{{ addNeoAccount.accountname }}</span> <span @click="deleteListNeo('add-list-neoaccount', 'neoAccounts', 'addNeoAccounts', addNeoAccount)" :data-number="addNeoAccount.centeraccountid" title="삭제하기"><img src="../../assets/images/target/target_list_close.png" alt=""></span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- 그룹 -->
-                  <div class="cate_contents" v-if="wTab.tab2">
-                    <div class="account_info target_generate">
-                      <div class="account_title">"아래 그룹로 유입된 사람"중</div>
-                      <div>
-                        <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="account_date" v-if="subSelect">
-                        <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="account_date" v-if="subInput">
-                        <input type="text" v-if="subInput"><span>일</span>
-                      </div>
-                    </div>
-                    <div class="account_wrap account_wrapper">
-                      <div class="account_inner_wrap clearfix">
-                        <div class="account_left">
-                          <div class="advertiser_search_result pop-scroll">
-                            <div class="result_list_inner">
-                              <div class="result_thead">
-                                <ul>
-                                  <li>
-                                    <div class="result_check"><input type="checkbox" id="all_check" v-model="selectAllNeoCampaigns"><label for="all_check"></label></div>
-                                    <div class="result_account">광고주명</div>
-                                    <div class="result_group">그룹명</div>
-                                    <div class="result_switch">전환 수</div>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="result_tbody">
-                                <ul id="list-neocampaign">
-                                  <li v-for="neoCampaign in neoCampaigns">
-                                    <div class="result_check"><input type="checkbox" v-model="selectedNeoCampaigns" :value="neoCampaign.campaignid" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.campaignid" :id="'neoCampaign-check-' + neoCampaign.campaignid"><label :for="'neoCampaign-check-' + neoCampaign.campaignid"></label></div>
-                                    <div class="result_account">{{ neoCampaign.advname }}</div>
-                                    <div class="result_group">{{ neoCampaign.campaignname }}</div>
-                                    <div class="result_switch">{{ neoCampaign.count_formatter }}</div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="account_add_wrap">
-                            <div>*최근 한달 기준</div>
-                            <button type="button" v-on:click="checkListNeo('list-neocampaign', 'campaignid', 'neoCampaigns', 'checkDataNeoCampaigns', 'addNeoCampaigns', 'selectedNeoCampaigns')">선택한 매체 추가</button>
-                          </div>
-                        </div>
-                        <div class="account_right clearfix">
-                          <button type="button" v-on:click="deleteListNeo('add-list-neocampaign', 'neoCampaigns', 'addNeoCampaigns', 'all')" title="전체삭제"><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
-                          <ul id="add-list-neocampaign">
-                            <li v-for="addNeoCampaign in addNeoCampaigns" class="sticker_btn">
-                              <span>{{ addNeoCampaign.campaignname }}</span> <span @click="deleteListNeo('add-list-neocampaign', 'neoCampaigns', 'addNeoCampaigns', addNeoCampaign)" :data-number="addNeoCampaign.campaignid" title="삭제하기"><img src="../../assets/images/target/target_list_close.png" alt=""></span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- 키워드 -->
-                  <div class="cate_contents" v-if="wTab.tab3">
-                    <div class="account_info target_generate">
-                      <div class="account_title">"아래 키워드로 유입된 사람"중</div>
-                      <div>
-                        <ui-select :selectData="this.select9" data-key="select9" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="account_date" v-if="subSelect">
-                        <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="account_date" v-if="subInput">
-                        <input type="text" v-if="subInput"><span>일</span>
-                      </div>
-                    </div>
-                    <div class="account_wrap account_wrapper">
-                      <div class="account_inner_wrap clearfix">
-                        <div class="account_left">
-                          <div class="advertiser_search_result pop-scroll">
-                            <div class="result_list_inner">
-                              <div class="result_thead">
-                                <ul>
-                                  <li>
-                                    <div class="result_check"><input type="checkbox" id="all_check" v-model="selectAllNeoKeywords"><label for="all_check"></label></div>
-                                    <div class="result_account">광고주명</div>
-                                    <div class="result_group">키워드</div>
-                                    <div class="result_switch">전환 수</div>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="result_tbody">
-                                <ul id="list-neokeyword">
-                                  <li v-for="neoKeyword in neoKeywords">
-                                    <div class="result_check"><input type="checkbox" v-model="selectedNeoKeywords" :value="neoKeyword.keywordid" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.keywordid" :id="'neoKeyword-check-' + neoKeyword.keywordid"><label :for="'neoKeyword-check-' + neoKeyword.keywordid"></label></div>
-                                    <div class="result_account">{{ neoKeyword.advname }}</div>
-                                    <div class="result_group">{{ neoKeyword.keywordname }}</div>
-                                    <div class="result_switch">{{ neoKeyword.count_formatter }}</div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="account_add_wrap">
-                            <div>*최근 한달 기준</div>
-                            <button type="button" v-on:click="checkListNeo('list-neokeyword', 'keywordid', 'neoKeywords', 'checkDataNeoKeywords', 'addNeoKeywords', 'selectedNeoKeywords')">선택한 매체 추가</button>
-                          </div>
-                        </div>
-                        <div class="account_right clearfix">
-                          <button type="button" v-on:click="deleteListNeo('add-list-neokeyword', 'neoKeywords', 'addNeoKeywords', 'all')" title="전체삭제"><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
-                          <ul id="add-list-neokeyword">
-                            <li v-for="addNeoKeyword in addNeoKeywords" class="sticker_btn">
-                              <span>{{ addNeoKeyword.keywordname }}</span> <span @click="deleteListNeo('add-list-neokeyword', 'neoKeywords', 'addNeoKeywords', addNeoKeyword)" :data-number="addNeoKeyword.keywordid" title="삭제하기"><img src="../../assets/images/target/target_list_close.png" alt=""></span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- 엑셀 -->
-                  <div class="cate_contents target_excel" v-if="wTab.tab4">
-                    <div class="account_info target_generate">
-                      <div class="account_title">"아래 등록 양식으로 유입된 사람"중</div>
-                      <div>
-                        <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="account_date" v-if="subSelect">
-                        <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                      </div>
-                      <div class="account_date" v-if="subInput">
-                        <input type="text" v-if="subInput"><span>일</span>
-                      </div>
-                    </div>
-                    <div class="account_wrap account_wrapper">
-                      <div class="account_inner_wrap clearfix">
-                        <div class="account_left">
-                          <strong>양식에 맞추어 엑셀을 입력해 주세요.</strong>
-                          <p>양식에 맞추어 엑셀을 업로드 해주시면,</p>
-                          <p>해당 파라미터를 타겟으로 만들 수 있습니다.</p>
-                          <div class="excel_wrap">
-                            <div class="download_wrap clearfix">
-                              <button><strong>엑셀업로드</strong></button>
-                              <button>양식 다운로드</button>
-                            </div>
-                            <div class="input_wrap clearfix">
-                              <div>
-                                <input type="text">
-                              </div>
-                              <button></button>
-                            </div>
-                            <button class="upload_btn view_alert"><strong>업로드</strong></button>
-                          </div>
-                        </div>
-                        <div class="account_right clearfix">
-                          <button type="button" v-on:click="deleteAddAdvs('all')" title="전체삭제"><img src="../../assets/images/target/target_close_btn.png" alt=""></button>
-                          <ul id="adv-list-2">
-                            <li v-for="addAdv in addAdvs" class="sticker_btn">
-                              <span>{{ addAdv.name }}</span> <span @click="deleteAddAdvs(addAdv)" :data-number="addAdv.number" title="삭제하기"><img src="../../assets/images/target/target_list_close.png" alt=""></span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="btn_wrap">
-              <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-              <button class="next_btn" @click="createNeoTarget()">타겟 만들기</button>
-            </div>
-            <!-- <div class="btn_wrap">
-            <button class="before_btn close_pop" @click="$emit('close')">취소</button>
-            <button class="delete_btn">타겟 삭제</button>
-            <button class="adjust_btn">타겟 수정</button>
-          </div> -->
-        </div>
+              <neo-target
+                :isShow="tabAction.tabActive4.show"
+                :adAccountPixels="this.adAccountPixels"
+                :tabMove="tabMove"
+                @close="$emit('close')"></neo-target>
 
         <!-- 구글애널리틱스 탭 -->
-        <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive5.show">
-          <div class="target_contents_inner">
-            <div class="target_thead">
-              <div class="main_title">
-                <div><img src="../../assets/images/target/target_logo_04.png" alt="neo"></div>
-                <div class="title_info">
-                  <p>구글애널리틱스</p>
-                  <p>타겟의 속성을 정의하세요</p>
-                </div>
-              </div>
-              <div class="use_wrap">
-                <div class="use_select">
-                  <div class="contents_title">사용픽셀</div>
-                  <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                </div>
-                <div class="use_date">
-                  <div>수집기간 : 최근</div>
-                  <div><input type="text" v-model="utmTargetDay"><span>일</span></div>
-                </div>
-              </div>
-              <div class="target_name">
-                <div class="contents_title">타겟이름</div>
-                <div><input type="text" v-model="utmTargetName"></div>
-              </div>
-              <div class="target_data">
-                <div class="contents_title">타겟 모수</div>
-                <div>
-                  <span>12,000</span>명
-                </div>
-              </div>
-            </div>
-            <div class="target_tbody">
-              <div class="target_inner_tbody google_body clearfix">
-                <div class="target_generate google_analytics">
-                  <div class="account_info">
-                    <div class="account_title">"아래 UTM 속성으로 유입된 사람" 중</div>
-                    <div>
-                      <div class="select_btn">
-                        <div class="select_contents">
-                          <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectTarget"></ui-select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="account_date" v-if="subSelect">
-                      <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                    </div>
-                    <div class="account_date" v-if="subInput">
-                      <input type="text" v-if="subInput"><span>일</span>
-                    </div>
-                  </div>
-                  <div class="generate_url_list">
-                    <form id="google_url_form" class="url_list clearfix" v-on:submit.prevent="addAnalyData">
-                      <div class="url_select clearfix">
-                        <div class="select_btn">
-                          <div class="select_contents">
-                            <ui-select id="utm_key" :selectData="this.select12" data-key="select12" :onClick="selectTarget"></ui-select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="url_input">
-                        <input id="utm_name" type="text" v-model="inputUtmName" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="analytics_tab_wrap">
-                <div class="analytics_tab_widget clearfix">
-                  <ul class="clearfix">
-                    <li @click="wTabs(0,'wTab')" v-bind:class="[(wTab.tab1 === true) ? 'active' : '']">source</li>
-                    <li @click="wTabs(1,'wTab')" v-bind:class="[(wTab.tab2 === true) ? 'active' : '']">medium</li>
-                    <li @click="wTabs(2,'wTab')" v-bind:class="[(wTab.tab3 === true) ? 'active' : '']">campaign</li>
-                    <li @click="wTabs(3,'wTab')" v-bind:class="[(wTab.tab4 === true) ? 'active' : '']">team</li>
-                    <li @click="wTabs(4,'wTab')" v-bind:class="[(wTab.tab5 === true) ? 'active' : '']">content</li>
-                    <li @click="wTabs(5,'wTab')" v-bind:class="[(wTab.tab6 === true) ? 'active' : '']">custom</li>
-                  </ul>
-                </div>
-                <div class="analytics_tab_list">
-                  <div id="tab_list_1" class="analytics_tab_contents clearfix" v-if="wTab.tab1">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_source" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_source')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_source')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_2" class="analytics_tab_contents clearfix" v-if="wTab.tab2">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_medium" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_medium')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_meidum')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_3" class="analytics_tab_contents clearfix" v-if="wTab.tab3">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_campaign" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_campaign')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_campaign')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_4" class="analytics_tab_contents clearfix" v-if="wTab.tab4">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_term" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_term')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_term')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_5" class="analytics_tab_contents clearfix" v-if="wTab.tab5">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_content" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_content')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_content')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                  <div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
-                    <ul>
-                      <li v-for="(item,index) in gAddData.utm_custom" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_custom')"><img src="../../assets/images/target/target_list_close.png" alt=""></span></li>
-                    </ul>
-                    <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_custom')"><img src="../../assets/images/target/target_close_btn.png" alt=""></button></div>
-                  </div>
-                </div>
-              </div>
-              <div class="btn_wrap">
-                <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                <button class="next_btn" @click="createUtmTarget()">타겟 만들기</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <utm-target
+          :isShow="tabAction.tabActive5.show"
+          :adAccountPixels="this.adAccountPixels"
+          :tabMove="tabMove"
+          @close="$emit('close')"></utm-target>
+
+        
 
         <!-- 구매 탭 -->
         <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive6.show">
@@ -779,16 +327,22 @@
 
 <script>
 
+import { numberFormatter } from '@/components/utils/Formatter'
 // UI
 import Select from '@/components/ui/Select'
-import { numberFormatter } from '@/components/utils/Formatter'
 import VisitSite from '@/components/popup/target/VisitSite'
+import VisitSpecificPages from '@/components/popup/target/VisitSpecificPages'
+import NeoTarget from '@/components/popup/target/NeoTarget'
+import UtmTarget from '@/components/popup/target/UtmTarget'
 
 export default {
   name: 'TargetMake01',
   components:{
     'ui-select': Select,
-    'visit-site': VisitSite
+    'visit-site': VisitSite,
+    'visit-specific-pages': VisitSpecificPages,
+    'neo-target': NeoTarget,
+    'utm-target': UtmTarget
   },
   mounted() {
     let emptyText = ''
@@ -821,86 +375,7 @@ export default {
       }
     })
 
-    this.$http.get('/neo_db/get_roi_report', {
-      params: {
-        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id'),
-        'type': 'account'
-      }
-    })
-    .then(res => {
-      const response = res.data
-      const data = response.data
-      const success = response.success
-      if (success === 'YES') {
-        // success
-      } else {
-        throw('success: ' + success)
-      }
-      return data
-    })
-    .then(data => {
-      data.forEach(function(item, index) {
-        item['count_formatter'] = numberFormatter(item['count'])
-      })
-      this.neoAccounts = data
-    })
-    .catch(err => {
-      console.error('/neo_db/get_roi_report type: account ', err)
-    })
 
-    this.$http.get('/neo_db/get_roi_report', {
-      params: {
-        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id'),
-        'type': 'campaign'
-      }
-    })
-    .then(res => {
-      const response = res.data
-      const data = response.data
-      const success = response.success
-      if (success === 'YES') {
-        // success
-      } else {
-        throw('success: ' + success)
-      }
-      return data
-    })
-    .then(data => {
-      data.forEach(function(item, index) {
-        item['count_formatter'] = numberFormatter(item['count'])
-      })
-      this.neoCampaigns = data
-    })
-    .catch(err => {
-      console.error('/neo_db/get_roi_report type: campaign ', err)
-    })
-
-    this.$http.get('/neo_db/get_roi_report', {
-      params: {
-        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id'),
-        'type': 'keyword'
-      }
-    })
-    .then(res => {
-      const response = res.data
-      const data = response.data
-      const success = response.success
-      if (success === 'YES') {
-        // success~
-      } else {
-        throw('success: ' + success)
-      }
-      return data
-    })
-    .then(data => {
-      data.forEach(function(item, index) {
-        item['count_formatter'] = numberFormatter(item['count'])
-      })
-      this.neoKeywords = data
-    })
-    .catch(err => {
-      console.error('/neo_db/get_roi_report type: keyword', err)
-    })
 
   },
   data () {

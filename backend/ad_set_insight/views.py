@@ -159,10 +159,14 @@ class AdSetInsightByAccount(APIView):
                 campaign_name = campaign['name']
                 targeting = adset.get('targeting')
 
+                interest_list = []
                 if 'flexible_spec' in targeting:
                     flexible_spec = targeting.get('flexible_spec')
                     for fs in flexible_spec:
                         interests = fs['interests']
+                        for interest in interests:
+                            name = interest['name']
+                            interest_list.append(name)
                 else:
                     interests = []
 
@@ -178,7 +182,6 @@ class AdSetInsightByAccount(APIView):
                         gender = 'all'
                     else:
                         gender = ''
-                        logger.info(gender)
                 else:
                     gender = 'all'
 
@@ -196,9 +199,12 @@ class AdSetInsightByAccount(APIView):
                 ctr = insight.get('ctr')
                 cpp = insight.get('cpp')
                 conversions = insight.get('conversions')
+                frequency = insight.get('frequency')
+                inline_link_click_ctr = insight.get('inline_link_click_ctr')
 
                 # result['targeting'] = targeting
                 result['interest_num'] = len(interests)
+                result['interest_list'] = interest_list
                 result['age'] = age
                 result['gender'] = gender
                 result['adset_id'] = adset_id
@@ -215,6 +221,8 @@ class AdSetInsightByAccount(APIView):
                 result['ctr'] = ctr
                 result['cpp'] = cpp
                 result['conversions'] = conversions
+                result['frequency'] = frequency
+                result['inline_link_click_ctr'] = inline_link_click_ctr
 
                 # Custom Event 계산 추가
                 pixels = []
@@ -273,8 +281,8 @@ class AdSetInsightByAccount(APIView):
 
                 target_insights.append(result)
 
-            pixel_group += pixels
-            pixel_group = list(set(pixels))
+                pixel_group += pixels
+            pixel_group = list(set(pixel_group))
 
             # pixel id, 이름 호출
             custom_pixel = []

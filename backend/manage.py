@@ -7,6 +7,11 @@ if __name__ == "__main__":
 
     try:
         from django.core.management import execute_from_command_line
+
+        # override server port
+        # from django.core.management.commands.runserver import Command as runserver
+        # runserver.default_port = "8080"
+
     except ImportError:
         # The above import may fail for some other reason. Ensure that the
         # issue is really that Django is missing to avoid masking other

@@ -3,9 +3,9 @@
     <div class="target_contents_inner">
       <div class="target_thead">
         <div class="main_title">
-          <div><img src="../../../assets/images/target/target_logo_01.png" alt="neo"></div>
+          <div><img src="../../../assets/images/target/target_logo_02.png" alt="neo"></div>
           <div class="title_info">
-            <p>사이트방문</p>
+            <p>특정페이지 방문</p>
             <p>타겟의 속성을 정의하세요</p>
           </div>
         </div>
@@ -16,12 +16,12 @@
           </div>
           <div class="use_date">
             <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="visitSiteDay"><span>일</span></div>
+            <div><input type="text" v-model="visitSpecificPagesDay"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
           <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="visitSiteName"></div>
+          <div><input type="text" v-model="visitSpecificPagesName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
@@ -34,7 +34,7 @@
         <div class="target_inner_tbody clearfix">
           <div class="target_generate">
             <div class="account_info">
-              <div class="account_title">"사이트 방문자"중</div>
+              <div class="account_title">"아래 그룹로 유입된 사람"중</div>
               <div>
                 <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectOnClick"></ui-select>
               </div>
@@ -45,13 +45,27 @@
                 <input type="text" v-if="subInput"><span>일</span>
               </div>
             </div>
+            <div class="generate_url_list">
+              <div v-for="(item, index) in fields" class="url_list clearfix">
+                <div class="url_select clearfix">
+                  <ui-select :selectData="item.select" :data-key="index" :onClick="multiSelectOnClick"></ui-select>
+                </div>
+                <div class="url_input">
+                  <input type="text" v-model="item.url">
+                </div>
+                <div class="url_btn clearfix">
+                  <div class="add"><button type="button" @click="fieldBtn(item, 'add')">+</button></div>
+                  <div class="del" v-if="index > 0"><button type="button" @click="fieldBtn(item, 'del')">-</button></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-      <button class="next_btn" @click="createVisitSite()">타겟 만들기</button>
+      <button class="next_btn" @click="createVisitSpecificPages()">타겟 만들기</button>
     </div>
   </div>
 </template>
@@ -60,7 +74,7 @@
 import Select from '@/components/ui/Select'
 
 export default {
-  name: 'VisitSite',
+  name: 'VisitSpecificPages',
 
   components: {
     'ui-select': Select
@@ -91,8 +105,8 @@ export default {
 
   data () {
     return {
-      visitSiteDay: '30',
-      visitSiteName: '',
+      visitSpecificPagesDay: '30',
+      visitSpecificPagesName: '',
 
       subSelect:false,
       subInput:false,
@@ -134,12 +148,28 @@ export default {
           '15',
           '25'
         ]
-      }
+      },
+
+      fields: [
+        {
+          "url": '',
+          "number": 0,
+          "key": 0,
+          "select": {
+            emptyText: '전체URL',
+            textList: [
+              '전체URL',
+              '부분URL'
+            ]
+          }
+        }
+      ]
+
     }
   },
 
   methods: {
-    selectOnClick (item) {
+    selectOnClick(item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
       this.subSelect = false
@@ -154,6 +184,34 @@ export default {
       this[key].emptyText = item
     },
 
+    multiSelectOnClick(item, index) {
+      const key = event.target.closest('.select_btn').getAttribute('data-key')
+      this.fields[key].select.emptyText = item
+    },
+
+    fieldBtn (item, type) {
+      let index = 0
+      if(type === 'add') {
+        index++
+        let obj = {
+          "url": '',
+          "number": index,
+          "key": index,
+          "select": {
+            emptyText: '전체URL',
+            textList: [
+              '전체URL',
+              '부분URL'
+            ]
+          }
+        }
+        this.fields.push(obj)
+      }else{
+        index--
+        this.fields.splice(this.fields.indexOf(item), 1)
+      }
+    },
+
     findSelectKey (selectName) {
       /*
       Select Key 가져오기
@@ -164,17 +222,38 @@ export default {
       return keyList[textList.indexOf(emptyText)]
     },
 
-    createVisitSite () {
+    findVisitSpecificPagesParam () {
+      const data = this.fields
+      let eqList = []
+      let containList = []
+      data.forEach(function (item, index) {
+        if (item.select.emptyText === '전체URL') {
+          eqList.push(item.url)
+        } else if (item.select.emptyText === '부분URL') {
+          containList.push(item.url)
+        }
+      })
+      return {
+        eqList: eqList,
+        containList: containList
+      }
+    },
+
+    createVisitSpecificPages () {
       let params = {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'visit_site',
+        target_type: 'visit_specific_pages',
         pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.visitSiteName,
-        retention_days: this.visitSiteDay,
+        name: this.visitSpecificPagesName,
+        retention_days: this.visitSpecificPagesDay,
 
         detail: this.findSelectKey('selectUser'),
         input_percent: this.findSelectKey('selectSub')
       }
+
+      const urlParams = this.findVisitSpecificPagesParam()
+      params['eq_list'] = urlParams['eqList']
+      params['contain_list'] = urlParams['containList']
 
       this.$http.post('/pickdata_account_target/custom_target', params)
       .then((response) => {
@@ -183,7 +262,7 @@ export default {
           // success
           this.$eventBus.$emit('getAccountTarget')
         } else {
-          alert('사이트방문 타겟 생성 실패')
+          alert('특정페이지 방문 타겟 생성 실패')
           throw('success: ' + success)
         }
         this.$emit('close')
