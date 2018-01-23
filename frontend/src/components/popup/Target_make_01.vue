@@ -49,138 +49,66 @@
 
               <!-- 사이트 방문 탭 -->
               <visit-site
-                :isShow="tabAction.tabActive2.show"
-                :adAccountPixels="this.adAccountPixels"
-                :tabMove="tabMove"
-                @close="$emit('close')"></visit-site>
+              :isShow="tabAction.tabActive2.show"
+              :adAccountPixels="this.adAccountPixels"
+              :tabMove="tabMove"
+              @close="$emit('close')"></visit-site>
 
               <!-- 특정 페이지 방문 탭 -->
               <visit-specific-pages
-                :isShow="tabAction.tabActive3.show"
-                :adAccountPixels="this.adAccountPixels"
-                :tabMove="tabMove"
-                @close="$emit('close')"></visit-specific-pages>
+              :isShow="tabAction.tabActive3.show"
+              :adAccountPixels="this.adAccountPixels"
+              :tabMove="tabMove"
+              @close="$emit('close')"></visit-specific-pages>
 
               <!-- 네오 탭 -->
               <neo-target
-                :isShow="tabAction.tabActive4.show"
-                :adAccountPixels="this.adAccountPixels"
-                :tabMove="tabMove"
-                @close="$emit('close')"></neo-target>
+              :isShow="tabAction.tabActive4.show"
+              :adAccountPixels="this.adAccountPixels"
+              :tabMove="tabMove"
+              @close="$emit('close')"></neo-target>
 
-        <!-- 구글애널리틱스 탭 -->
-        <utm-target
-          :isShow="tabAction.tabActive5.show"
-          :adAccountPixels="this.adAccountPixels"
-          :tabMove="tabMove"
-          @close="$emit('close')"></utm-target>
+              <!-- 구글애널리틱스 탭 -->
+              <utm-target
+              :isShow="tabAction.tabActive5.show"
+              :adAccountPixels="this.adAccountPixels"
+              :tabMove="tabMove"
+              @close="$emit('close')"></utm-target>
 
-        <!-- 구매 탭 -->
-        <purchase
-          :isShow="tabAction.tabActive6.show"
-          :adAccountPixels="this.adAccountPixels"
-          :tabMove="tabMove"
-          @close="$emit('close')"></purchase>
+              <!-- 구매 탭 -->
+              <purchase
+              :isShow="tabAction.tabActive6.show"
+              :adAccountPixels="this.adAccountPixels"
+              :tabMove="tabMove"
+              @close="$emit('close')"></purchase>
 
-        <!-- 장바구니 탭 -->
-        <add-to-cart
-          :isShow="tabAction.tabActive7.show"
-          :adAccountPixels="this.adAccountPixels"
-          :tabMove="tabMove"
-          @close="$emit('close')"></add-to-cart>
+              <!-- 장바구니 탭 -->
+              <add-to-cart
+              :isShow="tabAction.tabActive7.show"
+              :adAccountPixels="this.adAccountPixels"
+              :tabMove="tabMove"
+              @close="$emit('close')"></add-to-cart>
+              
+              <!-- 회원가입 탭 -->
+              <registration
+              :isShow="tabAction.tabActive8.show"
+              :adAccountPixels="this.adAccountPixels"
+              :tabMove="tabMove"
+              @close="$emit('close')"></registration>
 
+              <!-- 단계별 전환 -->
+              <conversion
+              :isShow="tabAction.tabActive9.show"
+              :adAccountPixels="this.adAccountPixels"
+              :tabMove="tabMove"
+              @close="$emit('close')"></conversion>
 
-
-        <!-- 회원가입 탭 -->
-        <registration
-          :isShow="tabAction.tabActive8.show"
-          :adAccountPixels="this.adAccountPixels"
-          :tabMove="tabMove"
-          @close="$emit('close')"></registration>
-
-        
-
-        <!-- 단계별 전환 -->
-        <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive9.show">
-          <div class="target_contents_inner">
-            <div class="target_thead">
-              <div class="main_title">
-                <div><img src="../../assets/images/target/target_logo_08.png" alt="neo"></div>
-                <div class="title_info">
-                  <p>단계별 전환</p>
-                  <p>타겟의 속성을 정의하세요</p>
-                </div>
-              </div>
-              <div class="use_wrap">
-                <div class="use_select">
-                  <div class="contents_title">사용픽셀</div>
-                  <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                </div>
-                <div class="use_date">
-                  <div>수집기간 : 최근</div>
-                  <div><input type="text"><span>일</span></div>
-                </div>
-              </div>
-              <div class="target_name">
-                <div class="contents_title">타겟이름</div>
-                <div><input type="text"></div>
-              </div>
-              <div class="target_data">
-                <div class="contents_title">타겟 모수</div>
-                <div>
-                  <span>12,000</span>명
-                </div>
-              </div>
-            </div>
-            <div class="target_tbody">
-              <div class="target_inner_tbody clearfix">
-                <div class="target_generate">
-                  <div class="account_info">
-                    <div class="account_title">전환 관련 속성 선택</div>
-                    <div>
-                      <ui-select :selectData="this.selectUser4" data-key="selectUser4" :onClick="selectTarget"></ui-select>
-                    </div>
-                    <div class="value_input_wrap" v-if="subInput4">
-                      <input type="text">
-                      <p>단계 완료 후 이탈 고객</p>
-                    </div>
-                  </div>
-                  <div class="generate_url_list">
-                    <div class="url_list clearfix">
-                      <div class="url_text clearfix">
-                        <p>해당 단계 완료 URL</p>
-                      </div>
-                      <div class="url_input">
-                        <input type="text">
-                      </div>
-                    </div>
-                    <div class="url_list clearfix">
-                      <div class="url_text clearfix">
-                        <p>다음 단계 완료 URL</p>
-                      </div>
-                      <div class="url_input">
-                        <input type="text">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="btn_wrap">
-                <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-                <button class="next_btn">타겟 만들기</button>
-              </div>
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
-</div>
-</div>
-</div>
-
 </template>
 
 <script>
@@ -195,6 +123,7 @@ import UtmTarget from '@/components/popup/target/UtmTarget'
 import Purchase from '@/components/popup/target/Purchase'
 import AddToCart from '@/components/popup/target/AddToCart'
 import Registration from '@/components/popup/target/Registration'
+import Conversion from '@/components/popup/target/Conversion'
 
 export default {
   name: 'TargetMake01',
@@ -206,7 +135,8 @@ export default {
     'utm-target': UtmTarget,
     'purchase': Purchase,
     'add-to-cart': AddToCart,
-    'registration': Registration
+    'registration': Registration,
+    'conversion': Conversion
   },
   mounted() {
     let emptyText = ''
