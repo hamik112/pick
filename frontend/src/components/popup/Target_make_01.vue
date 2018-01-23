@@ -89,64 +89,16 @@
           :tabMove="tabMove"
           @close="$emit('close')"></add-to-cart>
 
-        
+
 
         <!-- 회원가입 탭 -->
-        <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive8.show">
-          <div class="target_contents_inner">
-            <div class="target_thead">
-              <div class="main_title">
-                <div><img src="../../assets/images/target/target_logo_07.png" alt="member"></div>
-                <div class="title_info">
-                  <p>회원가입</p>
-                  <p>타겟의 속성을 정의하세요</p>
-                </div>
-              </div>
-              <div class="use_wrap">
-                <div class="use_select">
-                  <div class="contents_title">사용픽셀</div>
-                  <ui-select :selectData="this.adAccountPixels" data-key="adAccountPixels" :onClick="selectTarget"></ui-select>
-                </div>
-                <div class="use_date">
-                  <div>수집기간 : 최근</div>
-                  <div><input type="text" v-model="registrationDay"><span>일</span></div>
-                </div>
-              </div>
-              <div class="target_name">
-                <div class="contents_title">타겟이름</div>
-                <div><input type="text" v-model="registrationName"></div>
-              </div>
-              <div class="target_data">
-                <div class="contents_title">타겟 모수</div>
-                <div>
-                  <span>12,000</span>명
-                </div>
-              </div>
-            </div>
-            <div class="target_tbody">
-              <div class="target_inner_tbody clearfix">
-                <div class="target_generate">
-                  <div class="account_info">
-                    <div class="account_title">"회원가입한 사람" 중</div>
-                    <div>
-                      <ui-select :selectData="this.selectUser3" data-key="selectUser3" :onClick="selectTarget"></ui-select>
-                    </div>
-                    <div class="account_date" v-if="subSelect">
-                      <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectTarget"></ui-select>
-                    </div>
-                    <div class="account_date" v-if="subInput">
-                      <input type="text" v-if="subInput"><span>일</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="btn_wrap">
-            <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-            <button class="next_btn" @click="createRegistration()">타겟 만들기</button>
-          </div>
-        </div>
+        <registration
+          :isShow="tabAction.tabActive8.show"
+          :adAccountPixels="this.adAccountPixels"
+          :tabMove="tabMove"
+          @close="$emit('close')"></registration>
+
+        
 
         <!-- 단계별 전환 -->
         <div class="target_contents_wrap pop-scroll clearfix" v-if="tabAction.tabActive9.show">
@@ -242,6 +194,7 @@ import NeoTarget from '@/components/popup/target/NeoTarget'
 import UtmTarget from '@/components/popup/target/UtmTarget'
 import Purchase from '@/components/popup/target/Purchase'
 import AddToCart from '@/components/popup/target/AddToCart'
+import Registration from '@/components/popup/target/Registration'
 
 export default {
   name: 'TargetMake01',
@@ -252,7 +205,8 @@ export default {
     'neo-target': NeoTarget,
     'utm-target': UtmTarget,
     'purchase': Purchase,
-    'add-to-cart': AddToCart
+    'add-to-cart': AddToCart,
+    'registration': Registration
   },
   mounted() {
     let emptyText = ''
