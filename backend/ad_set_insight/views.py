@@ -40,7 +40,7 @@ class AdSetInsightByAccount(APIView):
             ad_set_insights = None
 
             fb_account_id = request.query_params.get('account_id', '0')
-            account = FbAdAccount.find_by_ad_account_id(FbAdAccount, fb_account_id)
+            account = FbAdAccount.find_by_ad_account_id(FbAdAccount, 'act_'+fb_account_id)
             if fb_account_id == None or account == None:
                 raise Exception("Not Existing FbAdAccount.")
             # 카테고리
