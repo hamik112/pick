@@ -53,6 +53,7 @@
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
               :makeType="this.makeType"
+              :makeItem="this.makeItem"
               @close="$emit('close')"></visit-site>
 
               <!-- 특정 페이지 방문 탭 -->
@@ -61,6 +62,7 @@
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
               :makeType="this.makeType"
+              :makeItem="this.makeItem"
               @close="$emit('close')"></visit-specific-pages>
 
               <!-- 네오 탭 -->
@@ -69,6 +71,7 @@
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
               :makeType="this.makeType"
+              :makeItem="this.makeItem"
               @close="$emit('close')"></neo-target>
 
               <!-- 구글애널리틱스 탭 -->
@@ -77,6 +80,7 @@
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
               :makeType="this.makeType"
+              :makeItem="this.makeItem"
               @close="$emit('close')"></utm-target>
 
               <!-- 구매 탭 -->
@@ -85,6 +89,7 @@
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
               :makeType="this.makeType"
+              :makeItem="this.makeItem"
               @close="$emit('close')"></purchase>
 
               <!-- 장바구니 탭 -->
@@ -93,6 +98,7 @@
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
               :makeType="this.makeType"
+              :makeItem="this.makeItem"
               @close="$emit('close')"></add-to-cart>
 
               <!-- 회원가입 탭 -->
@@ -101,6 +107,7 @@
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
               :makeType="this.makeType"
+              :makeItem="this.makeItem"
               @close="$emit('close')"></registration>
 
               <!-- 단계별 전환 -->
@@ -109,6 +116,7 @@
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
               :makeType="this.makeType"
+              :makeItem="this.makeItem"
               @close="$emit('close')"></conversion>
 
             </div>
@@ -153,11 +161,19 @@ export default {
 
   props: {
     makeType: {
-      type:String
+      type: String
+    },
+    makeItem: {
+      type: Object
     }
   },
 
   mounted () {
+    // 수정인 경우 해당 탭으로 이동 해야한다.
+    if (this.makeType === 'modify') {
+      const modifyItem = this.makeItem
+      this.moveModifyTab(modifyItem)
+    }
     let emptyText = ''
     let textList = []
     let keyList = []
@@ -230,8 +246,40 @@ export default {
       }
     }
   },
-  
+
   methods: {
+    moveModifyTab (item) {
+      let categoryName = item.pixel_mapping_category.category_label_en
+      categoryName = categoryName.replace(/\s/gi, "")
+
+      if (categoryName === 'visitpages') {
+        // 사이트 방문
+        this.tabMove(1)
+      } else if (categoryName === 'visitspecificpages') {
+        // 특정페이지 방문
+        this.tabMove(2)
+      } else if (categoryName === 'neotarget') {
+        // NEO 타겟
+        this.tabMove(3)
+      } else if (categoryName === 'utmtarget') {
+        // 구글애널리틱스
+        this.tabMove(4)
+      } else if (categoryName === 'purchase') {
+        // 구매
+        this.tabMove(5)
+      } else if (categoryName === 'addtocart') {
+        // 장바구니
+        this.tabMove(6)
+      } else if (categoryName === 'registration') {
+        // 회원가입
+        this.tabMove(7)
+      } else {
+        // 'conversioncomplete', 'conversion1step', 'conversion2step', 'conversion3step', 'conversion4step', 'conversion5step'
+        // 단계별 전환
+        this.tabMove(8)
+      }
+    },
+
     //타겟만들기 카테고리 탭
     tabMove (activeNumber, beforeNumber) {
       let tabArray = ['tabActive1','tabActive2','tabActive3','tabActive4','tabActive5','tabActive6','tabActive7','tabActive8','tabActive9']

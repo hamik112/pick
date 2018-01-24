@@ -3,7 +3,7 @@
 
 		<transition name='modal'>
 			<target-chart v-if="chartModal" @close="chartModal = false"></target-chart>
-			<create-target v-if="makeModal" :makeType="this.makeType" @close="makeModal = false"></create-target>
+			<create-target v-if="makeModal" :makeType="this.makeType" :makeItem="this.makeItem" @close="makeModal = false"></create-target>
 		</transition>
 
 		<transition-group name='modal'>
@@ -40,7 +40,7 @@
 											<div class="target_icon">
 												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
 												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
-												<div class="icon_target" @click="popupOpenBtn('makeModal','modify')"></div>
+												<div class="icon_target" @click="popupOpenBtn('makeModal','modify', item)"></div>
 												<div class="icon_gragh" @click="chartModal = true"></div>
 											</div>
 											<div class="target_info">
@@ -100,6 +100,7 @@
 				chartModal: false,
 				makeModal: false,
 				makeType:'add',
+				makeItem: {},
 
 				targetOn:'total',
 
@@ -273,11 +274,14 @@
 
 				this.selectData.emptyText = item
 			},
-			popupOpenBtn (popupName, type) {
+			popupOpenBtn (popupName, type, item) {
 				//팝업 오픈
 				//popupName = 팝업컴포넌트명, type = add,modify,delete
 				this[popupName] = true
 				if(popupName === 'makeModal') {
+					if (type === 'modify') {
+						this.makeItem = item
+					}
 					this.makeType = type
 				}
 			},
