@@ -203,33 +203,37 @@ export default {
       } else if (this.targetName.length === 0) {
         alert('타겟 이름을 입력해주세요.')
       } else {
-        let params = {
-          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-          target_type: 'visit_site',
-          pixel_id: this.findSelectKey('adAccountPixels'),
-          name: this.targetName,
-          retention_days: this.collectionPeriod,
+        if(confirm('입력한 내용으로 타겟을 생성하겠습니까?') === true) {
+          let params = {
+            fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+            target_type: 'visit_site',
+            pixel_id: this.findSelectKey('adAccountPixels'),
+            name: this.targetName,
+            retention_days: this.collectionPeriod,
 
-          detail: this.findSelectKey('selectUser'),
-          input_percent: this.findSelectKey('selectSub')
-        }
-
-        this.$http.post('/pickdata_account_target/custom_target', params)
-        .then((response) => {
-          var success = response.data.success
-          if (success == "YES") {
-            // success
-            this.$eventBus.$emit('getAccountTarget')
-          } else {
-            alert('사이트방문 타겟 생성 실패')
-            throw('success: ' + success)
+            detail: this.findSelectKey('selectUser'),
+            input_percent: this.findSelectKey('selectSub')
           }
-          this.$emit('close')
-        })
-        .catch(err => {
-          this.$emit('close')
-          console.log('/pickdata_account_target/custom_target: ', err)
-        })
+
+          this.$http.post('/pickdata_account_target/custom_target', params)
+          .then((response) => {
+            var success = response.data.success
+            if (success == "YES") {
+              // success
+              this.$eventBus.$emit('getAccountTarget')
+            } else {
+              alert('사이트방문 타겟 생성 실패')
+              throw('success: ' + success)
+            }
+            this.$emit('close')
+          })
+          .catch(err => {
+            this.$emit('close')
+            console.log('/pickdata_account_target/custom_target: ', err)
+          })
+        } else {
+          return false
+        }
       }
     }
   }

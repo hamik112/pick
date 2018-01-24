@@ -11,12 +11,12 @@
 	.sticker_btn{background:#e7e7e7; height: 28px; line-height: 28px; border-radius: 20px; text-align: center; font-size: 15px; color: #666; margin-bottom: 10px; padding: 0px 10px;
 		img{cursor:pointer;}
 	}
-	.cate_contents_widget{width:625px; margin:0 auto;
+	.cate_contents_widget{width:620px; margin:0 auto;
 		ul{letter-spacing:-5px;
 			&:last-child{
 				li{margin-bottom:0px;}
 			}
-			li{width:150px; height:140px; display:inline-block; vertical-align:middle; letter-spacing:0px; border:$Border_type01; margin:2.5px; color:#999; cursor:pointer;
+			li{width:150px; height:140px; display:inline-block; vertical-align:middle; letter-spacing:0px; border:$Border_type01; color:#999; cursor:pointer;margin-right: 6.6px; margin-bottom: 6.6px;
 				&:hover{border:1px solid #375b95; color:#375b95;}
 				div{height:98px; line-height:98px; text-align:center;
 					img{display: inline-block; vertical-align: middle;}
@@ -84,7 +84,7 @@
 		.tab-nav-widget{width:100%; display:table; border:$Border_type01; position:relative;
 			ul{overflow:hidden;
 				li.active{
-					a{color:#fff; cursor:pointer;
+					a{color:#fff;
 						span{border:1px solid #fff;}
 					}
 				}
@@ -142,7 +142,7 @@
 				&:nth-child(3){background:url(assets/images/common/cate_choice_03_off.jpg) center 30px no-repeat;
 					&:hover{background:url(assets/images/common/cate_choice_03_ho.jpg) center 30px no-repeat;}
 				}
-				&:nth-child(4){background:url(assets/images/common/cate_choice_04_off.jpg) center 30px no-repeat;
+				&:nth-child(4){background:url(assets/images/common/cate_choice_04_off.jpg) center 30px no-repeat; margin-right:0px;
 					&:hover{background:url(assets/images/common/cate_choice_04_ho.jpg) center 30px no-repeat;}
 				}
 				span{padding-top:98px;}
@@ -155,7 +155,7 @@
 			}
 		}
 		.target_pick_02{
-			li{
+			li{margin-bottom:0px;
 				&:nth-child(1){background:url(assets/images/common/cate_choice_05_off.jpg) center 30px no-repeat;
 					&:hover{background:url(assets/images/common/cate_choice_05_ho.jpg) center 30px no-repeat;}
 				}
@@ -165,7 +165,7 @@
 				&:nth-child(3){background:url(assets/images/common/cate_choice_07_off.jpg) center 30px no-repeat;
 					&:hover{background:url(assets/images/common/cate_choice_07_ho.jpg) center 30px no-repeat;}
 				}
-				&:nth-child(4){background:url(assets/images/common/cate_choice_08_off.jpg) center 30px no-repeat;
+				&:nth-child(4){background:url(assets/images/common/cate_choice_08_off.jpg) center 30px no-repeat; margin-right:0px;
 					&:hover{background:url(assets/images/common/cate_choice_08_ho.jpg) center 30px no-repeat;}
 				}
 				span{padding-top:98px;}
@@ -176,6 +176,12 @@
 				&:nth-child(3){background:#375b96 url(assets/images/common/cate_choice_07_on.png) center 30px no-repeat;}
 				&:nth-child(4){background:#375b96 url(assets/images/common/cate_choice_08_on.png) center 30px no-repeat;}
 			}
+		}
+	}
+	.pixel_info{width:620px; margin:0 auto; letter-spacing:-4px; border-top: 1px solid #dadedf; margin-top:10px; padding-top:10px;
+		.pixel_info_title{width: 108px; height: 40px; line-height: 40px;}
+		div{display:inline-block; vertical-align:middle; letter-spacing:0px;
+			.select{width:512px; height:40px; line-height:40px;}
 		}
 	}
 }

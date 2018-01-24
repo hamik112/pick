@@ -33,6 +33,12 @@
           <span>기타</span>
         </li>
       </ul>
+      </div>
+      <div class="pixel_info">
+          <div class="pixel_info_title">사용픽셀</div>
+          <div v-if="subPexel">
+          <ui-select :selectData="this.pexelSub" data-key="pexelSub" :onClick="selectOnClick"></ui-select>
+      </div>
     </div>
     <div class="btn_wrap">
       <button type="button" class="next_btn" @click="confirm()">다음</button>
@@ -41,14 +47,33 @@
 </template>
 
 <script>
+import Select from '@/components/ui/Select'
 export default {
+  components: {
+    'ui-select': Select
+  },
   data () {
     return {
-      categoryName: ''
+      pexelSub: {
+        emptyText: '픽데이터님의 픽셀',
+        textList: [
+          '1',
+          '2',
+          '3'
+        ],
+      },
+      categoryName: '',
+      subPexel:true
     }
   },
 
   methods: {
+    selectOnClick (item) {
+      const key = event.target.closest('.select_btn').getAttribute('data-key')
+      const textCheck = item.replace(/\s/gi, "")
+
+      this[key].emptyText = item
+    },
     selectCategory (name) {
       this.categoryName = name
     },

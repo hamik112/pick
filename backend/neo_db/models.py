@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
+from django.db import connections
 from django.db import models
 from django.db.models import Count
 from utils.common import date_formatter
@@ -132,79 +133,124 @@ class McRoiReport(models.Model):
     centerroiname = models.CharField(db_column='centerRoiName', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     def get_media_roi_report(self, adv_id, account_ids, day=30, adv_info={"adv_id": 0,"adv_name": ""}):
-        print("adv_id : ", adv_id)
-        print("account_ids : ", account_ids)
-        print("adv_info : ", adv_info)
-        print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + str(adv_id))
-        McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
-        print()
-        # roi_report = McRoiReport.objects.using('neo_v1_db').all()
-        roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname').annotate(count=Count('roireportid')).order_by('-count')[:200]
-        # print(roi_report.query)
-        # print(roi_report)
+        # print("adv_id : ", adv_id)
+        # print("account_ids : ", account_ids)
+        # print("adv_info : ", adv_info)
+        # print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + str(adv_id))
+        calday = date_formatter.caldate(day)
+
+        query = '''
+            SELECT centerAccountId, accountName, count(roiReportId) as count
+            FROM MC_ROI_REPORT_ADV_'''+ str(adv_id) +'''
+            WHERE centerAccountId in ''' + str(tuple(account_ids)) + '''
+            AND roiReportDay >= ''' + str(calday) + '''
+            GROUP BY centerAccountId
+            ORDER BY count DESC
+        '''
+
+        cursor = connections['neo_v1_db'].cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
 
         return_data = []
 
-        for roi_obj in roi_report:
+        for roi_obj in result:
             return_data.append({
                 "advid": adv_info.get('adv_id'),
                 "advname": adv_info.get('adv_name'),
-                "centeraccountid":roi_obj.get('centeraccountid'),
-                "accountname": roi_obj.get('accountname'),
-                "count": roi_obj.get('count'),
-                "param" : str(adv_id) + "." + str(roi_obj.get('centeraccountid'))
+                "centeraccountid":roi_obj[0],
+                "accountname": roi_obj[1],
+                "count": roi_obj[2],
+                "param" : str(adv_id) + "." + str(roi_obj[0])
             })
 
         return return_data
 
     def get_campaign_roi_report(self, adv_id, account_ids, day=30, adv_info={"adv_id": 0,"adv_name": ""}):
-        print("adv_id : ", adv_id)
-        print("account_ids : ", account_ids)
-        print("adv_info : ", adv_info)
-        print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + str(adv_id))
-        McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
-        roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname', 'campaignid', 'campaignname').annotate(count=Count('roireportid')).order_by('-count')[:200]
+        # print("get_campaign_roi_report")
+        # print("adv_id : ", adv_id)
+        # print("account_ids : ", account_ids)
+        # print("adv_info : ", adv_info)
+        # print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + str(adv_id))
+        calday = date_formatter.caldate(day)
+
+        query = '''
+            SELECT centerAccountId, accountName, campaignId, campaignName, count(roiReportId) as count
+            FROM MC_ROI_REPORT_ADV_'''+ str(adv_id) +'''
+            WHERE centerAccountId in ''' + str(tuple(account_ids)) + '''
+            AND roiReportDay >= ''' + str(calday) + '''
+            GROUP BY centerAccountId, campaignId
+            ORDER BY count DESC
+        '''
+
+        print(query)
+
+        # McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
+        # roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname', 'campaignid', 'campaignname').annotate(count=Count('roireportid')).order_by('-count')[:200]
         # print(roi_report.query)
         # print(roi_report)
 
+        cursor = connections['neo_v1_db'].cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+
         return_data = []
 
-        for roi_obj in roi_report:
+        for roi_obj in result:
             return_data.append({
                 "advid": adv_info.get('adv_id'),
                 "advname": adv_info.get('adv_name'),
-                "centeraccountid":roi_obj.get('centeraccountid'),
-                "accountname": roi_obj.get('accountname'),
-                "campaignid": roi_obj.get('campaignid'),
-                "campaignname": roi_obj.get('campaignname'),
-                "count": roi_obj.get('count'),
-                "param": str(adv_id) + "." + str(roi_obj.get('centeraccountid')) + "." + str(roi_obj.get('campaignid'))
+                "centeraccountid":roi_obj[0],
+                "accountname": roi_obj[1],
+                "campaignid": roi_obj[2],
+                "campaignname": roi_obj[3],
+                "count": roi_obj[4],
+                "param": str(adv_id) + "." + str(roi_obj[0]) + "." + str(roi_obj[2])
             })
 
         return return_data
 
 
     def get_keyword_roi_report(self, adv_id, account_ids, day=30, adv_info={"adv_id": 0,"adv_name": ""}):
-        print("adv_id : ", adv_id)
-        print("account_ids : ", account_ids)
-        print("adv_info : ", adv_info)
-        print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + "MC_ROI_REPORT_ADV_" + str(adv_id))
-        McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
-        roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname', 'campaignid', 'campaignname', 'keywordid', 'keywordname').annotate(count=Count('roireportid')).order_by('-count')[:200]
+        print("get_keyword_roi_report")
+        # print("adv_id : ", adv_id)
+        # print("account_ids : ", account_ids)
+        # print("adv_info : ", adv_info)
+        # print("get_media_roi_report table : ", "MC_ROI_REPORT_ADV_" + "MC_ROI_REPORT_ADV_" + str(adv_id))
+
+        calday = date_formatter.caldate(day)
+
+        query = '''
+            SELECT centerAccountId, accountName, campaignId, campaignName, keywordId, keywordName, count(roiReportId) as count
+            FROM MC_ROI_REPORT_ADV_'''+ str(adv_id) +'''
+            WHERE roiReportDay >= ''' + str(calday) + '''
+            AND centerAccountId in ''' + str(tuple(account_ids)) + '''
+            GROUP BY centerAccountId, campaignId, keywordId
+            ORDER BY count DESC
+            LIMIT 200
+        '''
+        print(query)
+
+        # McRoiReport._meta.db_table = "MC_ROI_REPORT_ADV_" + str(adv_id)
+        # roi_report = McRoiReport.objects.using('neo_v1_db').filter(roireportday__gte=date_formatter.caldate(day), centeraccountid__in=account_ids).values('centeraccountid', 'accountname', 'campaignid', 'campaignname', 'keywordid', 'keywordname').annotate(count=Count('roireportid')).order_by('-count')[:200]
+        cursor = connections['neo_v1_db'].cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+
         return_data = []
 
-        for roi_obj in roi_report:
+        for roi_obj in result:
             return_data.append({
                 "advid": adv_info.get('adv_id'),
                 "advname": adv_info.get('adv_name'),
-                "centeraccountid":roi_obj.get('centeraccountid'),
-                "accountname": roi_obj.get('accountname'),
-                "campaignid": roi_obj.get('campaignid'),
-                "campaignname": roi_obj.get('campaignname'),
-                "keywordid": roi_obj.get('keywordid'),
-                "keywordname": roi_obj.get('keywordname'),
-                "count": roi_obj.get('count'),
-                "param": str(adv_id) + "." + str(roi_obj.get('centeraccountid')) + "." + str(roi_obj.get('campaignid')) + "." + str(roi_obj.get('keywordid'))
+                "centeraccountid":roi_obj[0],
+                "accountname": roi_obj[1],
+                "campaignid": roi_obj[2],
+                "campaignname": roi_obj[3],
+                "keywordid": roi_obj[4],
+                "keywordname": roi_obj[5],
+                "count": roi_obj[6],
+                "param": str(adv_id) + "." + str(roi_obj[0]) + "." + str(roi_obj[2]) + "." + str(roi_obj[4])
             })
 
         return return_data
