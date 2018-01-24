@@ -3,7 +3,7 @@
 
 		<transition name='modal'>
 			<target-chart v-if="chartModal" @close="chartModal = false"></target-chart>
-			<create-target v-if="makeModal" :makeType="this.makeType" @close="makeModal = false"></create-target>
+			<create-target v-if="makeModal" :makeType="this.makeType" :makeItem="this.makeItem" @close="makeModal = false"></create-target>
 		</transition>
 
 		<transition-group name='modal'>
@@ -22,7 +22,7 @@
 									<li><a id="p-menu1" href="javascript:void(0)" @click="tPickMenu('visitPages')" :class="[(this.targetOn == 'visitPages') ? 'on' : '']">사이트방문<span>{{ targetCount.visitPagesCount }}</span></a></li>
 									<li><a id="p-menu2" href="javascript:void(0)" @click="tPickMenu('visitSpecificPages')" :class="[(this.targetOn == 'visitSpecificPages') ? 'on' : '']">특정페이지 방문<span>{{ targetCount.visitSpecificPagesCount }}</span></a></li>
 									<li><a id="p-menu3" href="javascript:void(0)" @click="tPickMenu('neoTarget')" :class="[(this.targetOn == 'neoTarget') ? 'on' : '']">NEO 타겟<span>{{ targetCount.neoTargetCount }}</span></a></li>
-									<li><a id="p-menu4" href="javascript:void(0)" @click="tPickMenu('utmTarget')" :class="[(this.targetOn == 'utmTarget') ? 'on' : '']">UTM 티켓<span>{{ targetCount.utmTargetCount }}</span></a></li>
+									<li><a id="p-menu4" href="javascript:void(0)" @click="tPickMenu('utmTarget')" :class="[(this.targetOn == 'utmTarget') ? 'on' : '']">구글애널리틱스<span>{{ targetCount.utmTargetCount }}</span></a></li>
 									<li><a id="p-menu5" href="javascript:void(0)" @click="tPickMenu('purchase')" :class="[(this.targetOn == 'purchase') ? 'on' : '']">구매<span>{{ targetCount.purchaseCount }}</span></a></li>
 									<li><a id="p-menu6" href="javascript:void(0)" @click="tPickMenu('addToCart')" :class="[(this.targetOn == 'addToCart') ? 'on' : '']">장바구니<span>{{ targetCount.addToCartCount }}</span></a></li>
 									<li><a id="p-menu7" href="javascript:void(0)" @click="tPickMenu('registration')" :class="[(this.targetOn == 'registration') ? 'on' : '']">회원가입<span>{{ targetCount.registrationCount }}</span></a></li>
@@ -40,8 +40,9 @@
 											<div class="target_icon">
 												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
 												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
-												<div class="icon_target" @click="popupOpenBtn('makeModal','modify')"></div>
+												<div class="icon_target" @click="popupOpenBtn('makeModal','modify', item)"></div>
 												<div class="icon_gragh" @click="chartModal = true"></div>
+												<button>수정</button>
 											</div>
 											<div class="target_info">
 												<p>{{ item.name }}</p>
@@ -100,6 +101,7 @@
 				chartModal: false,
 				makeModal: false,
 				makeType:'add',
+				makeItem: {},
 
 				targetOn:'total',
 
@@ -273,11 +275,14 @@
 
 				this.selectData.emptyText = item
 			},
-			popupOpenBtn (popupName, type) {
+			popupOpenBtn (popupName, type, item) {
 				//팝업 오픈
 				//popupName = 팝업컴포넌트명, type = add,modify,delete
 				this[popupName] = true
 				if(popupName === 'makeModal') {
+					if (type === 'modify') {
+						this.makeItem = item
+					}
 					this.makeType = type
 				}
 			},

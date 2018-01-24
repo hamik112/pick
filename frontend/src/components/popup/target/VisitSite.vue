@@ -16,7 +16,7 @@
           </div>
           <div class="use_date">
             <div>수집 기간 : 최근</div>
-            <div><input type="text" v-model="collectionPeriod" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"><span>일</span></div>
+            <div><input type="text" v-model="collectionPeriod" onkeyup="this.value=this.value.replace(/[^0-9]/g, '')"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
@@ -42,7 +42,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod" onkeyup="this.value=this.value.replace(/[^0-9]/g, '')"><span>일</span>
               </div>
             </div>
           </div>
@@ -96,6 +96,7 @@ export default {
   data () {
     return {
       collectionPeriod: '30',
+      unvisitedPeriod: '1',
       targetName: '',
 
       subSelect: false,
@@ -147,6 +148,16 @@ export default {
       if (day > 180) {
         alert('수집 기간은 최대 180일까지만 가능합니다.')
         this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    unvisitedPeriod (day) {
+      if(day >= this.collectionPeriod) {
+        alert('미방문 기간은 수집 기간보다 작아야합니다.')
+        this.unvisitedPeriod = this.collectionPeriod - 1
       }
     },
 
@@ -187,6 +198,8 @@ export default {
     createVisitSite () {
       if (this.collectionPeriod.length === 0) {
         alert('수집 기간을 입력해주세요.')
+      } else if (this.unvisitedPeriod.length === 0) {
+        alert('미방문 기간을 입력해주세요.')
       } else if (this.targetName.length === 0) {
         alert('타겟 이름을 입력해주세요.')
       } else {
