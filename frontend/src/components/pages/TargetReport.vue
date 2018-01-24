@@ -233,15 +233,15 @@
 															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
 															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
 																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
-																<div :id="'interest-sub-' + index" class="interest_view" >
-																	<ul class="clearfix" v-for="elem in item.interest_list" v-if="elem != ''">
-																		<li>{{ elem }}</li>
+																<div :id="'interest-sub-' + index" class="interest_view">
+																	<ul class="clearfix">
+																		<li v-for="elem in item.interest_list">{{ elem }}</li>
 																	</ul>
 																	<div class="inter_clip_copy">클립보드로 복사하기</div>
 																	<div class="inter_close" @click="tootip('close')">닫기</div>
 																</div>
 															</li>
-															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span>데이터1</span><span>데이터1</span></li>
+															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="elem in item.custom_audience">{{ elem }}</span></li>
 															<!-- <li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">{{ item.custom_audience }}</li> -->
 															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">{{ item.spend }}</li>
 															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
@@ -294,14 +294,14 @@
 																<dl>
 																	<dt></dt>
 																	<dd>
-																		<ul v-for="elem in item.pickdata_custom_pixel_event">
+																		<ul>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">전환완료</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">좋아요</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">공감</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">10초 이상 CPV</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">10초 이상 CPV</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">전환완료가치</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">1단계</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">2단계</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">3단계</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">4단계</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">5단계</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -524,8 +524,8 @@ export default {
 			this.$http.get(url, {
 				params: {
 					account_id: '349408409',
-					since: '2017-09-18',
-					until: '2017-09-19'
+					since: '2016-07-26',
+					until: '2016-07-29'
 				}
 			})
 			.then(res => {
@@ -535,7 +535,6 @@ export default {
 				if (success === "YES") {
 					data.forEach(item => {
 						this.listData.data.push(item)
-						console.log(item)
 					})
 				} else {
 					throw('success: ' + success)
@@ -545,13 +544,37 @@ export default {
 				//this.isPick = true
 				console.error('/ad_set_insights', err)
 			})
-		}
+		},
 
-		// getCustomMappingEvent() {
-		// 	if (elem.custom_name == "구매") {
-		// 		return elem.value
-		// 	} else
-		// }
+		getCustomMappingEvent(elem) {
+			if (elem.custom_name === "구매") {
+				return elem.value
+			} else if (elem.custom_name === "장바구니") {
+				return elem.value
+			} else if (elem.custom_name === "회원가입") {
+				return elem.value
+			} else if (elem.custom_name === "사이트 방문") {
+				return elem.value
+			} else if (elem.custom_name === "특정페이지 방문") {
+				return elem.value
+			} else if (elem.custom_name === "NEO타겟") {
+				return elem.value
+			} else if (elem.custom_name === "UTM타겟") {
+				return elem.value
+			} else if (elem.custom_name === "전환 완료") {
+				return elem.value
+			} else if (elem.custom_name === "전환 1단계") {
+				return elem.value
+			} else if (elem.custom_name === "전환 2단계") {
+				return elem.value
+			} else if (elem.custom_name === "전환 3단계") {
+				return elem.value
+			} else if (elem.custom_name === "전환 4단계") {
+				return elem.value
+			} else {
+				return 0
+			}
+		}
 	}
 }
 </script>

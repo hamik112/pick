@@ -185,10 +185,13 @@ class AdSetInsightByAccount(APIView):
                 if 'flexible_spec' in targeting:
                     flexible_spec = targeting.get('flexible_spec')
                     for fs in flexible_spec:
-                        interests = fs['interests']
-                        for interest in interests:
-                            name = interest['name']
-                            interest_list.append(name)
+                        if 'interests' in fs:
+                            interests = fs['interests']
+                            for interest in interests:
+                                name = interest['name']
+                                interest_list.append(name)
+                        else:
+                            interests = []
                 else:
                     interests = []
 
