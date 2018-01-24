@@ -1,5 +1,8 @@
 <template>
   <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+    <transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+    </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
         <div class="main_title">
@@ -127,12 +130,14 @@
 
 <script>
 import Select from '@/components/ui/Select'
+import Dialog from '@/components/ui/Dialog'
 
 export default {
   name: 'UtmTarget',
 
   components: {
-    'ui-select': Select
+    'ui-select': Select,
+    'ui-dialog':Dialog
   },
 
   props: {
@@ -178,6 +183,14 @@ export default {
         utm_content: [],
         utm_custom: []
       },
+
+      dialogShow:false,
+      dialogData:{
+        emptyText:'sample',
+        type:'confirm',
+        mode:'sample'
+      },
+      nextStage:false,
 
       selectUser: {
         emptyText: '전체 고객',
@@ -240,6 +253,25 @@ export default {
   },
 
   methods: {
+
+    dialogOpen(emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+    dialogOk() {
+      const mode = this.dialogData.mode
+
+      //모드별 동작
+      this.nextStage = true
+      this.dialogShow = false;
+    },
+    dialogCancel() {
+      this.nextStage = false;
+      this.dialogShow = false;
+    },
+
     wTabs (num, obj) {
       const tabs = Object.keys(this[obj])
       for(let i = 0; i < tabs.length; i++) {
@@ -271,7 +303,8 @@ export default {
       //동일 이름 체크
       for(let i = 0; i < gData.length; i++) {
         if(gData[i].name === utmName) {
-          alert('같은 UTM값이 존재합니다.')
+          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+          this.dialogOpen('같은 UTM값이 존재합니다.', 'alert')
           break
           this.inputUtmName = ''
           return false
@@ -354,7 +387,8 @@ export default {
           // success
           this.$eventBus.$emit('getAccountTarget')
         } else {
-          alert('구글애널리틱스 타겟 생성 실패')
+          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+          this.dialogOpen('구글애널리틱스 타겟 생성 실패', 'alert')
           throw('success: ' + success)
         }
         this.$emit('close')

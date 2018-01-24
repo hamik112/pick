@@ -1,5 +1,8 @@
 <template>
   <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+    <transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+    </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
         <div class="main_title">
@@ -59,12 +62,14 @@
 
 <script>
 import Select from '@/components/ui/Select'
+import Dialog from '@/components/ui/Dialog'
 
 export default {
   name: 'Purchase',
 
   components: {
-    'ui-select': Select
+    'ui-select': Select,
+    'ui-dialog':Dialog
   },
 
   props: {
@@ -103,6 +108,14 @@ export default {
       subInputPurchaseCount: false,
       subInputPurchaseAmount: false,
 
+      dialogShow:false,
+      dialogData:{
+        emptyText:'sample',
+        type:'confirm',
+        mode:'sample'
+      },
+      nextStage:false,
+
       selectPurchaseUser: {
         emptyText: '전체 고객',
         textList: [
@@ -120,6 +133,25 @@ export default {
   },
 
   methods: {
+    dialogOpen(emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+    dialogOk() {
+      const mode = this.dialogData.mode
+
+      //모드별 동작
+      this.nextStage = true
+      this.dialogShow = false;
+    },
+    dialogCancel() {
+      this.nextStage = false;
+      this.dialogShow = false;
+    },
+
+
     selectOnClick (item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
@@ -167,7 +199,8 @@ export default {
           // success
           this.$eventBus.$emit('getAccountTarget')
         } else {
-          alert('구매 타겟 생성 실패')
+          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+          this.dialogOpen('구매 타겟 생성 실패', 'alert')
           throw('success: ' + success)
         }
         this.$emit('close')
