@@ -250,12 +250,12 @@ class AdSetInsightByAccount(APIView):
                 result['spend'] = spend
                 result['clicks'] = clicks
                 result['inline_link_clicks'] = inline_link_clicks
-                result['cpc'] = cpc
-                result['ctr'] = ctr
-                result['cpp'] = cpp
+                result['cpc'] = round(cpc, 2)
+                result['ctr'] = round(ctr, 2)
+                result['cpp'] = round(cpp, 2)
                 result['conversions'] = conversions
-                result['frequency'] = frequency
-                result['inline_link_click_ctr'] = inline_link_click_ctr
+                result['frequency'] = round(frequency, 2)
+                result['inline_link_click_ctr'] = round(inline_link_click_ctr, 2)
                 result['pickdata_custom_pixel_event'] = []
 
                 # Custom Event 계산 추가

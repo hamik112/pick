@@ -293,7 +293,7 @@
 																<dl>
 																	<dt></dt>
 																	<dd>
-																		<ul>
+																		<ul v-for="elem in item.pickdata_custom_pixel_event">
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">전환완료</li>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">좋아요</li>
@@ -544,6 +544,12 @@ export default {
 				console.error('/ad_set_insights', err)
 			})
 		}
+
+		// getCustomMappingEvent() {
+		// 	if (elem.custom_name == "구매") {
+		// 		return elem.value
+		// 	} else
+		// }
 	}
 }
 </script>
