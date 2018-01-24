@@ -52,6 +52,7 @@
               :isShow="tabAction.tabActive2.show"
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
+              :makeType="this.makeType"
               @close="$emit('close')"></visit-site>
 
               <!-- 특정 페이지 방문 탭 -->
@@ -59,6 +60,7 @@
               :isShow="tabAction.tabActive3.show"
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
+              :makeType="this.makeType"
               @close="$emit('close')"></visit-specific-pages>
 
               <!-- 네오 탭 -->
@@ -66,6 +68,7 @@
               :isShow="tabAction.tabActive4.show"
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
+              :makeType="this.makeType"
               @close="$emit('close')"></neo-target>
 
               <!-- 구글애널리틱스 탭 -->
@@ -73,6 +76,7 @@
               :isShow="tabAction.tabActive5.show"
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
+              :makeType="this.makeType"
               @close="$emit('close')"></utm-target>
 
               <!-- 구매 탭 -->
@@ -80,6 +84,7 @@
               :isShow="tabAction.tabActive6.show"
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
+              :makeType="this.makeType"
               @close="$emit('close')"></purchase>
 
               <!-- 장바구니 탭 -->
@@ -87,6 +92,7 @@
               :isShow="tabAction.tabActive7.show"
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
+              :makeType="this.makeType"
               @close="$emit('close')"></add-to-cart>
 
               <!-- 회원가입 탭 -->
@@ -94,6 +100,7 @@
               :isShow="tabAction.tabActive8.show"
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
+              :makeType="this.makeType"
               @close="$emit('close')"></registration>
 
               <!-- 단계별 전환 -->
@@ -101,6 +108,7 @@
               :isShow="tabAction.tabActive9.show"
               :adAccountPixels="this.adAccountPixels"
               :tabMove="tabMove"
+              :makeType="this.makeType"
               @close="$emit('close')"></conversion>
 
             </div>
@@ -137,6 +145,11 @@ export default {
     'add-to-cart': AddToCart,
     'registration': Registration,
     'conversion': Conversion
+  },
+  props: {
+    makeType: {
+      type:String
+    }
   },
   mounted() {
     let emptyText = ''

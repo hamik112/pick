@@ -3,7 +3,7 @@
 
 		<transition name='modal'>
 			<TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
-			<TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
+			<TargetMake1 v-if="makeModal" :makeType="this.makeType" @close="makeModal = false"></TargetMake1>
 		</transition>
 
 		<transition-group name='modal'>
@@ -32,7 +32,7 @@
 							<div class="target_contents_wrap">
 								<div class="target_setup">
 									<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-									<button type="button" @click="makeModal1 = true">타겟만들기</button>
+									<button type="button" @click="popupOpenBtn('makeModal','add')">타겟만들기</button>
 								</div>
 								<div class="target_contents">
 									<ul>
@@ -40,7 +40,7 @@
 											<div class="target_icon">
 												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
 												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
-												<div class="icon_target" @click="makeModal1 = true"></div>
+												<div class="icon_target" @click="popupOpenBtn('makeModal','modify')"></div>
 												<div class="icon_gragh" @click="chartModal = true"></div>
 											</div>
 											<div class="target_info">
@@ -54,7 +54,7 @@
 												<p v-if="item.description.option != ''">{{ item.description.option }}</p>
 											</div>
 										</li>
-										<li class="target_last"><a href="javascript:void(0);" @click="makeModal1 = true"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
+										<li class="target_last"><a href="javascript:void(0);" @click="popupOpenBtn('makeModal','add')"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
 									</ul>
 								</div>
 
@@ -95,12 +95,15 @@
 
 		data () {
 			return {
+
 				setupPop: false,
 				pixelNone: false,
 				chartModal: false,
-				makeModal1: false,
-				makeModal2: false,
+				makeModal: false,
+				makeType:'add',
+
 				targetOn:'total',
+
 				selectData: {
 					emptyText: '전체보기',
 					textList: [
@@ -112,12 +115,14 @@
 						'인구통계데이터가 있는 타겟만 보기'
 					]
 				},
+
 				itemObject: {
 					iconTargetClass: {
 						iconTarget: true,
 						on: false
 					}
 				},
+
 				targetList: {
 					total: [],
 					registration: [],
@@ -129,6 +134,7 @@
 					purchase: [],
 					neoTarget: []
 				},
+
 				targetCount: {
 					totalCount: 0,
 					registrationCount: 0,
@@ -140,10 +146,12 @@
 					purchaseCount: 0,
 					neoTargetCount: 0
 				},
+
 				isPick: false,
 				isLoading: false,
 				loadingTitle: '',
 				loadingDescription: ''
+
 			}
 		},
 
@@ -265,6 +273,14 @@
 
 
 				this.selectData.emptyText = item
+			},
+			popupOpenBtn(popupName, type) {
+				//팝업 오픈
+				//popupName = 팝업컴포넌트명, type = add,modify,delete
+				this[popupName] = true
+				if(popupName === 'makeModal') {
+					this.makeType = type
+				}
 			},
 			tPickMenu(type) {
 				//매뉴 온오프 or 리스트 필터
