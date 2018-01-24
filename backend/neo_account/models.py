@@ -90,7 +90,7 @@ class NeoAccount(models.Model):
             dic_neo_accs = {}
 
             for neo_adv in neo_advs:
-                print(neo_adv.advertiserid)
+                # print(neo_adv.advertiserid)
                 dic_neo_advs[neo_adv.advertiserid] = neo_adv
             for neo_acc in neo_accs:
                 dic_neo_accs[neo_acc.centeraccountid] = neo_acc
