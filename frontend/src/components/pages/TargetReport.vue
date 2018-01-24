@@ -241,7 +241,8 @@
 																	<div class="inter_close" @click="tootip('close')">닫기</div>
 																</div>
 															</li>
-															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show" >{{ item.custom_audience }}</li>
+															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span>데이터1</span><span>데이터1</span></li>
+															<!-- <li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">{{ item.custom_audience }}</li> -->
 															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">{{ item.spend }}</li>
 															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
 															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ item.reach }}</li>
@@ -534,6 +535,7 @@ export default {
 				if (success === "YES") {
 					data.forEach(item => {
 						this.listData.data.push(item)
+						console.log(item)
 					})
 				} else {
 					throw('success: ' + success)
