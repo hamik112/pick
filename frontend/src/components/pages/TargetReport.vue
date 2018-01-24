@@ -233,7 +233,7 @@
 															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
 															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
 																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
-																<div :id="'interest-sub-' + index" class="interest_view">
+																<div :id="'interest-sub-' + index" class="interest_view" v-if="item.interest_list.length != 0">
 																	<ul class="clearfix">
 																		<li v-for="elem in item.interest_list">{{ elem }}</li>
 																	</ul>
@@ -241,8 +241,7 @@
 																	<div class="inter_close" @click="tootip('close')">닫기</div>
 																</div>
 															</li>
-															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="elem in item.custom_audience">{{ elem }}</span></li>
-															<!-- <li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">{{ item.custom_audience }}</li> -->
+															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
 															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">{{ item.spend }}</li>
 															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
 															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ item.reach }}</li>
@@ -448,14 +447,16 @@ export default {
 			const tools = document.getElementsByClassName('interest_view')
 			const subId = event.target.className
 			const subEl = document.getElementById(subId)
-			for(let i = 0; i < tools.length; i++) {
-				tools[i].style = "display:none"
-			}
-			if(index != 'close') {
-				if(subEl.style.display == 'block') {
-					subEl.style = "display:none"
-				}else{
-					subEl.style = "display:block"
+			if (subEl !== null) {
+				for(let i = 0; i < tools.length; i++) {
+					tools[i].style = "display:none"
+				}
+				if(index != 'close') {
+					if(subEl.style.display == 'block') {
+						subEl.style = "display:none"
+					}else{
+						subEl.style = "display:block"
+					}
 				}
 			}
 		},

@@ -202,7 +202,7 @@ class AdSetInsightByAccount(APIView):
                         name = ca['name']
                         custom_audience_list.append(name)
                 else:
-                    custom_audience_list = []
+                    custom_audiences = []
 
                 g = ''
                 if 'genders' in targeting:
