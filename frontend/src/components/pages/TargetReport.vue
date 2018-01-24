@@ -233,18 +233,9 @@
 															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
 															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
 																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
-																<div :id="'interest-sub-' + index" class="interest_view">
-																	<ul class="clearfix">
-																		<li>겉옷</li>
-																		<li>데님</li>
-																		<li>미니스커트</li>
-																		<li>민소매셔츠</li>
-																		<li>바지</li>
-																		<li>반바지</li>
-																		<li>블라우스</li>
-																		<li>셔츠</li>
-																		<li>쇼핑 및 패션</li>
-																		<li>슈트</li>
+																<div :id="'interest-sub-' + index" class="interest_view" >
+																	<ul class="clearfix" v-for="elem in item.interest_list" v-if="elem != ''">
+																		<li>{{ elem }}</li>
 																	</ul>
 																	<div class="inter_clip_copy">클립보드로 복사하기</div>
 																	<div class="inter_close" @click="tootip('close')">닫기</div>
@@ -254,7 +245,7 @@
 															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">{{ item.spend }}</li>
 															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
 															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ item.reach }}</li>
-															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">3초 이상 CPV</li>
+															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ item.frequency }}</li>
 															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
 																	<dt></dt>
