@@ -1,5 +1,8 @@
 <template>
   <div id="tab-list-1" class="basic-tab-contents category_setup clearfix">
+    <transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+    </transition>
     <div class="cate_prologue">
       <strong>현재 선택된 광고 계정의 카테고리를 지정해주세요</strong>
       <p>통계 및 계정 유형 분석을 위해 반드시 선택하셔야 합니다.</p>
@@ -41,21 +44,54 @@
 </template>
 
 <script>
+import Dialog from '@/components/ui/Dialog'
+
 export default {
+  components:{
+    'ui-dialog':Dialog
+  },
   data () {
     return {
+      dialogShow:false,
+      dialogData:{
+        emptyText:'sample',
+        type:'confirm',
+        mode:'sample'
+      },
+      nextStage:false,
       categoryName: ''
     }
   },
 
   methods: {
+
+    dialogOpen(emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+    dialogOk() {
+      const mode = this.dialogData.mode
+
+      //모드별 동작
+
+      this.nextStage = true
+      this.dialogShow = false;
+    },
+    dialogCancel() {
+      this.nextStage = false;
+      this.dialogShow = false;
+    },
+
     selectCategory (name) {
       this.categoryName = name
     },
 
     confirm () {
       if (this.categoryName === '') {
-        alert('통계 및 계정 유형 분석을 선택해주세요.')
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('통계 및 계정 유형 분석을 선택해주세요.', 'alert')
       } else {
         if(this.categoryName === '대출') {
           this.accountCategoryId = 1

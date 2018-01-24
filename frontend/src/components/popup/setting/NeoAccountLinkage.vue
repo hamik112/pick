@@ -1,5 +1,8 @@
 <template>
   <div id="tab-list-2" class="basic-tab-contents clearfix">
+  	<transition name="modal">
+	  <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+	</transition>
     <div class="cate_prologue">
       <strong>연결될 네오 계정을 선택해 주세요.</strong>
       <p>연결 가능한 네오 계정이 없다면 다음을 클릭해 주세요.</p>
@@ -71,14 +74,20 @@
       <!-- 이전 / 다음 -->
       <div class="btn_wrap">
         <button class="before_btn" @click="backToSetCategory()">이전</button>
-        <button type="button" class="next_btn" @click="setNeoAccountLinkage()">다음</button>
+        <button type="button" class="next_btn" @click="setNeoAccountLinkage('step2')">다음</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import Dialog from '@/components/ui/Dialog'
+
 export default {
+  components:{
+  	'ui-dialog':Dialog
+  },
   created () {
 		// 네오 계정 리스트
 		this.$http.get('/neo_db/search_neo_accounts?adv_name')
@@ -126,6 +135,13 @@ export default {
 
   data () {
     return {
+			dialogShow:false,
+			dialogData:{
+				emptyText:'sample',
+				type:'confirm',
+				mode:'sample'
+			},
+			nextStage:false,
 			neoAdvIds: [],
 			neoAccountIds: [],
 			advs: [],
@@ -138,6 +154,32 @@ export default {
   },
 
   methods: {
+
+
+		dialogOpen(emptyText, type, mode) {
+			this.dialogData['emptyText'] = emptyText
+			this.dialogData['type'] = type
+			this.dialogData['mode'] = mode
+			this.dialogShow = true;
+		},
+		dialogOk() {
+			const mode = this.dialogData.mode
+
+			//모드별 동작
+			if(mode == 'step2') {
+				//다음스텝
+				this.setNeoAccountLinkageNextStep()
+			}
+
+			this.nextStage = true
+			this.dialogShow = false;
+		},
+		dialogCancel() {
+			this.nextStage = false;
+			this.dialogShow = false;
+		},
+
+
 		checkFilter (beforeAdvs) {
 			// this[beforeAdvs] === this['advs' || 'linkedAdvs']
 			let items = this[beforeAdvs]
@@ -213,22 +255,23 @@ export default {
       this.$emit('backToSetCategory', currentStep)
     },
 
-    setNeoAccountLinkage () {
+    setNeoAccountLinkage (mode) {
       if(this.linkedAdvs.length == 0) {
-        if(confirm('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?') === false) {
-          return false
-        }
+      	//컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+      	this.dialogOpen('선택된 네오 계정이 없습니다. 계속 진행하시겠습니까?', 'confirm', mode)
       } else {
         // 추가된 네오 계정 리스트
         for(let i = 0; i < this.linkedAdvs.length; i++) {
           this.neoAdvIds.push(this.linkedAdvs[i].advertiserid)
           this.neoAccountIds.push(this.linkedAdvs[i].id)
         }
+        this.setNeoAccountLinkageNextStep()
       }
-
-      let currentStep = [false, false, true]
-      this.$emit('setNeoAccountLinkage', currentStep, this.neoAdvIds, this.neoAccountIds)
-    }
+    },
+	setNeoAccountLinkageNextStep() {
+		let currentStep = [false, false, true]
+      	this.$emit('setNeoAccountLinkage', currentStep, this.neoAdvIds, this.neoAccountIds)
+	}
   },
 
   computed: {

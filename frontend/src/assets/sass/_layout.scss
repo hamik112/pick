@@ -415,3 +415,21 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 	}
 
 }
+
+
+
+/* 팝업 얼랏 */
+.check_alert{
+	.alert_top{width:352px; text-align:center; padding:40px 0px;
+		p{ color:#333; line-height:1.4;
+			&:first-child{font-size:16px; font-weight:bold;}
+			&:last-child{font-size:14px;}
+		}
+	}
+	.alert_bottom{font-weight:bold; font-size:16px; overflow:hidden;
+		button{float:left; width:176px; height:56px; line-height:56px; text-align:center; cursor:pointer;}
+		.alert_close{background:#f7f7f7; color:#999;}
+		.alert_complete{background:#222933; color:#fff;}
+		.complete_v2{width:100%;}
+	}
+}
