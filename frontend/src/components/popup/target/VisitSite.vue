@@ -5,28 +5,28 @@
         <div class="main_title">
           <div><img src="../../../assets/images/target/target_logo_01.png" alt="neo"></div>
           <div class="title_info">
-            <p>사이트방문</p>
+            <p>사이트 방문</p>
             <p>타겟의 속성을 정의하세요</p>
           </div>
         </div>
         <div class="use_wrap">
           <div class="use_select">
-            <div class="contents_title">사용픽셀</div>
+            <div class="contents_title">사용 픽셀</div>
             <ui-select :selectData="adAccountPixels" data-key="adAccountPixels" :onClick="selectOnClick"></ui-select>
           </div>
           <div class="use_date">
-            <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
+            <div>수집 기간 : 최근</div>
+            <div><input type="text" v-model="collectionPeriod" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
-          <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="visitSiteName"></div>
+          <div class="contents_title">타겟 이름</div>
+          <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>12,000</span>명
+            <span>-</span>명
           </div>
         </div>
       </div>
@@ -96,10 +96,10 @@ export default {
   data () {
     return {
       collectionPeriod: '30',
-      visitSiteName: '',
+      targetName: '',
 
-      subSelect:false,
-      subInput:false,
+      subSelect: false,
+      subInput: false,
 
       selectUser: {
         emptyText: '전체 고객',
@@ -147,8 +147,13 @@ export default {
       if (day > 180) {
         alert('수집 기간은 최대 180일까지만 가능합니다.')
         this.collectionPeriod = 180
-      } else {
-        this.collectionPeriod = day
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        alert('타겟 이름은 최대 48자까지만 가능합니다.')
+        this.targetName = name.substr(0,48)
       }
     }
   },
@@ -180,33 +185,39 @@ export default {
     },
 
     createVisitSite () {
-      let params = {
-        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'visit_site',
-        pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.visitSiteName,
-        retention_days: this.collectionPeriod,
+      if (this.collectionPeriod.length === 0) {
+        alert('수집 기간을 입력해주세요.')
+      } else if (this.targetName.length === 0) {
+        alert('타겟 이름을 입력해주세요.')
+      } else {
+        let params = {
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'visit_site',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
 
-        detail: this.findSelectKey('selectUser'),
-        input_percent: this.findSelectKey('selectSub')
-      }
-
-      this.$http.post('/pickdata_account_target/custom_target', params)
-      .then((response) => {
-        var success = response.data.success
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          alert('사이트방문 타겟 생성 실패')
-          throw('success: ' + success)
+          detail: this.findSelectKey('selectUser'),
+          input_percent: this.findSelectKey('selectSub')
         }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target: ', err)
-      })
+
+        this.$http.post('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            alert('사이트방문 타겟 생성 실패')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target: ', err)
+        })
+      }
     }
   }
 }
