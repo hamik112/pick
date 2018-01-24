@@ -131,18 +131,6 @@
 																<dd>
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 View</span>
-																			<span class="sort_btn"></span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 VTR</span>
-																			<span class="sort_btn"></span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 CPV</span>
-																			<span class="sort_btn"></span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 View</span>
 																			<span class="sort_btn"></span>
 																		</li>
@@ -152,6 +140,18 @@
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 CPV</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>30초 이상 View</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>30초 이상 VTR</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>30초 이상 CPV</span>
 																			<span class="sort_btn"></span>
 																		</li>
 																	</ul>
@@ -232,36 +232,27 @@
 															<li class="line-5" v-if="sortSelectData.listData[4].setting.show">{{ item.age }} 세</li>
 															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
 															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
-																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 번</span>
-																<div :id="'interest-sub-' + index" class="interest_view">
-																	<ul class="clearfix">
-																		<li>겉옷</li>
-																		<li>데님</li>
-																		<li>미니스커트</li>
-																		<li>민소매셔츠</li>
-																		<li>바지</li>
-																		<li>반바지</li>
-																		<li>블라우스</li>
-																		<li>셔츠</li>
-																		<li>쇼핑 및 패션</li>
-																		<li>슈트</li>
+																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
+																<div :id="'interest-sub-' + index" class="interest_view" >
+																	<ul class="clearfix" v-for="elem in item.interest_list" v-if="elem != ''">
+																		<li>{{ elem }}</li>
 																	</ul>
 																	<div class="inter_clip_copy">클립보드로 복사하기</div>
 																	<div class="inter_close" @click="tootip('close')">닫기</div>
 																</div>
 															</li>
-															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">맛춤타겟</li>
-															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">광고비</li>
+															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show" >{{ item.custom_audience }}</li>
+															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">{{ item.spend }}</li>
 															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
-															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">도달</li>
-															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">3초 이상 CPV</li>
+															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ item.reach }}</li>
+															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ item.frequency }}</li>
 															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li>{{ item.link_click }}</li>
-																			<li>{{ item.ctr }}</li>
+																			<li>{{ item.inline_link_clicks }}</li>
+																			<li>{{ item.inline_link_click_ctr }}</li>
 																			<li>{{ item.cpc }}</li>
 																		</ul>
 																	</dd>
@@ -287,10 +278,10 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">좋아요</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">댓글</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">좋아요</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">댓글</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">공감</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">10초 이상 CPV</li>
 																		</ul>
@@ -303,7 +294,7 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">좋아요</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">전환완료</li>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">좋아요</li>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
@@ -379,7 +370,9 @@ export default {
 	beforeDestroy () {
 		window.removeEventListener('resize', this.wResize)
 	},
-
+	created () {
+		this.getGridData()
+	},
 	data () {
 		return {
 			categorySelectData: {
@@ -412,118 +405,7 @@ export default {
 			},
 
 			listData:{
-				data: [
-					{
-						ctr: 1.4480365,
-						'offsite_conversion.fb_pixel_purchase': {
-							name: "Purchase",
-							value: 28
-						},
-						video_view: 6323,
-						post_engagement: 7337,
-						adset_id: "6094357712857",
-						'offsite_conversion.fb_pixel_add_to_cart': {
-							name: "AddToCart",
-							value: 113
-						},
-						impressions: 78272,
-						clicks: 1135,
-						age: "21-54",
-						gender: "all",
-						offsite_conversion: 286,
-						cpc: 387.2416865,
-						report_date: "2018-01-13 ~ 2018-01-14",
-						reach: 43202,
-						conversions: 7481,
-						post_reaction: 12,
-						'offsite_conversion.fb_pixel_add_payment_info': {
-							name: "AddPaymentInfo",
-							value: 2
-						},
-						objective: "CONVERSIONS",
-						page_engagement: 7338,
-						landing_page_view: 485,
-						link_click: 995,
-						spend: 437104,
-						interest_num: 0,
-						'offsite_conversion.custom.164727177414087': {
-							name: "온리유 발급",
-							value: 2
-						},
-						'offsite_conversion.custom.601949109998868': {
-							name: "톡톡카드_자세히보기",
-							value: 28
-						},
-						like: 1,
-						adset_name: "톡톡_방문자_30일",
-						cpp: 10118.428927,
-						video_30_sec_watched_actions: 990,
-						video_10_sec_watched_actions: 1237,
-						campaign_name: "전환_톡톡_F",
-						inline_link_clicks: 995,
-						'offsite_conversion.custom.741750505927957': {
-							name: "톡톡카드_발급",
-							value: 113
-						},
-						post: 7
-					},
-					{
-						ctr: 1.4480365,
-						'offsite_conversion.fb_pixel_purchase': {
-							name: "Purchase",
-							value: 28
-						},
-						video_view: 6323,
-						post_engagement: 7337,
-						adset_id: "6094357712857",
-						'offsite_conversion.fb_pixel_add_to_cart': {
-							name: "AddToCart",
-							value: 113
-						},
-						impressions: 78272,
-						clicks: 1135,
-						age: "21-54",
-						gender: "all",
-						offsite_conversion: 286,
-						cpc: 387.2416865,
-						report_date: "2018-01-13 ~ 2018-01-14",
-						reach: 43202,
-						conversions: 7481,
-						post_reaction: 12,
-						'offsite_conversion.fb_pixel_add_payment_info': {
-							name: "AddPaymentInfo",
-							value: 2
-						},
-						objective: "CONVERSIONS",
-						page_engagement: 7338,
-						landing_page_view: 485,
-						link_click: 995,
-						spend: 437104,
-						interest_num: 0,
-						'offsite_conversion.custom.164727177414087': {
-							name: "온리유 발급",
-							value: 2
-						},
-						'offsite_conversion.custom.601949109998868': {
-							name: "톡톡카드_자세히보기",
-							value: 28
-						},
-						like: 1,
-						adset_name: "톡톡_방문자_30일",
-						cpp: 10118.428927,
-						video_30_sec_watched_actions: 990,
-						video_10_sec_watched_actions: 1237,
-						campaign_name: "전환_톡톡_F",
-						inline_link_clicks: 995,
-						'offsite_conversion.custom.741750505927957': {
-							name: "톡톡카드_발급",
-							value: 113
-						},
-						post: 7
-					}
-				],
-				total_count: 1,
-				success: "YES"
+				data: []
 			},
 
 			tablesAutoWidth:4880,
@@ -634,6 +516,33 @@ export default {
 		},
 		dc (e) {
 			this.show = this.$el.contains(e.target) && !this.disabled
+		},
+
+		getGridData() {
+			let url = '/ad_set_insights'
+			this.$http.get(url, {
+				params: {
+					account_id: '349408409',
+					since: '2017-09-18',
+					until: '2017-09-19'
+				}
+			})
+			.then(res => {
+				const response = res.data
+				const data = response.data
+				const success = response.success
+				if (success === "YES") {
+					data.forEach(item => {
+						this.listData.data.push(item)
+					})
+				} else {
+					throw('success: ' + success)
+				}
+			})
+			.catch(err => {
+				//this.isPick = true
+				console.error('/ad_set_insights', err)
+			})
 		}
 	}
 }

@@ -40,6 +40,20 @@ class AdSetInsightByAccount(APIView):
             ad_set_insights = None
 
             fb_account_id = request.query_params.get('account_id', '0')
+            page = request.query_params.get('page', '1')
+            start = request.query_params.get('start', '0')
+            limit = request.query_params.get('limit', '25')
+
+            # 13일 14일 포함 확인
+            since = request.query_params.get('since', '2018-01-13')
+            until = request.query_params.get('until', '2018-01-14')
+            # since = '2017-12-14'
+            # until = '2017-12-15'
+            start = datetime.strptime(since, '%Y-%m-%d')
+            end = datetime.strptime(until, '%Y-%m-%d')
+            diff = end - start
+            date_diff = diff.days + 1
+
             account = FbAdAccount.find_by_ad_account_id(FbAdAccount, 'act_'+fb_account_id)
             if fb_account_id == None or account == None:
                 raise Exception("Not Existing FbAdAccount.")
@@ -59,21 +73,6 @@ class AdSetInsightByAccount(APIView):
 
             print(pixel_mapping_category_list)
 
-            page = request.query_params.get('page', '1')
-            start = request.query_params.get('start', '0')
-            limit = request.query_params.get('limit', '25')
-
-            # 13일 14일 포함 확인
-            since = request.query_params.get('since', '2018-01-13')
-            until = request.query_params.get('until', '2018-01-14')
-
-            # since = '2017-12-14'
-            # until = '2017-12-15'
-            start = datetime.strptime(since, '%Y-%m-%d')
-            end = datetime.strptime(until, '%Y-%m-%d')
-            diff = end - start
-            date_diff = diff.days + 1
-
             # TODO 기간 나타내는 방법
             ad_set_insights = AdSetInsight.objects.filter(account_id=fb_account_id, date_stop__range=(since, until)
                                                             ).values('adset_id'
@@ -92,7 +91,7 @@ class AdSetInsightByAccount(APIView):
                                                             inline_link_click_ctr=Sum('inline_link_click_ctr')/int(date_diff)
                                                             ).order_by('adset_id')
 
-            # Custom Event SORT/SUM
+            # Custom Event CUSTOM SORT/SUM
             actions_insights = AdSetInsight.objects.filter(account_id=fb_account_id,date_stop__range=(since,until)).values('adset_id', 'date_stop', 'actions', 'video_10_sec_watched_actions', 'video_30_sec_watched_actions')
             actions_insights_list = []
             video_10_sec_insights_list = []
@@ -366,7 +365,7 @@ class AdSetInsightByAccount(APIView):
                         result['value'] = items
                         data[key] = result
                     if 'fb_pixel_custom' in key:
-                        result['name'] = 'Custom'
+                        result['name'] = 'CustomBehavior'
                         result['value'] = items
                         data[key] = result
 
