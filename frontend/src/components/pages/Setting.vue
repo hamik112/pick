@@ -1,7 +1,7 @@
 <template>
 	<div id="main_wrap" class="clearfix">
 		<transition name='modal'>
-			<advertising-setup v-if="popupStatus" @close="popupStatus = false"></advertising-setup>
+			<advertising-account-setting v-if="popupStatus" @close="popupStatus = false"></advertising-account-setting>
 		</transition>
 		<div id="container">
 			<div id="container_wrap">
@@ -37,12 +37,13 @@
 </template>
 
 <script>
-import AdvertisingSetup from '@/components/popup/Advertising_setup'
+import AdvertisingAccountSetting from '@/components/popup/AdvertisingAccountSetting'
 
 export default {
-  name: 'Setting',
+	name: 'Setting',
+	
   components: {
-		AdvertisingSetup
+		AdvertisingAccountSetting
 	},
 	
 	created () {

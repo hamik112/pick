@@ -2,13 +2,13 @@
 	<div id="main_wrap" class="clearfix" >
 
 		<transition name='modal'>
-			<TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
-			<TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
+			<target-chart v-if="chartModal" @close="chartModal = false"></target-chart>
+			<create-target v-if="makeModal" :makeType="this.makeType" @close="makeModal = false"></create-target>
 		</transition>
 
 		<transition-group name='modal'>
-			<SetupPop v-if="setupPop" @close="setupPop = false" key="setup"></SetupPop>
-			<PixelNone v-if="pixelNone" @close="pixelNone = false" key="pixel"></PixelNone>
+			<advertising-account-setting v-if="setupPop" @close="setupPop = false" key="setup"></advertising-account-setting>
+			<not-available v-if="pixelNone" @close="pixelNone = false" key="pixel"></not-available>
 		</transition-group>
 
 		<div id="container" v-show="isPick">
@@ -32,7 +32,7 @@
 							<div class="target_contents_wrap">
 								<div class="target_setup">
 									<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-									<button type="button" @click="makeModal1 = true">타겟만들기</button>
+									<button type="button" @click="popupOpenBtn('makeModal','add')">타겟만들기</button>
 								</div>
 								<div class="target_contents">
 									<ul>
@@ -40,7 +40,7 @@
 											<div class="target_icon">
 												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
 												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
-												<div class="icon_target" @click="makeModal1 = true"></div>
+												<div class="icon_target" @click="popupOpenBtn('makeModal','modify')"></div>
 												<div class="icon_gragh" @click="chartModal = true"></div>
 											</div>
 											<div class="target_info">
@@ -54,7 +54,7 @@
 												<p v-if="item.description.option != ''">{{ item.description.option }}</p>
 											</div>
 										</li>
-										<li class="target_last"><a href="javascript:void(0);" @click="makeModal1 = true"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
+										<li class="target_last"><a href="javascript:void(0);" @click="popupOpenBtn('makeModal','add')"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
 									</ul>
 								</div>
 
@@ -69,28 +69,28 @@
 </template>
 
 <script>
-	// 팝업
-	import TargetChartPop from '@/components/popup/Target_chart'
-	import TargetMake1 from '@/components/popup/Target_make_01'
+	// Popup
+	import TargetChart from '@/components/popup/TargetChart'
+	import CreateTarget from '@/components/popup/CreateTarget'
+	import AdvertisingAccountSetting from '@/components/popup/AdvertisingAccountSetting'
+	import NotAvailable from '@/components/popup/NotAvailable'
+
 	// UI
 	import Select from '@/components/ui/Select'
 	import Calendar from '@/components/ui/Calendar'
 	import Loading from '@/components/ui/Loading'
 
-	import SetupPop from '@/components/popup/Advertising_setup'
-	import PixelNone from '@/components/popup/Target_not_available'
-
 	export default {
 		name: 'TargetPick',
 
 		components: {
-			'TargetChartPop': TargetChartPop,
-			'TargetMake1': TargetMake1,
+			TargetChart,
+			CreateTarget,
+			AdvertisingAccountSetting,
+			NotAvailable,
 			'ui-select': Select,
 			'ui-calendar': Calendar,
 			'ui-loading': Loading,
-			'SetupPop': SetupPop,
-			'PixelNone': PixelNone
 		},
 
 		data () {
@@ -98,9 +98,11 @@
 				setupPop: false,
 				pixelNone: false,
 				chartModal: false,
-				makeModal1: false,
-				makeModal2: false,
+				makeModal: false,
+				makeType:'add',
+
 				targetOn:'total',
+
 				selectData: {
 					emptyText: '전체보기',
 					textList: [
@@ -112,12 +114,14 @@
 						'인구통계데이터가 있는 타겟만 보기'
 					]
 				},
+
 				itemObject: {
 					iconTargetClass: {
 						iconTarget: true,
 						on: false
 					}
 				},
+
 				targetList: {
 					total: [],
 					registration: [],
@@ -129,6 +133,7 @@
 					purchase: [],
 					neoTarget: []
 				},
+
 				targetCount: {
 					totalCount: 0,
 					registrationCount: 0,
@@ -140,10 +145,12 @@
 					purchaseCount: 0,
 					neoTargetCount: 0
 				},
+
 				isPick: false,
 				isLoading: false,
 				loadingTitle: '',
 				loadingDescription: ''
+
 			}
 		},
 
@@ -173,21 +180,21 @@
 				console.log(item)
 				let target_type = ""
 
-				if(item == "전체보기"){
+				if (item == "전체보기") {
 					target_type="all"
-				}else if (item == "전체보기"){
+				} else if (item == "전체보기") {
 					target_type="all"
-				}else if (item == "기본 타겟만 보기"){
+				} else if (item == "기본 타겟만 보기") {
 					target_type="default"
-				}else if (item == "생성 타겟만 보기"){
+				} else if (item == "생성 타겟만 보기") {
 					target_type="created"
-				}else if (item == "타겟팅 완료된 타겟만 보기"){
+				} else if (item == "타겟팅 완료된 타겟만 보기") {
 					target_type="targeting_completed"
-				}else if (item == "타겟팅 진행중인 타겟만 보기"){
+				} else if (item == "타겟팅 진행중인 타겟만 보기") {
 					target_type="targeting_progress"
-				}else if (item == "인구통계데이터가 있는 타겟만 보기"){
+				} else if (item == "인구통계데이터가 있는 타겟만 보기") {
 					target_type="demographic"
-				}else{
+				} else {
 					target_type="all"
 				}
 
@@ -266,7 +273,15 @@
 
 				this.selectData.emptyText = item
 			},
-			tPickMenu(type) {
+			popupOpenBtn (popupName, type) {
+				//팝업 오픈
+				//popupName = 팝업컴포넌트명, type = add,modify,delete
+				this[popupName] = true
+				if(popupName === 'makeModal') {
+					this.makeType = type
+				}
+			},
+			tPickMenu (type) {
 				//매뉴 온오프 or 리스트 필터
 				this.targetOn = type
 			},
@@ -291,7 +306,7 @@
 						this.pixelNone = false
 
 						if (bool_fb_ad_account == false) {
-							// Advertising_setup popup 호출
+							// AdvertisingAccountSetting popup 호출
 							this.isPick = false
 							this.setupPop = true
 							this.isLoading = false

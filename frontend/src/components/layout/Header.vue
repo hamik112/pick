@@ -19,25 +19,26 @@
 </template>
 
 <script>
-
 import { getUserName, getUserImage } from '../../utils/auth'
-import SetupPop from '@/components/popup/Advertising_setup'
-
 
 export default {
 	name: 'Header',
-
-	components:{
-		'SetupPop': SetupPop
-	},
 
 	mounted () {
 		this.userName = getUserName()
 		this.userImage = getUserImage()
 	},
 
-	methods:{
-		logout(){
+	data () {
+		return {
+			setupOn: false,
+			userName: '',
+			userImage: ''
+		}
+	},
+
+	methods: {
+		logout () {
 			if(confirm('픽데이터에서 로그아웃 하시겠습니까?') == true) {
 				this.$http.get('/users/signout')
 				.then(res => {
@@ -58,14 +59,6 @@ export default {
 			} else {
 				return
 			}
-		}
-	},
-
-	data () {
-		return {
-			setupOn: false,
-			userName: '',
-			userImage: ''
 		}
 	}
 }

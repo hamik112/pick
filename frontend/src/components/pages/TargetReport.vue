@@ -363,17 +363,20 @@ export default {
 
 	components: {
 		'ui-select': Select,
-		'ui-calendar':Calendar
+		'ui-calendar': Calendar
 	},
-	beforeMount() {
+
+	beforeMount () {
 		this.setDatas()
 	},
-	mounted() {
+
+	mounted () {
 		this.sortTableAutoWidth()
 		this.wResize()
 		window.addEventListener('resize', this.wResize)
 	},
-	beforeDestroy() {
+
+	beforeDestroy () {
 		window.removeEventListener('resize', this.wResize)
 	},
 	created () {
@@ -441,13 +444,15 @@ export default {
 			}
 		}
 	},
+
 	methods: {
-		wResize(){
+		wResize (){
 			const wSize = window.innerWidth - 185
 			const el = document.getElementById('report-widget')
 			el.style = "width:" + wSize + 'px'
 		},
-		tootip(index) {
+
+		tootip (index) {
 			const tools = document.getElementsByClassName('interest_view')
 			const subId = event.target.className
 			const subEl = document.getElementById(subId)
@@ -462,7 +467,8 @@ export default {
 				}
 			}
 		},
-		setDatas() {
+
+		setDatas () {
 
 			const label = ['광고주','캠페인명','기간','광고세트','연령','성별','관심사 개수','맞춤타겟 이름','광고비','노출','도달','도달빈도','사이트 유입 지표','슬라이드 소재 클릭 지표','영상캠페인 지표','전환 지표','페이지 참여 지표']
 			const sortData = []
@@ -479,16 +485,20 @@ export default {
 				this.sortSelectData.listData.push(setting)
 			}
 		},
-		selectCategory(item) {
+
+		selectCategory (item) {
 			this.categorySelectData.emptyText = item
 		},
-		selectAccount(item) {
+
+		selectAccount (item) {
 			this.accountSelectData.emptyText = item
 		},
-		sortSelectOnOff() {
+
+		sortSelectOnOff () {
 			this.sortSelectData.onShow = !this.sortSelectData.onShow
 		},
-		sortSelectFilter(item) {
+
+		sortSelectFilter (item) {
 			const me = this
 			item.setting.checked = !item.setting.checked
 			item.setting.show = !item.setting.show
@@ -496,7 +506,8 @@ export default {
 				me.sortTableAutoWidth()
 			}, 1)
 		},
-		sortTableAutoWidth(){
+
+		sortTableAutoWidth (){
 			const listEl = document.getElementById('report-list')
 			const ulEl = document.getElementById('report-list-head')
 			const liEl = ulEl.getElementsByClassName('report-line')

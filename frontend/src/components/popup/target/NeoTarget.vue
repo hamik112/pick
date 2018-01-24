@@ -264,7 +264,8 @@
     </div>
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-      <button class="next_btn" @click="createNeoTarget()">타겟 만들기</button>
+      <button class="next_btn" @click="createNeoTarget()" v-if="makeType == 'add'">타겟 만들기</button>
+      <button class="next_btn" @click="createNeoTarget()" v-if="makeType == 'modify'">수정</button>
     </div>
   </div>
 </template>
@@ -300,6 +301,9 @@ export default {
     },
     tabMove: {
       type: Function
+    },
+    makeType: {
+      type:String
     }
   },
 
