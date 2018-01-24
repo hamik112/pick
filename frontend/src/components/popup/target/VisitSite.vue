@@ -16,7 +16,7 @@
           </div>
           <div class="use_date">
             <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="visitSiteDay"><span>일</span></div>
+            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
@@ -95,7 +95,7 @@ export default {
 
   data () {
     return {
-      visitSiteDay: '30',
+      collectionPeriod: '30',
       visitSiteName: '',
 
       subSelect:false,
@@ -142,6 +142,17 @@ export default {
     }
   },
 
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        alert('수집 기간은 최대 180일까지만 가능합니다.')
+        this.collectionPeriod = 180
+      } else {
+        this.collectionPeriod = day
+      }
+    }
+  },
+
   methods: {
     selectOnClick (item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
@@ -174,7 +185,7 @@ export default {
         target_type: 'visit_site',
         pixel_id: this.findSelectKey('adAccountPixels'),
         name: this.visitSiteName,
-        retention_days: this.visitSiteDay,
+        retention_days: this.collectionPeriod,
 
         detail: this.findSelectKey('selectUser'),
         input_percent: this.findSelectKey('selectSub')
