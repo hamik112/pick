@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from fb_ad_account.models import FbAdAccount
 from pixel_mapping_category.models import PixelMappingCategory
+from pixel_mapping_category.serializers import PixelMappingCategorySerializer
 
 from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
@@ -69,13 +70,17 @@ class TargetPick(APIView):
 
             for pickdata_target in pickdata_targets:
                 gen_obj = {}
+                pickdata_target_id = pickdata_target.id
+                pixel_mapping_category = pickdata_target.pixel_mapping_category
                 audience_id = pickdata_target.target_audience_id
                 pixel_mapping_category_id = pickdata_target.pixel_mapping_category_id
                 target_description = string_to_literal(pickdata_target.description)
 
+                gen_obj['id'] = pickdata_target_id
                 gen_obj['audience_id'] = audience_id
                 gen_obj['description'] = target_description
                 gen_obj['pixel_mapping_category_id'] = pixel_mapping_category_id
+                gen_obj['pixel_mapping_category'] = PixelMappingCategorySerializer(pixel_mapping_category).data
 
                 if str(audience_id) in dic_audience_targets:
                     audience_target = dic_audience_targets[str(audience_id)]
