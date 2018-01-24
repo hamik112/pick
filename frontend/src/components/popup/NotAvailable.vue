@@ -26,15 +26,17 @@
 </template>
 
 <script>
-// UI
 export default {
-
-  name: 'TargetNot',
+	name: 'TargetNot',
+	
   components:{
-  },
+
+	},
+	
   data () {
-	return {
-	}
+		return {
+			
+		}
   }
 }
 </script>

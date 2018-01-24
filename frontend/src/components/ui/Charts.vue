@@ -11,22 +11,24 @@ import 'echarts/lib/chart/bar'
 
 export default {
 	name: 'Charts',
+
 	components: {
 	  IEcharts
 	},
+
 	props: {
 		chartData: {
-	      type: Object,
-	      default () {
-	        return {
-	        	tooltip:{},
-	        	legend:[],
+			type: Object,
+			default () {
+			return {
+				tooltip:{},
+				legend:[],
 				xAxis: [],
 				yAxis:{},
 				series:[]
-	        }
-	      }
-	    }
+			}
+			}
+		}
 	},
 	data: () => ({
 	  loading: true,

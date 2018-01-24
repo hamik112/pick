@@ -2,13 +2,13 @@
 	<div id="main_wrap" class="clearfix" >
 
 		<transition name='modal'>
-			<TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
-			<TargetMake1 v-if="makeModal" :makeType="this.makeType" @close="makeModal = false"></TargetMake1>
+			<target-chart v-if="chartModal" @close="chartModal = false"></target-chart>
+			<create-target v-if="makeModal" :makeType="this.makeType" @close="makeModal = false"></create-target>
 		</transition>
 
 		<transition-group name='modal'>
-			<SetupPop v-if="setupPop" @close="setupPop = false" key="setup"></SetupPop>
-			<PixelNone v-if="pixelNone" @close="pixelNone = false" key="pixel"></PixelNone>
+			<advertising-account-setting v-if="setupPop" @close="setupPop = false" key="setup"></advertising-account-setting>
+			<not-available v-if="pixelNone" @close="pixelNone = false" key="pixel"></not-available>
 		</transition-group>
 
 		<div id="container" v-show="isPick">
@@ -69,33 +69,32 @@
 </template>
 
 <script>
-	// 팝업
-	import TargetChartPop from '@/components/popup/Target_chart'
-	import TargetMake1 from '@/components/popup/Target_make_01'
+	// Popup
+	import TargetChart from '@/components/popup/TargetChart'
+	import CreateTarget from '@/components/popup/CreateTarget'
+	import AdvertisingAccountSetting from '@/components/popup/AdvertisingAccountSetting'
+	import NotAvailable from '@/components/popup/NotAvailable'
+
 	// UI
 	import Select from '@/components/ui/Select'
 	import Calendar from '@/components/ui/Calendar'
 	import Loading from '@/components/ui/Loading'
 
-	import SetupPop from '@/components/popup/Advertising_setup'
-	import PixelNone from '@/components/popup/Target_not_available'
-
 	export default {
 		name: 'TargetPick',
 
 		components: {
-			'TargetChartPop': TargetChartPop,
-			'TargetMake1': TargetMake1,
+			TargetChart,
+			CreateTarget,
+			AdvertisingAccountSetting,
+			NotAvailable,
 			'ui-select': Select,
 			'ui-calendar': Calendar,
 			'ui-loading': Loading,
-			'SetupPop': SetupPop,
-			'PixelNone': PixelNone
 		},
 
 		data () {
 			return {
-
 				setupPop: false,
 				pixelNone: false,
 				chartModal: false,
@@ -181,21 +180,21 @@
 				console.log(item)
 				let target_type = ""
 
-				if(item == "전체보기"){
+				if (item == "전체보기") {
 					target_type="all"
-				}else if (item == "전체보기"){
+				} else if (item == "전체보기") {
 					target_type="all"
-				}else if (item == "기본 타겟만 보기"){
+				} else if (item == "기본 타겟만 보기") {
 					target_type="default"
-				}else if (item == "생성 타겟만 보기"){
+				} else if (item == "생성 타겟만 보기") {
 					target_type="created"
-				}else if (item == "타겟팅 완료된 타겟만 보기"){
+				} else if (item == "타겟팅 완료된 타겟만 보기") {
 					target_type="targeting_completed"
-				}else if (item == "타겟팅 진행중인 타겟만 보기"){
+				} else if (item == "타겟팅 진행중인 타겟만 보기") {
 					target_type="targeting_progress"
-				}else if (item == "인구통계데이터가 있는 타겟만 보기"){
+				} else if (item == "인구통계데이터가 있는 타겟만 보기") {
 					target_type="demographic"
-				}else{
+				} else {
 					target_type="all"
 				}
 
@@ -274,7 +273,7 @@
 
 				this.selectData.emptyText = item
 			},
-			popupOpenBtn(popupName, type) {
+			popupOpenBtn (popupName, type) {
 				//팝업 오픈
 				//popupName = 팝업컴포넌트명, type = add,modify,delete
 				this[popupName] = true
@@ -282,7 +281,7 @@
 					this.makeType = type
 				}
 			},
-			tPickMenu(type) {
+			tPickMenu (type) {
 				//매뉴 온오프 or 리스트 필터
 				this.targetOn = type
 			},
@@ -307,7 +306,7 @@
 						this.pixelNone = false
 
 						if (bool_fb_ad_account == false) {
-							// Advertising_setup popup 호출
+							// AdvertisingAccountSetting popup 호출
 							this.isPick = false
 							this.setupPop = true
 							this.isLoading = false

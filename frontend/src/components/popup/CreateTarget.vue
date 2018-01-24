@@ -122,8 +122,8 @@
 <script>
 
 import { numberFormatter } from '@/components/utils/Formatter'
-// UI
-import Select from '@/components/ui/Select'
+
+// Popup
 import VisitSite from '@/components/popup/target/VisitSite'
 import VisitSpecificPages from '@/components/popup/target/VisitSpecificPages'
 import NeoTarget from '@/components/popup/target/NeoTarget'
@@ -133,25 +133,31 @@ import AddToCart from '@/components/popup/target/AddToCart'
 import Registration from '@/components/popup/target/Registration'
 import Conversion from '@/components/popup/target/Conversion'
 
+// UI
+import Select from '@/components/ui/Select'
+
 export default {
   name: 'TargetMake01',
+
   components:{
+    VisitSite,
+    VisitSpecificPages,
+    NeoTarget,
+    UtmTarget,
+    Purchase,
+    AddToCart,
+    Registration,
+    Conversion,
     'ui-select': Select,
-    'visit-site': VisitSite,
-    'visit-specific-pages': VisitSpecificPages,
-    'neo-target': NeoTarget,
-    'utm-target': UtmTarget,
-    'purchase': Purchase,
-    'add-to-cart': AddToCart,
-    'registration': Registration,
-    'conversion': Conversion
   },
+
   props: {
     makeType: {
       type:String
     }
   },
-  mounted() {
+
+  mounted () {
     let emptyText = ''
     let textList = []
     let keyList = []
@@ -182,6 +188,7 @@ export default {
       }
     })
   },
+
   data () {
     return {
       tabAction:{
@@ -223,6 +230,7 @@ export default {
       }
     }
   },
+  
   methods: {
     //타겟만들기 카테고리 탭
     tabMove (activeNumber, beforeNumber) {

@@ -1,8 +1,5 @@
 <template>
   <aside>
-    <transition name='modal'>
-      <!-- <TargetNot v-if="show" @close="show = false"></TargetNot> -->
-    </transition>
     <div class="aside-wrap">
       <div class="aside_section first_section">
         <div class="user_info_wrap">
@@ -46,14 +43,9 @@
 </template>
 
 <script>
-// 팝업
-import TargetNot from '@/components/popup/Target_not_available'
-
 export default {
   name: 'Aside',
-  components:{
-    // 'TargetNot' : TargetNot
-  },
+  
   data () {
     return {
       // show: false,
