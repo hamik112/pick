@@ -448,15 +448,15 @@ export default {
 			const tools = document.getElementsByClassName('interest_view')
 			const subId = event.target.className
 			const subEl = document.getElementById(subId)
+			for(let i = 0; i < tools.length; i++) {
+				tools[i].style.display = "none"
+			}
 			if (subEl !== null) {
-				for(let i = 0; i < tools.length; i++) {
-					tools[i].style = "display:none"
-				}
 				if(index != 'close') {
 					if(subEl.style.display == 'block') {
-						subEl.style = "display:none"
+						subEl.style.display = "none"
 					}else{
-						subEl.style = "display:block"
+						subEl.style.display = "block"
 					}
 				}
 			}
