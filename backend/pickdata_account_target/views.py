@@ -29,7 +29,6 @@ class PickdataAccountTargetViewSet(viewsets.ModelViewSet):
     queryset = PickdataAccountTarget.objects.all()
     serializer_class = PickdataAccountTargetSerializer
 
-
 class TargetPick(APIView):
     def get(self, request, format=None):
         response_data = {}
