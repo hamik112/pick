@@ -103,7 +103,7 @@ def get_roi_report(request):
             account_ids.append(neo_account.get('neo_account_id'))
 
         if adv_id == None:
-            raise Exception('No NeoAccount.')
+            raise Exception ('No NeoAccount.')
 
         adv = McCenterAdvertiser.get_advertiser(McCenterAdvertiser, adv_id)
 
@@ -121,14 +121,14 @@ def get_roi_report(request):
         else:
             roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
 
-        print(roi_report)
+        # print(roi_report)
 
         response_data['success'] = 'YES'
         response_data['total_count'] = len(roi_report)
         response_data['data'] = roi_report
     except Exception as e:
         response_data['success'] = 'NO'
-        response_data['msg'] = e
+        response_data['msg'] = str(e)
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

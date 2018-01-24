@@ -156,7 +156,7 @@ def datediff(date_start, date_stop, format='%Y-%m-%d'):
 def caldate(day, format='%Y-%m-%d'):
 	import time
 	from datetime import date
-	today = date.today()
+	# today = date.today()
 
 	calday = date.fromtimestamp(time.time() - 60*60*24*day)
 
