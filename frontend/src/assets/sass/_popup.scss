@@ -84,12 +84,12 @@
 		.tab-nav-widget{width:100%; display:table; border:$Border_type01; position:relative;
 			ul{overflow:hidden;
 				li.active{
-					a{color:#fff;
+					a{color:#fff; cursor:pointer;
 						span{border:1px solid #fff;}
 					}
 				}
 				li{width:33.3333%; height:64px; line-height:64px; text-align:center; float:left; position:relative;
-					a{color:#999; display:block;
+					a{color:#999; display:block; cursor:default;
 						span{width: 27px; height: 27px; border: 1px solid #999; border-radius: 50%; display: inline-block; line-height: 27px; margin-right: 5px; font-weight: bold;}
 					}
 					p{position:absolute; width:18px; height:66px; top:-1px; right:-17px; z-index:1; background:url(assets/images/common/line_arrow.png) right center no-repeat;}
