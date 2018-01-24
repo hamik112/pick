@@ -276,6 +276,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 														&:first-child:before { content:''; }
 													}
 												}
+												&.line-7 { overflow:visible; }
 											}
 										}
 										&:nth-child(odd) > li{background:#fff;}
