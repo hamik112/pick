@@ -219,17 +219,29 @@ class AccountPixel(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
-            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
 
-            if fb_ad_account == None:
-                raise Exception('Not Exist fb_ad_account.')
+
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            act_account_id = request.query_params.get('act_account_id', '')
 
             if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()
-            pixels = ads_pixels.get_account_pixels(fb_ad_account.act_account_id)
+
+            if fb_ad_account_id == 0 and act_account_id == '':
+                raise  Exception("No Valid Params")
+
+            elif fb_ad_account_id != 0:
+                fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+                if fb_ad_account == None:
+                    raise Exception('Not Exist fb_ad_account.')
+
+                pixels = ads_pixels.get_account_pixels(fb_ad_account.act_account_id)
+
+            elif act_account_id != '':
+                pixels = ads_pixels.get_account_pixels(act_account_id)
 
             response_data['success'] = 'YES'
             response_data['data'] = pixels
