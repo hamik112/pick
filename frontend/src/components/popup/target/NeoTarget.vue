@@ -77,6 +77,7 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neoaccount">
+                          <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
                           <li v-for="neoAccount in neoAccounts">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoAccounts" :value="neoAccount.centeraccountid" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.centeraccountid" :id="'neoAccount-check-' + neoAccount.centeraccountid"><label :for="'neoAccount-check-' + neoAccount.centeraccountid"></label></div>
                             <div class="result_account">{{ neoAccount.advname }}</div>
@@ -277,13 +278,15 @@
 import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
+import PartialLoading from '@/components/ui/partialLoading'
 
 export default {
   name: 'NeoTarget',
 
   components: {
     'ui-select': Select,
-    'ui-dialog':Dialog
+    'ui-dialog':Dialog,
+    'ui-PartialLoading':PartialLoading
   },
 
   props: {
@@ -388,6 +391,8 @@ export default {
       } else {
         throw('success: ' + success)
       }
+      //부분로딩 삭제
+      this.loadShow = false
       return data
     })
     .then(data => {
@@ -476,6 +481,7 @@ export default {
 
       subSelect:false,
       subInput:false,
+      loadShow:true,
 
       selectUser: {
         emptyText: '전체 고객',
