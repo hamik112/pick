@@ -103,7 +103,9 @@ class CheckAccountId(APIView):
             # print(ad_accounts.get_ad_account(account_id))
 
             default_pixel = ads_pixels.get_account_default_pixel(account_id)
-            if default_pixel != None:
+            pixels = ads_pixels.get_account_pixels(account_id)
+
+            if len(pixels) > 0:
                 bool_default_pixel = True
             else:
                 bool_default_pixel = False
@@ -203,6 +205,35 @@ class AccountPixelEvent(APIView):
                 api_init_by_system_user()
             # events = ads_pixels.get_account_pixel_events(fb_ad_account.act_account_id)
             events = ads_pixels.get_account_pixel_events(act_account_id)
+
+            response_data['success'] = 'YES'
+            response_data['data'] = events
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+class PixelEvent(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            pixel_id = request.query_params.get('pixel_id', 0)
+            # fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            # fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            # if fb_ad_account == None:
+            #     raise Exception('Not Exist fb_ad_account.')
+
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+            # events = ads_pixels.get_account_pixel_events(fb_ad_account.act_account_id)
+            events = ads_pixels.get_pixel_events(pixel_id)
 
             response_data['success'] = 'YES'
             response_data['data'] = events
