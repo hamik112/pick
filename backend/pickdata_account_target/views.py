@@ -50,7 +50,7 @@ class TargetPick(APIView):
                 raise Exception("Not Existg FbAdAccount.")
 
             pickdata_targets = PickdataAccountTarget.get_list(PickdataAccountTarget, fb_ad_account_id)
-            dic_audience_targets = custom_audience.get_dic_custom_audiences([pickdata_target.audience_id for pickdata_target in pickdata_targets])
+            dic_audience_targets = custom_audience.get_dic_custom_audiences_by_ids([pickdata_target.audience_id for pickdata_target in pickdata_targets])
 
             pixel_mapping_categories = PixelMappingCategory.objects.all()
 
