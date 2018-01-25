@@ -56,7 +56,7 @@
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createVisitSite()" v-if="makeType == 'add'">타겟 만들기</button>
       <button class="next_btn" @click="createVisitSite()" v-if="makeType == 'modify'">수정</button>
-      <button class="delete_btn">삭제</button>
+      <button class="delete_btn" @click="createVisitSiteDelete()" v-if="makeType == 'modify'">삭제</button>
     </div>
   </div>
 </template>
@@ -209,8 +209,11 @@ export default {
     dialogOk() {
       const mode = this.dialogData.mode
 
-      if(mode == 'visiteSite') {
+      if (mode == 'visiteSite') {
         this.createVisiteSiteNext()
+      }
+      if (mode === 'visiteSiteDelete') {
+        this.createVisiteSiteDeleteNext()
       }
 
       //모드별 동작
@@ -299,6 +302,37 @@ export default {
       .catch(err => {
         this.$emit('close')
         console.log('/pickdata_account_target/custom_target: ', err)
+      })
+    },
+
+    createVisitSiteDelete () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'visiteSiteDelete')
+    },
+
+    createVisiteSiteDeleteNext () {
+      console.log('delete call')
+
+      // this.$http.put('/pickdata_account_target/custom_target', {
+      //   pickdata_account_target_id: this.makeItem.id
+      // })
+      // .then((response) => {
+      //   console.log(response)
+      // })
+      // .catch(err => {
+      //   this.$emit('close')
+      //   console.log('/pickdata_account_target/custom_target delete: ', err)
+      // })\\
+      this.$http.delete('/pickdata_account_target/custom_target', {
+        data: {
+          pickdata_account_target_id: this.makeItem.id
+        }
+      })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target delete: ', err)
       })
     }
   }

@@ -161,6 +161,38 @@ class TargetPick(APIView):
 
 
 class CustomTarget(APIView):
+    def delete(self, request, format=None):
+        response_data = {}
+        try:
+            print('CustomTarget delete')
+            print(request.data)
+            pickdata_account_target_id = request.data.get('pickdata_account_target_id', 0)
+            print(pickdata_account_target_id)
+
+            response_data['success'] = 'YES'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    def put(self, request, format=None):
+        response_data = {}
+        try:
+            print('CustomTarget put')
+            print(request.data)
+            pickdata_account_target_id = request.data.get('pickdata_account_target_id', 0)
+            print(pickdata_account_target_id)
+
+            response_data['success'] = 'YES'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
     def post(self, request, format=None):
         response_data = {}
         try:
