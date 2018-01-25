@@ -103,7 +103,9 @@ class CheckAccountId(APIView):
             # print(ad_accounts.get_ad_account(account_id))
 
             default_pixel = ads_pixels.get_account_default_pixel(account_id)
-            if default_pixel != None:
+            pixels = ads_pixels.get_account_pixels(account_id)
+
+            if len(pixels) > 0:
                 bool_default_pixel = True
             else:
                 bool_default_pixel = False
@@ -203,6 +205,35 @@ class AccountPixelEvent(APIView):
                 api_init_by_system_user()
             # events = ads_pixels.get_account_pixel_events(fb_ad_account.act_account_id)
             events = ads_pixels.get_account_pixel_events(act_account_id)
+
+            response_data['success'] = 'YES'
+            response_data['data'] = events
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+class PixelEvent(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            pixel_id = request.query_params.get('pixel_id', 0)
+            # fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            # fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            # if fb_ad_account == None:
+            #     raise Exception('Not Exist fb_ad_account.')
+
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+            # events = ads_pixels.get_account_pixel_events(fb_ad_account.act_account_id)
+            events = ads_pixels.get_pixel_events(pixel_id)
 
             response_data['success'] = 'YES'
             response_data['data'] = events
@@ -314,12 +345,14 @@ class FbAdAccountDefaultTarget(APIView):
                 api_init_session(request)
             else:
                 api_init_by_system_user()
-            default_pixel = ads_pixels.get_account_default_pixel(act_account_id)
 
-            if default_pixel == None:
-                raise Exception("Account Pixel Not Exsit.")
-
-            pixel_id = default_pixel.get('id')
+            # default_pixel = ads_pixels.get_account_default_pixel(act_account_id)
+            #
+            # if default_pixel == None:
+            #     raise Exception("Account Pixel Not Exsit.")
+            #
+            # pixel_id = default_pixel.get('id')
+            pixel_id = fb_ad_account.pixel_id
 
             if pixel_id != '':
 
@@ -752,3 +785,33 @@ class FbAdAccountDefaultTarget(APIView):
             logger.error(traceback.format_exc())
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+class FbAdAccountListByCategory(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            accounts = ''
+            category_name = request.query_params.get('account_category', 'all')
+            if category_name == 'all':
+                account_category = AccountCategory.objects.all()
+                accounts = FbAdAccount.objects.all()
+            else:
+                account_category = AccountCategory.objects.filter(category_label_en=category_name)
+                for category in account_category:
+                    category_id = category.id
+
+                accounts = FbAdAccount.objects.filter(account_category_id=category_id)
+
+            serializer = FbAdAccountSerializer(accounts, many=True)
+
+            response_data['success'] = 'YES'
+            response_data['count'] = len(serializer.data)
+            response_data['data'] = serializer.data
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")

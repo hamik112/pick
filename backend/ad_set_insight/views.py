@@ -40,6 +40,7 @@ class AdSetInsightByAccount(APIView):
             ad_set_insights = None
 
             fb_account_id = request.query_params.get('account_id', '0')
+            # account_category = request.query_params.get('account_category', 'all')
             page = request.query_params.get('page', '1')
             start = request.query_params.get('start', '0')
             limit = request.query_params.get('limit', '25')
@@ -57,9 +58,11 @@ class AdSetInsightByAccount(APIView):
             account = FbAdAccount.find_by_ad_account_id(FbAdAccount, 'act_'+fb_account_id)
             if fb_account_id == None or account == None:
                 raise Exception("Not Existing FbAdAccount.")
+            account_name = account.name
             # 카테고리
             account_category = AccountCategory.objects.get(pk=account.account_category_id)
             account_category_name = account_category.category_label_kr
+            account_category_name_en = account_category.category_label_en
             # 픽셀매핑
             pixel_mapping_category_list = []
             pixel_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, account.id)
@@ -71,9 +74,8 @@ class AdSetInsightByAccount(APIView):
                 pixel_dict['custom_event'] =pixel_mapping_category.category_label_en
                 pixel_mapping_category_list.append(pixel_dict)
 
-            print(pixel_mapping_category_list)
+            # print(pixel_mapping_category_list)
 
-            # TODO 기간 나타내는 방법
             ad_set_insights = AdSetInsight.objects.filter(account_id=fb_account_id, date_stop__range=(since, until)
                                                             ).values('adset_id'
                                                             ).annotate(call_to_action_clicks=Sum('call_to_action_clicks'),
@@ -238,6 +240,7 @@ class AdSetInsightByAccount(APIView):
 
                 # result['targeting'] = targeting
                 result['custom_audience'] = custom_audience_list
+                result['account_name'] = account_name
                 result['account_category'] = account_category_name
                 result['interest_num'] = len(interests)
                 result['interest_list'] = interest_list

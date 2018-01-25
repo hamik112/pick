@@ -39,8 +39,8 @@
       </div>
       <div class="pixel_info">
           <div class="pixel_info_title">사용픽셀</div>
-          <div v-if="subPexel">
-          <ui-select :selectData="this.usingPixel" data-key="usingPixel" :onClick="selectOnClick"></ui-select>
+          <div v-if="subPixel">
+          <ui-select :selectData="this.usingPixel" data-key="usingPixel" :pixelIdShow="subPixel" :onClick="selectOnClick"></ui-select>
       </div>
     </div>
     <div class="btn_wrap">
@@ -67,12 +67,16 @@ export default {
 	  })
 		.then(res => {
 			const data = res.data.data
+      this.usingPixel.emptyText = data[0].name
+      this.usingPixel.emptyTextId = data[0].id
+
 			for(let i = 0; i < data.length; i++) {
 				this.usingPixel.textList.push(data[i].name)
+        this.usingPixel.pixelId.push(data[i].id)
 			}
 		})
   },
-  
+
   data () {
     return {
       dialogShow:false,
@@ -83,11 +87,13 @@ export default {
       },
       nextStage:false,
       usingPixel: {
-        emptyText: '픽데이터님의 픽셀',
-        textList: [],
-      },
+		    emptyText: '',
+		    emptyTextId: '',
+		    textList: [],
+		    pixelId: []
+	    },
       categoryName: '',
-      subPexel:true
+      subPixel:true
     }
   },
 
@@ -101,7 +107,8 @@ export default {
     selectOnClick (item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
-
+      const pixelIdText = (event.target.childNodes[1].className === 'text-span') ? event.target.childNodes[1].innerText:'error'
+      this[key].emptyTextId = pixelIdText
       this[key].emptyText = item
     },
 
@@ -152,7 +159,7 @@ export default {
         }
 
         let currentStep = [false, true, false]
-        this.$emit('setCategory', currentStep, this.accountCategoryId)
+        this.$emit('setCategory', currentStep, this.accountCategoryId, this.usingPixel.emptyTextId)
       }
     },
   }
