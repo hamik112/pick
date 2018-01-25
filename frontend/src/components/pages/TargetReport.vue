@@ -279,11 +279,11 @@
 																	<dd>
 																		<ul>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_vtr }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_cpv }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_vtr }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_cpv }}</li>
 																		</ul>
 																	</dd>
 																</dl>

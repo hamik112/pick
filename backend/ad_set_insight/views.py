@@ -300,6 +300,8 @@ class AdSetInsightByAccount(APIView):
 
                                 v_list = list(map(int, v_list))
                                 result['video_10_sec_watched_actions'] = sum(v_list)
+                                result['video_10_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
+                                result['video_10_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
 
                 # 30_sec_video_view total
                 for key, items in report_dict_video_30_sec.items():
@@ -315,6 +317,8 @@ class AdSetInsightByAccount(APIView):
 
                                 v_list = list(map(int, v_list))
                                 result['video_30_sec_watched_actions'] = sum(v_list)
+                                result['video_30_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
+                                result['video_30_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
 
                 target_insights.append(result)
 
