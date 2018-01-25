@@ -55,21 +55,31 @@ export default {
 				})
 			}
 		})
+  },
 
-		// 픽셀 이벤트 목록
-    this.$http.get('/fb_ad_accounts/ad_account_pixel_events', {
-      params: {act_account_id: 'act_' + localStorage.getItem('account_id')}
-    })
-    .then(res => {
-      const data = res.data.data
-
-      this.pixelMappingCategories.forEach(category => {
-        for(let i = 0; i < data.length; i++) {
-          category.select.textList.push(data[i].name)
+  beforeUpdate () {
+    if(this.emptyTextId !== 0) {
+      // 픽셀 이벤트 목록
+      this.$http.get('/fb_ad_accounts/pixel_events', {
+        params: {
+          pixel_id: this.emptyTextId
         }
       })
-    })
-	},
+      .then(res => {
+        const data = res.data.data
+
+        this.pixelMappingCategories.forEach(category => {
+          for(let i = 0; i < data.length; i++) {
+            category.select.textList.push(data[i].name)
+          }
+        })
+      })
+    }
+  },
+
+  props: [
+    'emptyTextId'
+  ],
 
   data () {
 		return {
@@ -90,7 +100,6 @@ export default {
 	},
 
   methods: {
-
   	dialogOpen(emptyText, type, mode) {
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type

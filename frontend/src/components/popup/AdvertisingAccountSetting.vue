@@ -60,7 +60,8 @@
 										<!-- Step3: 픽셀 이벤트 맵핑 -->
 										<pixel-event-mapping v-show="isActive[2]" 
 											@backToNeoAccountLinkage="backToNeoAccountLinkage" 
-											@setPixelEventMapping="setPixelEventMapping">
+											@setPixelEventMapping="setPixelEventMapping"
+											:emptyTextId="emptyTextId">
 										</pixel-event-mapping>
 									</div>
 								</div>
@@ -93,8 +94,9 @@ export default {
 			actAccountId: 0,
 			
 			accountCategoryId: 0,
+			emptyTextId: 0,
 			neoAdvIds: [],
-			neoAccountIds: [],
+			neoAccountIds: [],			
 			facebookPixelEventNames: [],
 			pixelMappingCategoryIds: []
 		}
@@ -108,10 +110,11 @@ export default {
 
 	methods: {
 		// 카테고리 설정 ------------------------------------------------
-		setCategory (steps, accountCategoryId) {
+		setCategory (steps, accountCategoryId, emptyTextId) {
 			this.currentStep = 1
 			this.isActive = steps
 			this.accountCategoryId = accountCategoryId
+			this.emptyTextId = emptyTextId
 		},
 
 

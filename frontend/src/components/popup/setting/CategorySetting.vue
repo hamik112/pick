@@ -68,11 +68,11 @@ export default {
 		.then(res => {
 			const data = res.data.data
       this.usingPixel.emptyText = data[0].name
-      this.usingPixel.emptyTextId = '픽셀 ID : ' + data[0].id
+      this.usingPixel.emptyTextId = data[0].id
 
 			for(let i = 0; i < data.length; i++) {
 				this.usingPixel.textList.push(data[i].name)
-        this.usingPixel.pixelId.push('픽셀 ID : ' + data[i].id)
+        this.usingPixel.pixelId.push(data[i].id)
 			}
 		})
   },
@@ -159,7 +159,7 @@ export default {
         }
 
         let currentStep = [false, true, false]
-        this.$emit('setCategory', currentStep, this.accountCategoryId)
+        this.$emit('setCategory', currentStep, this.accountCategoryId, this.usingPixel.emptyTextId)
       }
     },
   }
