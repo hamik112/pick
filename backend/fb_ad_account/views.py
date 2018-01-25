@@ -345,12 +345,14 @@ class FbAdAccountDefaultTarget(APIView):
                 api_init_session(request)
             else:
                 api_init_by_system_user()
-            default_pixel = ads_pixels.get_account_default_pixel(act_account_id)
 
-            if default_pixel == None:
-                raise Exception("Account Pixel Not Exsit.")
-
-            pixel_id = default_pixel.get('id')
+            # default_pixel = ads_pixels.get_account_default_pixel(act_account_id)
+            #
+            # if default_pixel == None:
+            #     raise Exception("Account Pixel Not Exsit.")
+            #
+            # pixel_id = default_pixel.get('id')
+            pixel_id = fb_ad_account.pixel_id
 
             if pixel_id != '':
 
