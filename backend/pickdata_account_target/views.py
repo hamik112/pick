@@ -9,7 +9,7 @@ from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
 
 from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_init_session)
-from utils.facebookapis.ad_account import custom_audiences
+from utils.facebookapis.targeting import custom_audience
 from utils.common.string_formatter import string_to_literal
 
 from utils.facebookapis.targeting import targeting_visitor, targeting_specific_page_visitor, targeting_url, \
@@ -49,10 +49,8 @@ class TargetPick(APIView):
             if fb_ad_account_id == None or fb_ad_account == None:
                 raise Exception("Not Existg FbAdAccount.")
 
-            act_account_id = fb_ad_account.act_account_id
-
-            dic_audience_targets = custom_audiences.get_dic_custom_audiences(act_account_id)
             pickdata_targets = PickdataAccountTarget.get_list(PickdataAccountTarget, fb_ad_account_id)
+            dic_audience_targets = custom_audience.get_dic_custom_audiences_by_ids([pickdata_target.target_audience_id for pickdata_target in pickdata_targets])
 
             pixel_mapping_categories = PixelMappingCategory.objects.all()
 
@@ -159,8 +157,58 @@ class TargetPick(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+class TargetChart(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            pickdata_target_id = request.query_params.get('pickdata_target_id', 0)
+
+            if pickdata_target_id == 0:
+                raise Exception('Not Exist Pickdata Target.')
+
+            response_data['success'] = 'YES'
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 class CustomTarget(APIView):
+    def delete(self, request, format=None):
+        response_data = {}
+        try:
+            print('CustomTarget delete')
+            print(request.data)
+            pickdata_account_target_id = request.data.get('pickdata_account_target_id', 0)
+            print(pickdata_account_target_id)
+
+            response_data['success'] = 'YES'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    def put(self, request, format=None):
+        response_data = {}
+        try:
+            print('CustomTarget put')
+            print(request.data)
+            pickdata_account_target_id = request.data.get('pickdata_account_target_id', 0)
+            print(pickdata_account_target_id)
+
+            response_data['success'] = 'YES'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
     def post(self, request, format=None):
         response_data = {}
         try:

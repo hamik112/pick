@@ -1,5 +1,8 @@
 <template>
   <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+    <transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+    </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
         <div class="main_title">
@@ -67,18 +70,21 @@
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createVisitSpecificPages()" v-if="makeType == 'add'">타겟 만들기</button>
       <button class="next_btn" @click="createVisitSpecificPages()" v-if="makeType == 'modify'">수정</button>
+      <button class="delete_btn" v-if="makeType == 'modify'">삭제</button>
     </div>
   </div>
 </template>
 
 <script>
 import Select from '@/components/ui/Select'
+import Dialog from '@/components/ui/Dialog'
 
 export default {
   name: 'VisitSpecificPages',
 
   components: {
-    'ui-select': Select
+    'ui-select': Select,
+    'ui-dialog':Dialog
   },
 
   props: {
@@ -114,6 +120,14 @@ export default {
 
       subSelect:false,
       subInput:false,
+
+      dialogShow:false,
+      dialogData:{
+        emptyText:'sample',
+        type:'confirm',
+        mode:'sample'
+      },
+      nextStage:false,
 
       selectUser: {
         emptyText: '전체 고객',
@@ -173,6 +187,29 @@ export default {
   },
 
   methods: {
+
+    dialogOpen(emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+    dialogOk() {
+      const mode = this.dialogData.mode
+
+      if(mode == 'visiteSiteSpecific') {
+        this.createVisiteSpecificPagesNext()
+      }
+
+      //모드별 동작
+      this.nextStage = true
+      this.dialogShow = false;
+    },
+    dialogCancel() {
+      this.nextStage = false;
+      this.dialogShow = false;
+    },
+
     selectOnClick(item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
@@ -257,44 +294,46 @@ export default {
       })
 
       if (validation === false) {
-        alert('입력되지 않은 URL이 있습니다.')
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('입력되지 않은 URL이 있습니다.', 'alert')
       } else {
-        if(confirm('입력한 내용으로 타겟을 생성하겠습니까?') === true) {
-          let params = {
-            fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-            target_type: 'visit_specific_pages',
-            pixel_id: this.findSelectKey('adAccountPixels'),
-            name: this.visitSpecificPagesName,
-            retention_days: this.visitSpecificPagesDay,
-
-            detail: this.findSelectKey('selectUser'),
-            input_percent: this.findSelectKey('selectSub')
-          }
-
-          const urlParams = this.findVisitSpecificPagesParam()
-          params['eq_list'] = urlParams['eqList']
-          params['contain_list'] = urlParams['containList']
-
-          this.$http.post('/pickdata_account_target/custom_target', params)
-          .then((response) => {
-            var success = response.data.success
-            if (success == "YES") {
-              // success
-              this.$eventBus.$emit('getAccountTarget')
-            } else {
-              alert('특정페이지 방문 타겟 생성 실패')
-              throw('success: ' + success)
-            }
-            this.$emit('close')
-          })
-          .catch(err => {
-            this.$emit('close')
-            console.log('/pickdata_account_target/custom_target: ', err)
-          })
-        } else {
-          return false
-        }
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'visiteSiteSpecific')
       }
+    },
+    createVisiteSpecificPagesNext() {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'visit_specific_pages',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.visitSpecificPagesName,
+        retention_days: this.visitSpecificPagesDay,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      const urlParams = this.findVisitSpecificPagesParam()
+      params['eq_list'] = urlParams['eqList']
+      params['contain_list'] = urlParams['containList']
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+          this.dialogOpen('특정페이지 방문 타겟 생성 실패', 'alert')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
     }
   }
 }

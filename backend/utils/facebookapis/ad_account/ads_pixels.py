@@ -78,6 +78,58 @@ def get_account_pixel_events(account_id):
         msg['error'] = e._error
         raise Exception(msg)
 
+def get_pixel_events(pixel_id):
+    try:
+        return_pixel_events = []
+        pixel_events = {}
+
+        pixel = AdsPixel(pixel_id)
+
+        stats_params = {
+            "aggregation": "event",
+            "start_time": "-30 days",
+            "locale": "ko_KR"
+        }
+        event_stats = pixel.get_stats(params=stats_params)
+
+        # print(event_stats)
+
+        for event_data in event_stats:
+            data_list = event_data.get('data')
+            timestamp = event_data.get('timestamp')
+
+            for data in data_list:
+                val = data.get('value')
+                cnt = data.get('count')
+
+                if pixel_events.get(val, None) == None:
+                    pixel_events[val] = {
+                        "count": cnt,
+                        "timestamp": timestamp
+                    }
+                else:
+                    before_val = pixel_events[val].get('count')
+                    pixel_events[val] = {
+                        "count": before_val + cnt,
+                        "timestamp": timestamp
+                    }
+
+        for pixel_event_key in pixel_events:
+            return_pixel_events.append({
+                "name": pixel_event_key,
+                "count": pixel_events[pixel_event_key].get('count'),
+                "timestamp": pixel_events[pixel_event_key].get('timestamp')
+            })
+
+        return return_pixel_events
+
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
+
 def get_account_pixels(account_id):
     try:
         ad_account = AdAccount(fbid=account_id)

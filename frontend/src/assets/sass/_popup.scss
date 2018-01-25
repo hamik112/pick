@@ -66,7 +66,7 @@
 		button{width: 180px; margin: 0 auto; text-align: center; height: 45px; line-height: 45px;  font-size: 14px; font-weight: bold; display: inline-block; *display:inline; vertical-align:middle; border:1px solid #333;}
 		.before_btn{border:1px solid #375b97; color:#375b97;}
 		.next_btn,.adjust_btn{background:#375b97; color: #fff; margin-left:8px; border:0px;}
-		.delete_btn{background:#ad2b2b; color:#fff; margin-left:8px;}
+		.delete_btn{background:#ad2b2b; color:#fff; margin-left:8px; border:0px;}
 	}
 }
 
@@ -183,6 +183,7 @@
 		div{display:inline-block; vertical-align:middle; letter-spacing:0px;
 			.select{width:512px; height:40px; line-height:40px;}
 		}
+		.text-span{color:#90949c; font-size:12px; padding-left:10px;}
 	}
 }
 #target_pop_01{
@@ -198,7 +199,7 @@
 				&:nth-child(3){background:url(assets/images/target/target_icon_03.png) center 30px no-repeat;
 					&:hover{background:url(assets/images/target/target_icon_03_ho.png) center 30px no-repeat;}
 				}
-				&:nth-child(4){background:url(assets/images/target/target_icon_04.png) center 30px no-repeat;
+				&:nth-child(4){background:url(assets/images/target/target_icon_04.png) center 30px no-repeat; margin-right:0px;
 					&:hover{background:url(assets/images/target/target_icon_04_ho.png) center 30px no-repeat;}
 				}
 				span{padding-top:98px;}
@@ -221,7 +222,7 @@
 				&:nth-child(3){background:url(assets/images/target/target_icon_07.png) center 30px no-repeat;
 					&:hover{background:url(assets/images/target/target_icon_07_ho.png) center 30px no-repeat;}
 				}
-				&:nth-child(4){background:url(assets/images/target/target_icon_08.png) center 30px no-repeat;
+				&:nth-child(4){background:url(assets/images/target/target_icon_08.png) center 30px no-repeat; margin-right:0px;
 					&:hover{background:url(assets/images/target/target_icon_08_ho.png) center 30px no-repeat;}
 				}
 				span{padding-top:98px;}

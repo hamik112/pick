@@ -63,9 +63,7 @@ class FbAdAccountList(APIView):
         try:
             act_account_id = request.data.get('act_account_id', '')
             account_category_id = request.data.get('account_category_id', '')
-
-            print('act_account_id : ', act_account_id)
-            print('account_category_id : ', account_category_id)
+            pixel_id = request.data.get('pixel_id', '')
 
             if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
@@ -76,9 +74,10 @@ class FbAdAccountList(APIView):
             ad_account_id = ad_account.get('account_id')
             act_account_id = ad_account.get('id')
             name = ad_account.get('name')
+
             account_statsus = ad_account.get('account_status')
 
-            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id)
+            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id, pixel_id)
 
             response_data['success'] = 'YES'
             response_data['data'] = FbAdAccountSerializer(fb_ad_account).data
@@ -104,7 +103,9 @@ class CheckAccountId(APIView):
             # print(ad_accounts.get_ad_account(account_id))
 
             default_pixel = ads_pixels.get_account_default_pixel(account_id)
-            if default_pixel != None:
+            pixels = ads_pixels.get_account_pixels(account_id)
+
+            if len(pixels) > 0:
                 bool_default_pixel = True
             else:
                 bool_default_pixel = False
@@ -117,7 +118,8 @@ class CheckAccountId(APIView):
                     "fb_ad_account_id":fb_ad_account.id,
                     "name": fb_ad_account.name,
                     "account_status": fb_ad_account.account_status,
-                    "account_category_id":fb_ad_account.account_category_id
+                    "account_category_id":fb_ad_account.account_category_id,
+                    "pixel_id":fb_ad_account.pixel_id
                 }
             else:
                 bool_fb_ad_account = False
@@ -139,7 +141,6 @@ class CheckAccountId(APIView):
             response_data['fb_ad_account'] = dic_fb_ad_account
             response_data['neo_account_list'] = neo_account_list
             response_data['pixel_event_mappings'] = pixel_evnet_mapping_se.data
-
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -215,21 +216,60 @@ class AccountPixelEvent(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-class AccountPixel(APIView):
+
+class PixelEvent(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-            fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
-            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+            pixel_id = request.query_params.get('pixel_id', 0)
+            # fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            # fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
 
-            if fb_ad_account == None:
-                raise Exception('Not Exist fb_ad_account.')
+            # if fb_ad_account == None:
+            #     raise Exception('Not Exist fb_ad_account.')
 
             if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
             else:
                 api_init_by_system_user()
-            pixels = ads_pixels.get_account_pixels(fb_ad_account.act_account_id)
+            # events = ads_pixels.get_account_pixel_events(fb_ad_account.act_account_id)
+            events = ads_pixels.get_pixel_events(pixel_id)
+
+            response_data['success'] = 'YES'
+            response_data['data'] = events
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+class AccountPixel(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
+            act_account_id = request.query_params.get('act_account_id', '')
+
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+
+            if fb_ad_account_id == 0 and act_account_id == '':
+                raise  Exception("No Valid Params")
+
+            elif fb_ad_account_id != 0:
+                fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+                if fb_ad_account == None:
+                    raise Exception('Not Exist fb_ad_account.')
+
+                pixels = ads_pixels.get_account_pixels(fb_ad_account.act_account_id)
+
+            elif act_account_id != '':
+                pixels = ads_pixels.get_account_pixels(act_account_id)
 
             response_data['success'] = 'YES'
             response_data['data'] = pixels
@@ -305,12 +345,14 @@ class FbAdAccountDefaultTarget(APIView):
                 api_init_session(request)
             else:
                 api_init_by_system_user()
-            default_pixel = ads_pixels.get_account_default_pixel(act_account_id)
 
-            if default_pixel == None:
-                raise Exception("Account Pixel Not Exsit.")
-
-            pixel_id = default_pixel.get('id')
+            # default_pixel = ads_pixels.get_account_default_pixel(act_account_id)
+            #
+            # if default_pixel == None:
+            #     raise Exception("Account Pixel Not Exsit.")
+            #
+            # pixel_id = default_pixel.get('id')
+            pixel_id = fb_ad_account.pixel_id
 
             if pixel_id != '':
 
