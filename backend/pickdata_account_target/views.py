@@ -164,10 +164,23 @@ class CustomTarget(APIView):
     def delete(self, request, format=None):
         response_data = {}
         try:
-            print('CustomTarget delete')
-            print(request.data)
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+
             pickdata_account_target_id = request.data.get('pickdata_account_target_id', 0)
-            print(pickdata_account_target_id)
+            pickdata_account_target = PickdataAccountTarget.objects.get(id=pickdata_account_target_id)
+            custom_audience_id = pickdata_account_target.target_audience_id
+
+            try:
+                pickdata_account_target.delete()
+            except Exception as delete_e:
+                msg = {}
+                msg['request_context'] = delete_e._request_context
+                msg['error'] = delete_e._error
+                raise Exception(msg)
+            custom_audiences.delete_custom_audience(custom_audience_id)
 
             response_data['success'] = 'YES'
             return HttpResponse(json.dumps(response_data), content_type="application/json")

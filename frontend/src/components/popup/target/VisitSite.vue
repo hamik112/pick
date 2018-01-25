@@ -328,7 +328,16 @@ export default {
         }
       })
       .then((response) => {
-        console.log(response)
+        const success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+          this.dialogOpen('사이트방문 타겟 삭제 실패', 'alert')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
       })
       .catch(err => {
         this.$emit('close')
