@@ -146,6 +146,7 @@ export default {
 			this.$http.post('/fb_ad_accounts/', {
 				act_account_id: this.currentFbAdAccount.id,
 				account_category_id: this.accountCategoryId,
+				pixel_id: this.emptyTextId,
 			})
 			.then(() => {
 				// 네오 계정 연동 POST
