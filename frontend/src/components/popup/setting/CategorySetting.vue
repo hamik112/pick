@@ -40,7 +40,7 @@
       <div class="pixel_info">
           <div class="pixel_info_title">사용픽셀</div>
           <div v-if="subPexel">
-          <ui-select :selectData="this.pexelSub" data-key="pexelSub" :onClick="selectOnClick"></ui-select>
+          <ui-select :selectData="this.usingPixel" data-key="usingPixel" :onClick="selectOnClick"></ui-select>
       </div>
     </div>
     <div class="btn_wrap">
@@ -55,9 +55,24 @@ import Dialog from '@/components/ui/Dialog'
 
 export default {
   components:{
-    'ui-dialog':Dialog,
+    'ui-dialog': Dialog,
     'ui-select': Select
   },
+
+	created () {
+		this.$http.get('/fb_ad_accounts/ad_account_pixels', {
+			params: {
+			  act_account_id: this.currentFbAdAccount.id
+	  	}
+	  })
+		.then(res => {
+			const data = res.data.data
+			for(let i = 0; i < data.length; i++) {
+				this.usingPixel.textList.push(data[i].name)
+			}
+		})
+  },
+  
   data () {
     return {
       dialogShow:false,
@@ -67,16 +82,18 @@ export default {
         mode:'sample'
       },
       nextStage:false,
-      pexelSub: {
+      usingPixel: {
         emptyText: '픽데이터님의 픽셀',
-        textList: [
-          '1',
-          '2',
-          '3'
-        ],
+        textList: [],
       },
       categoryName: '',
       subPexel:true
+    }
+  },
+
+  computed: {
+    currentFbAdAccount() {
+        return this.$store.state.currentFbAdAccount
     }
   },
 
