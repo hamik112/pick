@@ -190,7 +190,9 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 					 	p{display:block;
 					 		&:first-child{font-size:18px; color:#333;}
 					 		&:last-child{font-size:28px; color:#375b96;}
+					 		span{text-shadow: rgba(0,0,0,.01) 0 0 1px; -webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;}
 					 	}
+
 					 }
 					 .target_state{width:100%; display:table; margin-top:20px;
 					 	p{padding:6px 14px; background:#e7e7e7; border-radius:40px; color:#666; margin-right:5px; display:inline-block; margin-top:6px;

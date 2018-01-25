@@ -39,8 +39,8 @@
       </div>
       <div class="pixel_info">
           <div class="pixel_info_title">사용픽셀</div>
-          <div v-if="subPexel">
-          <ui-select :selectData="this.usingPixel" data-key="usingPixel" :onClick="selectOnClick"></ui-select>
+          <div v-if="subPixel">
+          <ui-select :selectData="this.usingPixel" data-key="usingPixel":pixelIdShow="subPixel" :onClick="selectOnClick"></ui-select>
       </div>
     </div>
     <div class="btn_wrap">
@@ -72,7 +72,7 @@ export default {
 			}
 		})
   },
-  
+
   data () {
     return {
       dialogShow:false,
@@ -83,11 +83,22 @@ export default {
       },
       nextStage:false,
       usingPixel: {
-        emptyText: '픽데이터님의 픽셀',
-        textList: [],
-      },
+		emptyText: '픽데이터님의 픽셀',
+		emptyTextId:'테스트',
+		textList: [
+		  '1',
+		  '2',
+		  '3'
+		],
+		//픽셀 아이디값
+		pixelId:[
+			'a',
+			'b',
+			'c'
+		]
+	  },
       categoryName: '',
-      subPexel:true
+      subPixel:true
     }
   },
 

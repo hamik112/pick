@@ -46,7 +46,7 @@
 											</div>
 											<div class="target_info">
 												<p>{{ item.name }}</p>
-												<p>{{ item.display_count }}</p>
+												<p><span class="opensans">{{ item.display_count }}</span></p>
 											</div>
 											<div class="target_state">
 												<p>{{ item.description.pixel_mapping_category }}</p>
