@@ -109,7 +109,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 			img{width:72px; height:72px;}
 		}
 		.u_info{
-			#ad_list_cate{width: 140px; margin:0 auto; padding-right: 10px; text-align:center; background:url(assets/images/icon/arrow_down.png) right 5px no-repeat; cursor:pointer;}
+			#ad_list_cate{width: 140px; margin:0 auto; padding-right: 10px; text-align:center; background:url(assets/images/icon/arrow_down.png) right 5px no-repeat; cursor:pointer; text-overflow: ellipsis; overflow: hidden;}
 			.active{background:url(assets/images/icon/arrow_up.png) right 5px no-repeat!important;}
 			pre{font-size:12px; line-height:1.4;
 				&:last-child{text-align:center;  font-size:12px; color:#949494;}
@@ -143,6 +143,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 			 text-align:center; display:inline-block; border-radius:2px; font-size:15px;
 			 &:hover{font-weight:bold;}
 			}
+			.select_view{max-height:none!important; overflow-y:hidden!important;}
 		}
 		/* 타겟 탭 */
 		#section_list_1{
@@ -178,7 +179,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 					 	.icon_gragh:hover {background:url(assets/images/icon/graph_icon_o.png) 0 0 no-repeat;}
 					 	button{float:right; height:26px; line-height:25px; text-decoration:underline;}
 					 }
-					 .target_info{padding-bottom:35px; border-bottom:1px solid #e7e7e7; text-align:center; margin-top:40px; line-height:1.4;
+					 .target_info{padding-bottom:35px; border-bottom:1px solid #e7e7e7; text-align:center; margin-top:40px; line-height:1.4; min-height:130px;
 					 	p{display:block;
 					 		&:first-child{font-size:18px; color:#333;}
 					 		&:last-child{font-size:28px; color:#375b96;}
@@ -415,4 +416,22 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 		}
 	}
 
+}
+
+
+
+/* 팝업 얼랏 */
+.check_alert{
+	.alert_top{width:352px; text-align:center; padding:40px 0px;
+		p{ color:#333; line-height:1.4;
+			&:first-child{font-size:16px; font-weight:bold;}
+			&:last-child{font-size:14px;}
+		}
+	}
+	.alert_bottom{font-weight:bold; font-size:16px; overflow:hidden;
+		button{float:left; width:176px; height:56px; line-height:56px; text-align:center; cursor:pointer;}
+		.alert_close{background:#f7f7f7; color:#999;}
+		.alert_complete{background:#222933; color:#fff;}
+		.complete_v2{width:100%;}
+	}
 }

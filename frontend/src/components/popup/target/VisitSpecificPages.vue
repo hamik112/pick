@@ -1,5 +1,8 @@
 <template>
   <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+    <transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+    </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
         <div class="main_title">
@@ -73,12 +76,14 @@
 
 <script>
 import Select from '@/components/ui/Select'
+import Dialog from '@/components/ui/Dialog'
 
 export default {
   name: 'VisitSpecificPages',
 
   components: {
-    'ui-select': Select
+    'ui-select': Select,
+    'ui-dialog':Dialog
   },
 
   props: {
@@ -114,6 +119,14 @@ export default {
 
       subSelect:false,
       subInput:false,
+
+      dialogShow:false,
+      dialogData:{
+        emptyText:'sample',
+        type:'confirm',
+        mode:'sample'
+      },
+      nextStage:false,
 
       selectUser: {
         emptyText: '전체 고객',
@@ -173,6 +186,29 @@ export default {
   },
 
   methods: {
+
+    dialogOpen(emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+    dialogOk() {
+      const mode = this.dialogData.mode
+
+      if(mode == 'visiteSiteSpecific') {
+        this.createVisiteSpecificPagesNext()
+      }
+
+      //모드별 동작
+      this.nextStage = true
+      this.dialogShow = false;
+    },
+    dialogCancel() {
+      this.nextStage = false;
+      this.dialogShow = false;
+    },
+
     selectOnClick(item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
@@ -244,6 +280,27 @@ export default {
     },
 
     createVisitSpecificPages () {
+      // URL 목록
+      let fieldUrls = []
+      this.fields.forEach(field => {
+        fieldUrls.push(field.url)
+      })
+
+      // URL이 모두 입력 되었는지 확인
+      let validation = fieldUrls.every(fieldUrl => {
+        // 빈 URL이 없다면 true 반환
+        return fieldUrl !== ''
+      })
+
+      if (validation === false) {
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('입력되지 않은 URL이 있습니다.', 'alert')
+      } else {
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'visiteSiteSpecific')
+      }
+    },
+    createVisiteSpecificPagesNext() {
       let params = {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
         target_type: 'visit_specific_pages',
@@ -266,7 +323,8 @@ export default {
           // success
           this.$eventBus.$emit('getAccountTarget')
         } else {
-          alert('특정페이지 방문 타겟 생성 실패')
+          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+          this.dialogOpen('특정페이지 방문 타겟 생성 실패', 'alert')
           throw('success: ' + success)
         }
         this.$emit('close')

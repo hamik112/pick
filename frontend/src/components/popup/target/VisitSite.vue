@@ -1,5 +1,8 @@
 <template>
   <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+    <transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+    </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
         <div class="main_title">
@@ -60,12 +63,14 @@
 <script>
 import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
+import Dialog from '@/components/ui/Dialog'
 
 export default {
   name: 'VisitSite',
 
   components: {
-    'ui-select': Select
+    'ui-select': Select,
+    'ui-dialog':Dialog
   },
 
   props: {
@@ -116,6 +121,14 @@ export default {
       subSelect: false,
       subInput: false,
 
+      dialogShow:false,
+      dialogData:{
+        emptyText:'sample',
+        type:'confirm',
+        mode:'sample'
+      },
+      nextStay:false,
+
       selectUser: {
         emptyText: '전체 고객',
         textList: [
@@ -160,7 +173,8 @@ export default {
   watch: {
     collectionPeriod (day) {
       if (day > 180) {
-        alert('수집 기간은 최대 180일까지만 가능합니다.')
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
         this.collectionPeriod = 180
       } else if (this.collectionPeriod === '0') {
         alert('수집 기간은 최소 1일입니다.')
@@ -177,13 +191,35 @@ export default {
 
     targetName (name) {
       if (name.length > 48) {
-        alert('타겟 이름은 최대 48자까지만 가능합니다.')
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
         this.targetName = name.substr(0,48)
       }
     }
   },
 
   methods: {
+    dialogOpen(emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+    dialogOk() {
+      const mode = this.dialogData.mode
+
+      if(mode == 'visiteSite') {
+        this.createVisiteSiteNext()
+      }
+
+      //모드별 동작
+      this.nextStay = true
+      this.dialogShow = false;
+    },
+    dialogCancel() {
+      this.nextStay = false;
+      this.dialogShow = false;
+    },
     selectOnClick (item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
@@ -220,40 +256,49 @@ export default {
 
     createVisitSite () {
       if (this.collectionPeriod.length === 0) {
-        alert('수집 기간을 입력해주세요.')
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
       } else if (this.unvisitedPeriod.length === 0) {
-        alert('미방문 기간을 입력해주세요.')
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
       } else if (this.targetName.length === 0) {
-        alert('타겟 이름을 입력해주세요.')
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
       } else {
-        let params = {
-          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-          target_type: 'visit_site',
-          pixel_id: this.findSelectKey('adAccountPixels'),
-          name: this.targetName,
-          retention_days: this.collectionPeriod,
-
-          detail: this.findSelectKey('selectUser'),
-          input_percent: this.findSelectKey('selectSub')
-        }
-
-        this.$http.post('/pickdata_account_target/custom_target', params)
-        .then((response) => {
-          var success = response.data.success
-          if (success == "YES") {
-            // success
-            this.$eventBus.$emit('getAccountTarget')
-          } else {
-            alert('사이트방문 타겟 생성 실패')
-            throw('success: ' + success)
-          }
-          this.$emit('close')
-        })
-        .catch(err => {
-          this.$emit('close')
-          console.log('/pickdata_account_target/custom_target: ', err)
-        })
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'visiteSite')
       }
+    },
+
+    createVisiteSiteNext() {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'visit_site',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      this.$http.post('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+          this.dialogOpen('사이트방문 타겟 생성 실패', 'alert')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target: ', err)
+      })
     }
   }
 }

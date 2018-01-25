@@ -42,7 +42,7 @@
 												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
 												<div class="icon_target" @click="popupOpenBtn('makeModal','modify', item)"></div>
 												<div class="icon_gragh" @click="chartModal = true"></div>
-												<button>수정</button>
+												<button type="button" @click="popupOpenBtn('makeModal','modify', item)">수정</button>
 											</div>
 											<div class="target_info">
 												<p>{{ item.name }}</p>

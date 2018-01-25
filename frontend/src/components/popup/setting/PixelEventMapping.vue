@@ -1,5 +1,8 @@
 <template>
   <div id="tab-list-3" class="basic-tab-contents clearfix">
+  	<transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+    </transition>
     <div class="cate_prologue">
       <strong>광고 계정에 사용된 픽셀 이벤트를 매핑해 주세요.</strong>
       <p>픽셀 이벤트를 매핑해 주시면, 좀 더 편리한 맞춤 타겟팅을 사용할 수 있습니다.</p>
@@ -23,10 +26,12 @@
 
 <script>
 import Select from '@/components/ui/Select'
+import Dialog from '@/components/ui/Dialog'
 
 export default {
 	components:{
-		'ui-select': Select
+		'ui-select': Select,
+		'ui-dialog':Dialog
 	},
 
   created() {
@@ -72,11 +77,42 @@ export default {
 			facebookPixelEventNames: [],
 			pixelMappingCategoryIds: [],
 			pixelMappingCategories: [],
-			defaultPixelEvent: '픽셀 이벤트를 선택해주세요.'
+			defaultPixelEvent: '픽셀 이벤트를 선택해주세요.',
+
+			dialogShow:false,
+			dialogData:{
+				emptyText:'sample',
+				type:'confirm',
+				mode:'sample'
+			},
+			nextStage:false
 		}
 	},
 
   methods: {
+
+  	dialogOpen(emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+    dialogOk() {
+      const mode = this.dialogData.mode
+
+      //모드별 동작
+      if(mode === 'mapping') {
+      	this.$emit('setPixelEventMapping', this.facebookPixelEventNames, this.pixelMappingCategoryIds)
+      }
+      this.nextStage = true
+      this.dialogShow = false;
+    },
+    dialogCancel() {
+      this.nextStage = false;
+      this.dialogShow = false;
+    },
+
+
     multiSelect (item, index) {
 			// 해당 pixelMappingCategory의 pixelEvent를 변경하기 위함
 			const key = event.target.closest('.select_btn').getAttribute('data-key')
@@ -99,14 +135,10 @@ export default {
 
 			if(this.facebookPixelEventNames.includes(this.defaultPixelEvent)) {
 				// 선택되지 않은 픽셀 이벤트가 있을 경우
-				alert('모든 항목이 매칭되지 않았습니다.')
+				//컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('모든 항목이 매칭되지 않았습니다.', 'alert')
 			} else {
-				// 모든 픽셀 이벤트가 설정 되었을 경우
-				if(confirm('현재 매칭된 상태로 Target Pick 설정을 진행할까요?') === true) {
-          this.$emit('setPixelEventMapping', this.facebookPixelEventNames, this.pixelMappingCategoryIds)
-				} else {
-					return false
-				}
+				this.dialogOpen('현재 매칭된 상태로 Target Pick 설정을 진행할까요?', 'confirm', 'mapping')
 			}
     }
   }

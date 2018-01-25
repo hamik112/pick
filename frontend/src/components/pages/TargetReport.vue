@@ -294,13 +294,14 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">전환완료</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환완료') }}</li>
+																			<!-- cost_per_action_type?-->
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">전환완료가치</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">1단계</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">2단계</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">3단계</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">4단계</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">5단계</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 1단계') }}</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 2단계') }}</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 3단계') }}</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 4단계') }}</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 5단계') }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -447,15 +448,15 @@ export default {
 			const tools = document.getElementsByClassName('interest_view')
 			const subId = event.target.className
 			const subEl = document.getElementById(subId)
+			for(let i = 0; i < tools.length; i++) {
+				tools[i].style.display = "none"
+			}
 			if (subEl !== null) {
-				for(let i = 0; i < tools.length; i++) {
-					tools[i].style = "display:none"
-				}
 				if(index != 'close') {
 					if(subEl.style.display == 'block') {
-						subEl.style = "display:none"
+						subEl.style.display = "none"
 					}else{
-						subEl.style = "display:block"
+						subEl.style.display = "block"
 					}
 				}
 			}
@@ -547,35 +548,21 @@ export default {
 			})
 		},
 
-		getCustomMappingEvent(elem) {
-			if (elem.custom_name === "구매") {
-				return elem.value
-			} else if (elem.custom_name === "장바구니") {
-				return elem.value
-			} else if (elem.custom_name === "회원가입") {
-				return elem.value
-			} else if (elem.custom_name === "사이트 방문") {
-				return elem.value
-			} else if (elem.custom_name === "특정페이지 방문") {
-				return elem.value
-			} else if (elem.custom_name === "NEO타겟") {
-				return elem.value
-			} else if (elem.custom_name === "UTM타겟") {
-				return elem.value
-			} else if (elem.custom_name === "전환 완료") {
-				return elem.value
-			} else if (elem.custom_name === "전환 1단계") {
-				return elem.value
-			} else if (elem.custom_name === "전환 2단계") {
-				return elem.value
-			} else if (elem.custom_name === "전환 3단계") {
-				return elem.value
-			} else if (elem.custom_name === "전환 4단계") {
-				return elem.value
-			} else {
-				return 0
-			}
+		getCustomMappingEvent (item, type) {
+			const pixel_event = item.pickdata_custom_pixel_event
+			let value = 0
+			pixel_event.forEach(elem => {
+				const name = elem.custom_name
+				if (name == type) {
+					value = elem.value
+				}
+				else {
+					// return 0
+				}
+			})
+			return value
 		}
+
 	}
 }
 </script>
