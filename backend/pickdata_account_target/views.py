@@ -10,6 +10,7 @@ from .serializers import PickdataAccountTargetSerializer
 
 from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_init_session)
 from utils.facebookapis.targeting import custom_audience
+from utils.facebookapis.ad_account import custom_audiences as custom_audience_api
 from utils.common.string_formatter import string_to_literal
 
 from utils.facebookapis.targeting import targeting_visitor, targeting_specific_page_visitor, targeting_url, \
@@ -196,7 +197,7 @@ class CustomTarget(APIView):
                 msg['request_context'] = delete_e._request_context
                 msg['error'] = delete_e._error
                 raise Exception(msg)
-            custom_audiences.delete_custom_audience(custom_audience_id)
+            custom_audience_api.delete_custom_audience(custom_audience_id)
 
             response_data['success'] = 'YES'
             return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -255,7 +256,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "전체",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
 
                 # 이용 시간 상위 고객
@@ -270,7 +272,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "이용시간상위" + str(input_percent) + "%",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
 
                 # 특정일 동안 미방문 고객
@@ -283,7 +286,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "미방문고객",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
 
                 # 구매고객
@@ -297,7 +301,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "구매고객",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
 
                 # 미 구매고객
@@ -311,7 +316,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "미구매고객",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
 
                 # 장바구니 이용 고객
@@ -325,7 +331,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "장바구니이용고객",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
 
                 # 전환완료 고객
@@ -339,7 +346,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "전환완료고객",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
 
                 # 미 전환 고객
@@ -353,7 +361,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "미전환고객",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
                 # 회원가입 고객
                 elif detail == "registration":
@@ -366,7 +375,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "회원가입고객",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
                 else:
                     raise Exception("No valid detail parameter")
@@ -396,6 +406,7 @@ class CustomTarget(APIView):
                         "description": "전체",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -413,6 +424,7 @@ class CustomTarget(APIView):
                         "description": "이용시간상위" + str(input_percent) + "%",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -428,6 +440,7 @@ class CustomTarget(APIView):
                         "description": "미방문고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -444,6 +457,7 @@ class CustomTarget(APIView):
                         "description": "구매고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -460,6 +474,7 @@ class CustomTarget(APIView):
                         "description": "미구매고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -476,6 +491,7 @@ class CustomTarget(APIView):
                         "description": "장바구니이용고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -492,6 +508,7 @@ class CustomTarget(APIView):
                         "description": "전환완료고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -507,6 +524,7 @@ class CustomTarget(APIView):
                         "description": "미전환고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
                 # 회원가입 고객
@@ -521,6 +539,7 @@ class CustomTarget(APIView):
                         "description": "회원가입고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
                 else:
@@ -556,6 +575,7 @@ class CustomTarget(APIView):
                         "description": "전체",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -574,6 +594,7 @@ class CustomTarget(APIView):
                         "description": "이용시간상위" + str(input_percent) + "%",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -590,6 +611,7 @@ class CustomTarget(APIView):
                         "description": "미방문고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -608,6 +630,7 @@ class CustomTarget(APIView):
                         "description": "구매고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -626,6 +649,7 @@ class CustomTarget(APIView):
                         "description": "미구매고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -644,6 +668,7 @@ class CustomTarget(APIView):
                         "description": "장바구니이용고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -660,6 +685,7 @@ class CustomTarget(APIView):
                         "description": "전환완료고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -677,6 +703,7 @@ class CustomTarget(APIView):
                         "description": "미전환고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
                 # 회원가입 고객
@@ -691,6 +718,7 @@ class CustomTarget(APIView):
                         "description": "회원가입고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
                 else:
@@ -758,6 +786,7 @@ class CustomTarget(APIView):
                         "description": "전체",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -776,6 +805,7 @@ class CustomTarget(APIView):
                         "description": "이용시간상위" + str(input_percent) + "%",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -792,6 +822,7 @@ class CustomTarget(APIView):
                         "description": "미방문고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -810,6 +841,7 @@ class CustomTarget(APIView):
                         "description": "구매고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -828,6 +860,7 @@ class CustomTarget(APIView):
                         "description": "미구매고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -846,6 +879,7 @@ class CustomTarget(APIView):
                         "description": "장바구니이용고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -862,6 +896,7 @@ class CustomTarget(APIView):
                         "description": "전환완료고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
 
@@ -879,6 +914,7 @@ class CustomTarget(APIView):
                         "description": "미전환고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
                 # 회원가입 고객
@@ -893,6 +929,7 @@ class CustomTarget(APIView):
                         "description": "회원가입고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": custom_data
                     }
                 else:
@@ -914,7 +951,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "전체",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
 
                 elif detail == "purchase_count":
@@ -928,6 +966,7 @@ class CustomTarget(APIView):
                         "description": "구매횟수",
                         "option": str(purchase_count),
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": {
                             "purchase_count": purchase_count
                         }
@@ -945,6 +984,7 @@ class CustomTarget(APIView):
                         "description": "구매금액",
                         "option": purchase_amount,
                         "type": "custom",
+                        "params": request.data,
                         "custom_data": {
                             "purchase_amount": purchase_amount
                         }
@@ -969,6 +1009,7 @@ class CustomTarget(APIView):
                         "description": "전체",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                     }
                 elif detail == "non_purchase":
                     created_target = targeting_addtocart.create_addtocart_and_non_purchase_customers(
@@ -980,6 +1021,7 @@ class CustomTarget(APIView):
                         "description": "미구매고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                     }
                 else:
                     raise Exception("No valid detail parameter")
@@ -1001,6 +1043,7 @@ class CustomTarget(APIView):
                         "description": "전체",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                     }
                 elif detail == "usage_time_top":
                     input_percent = request.data.get('input_percent', 25)
@@ -1012,7 +1055,8 @@ class CustomTarget(APIView):
                         "retention_days": retention_days,
                         "description": "이용시간상위" + str(input_percent) + "%",
                         "option": "",
-                        "type": "custom"
+                        "type": "custom",
+                        "params": request.data
                     }
                 elif detail == "non_purchase":
                     created_target = targeting_registration.create_regestration_and_non_purchase_customers(
@@ -1025,6 +1069,7 @@ class CustomTarget(APIView):
                         "description": "미구매",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                     }
                 elif detail == "conversion":
                     created_target = targeting_registration.create_regestration_and_conversion_customers(
@@ -1037,6 +1082,7 @@ class CustomTarget(APIView):
                         "description": "전환고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                     }
                 elif detail == "non_conversion":
                     created_target = targeting_registration.create_regestration_non_conversion_customers(
@@ -1049,6 +1095,7 @@ class CustomTarget(APIView):
                         "description": "미전환고객",
                         "option": "",
                         "type": "custom",
+                        "params": request.data,
                     }
                 else:
                     raise Exception("No valid detail parameter")
@@ -1060,7 +1107,7 @@ class CustomTarget(APIView):
                 raise  Exception("No valid target_type.")
 
             target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, created_target.get('id'),
-                                                  pixel_mapping_category, description, username='test')
+                                                  pixel_mapping_category, json.dumps(description), username='test')
             serializer = PickdataAccountTargetSerializer(target)
 
             response_data['success'] = 'YES'

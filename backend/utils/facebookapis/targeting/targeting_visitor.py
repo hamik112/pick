@@ -56,6 +56,7 @@ def create_total_customers(account_id, name, pixel_id, retention_days=30, prefil
 # input_percent = [25, 10, 5]
 def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, retention_days=30, input_percent=25):
     try:
+        input_percent = int(input_percent)
         ad_account = AdAccount(fbid=account_id)
 
         max_percent = 100

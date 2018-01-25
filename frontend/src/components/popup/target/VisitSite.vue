@@ -309,6 +309,7 @@ export default {
       this.dialogOpen('삭제하시겠습니까?', 'confirm', 'visitSiteDelete')
     },
 
+    // TODO Delete Function
     createVisiteSiteDeleteNext () {
       console.log('delete call')
 
