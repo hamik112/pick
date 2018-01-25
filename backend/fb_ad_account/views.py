@@ -63,7 +63,7 @@ class FbAdAccountList(APIView):
         try:
             act_account_id = request.data.get('act_account_id', '')
             account_category_id = request.data.get('account_category_id', '')
-            default_pixel_id = request.data.get('pixel_id', '')
+            pixel_id = request.data.get('pixel_id', '')
 
             if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
@@ -77,7 +77,7 @@ class FbAdAccountList(APIView):
 
             account_statsus = ad_account.get('account_status')
 
-            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id, default_pixel_id)
+            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id, pixel_id)
 
             response_data['success'] = 'YES'
             response_data['data'] = FbAdAccountSerializer(fb_ad_account).data

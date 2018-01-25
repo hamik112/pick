@@ -16,9 +16,9 @@ class FbAdAccount(models.Model):
     name = models.CharField(max_length=128)
     account_status = models.IntegerField(default=2)
     account_category = models.ForeignKey('account_category.AccountCategory', db_constraint=False)
-    default_pixel_id = models.BigIntegerField()
+    pixel_id = models.BigIntegerField()
 
-    def create(self, ad_account_id, act_account_id, name, account_statsus, account_category_id, default_pixel_id, username = 'TEST'):
+    def create(self, ad_account_id, act_account_id, name, account_statsus, account_category_id, pixel_id, username = 'TEST'):
         try:
             fb_ad_account = self.objects.get(act_account_id=act_account_id)
 
@@ -29,7 +29,7 @@ class FbAdAccount(models.Model):
             fb_ad_account.name = name
             fb_ad_account.account_status = account_statsus
             fb_ad_account.account_category_id = account_category_id
-            fb_ad_account.default_pixel_id = default_pixel_id
+            fb_ad_account.pixel_id = pixel_id
 
             fb_ad_account.save()
 
@@ -44,7 +44,7 @@ class FbAdAccount(models.Model):
             fb_ad_account.name = name
             fb_ad_account.account_status = account_statsus
             fb_ad_account.account_category_id = account_category_id
-            fb_ad_account.default_pixel_id = default_pixel_id
+            fb_ad_account.pixel_id = pixel_id
 
             fb_ad_account.save()
 
