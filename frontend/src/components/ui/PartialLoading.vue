@@ -80,7 +80,7 @@ $spinner-right-spin: $spinner-fill-unfill-rotate-timing / $spinner-line-count; /
 
 
 .Spinner {
-	margin:10px auto;
+	margin:50px auto;
     height: 28px !important;
     width: 28px;
     /* Spins external container */
