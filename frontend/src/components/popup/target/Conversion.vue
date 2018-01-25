@@ -1,5 +1,8 @@
 <template>
   <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+    <transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+    </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
         <div class="main_title">
@@ -67,7 +70,7 @@
           <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
           <button class="next_btn" @click="createConversion()" v-if="makeType == 'add'">타겟 만들기</button>
           <button class="next_btn" @click="createConversion()" v-if="makeType == 'modify'">수정</button>
-          <button class="delete_btn" v-if="makeType == 'modify'">삭제</button>
+          <button class="delete_btn" @click="createConversionDelete()" v-if="makeType == 'modify'">삭제</button>
         </div>
       </div>
     </div>
@@ -76,12 +79,14 @@
 
 <script>
 import Select from '@/components/ui/Select'
+import Dialog from '@/components/ui/Dialog'
 
 export default {
   name: 'Conversion',
 
   components: {
-    'ui-select': Select
+    'ui-select': Select,
+    'ui-dialog': Dialog
   },
 
   props: {
@@ -107,6 +112,9 @@ export default {
     },
     makeType: {
       type:String
+    },
+    makeItem: {
+      type: Object
     }
   },
 
@@ -116,6 +124,13 @@ export default {
       coversionName: '',
 
       subConversionInput: false,
+
+      dialogShow: false,
+      dialogData: {
+        emptyText:'sample',
+        type:'confirm',
+        mode:'sample'
+      },
 
       selectConversionUser: {
         emptyText: '미 전환 고객',
@@ -133,6 +148,32 @@ export default {
   },
 
   methods: {
+    dialogOpen (emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+
+    dialogOk () {
+      const mode = this.dialogData.mode
+
+      if(mode == 'conversion') {
+        this.createVisitSpecificPagesNext()
+      } else if (mode === 'conversionDelete') {
+        this.$emit('deleteCustomTarget', this.makeItem.id)
+      }
+
+      //모드별 동작
+      this.nextStage = true
+      this.dialogShow = false;
+    },
+
+    dialogCancel () {
+      this.nextStage = false;
+      this.dialogShow = false;
+    },
+
     selectOnClick (item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
@@ -184,7 +225,11 @@ export default {
       //   this.$emit('close')
       //   console.log('/pickdata_account_target/custom_target: ', err)
       // })
-    }
+    },
+
+    createConversionDelete () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'conversionDelete')
+    },
   }
 }
 </script>
