@@ -26,7 +26,7 @@
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>-</span>명
+            <span>{{ this.audienceSize }}</span>명
           </div>
         </div>
       </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 
 export default {
@@ -90,6 +91,18 @@ export default {
     },
     makeType: {
       type:String
+    },
+    makeItem: {
+      type: Object
+    }
+  },
+
+  mounted () {
+    console.log('mounted', this.makeItem)
+    if (this.makeType === 'modify') {
+      this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+      this.targetName = this.makeItem.name
+      this.audienceSize = numberFormatter(this.makeItem.display_count)
     }
   },
 
@@ -98,6 +111,7 @@ export default {
       collectionPeriod: '30',
       unvisitedPeriod: '1',
       targetName: '',
+      audienceSize: '-',
 
       subSelect: false,
       subInput: false,
@@ -183,6 +197,15 @@ export default {
         this.subInput = true
       }
       this[key].emptyText = item
+    },
+
+    findSelectText (selectName, key) {
+      /*
+      Select Text 가져오기
+      */
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
     },
 
     findSelectKey (selectName) {
