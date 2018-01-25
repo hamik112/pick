@@ -23,7 +23,7 @@
 											</div>
 										</div>
 									</div>
-									<button class="report_search">검색</button>
+									<button class="report_search" v-on:click="getGridData('349408409', [])">검색</button>
 								</div>
 								<div class="target_report_wrap">
 									<div class="target_setup">
@@ -225,7 +225,7 @@
 												<div class="table_body">
 													<div class="table_body_inner" v-for="(item, index) in listData.data">
 														<ul class="body_th clearfix">
-															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
+															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">{{ item.account_name }}</li>
 															<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">{{ item.campaign_name }}</li>
 															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">{{ item.report_date }}</li>
 															<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">{{ item.adset_name }}</li>
@@ -263,12 +263,12 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
+																			<li>-</li>
+																			<li>-</li>
+																			<li>-</li>
+																			<li>-</li>
+																			<li>-</li>
+																			<li>-</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -279,11 +279,11 @@
 																	<dd>
 																		<ul>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">댓글</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">좋아요</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">공감</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">10초 이상 CPV</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -372,8 +372,14 @@ export default {
 		window.removeEventListener('resize', this.wResize)
 	},
 	created () {
-		this.getGridData()
+		this.loadFbAdAccounts()
+		// this.getGridData()
 	},
+
+	// mounted () {
+	// 	this.loadFbAdAccounts()
+	// },
+
 	data () {
 		return {
 			categorySelectData: {
@@ -388,6 +394,17 @@ export default {
 					'여행',
 					'쇼핑몰',
 					'기타'
+				],
+				keyList: [
+					'all',
+					'loan',
+					'card',
+					'insurance',
+					'beauty',
+					'ngo',
+					'travel',
+					'shoppingmall',
+					'etc'
 				]
 			},
 			accountSelectData: {
@@ -397,7 +414,8 @@ export default {
 					'광고계정1',
 					'광고계정2',
 					'광고계정3'
-				]
+				],
+				keyList: []
 			},
 			sortSelectData: {
 				emptyText: '열 맞춤 설정',
@@ -410,7 +428,6 @@ export default {
 			},
 
 			tablesAutoWidth:4880,
-
 
 
 			show: false,
@@ -482,6 +499,7 @@ export default {
 
 		selectCategory (item) {
 			this.categorySelectData.emptyText = item
+			this.loadFbAdAccounts()
 		},
 
 		selectAccount (item) {
@@ -521,13 +539,67 @@ export default {
 			this.show = this.$el.contains(e.target) && !this.disabled
 		},
 
-		getGridData() {
+		loadFbAdAccounts (res) {
+			if (res == null) {
+				console.log('DEBUG Call')
+			}
+			// fb_ad_accounts/accounts_by_category
+			// 페이스북 광고 계정 리스트 가져오기
+			let url = '/fb_ad_accounts/accounts_by_category'
+			this.$http.get(url, {
+				params: {
+					account_category: this.findSelectKey('categorySelectData')
+				}
+			})
+			.then(res => {
+				const response = res.data
+				const data = response.data
+				const success = response.success
+
+				if (success === "YES") {
+					if (data.length > 0) {
+						var accountNameList = []
+						var acountIdList = []
+						data.forEach(item => {
+							accountNameList.push(item.name)
+							acountIdList.push(item.ad_account_id)
+						})
+						this.accountSelectData.textList = accountNameList
+						this.accountSelectData.emptyText = accountNameList[0]
+						this.accountSelectData.keyList = acountIdList
+					} else {
+						this.accountSelectData.emptyText = '광고주 없음'
+					}
+				}
+			})
+			.catch(err => {
+				console.error('/fb_ad_accounts/accounts_by_category', err)
+			})
+		},
+
+		findSelectKey (selectName) {
+			/*
+			Select Key 가져오기
+			*/
+			const emptyText = this[selectName].emptyText
+			const textList = this[selectName].textList
+			const keyList = this[selectName].keyList
+			return keyList[textList.indexOf(emptyText)]
+		},
+
+		getGridData (account_id, date_range) {
+			// console.log(date_range)
+			// console.log(this.findSelectKey('accountSelectData'))
+			var date_range = ['2016-07-26', '2016-07-29']
 			let url = '/ad_set_insights'
 			this.$http.get(url, {
 				params: {
-					account_id: '349408409',
-					since: '2016-07-26',
-					until: '2016-07-29'
+					account_id: this.findSelectKey('accountSelectData'),
+					// since: start_date,
+					// until: end_date
+					// account_id: '349408409',
+					since: date_range[0],
+					until: date_range[1]
 				}
 			})
 			.then(res => {

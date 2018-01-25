@@ -45,7 +45,7 @@
 <script>
 export default {
   name: 'Aside',
-  
+
   data () {
     return {
       // show: false,
@@ -68,6 +68,13 @@ export default {
 
   beforeDestroy () {
     this.$eventBus.$off('pickdataLogin', this.loadFbAdAccounts)
+  },
+
+  watch: {
+    '$route' (to, from) {
+      console.log(to)
+      console.log(from)
+    }
   },
 
   computed: {
@@ -113,7 +120,7 @@ export default {
             // 현재 페이스북 광고 계정 설정
             this.$store.state.currentFbAdAccount = data[0]
             this.selectedFbAdAccount = data[0]
-            
+
             this.$eventBus.$emit('getTargetPick', this.selectedFbAdAccount)
           }
         } else {
@@ -130,7 +137,7 @@ export default {
       // 현재 페이스북 광고 계정 설정
       this.$store.state.currentFbAdAccount = fbAdAccount
       this.selectedFbAdAccount = fbAdAccount
-      
+
       // 리스트 속성
       this.isActive = false
       this.isShowList = false
@@ -146,7 +153,7 @@ export default {
         localStorage.setItem('fb_ad_account_id', res.data.fb_ad_account.fb_ad_account_id)
         localStorage.setItem('account_id', fbAdAccount.account_id)
         localStorage.setItem('account_name', fbAdAccount.name)
-        
+
         // 페이스북 광고 계장 정보 갱신
         this.$eventBus.$emit('getFbAdAccountInfo')
         // Target Pick 갱신
