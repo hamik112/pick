@@ -117,7 +117,7 @@ class CheckAccountId(APIView):
                     "name": fb_ad_account.name,
                     "account_status": fb_ad_account.account_status,
                     "account_category_id":fb_ad_account.account_category_id,
-                    "defulat_pixel_id":fb_ad_account.defulat_pixel_id
+                    "pixel_id":fb_ad_account.pixel_id
                 }
             else:
                 bool_fb_ad_account = False
