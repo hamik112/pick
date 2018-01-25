@@ -40,7 +40,7 @@
       <div class="pixel_info">
           <div class="pixel_info_title">사용픽셀</div>
           <div v-if="subPixel">
-          <ui-select :selectData="this.usingPixel" data-key="usingPixel":pixelIdShow="subPixel" :onClick="selectOnClick"></ui-select>
+          <ui-select :selectData="this.usingPixel" data-key="usingPixel" :pixelIdShow="subPixel" :onClick="selectOnClick"></ui-select>
       </div>
     </div>
     <div class="btn_wrap">
@@ -67,8 +67,12 @@ export default {
 	  })
 		.then(res => {
 			const data = res.data.data
+      this.usingPixel.emptyText = data[0].name
+      this.usingPixel.emptyTextId = '픽셀 ID : ' + data[0].id
+
 			for(let i = 0; i < data.length; i++) {
 				this.usingPixel.textList.push(data[i].name)
+        this.usingPixel.pixelId.push('픽셀 ID : ' + data[i].id)
 			}
 		})
   },
@@ -83,20 +87,11 @@ export default {
       },
       nextStage:false,
       usingPixel: {
-		emptyText: '픽데이터님의 픽셀',
-		emptyTextId:'테스트',
-		textList: [
-		  '1',
-		  '2',
-		  '3'
-		],
-		//픽셀 아이디값
-		pixelId:[
-			'a',
-			'b',
-			'c'
-		]
-	  },
+		    emptyText: '',
+		    emptyTextId: '',
+		    textList: [],
+		    pixelId: []
+	    },
       categoryName: '',
       subPixel:true
     }
