@@ -63,9 +63,7 @@ class FbAdAccountList(APIView):
         try:
             act_account_id = request.data.get('act_account_id', '')
             account_category_id = request.data.get('account_category_id', '')
-
-            print('act_account_id : ', act_account_id)
-            print('account_category_id : ', account_category_id)
+            default_pixel_id = request.data.get('pixel_id', '')
 
             if str(facebook_app_id) == "284297631740545":
                 api_init_session(request)
@@ -76,9 +74,10 @@ class FbAdAccountList(APIView):
             ad_account_id = ad_account.get('account_id')
             act_account_id = ad_account.get('id')
             name = ad_account.get('name')
+
             account_statsus = ad_account.get('account_status')
 
-            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id)
+            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id, default_pixel_id)
 
             response_data['success'] = 'YES'
             response_data['data'] = FbAdAccountSerializer(fb_ad_account).data
@@ -117,7 +116,8 @@ class CheckAccountId(APIView):
                     "fb_ad_account_id":fb_ad_account.id,
                     "name": fb_ad_account.name,
                     "account_status": fb_ad_account.account_status,
-                    "account_category_id":fb_ad_account.account_category_id
+                    "account_category_id":fb_ad_account.account_category_id,
+                    "defulat_pixel_id":fb_ad_account.defulat_pixel_id
                 }
             else:
                 bool_fb_ad_account = False
@@ -139,7 +139,6 @@ class CheckAccountId(APIView):
             response_data['fb_ad_account'] = dic_fb_ad_account
             response_data['neo_account_list'] = neo_account_list
             response_data['pixel_event_mappings'] = pixel_evnet_mapping_se.data
-
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -219,8 +218,6 @@ class AccountPixel(APIView):
     def get(self, request, format=None):
         response_data = {}
         try:
-
-
             fb_ad_account_id = request.query_params.get('fb_ad_account_id', 0)
             act_account_id = request.query_params.get('act_account_id', '')
 
