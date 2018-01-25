@@ -112,7 +112,8 @@ export default {
     selectOnClick (item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
-
+      const pixelIdText = (event.target.childNodes[1].className === 'text-span') ? event.target.childNodes[1].innerText:'error'
+      this[key].emptyTextId = pixelIdText
       this[key].emptyText = item
     },
 
