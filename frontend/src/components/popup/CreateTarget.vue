@@ -205,6 +205,10 @@ export default {
         this.adAccountPixels.emptyText = emptyText
         this.adAccountPixels.textList = textList
         this.adAccountPixels.keyList = keyList
+
+        if (this.makeType === 'modify') {
+          this.$eventBus.$emit('modifyTarget', this.adAccountPixels)
+        }
       } else {
         console.log('/fb_ad_accounts/ad_account_pixels fail')
       }

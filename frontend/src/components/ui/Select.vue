@@ -3,7 +3,7 @@
     <div class="select_contents" tabindex="-1" @blur="hide">
       <div class="select" v-on:click="onShow"><p v-bind:class="this.pArrowUp">{{ selectData.emptyText }}<span class="text-span" v-if="pixelIdShow">{{ selectData.emptyTextId }}</span></p></div>
       <ul class="select_view" :style="this.selectViewStyle">
-        <li v-for="(item, index) in selectData.textList" @click="onClick(item)" v-on:click="onShow">{{ item }}<span class="text-span" v-if="pixelIdShow">{{ selectData.pixelId[index] }}</span></li>
+        <li v-for="(item, index) in selectData.textList" :key="index" @click="onClick(item)" v-on:click="onShow">{{ item }}<span class="text-span" v-if="pixelIdShow">{{ selectData.pixelId[index] }}</span></li>
       </ul>
     </div>
   </div>
@@ -34,19 +34,19 @@ export default {
       }
     },
     //광고설정 영역 픽셀 아이디값 온오프
-	pixelIdShow:{
-		type:Boolean,
-		default() {
-			return false
-		}
-	},
-	onClick: {
-	  type: Function,
-	  required: false,
-	  default: function (item) {
-		console.log('default', item)
-	  }
-	}
+    pixelIdShow:{
+      type:Boolean,
+      default() {
+        return false
+      }
+    },
+    onClick: {
+      type: Function,
+      required: false,
+      default: function (item) {
+      console.log('default', item)
+      }
+    }
   },
   methods: {
     onShow: function () {

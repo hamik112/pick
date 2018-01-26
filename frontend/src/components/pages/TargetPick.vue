@@ -36,7 +36,7 @@
 								</div>
 								<div class="target_contents">
 									<ul>
-										<li v-for="item in this.targetList[this.targetOn]">
+										<li v-for="(item, index) in this.targetList[this.targetOn]" :key="index">
 											<div class="target_icon">
 												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
 												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
