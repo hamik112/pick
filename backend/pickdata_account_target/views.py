@@ -8,6 +8,9 @@ from pixel_mapping_category.serializers import PixelMappingCategorySerializer
 from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
 
+from ad_set.models import AdSet
+
+from utils.facebookapis.ad_set import insight as adset_insight
 from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_init_session)
 from utils.facebookapis.targeting import custom_audience
 from utils.common.string_formatter import string_to_literal
@@ -165,6 +168,33 @@ class TargetChart(APIView):
 
             if pickdata_target_id == 0:
                 raise Exception('Not Exist Pickdata Target.')
+
+            pickdata_target = PickdataAccountTarget.get_by_id(PickdataAccountTarget, pickdata_target_id)
+            if pickdata_target == None:
+                raise Exception('Not Exist Pickdata Target.')
+
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, pickdata_target.fb_ad_account_id)
+            act_account_id = fb_ad_account.act_account_id
+
+            target_audience_id = pickdata_target.target_audience_id
+            print(target_audience_id)
+            # TODO DELETE!!!
+            target_audience_id = 6103108565657
+            act_account_id = 'act_894360037304328'
+
+            adsets = AdSet.get_adsets_by_target_id(AdSet, target_audience_id)
+            # for adset in adsets:
+            #     print(adset.id)
+            #     print(adset.adset_id)
+            # print(len(adsets))
+
+            placement_insights = adset_insight.get_adset_ids_placement_insights(act_account_id, [adset.adset_id for adset in adsets])
+            print(placement_insights)
 
             response_data['success'] = 'YES'
 
