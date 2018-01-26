@@ -174,6 +174,9 @@ export default {
 					facebook_pixel_event_names: this.facebookPixelEventNames,
 					pixel_mapping_category_ids: this.pixelMappingCategoryIds,
 				})
+				.then(res => {
+
+				})
 			})
 			.then(() => {
 				this.neoAdvIds = []
