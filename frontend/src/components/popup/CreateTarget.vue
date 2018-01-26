@@ -54,7 +54,8 @@
               :tabMove="tabMove"
               :makeType="this.makeType"
               :makeItem="this.makeItem"
-              @close="$emit('close')"></visit-site>
+              @close="$emit('close')"
+              @deleteCustomTarget="deleteCustomTarget"></visit-site>
 
               <!-- 특정 페이지 방문 탭 -->
               <visit-specific-pages
@@ -63,7 +64,8 @@
               :tabMove="tabMove"
               :makeType="this.makeType"
               :makeItem="this.makeItem"
-              @close="$emit('close')"></visit-specific-pages>
+              @close="$emit('close')"
+              @deleteCustomTarget="deleteCustomTarget"></visit-specific-pages>
 
               <!-- 네오 탭 -->
               <neo-target
@@ -72,7 +74,8 @@
               :tabMove="tabMove"
               :makeType="this.makeType"
               :makeItem="this.makeItem"
-              @close="$emit('close')"></neo-target>
+              @close="$emit('close')"
+              @deleteCustomTarget="deleteCustomTarget"></neo-target>
 
               <!-- 구글애널리틱스 탭 -->
               <utm-target
@@ -81,7 +84,8 @@
               :tabMove="tabMove"
               :makeType="this.makeType"
               :makeItem="this.makeItem"
-              @close="$emit('close')"></utm-target>
+              @close="$emit('close')"
+              @deleteCustomTarget="deleteCustomTarget"></utm-target>
 
               <!-- 구매 탭 -->
               <purchase
@@ -90,7 +94,8 @@
               :tabMove="tabMove"
               :makeType="this.makeType"
               :makeItem="this.makeItem"
-              @close="$emit('close')"></purchase>
+              @close="$emit('close')"
+              @deleteCustomTarget="deleteCustomTarget"></purchase>
 
               <!-- 장바구니 탭 -->
               <add-to-cart
@@ -99,7 +104,8 @@
               :tabMove="tabMove"
               :makeType="this.makeType"
               :makeItem="this.makeItem"
-              @close="$emit('close')"></add-to-cart>
+              @close="$emit('close')"
+              @deleteCustomTarget="deleteCustomTarget"></add-to-cart>
 
               <!-- 회원가입 탭 -->
               <registration
@@ -108,7 +114,8 @@
               :tabMove="tabMove"
               :makeType="this.makeType"
               :makeItem="this.makeItem"
-              @close="$emit('close')"></registration>
+              @close="$emit('close')"
+              @deleteCustomTarget="deleteCustomTarget"></registration>
 
               <!-- 단계별 전환 -->
               <conversion
@@ -117,8 +124,8 @@
               :tabMove="tabMove"
               :makeType="this.makeType"
               :makeItem="this.makeItem"
-              @close="$emit('close')"></conversion>
-
+              @close="$emit('close')"
+              @deleteCustomTarget="deleteCustomTarget"></conversion>
             </div>
           </div>
         </div>
@@ -128,7 +135,6 @@
 </template>
 
 <script>
-
 import { numberFormatter } from '@/components/utils/Formatter'
 
 // Popup
@@ -294,6 +300,33 @@ export default {
           this.tabAction[tabArray[i]].show = false
         }
       }
+    },
+
+    // Custom Target 삭제
+    deleteCustomTarget (id) {
+      console.log('custom target ID: ' + id)
+
+      this.$http.delete('/pickdata_account_target/custom_target', {
+        data: {
+          pickdata_account_target_id: id
+        }
+      })
+      .then((response) => {
+        const success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+          this.dialogOpen('사이트방문 타겟 삭제 실패', 'alert')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target delete: ', err)
+      })
     }
   }
 }

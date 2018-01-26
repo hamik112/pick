@@ -56,7 +56,7 @@
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createRegistration()" v-if="makeType == 'add'">타겟 만들기</button>
       <button class="next_btn" @click="createRegistration()" v-if="makeType == 'modify'">수정</button>
-      <button class="delete_btn" v-if="makeType == 'modify'">삭제</button>
+      <button class="delete_btn" @click="createRegistrationDelete()" v-if="makeType == 'modify'">삭제</button>
     </div>
   </div>
 </template>
@@ -96,6 +96,9 @@ export default {
     },
     makeType: {
       type:String
+    },
+    makeItem: {
+      type: Object
     }
   },
 
@@ -157,6 +160,12 @@ export default {
     },
     dialogOk() {
       const mode = this.dialogData.mode
+
+      if(mode == 'registration') {
+        // TODO
+      } else if (mode === 'registrationDelete') {
+        this.$emit('deleteCustomTarget', this.makeItem.id)
+      }
 
       //모드별 동작
       this.nextStage = true
@@ -221,7 +230,11 @@ export default {
         this.$emit('close')
         console.log('/pickdata_account_target/custom_target: ', err)
       })
-    }
+    },
+
+    createRegistrationDelete () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'registrationDelete')
+    },
   }
 }
 </script>

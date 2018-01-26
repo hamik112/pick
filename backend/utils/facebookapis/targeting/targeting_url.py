@@ -66,6 +66,7 @@ def create_url_total_visitor_customers(account_id, name, pixel_id, retention_day
 # URL포함 방문자 & 이용시간 상위 고객
 def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, retention_days=30, input_percent=25, contain_list=[]):
     try:
+        input_percent = int(input_percent)
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []

@@ -1,6 +1,6 @@
 <template>
 	<div id="main_wrap" class="clearfix">
-		<div id="container">
+		<div id="container" v-show="isReport">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
 					<div id="report-widget" class="tab-contents-widget">
@@ -279,11 +279,11 @@
 																	<dd>
 																		<ul>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_vtr }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_cpv }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">-</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_vtr }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_cpv }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -342,6 +342,7 @@
 				</div>
 			</div>
 		</div>
+		<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
 	</div>
 </template>
 
@@ -349,13 +350,15 @@
 // UI
 import Select from '@/components/ui/Select'
 import Calendar from '@/components/ui/Calendar'
+import Loading from '@/components/ui/Loading'
 
 export default {
 	name: 'TargetReport',
 
 	components: {
 		'ui-select': Select,
-		'ui-calendar': Calendar
+		'ui-calendar': Calendar,
+		'ui-loading': Loading
 	},
 
 	beforeMount () {
@@ -450,7 +453,12 @@ export default {
 						weeks: '일_월_화_수_목_금_토'.split('_') // weeks
 					}
 				}
-			}
+			},
+
+			isReport: true,
+			isLoading: false,
+			loadingTitle: '',
+			loadingDescription: ''
 		}
 	},
 
@@ -465,15 +473,15 @@ export default {
 			const tools = document.getElementsByClassName('interest_view')
 			const subId = event.target.className
 			const subEl = document.getElementById(subId)
-			for(let i = 0; i < tools.length; i++) {
-				tools[i].style.display = "none"
-			}
 			if (subEl !== null) {
+				for(let i = 0; i < tools.length; i++) {
+					tools[i].style = "display:none"
+				}
 				if(index != 'close') {
 					if(subEl.style.display == 'block') {
-						subEl.style.display = "none"
+						subEl.style = "display:none"
 					}else{
-						subEl.style.display = "block"
+						subEl.style = "display:block"
 					}
 				}
 			}
@@ -539,12 +547,9 @@ export default {
 			this.show = this.$el.contains(e.target) && !this.disabled
 		},
 
-		loadFbAdAccounts (res) {
-			if (res == null) {
-				console.log('DEBUG Call')
-			}
+		loadFbAdAccounts () {
 			// fb_ad_accounts/accounts_by_category
-			// 페이스북 광고 계정 리스트 가져오기
+			// DB 저장 된 광고 계정 리스트 가져오기
 			let url = '/fb_ad_accounts/accounts_by_category'
 			this.$http.get(url, {
 				params: {
@@ -587,17 +592,21 @@ export default {
 			return keyList[textList.indexOf(emptyText)]
 		},
 
-		getGridData (account_id, date_range) {
-			// console.log(date_range)
-			// console.log(this.findSelectKey('accountSelectData'))
-			var date_range = ['2016-07-26', '2016-07-29']
+		getGridData (account_id) {
+			var date_range = []
+			this.range.forEach(date => {
+				date_range.push(date.toISOString().split('T')[0])
+			})
+
+			this.isReport = false
+			this.isLoading = true
+			this.loadingTitle = '인사이트를 가져오는 중입니다.'
+			this.loadingDescription = '조금만 기다려 주시면, 인사이트를 가져옵니다.'
+
 			let url = '/ad_set_insights'
 			this.$http.get(url, {
 				params: {
 					account_id: this.findSelectKey('accountSelectData'),
-					// since: start_date,
-					// until: end_date
-					// account_id: '349408409',
 					since: date_range[0],
 					until: date_range[1]
 				}
@@ -610,12 +619,16 @@ export default {
 					data.forEach(item => {
 						this.listData.data.push(item)
 					})
+					this.isReport = true
+					this.isLoading = false
 				} else {
 					throw('success: ' + success)
+					this.isReport = true
+					this.isLoading = false
 				}
 			})
 			.catch(err => {
-				//this.isPick = true
+				this.isLoading = false
 				console.error('/ad_set_insights', err)
 			})
 		},

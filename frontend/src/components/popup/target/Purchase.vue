@@ -56,7 +56,7 @@
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createPurchase()" v-if="makeType == 'add'">타겟 만들기</button>
       <button class="next_btn" @click="createPurchase()" v-if="makeType == 'modify'">수정</button>
-      <button class="delete_btn" v-if="makeType == 'modify'">삭제</button>
+      <button class="delete_btn" @click="createPurchaseDelete()" v-if="makeType == 'modify'">삭제</button>
     </div>
   </div>
 </template>
@@ -96,6 +96,9 @@ export default {
     },
     makeType: {
       type:String
+    },
+    makeItem: {
+      type: Object
     }
   },
 
@@ -134,20 +137,26 @@ export default {
   },
 
   methods: {
-    dialogOpen(emptyText, type, mode) {
+    dialogOpen (emptyText, type, mode) {
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type
       this.dialogData['mode'] = mode
       this.dialogShow = true;
     },
-    dialogOk() {
+    dialogOk () {
       const mode = this.dialogData.mode
+
+      if(mode == 'createPurchase') {
+        // TODO
+      } else if (mode === 'purchaseDelete') {
+        this.$emit('deleteCustomTarget', this.makeItem.id)
+      }
 
       //모드별 동작
       this.nextStage = true
       this.dialogShow = false;
     },
-    dialogCancel() {
+    dialogCancel () {
       this.nextStage = false;
       this.dialogShow = false;
     },
@@ -210,6 +219,10 @@ export default {
         this.$emit('close')
         console.log('/pickdata_account_target/custom_target: ', err)
       })
+    },
+
+    createPurchaseDelete () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'purchaseDelete')
     }
   }
 }

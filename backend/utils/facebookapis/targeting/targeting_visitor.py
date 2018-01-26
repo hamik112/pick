@@ -51,11 +51,59 @@ def create_total_customers(account_id, name, pixel_id, retention_days=30, prefil
         msg['error'] = e._error
         raise Exception(msg)
 
+def update_total_customers(custom_audience_id, name, pixel_id, retention_days=30, prefill=True):
+    try:
+        custom_audience = CustomAudience(custom_audience_id)
+
+        rule = {
+            "inclusions": {
+                "operator": "or",
+                "rules": [
+                    {
+                        "event_sources": [
+                            {
+                                "type": "pixel",
+                                "id": pixel_id
+                            }
+                        ],
+                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        "filter": {
+                            "operator": "and",
+                            "filters": [
+                                {
+                                    "field": "url",
+                                    "operator": "i_contains",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "template": "ALL_VISITORS"
+                    }
+                ]
+            }
+        }
+
+        audience = custom_audience.remote_update(params={
+            CustomAudience.Field.name: name,
+            CustomAudience.Field.prefill: prefill,
+            CustomAudience.Field.rule: rule
+        })
+
+        return audience
+
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
+
 
 # 사이트방문 이용 시간 상위 고객
 # input_percent = [25, 10, 5]
 def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, retention_days=30, input_percent=25):
     try:
+        input_percent = int(input_percent)
         ad_account = AdAccount(fbid=account_id)
 
         max_percent = 100

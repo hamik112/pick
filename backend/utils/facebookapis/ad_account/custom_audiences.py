@@ -58,3 +58,14 @@ def get_dic_custom_audiences(account_id):
         msg['request_context'] = e._request_context
         msg['error'] = e._error
         raise Exception(msg)
+
+def delete_custom_audience(custom_audience_id):
+    try:
+        custom_audience = CustomAudience(custom_audience_id)
+        custom_audience.remote_delete()
+    except Exception as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
