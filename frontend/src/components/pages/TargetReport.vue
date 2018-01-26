@@ -1,9 +1,9 @@
 <template>
 	<div id="main_wrap" class="clearfix">
-		<div id="container">
+		<div id="container" v-show="isReport">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
-					<div class="tab-contents-widget">
+					<div id="report-widget" class="tab-contents-widget">
 						<div id="section_list_2" class="section_tab_contents clearfix">
 							<div class="target_contents_wrap">
 								<div class="target_search_wrap clearfix">
@@ -23,7 +23,7 @@
 											</div>
 										</div>
 									</div>
-									<button class="report_search">검색</button>
+									<button class="report_search" v-on:click="getGridData('349408409', [])">검색</button>
 								</div>
 								<div class="target_report_wrap">
 									<div class="target_setup">
@@ -131,18 +131,6 @@
 																<dd>
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 View</span>
-																			<span class="sort_btn"></span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 VTR</span>
-																			<span class="sort_btn"></span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 CPV</span>
-																			<span class="sort_btn"></span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 View</span>
 																			<span class="sort_btn"></span>
 																		</li>
@@ -152,6 +140,18 @@
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 CPV</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>30초 이상 View</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>30초 이상 VTR</span>
+																			<span class="sort_btn"></span>
+																		</li>
+																		<li v-if="sortSelectData.listData[14].setting.show">
+																			<span>30초 이상 CPV</span>
 																			<span class="sort_btn"></span>
 																		</li>
 																	</ul>
@@ -223,46 +223,37 @@
 													</ul>
 												</div>
 												<div class="table_body">
-													<div  class="table_body_inner" v-for="data in listData">
+													<div class="table_body_inner" v-for="(item, index) in listData.data">
 														<ul class="body_th clearfix">
-															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">광고주</li>
-															<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">CTR</li>
-															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">CPC</li>
-															<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">1번</li>
-															<li class="line-5" v-if="sortSelectData.listData[4].setting.show">2번</li>
-															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">3번</li>
+															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">{{ item.account_name }}</li>
+															<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">{{ item.campaign_name }}</li>
+															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">{{ item.report_date }}</li>
+															<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">{{ item.adset_name }}</li>
+															<li class="line-5" v-if="sortSelectData.listData[4].setting.show">{{ item.age }} 세</li>
+															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
 															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
-																<span>4번</span>
-																<div class="interest_view">
+																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
+																<div :id="'interest-sub-' + index" class="interest_view" v-if="item.interest_list.length != 0">
 																	<ul class="clearfix">
-																		<li>겉옷</li>
-																		<li>데님</li>
-																		<li>미니스커트</li>
-																		<li>민소매셔츠</li>
-																		<li>바지</li>
-																		<li>반바지</li>
-																		<li>블라우스</li>
-																		<li>셔츠</li>
-																		<li>쇼핑 및 패션</li>
-																		<li>슈트</li>
+																		<li v-for="elem in item.interest_list">{{ elem }}</li>
 																	</ul>
 																	<div class="inter_clip_copy">클립보드로 복사하기</div>
-																	<div class="inter_close">닫기</div>
+																	<div class="inter_close" @click="tootip('close')">닫기</div>
 																</div>
 															</li>
-															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show">5번</li>
-															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">6번</li>
-															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">3초 이상 View</li>
-															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">3초 이상 VTR</li>
-															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">3초 이상 CPV</li>
+															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
+															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">{{ item.spend }}</li>
+															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
+															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ item.reach }}</li>
+															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ item.frequency }}</li>
 															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li>10초 이상 VTR</li>
-																			<li>10초 이상 CPV</li>
-																			<li>10초 이상 CPV</li>
+																			<li>{{ item.inline_link_clicks }}</li>
+																			<li>{{ item.inline_link_click_ctr }}</li>
+																			<li>{{ item.cpc }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -272,12 +263,12 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
-																			<li>1단계 완료</li>
+																			<li>-</li>
+																			<li>-</li>
+																			<li>-</li>
+																			<li>-</li>
+																			<li>-</li>
+																			<li>-</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -287,12 +278,12 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">좋아요</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">댓글</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">좋아요</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">댓글</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">공감</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">10초 이상 CPV</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_vtr }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_cpv }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_vtr }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_cpv }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -303,13 +294,14 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">좋아요</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">좋아요</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">댓글</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">공감</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">10초 이상 CPV</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">10초 이상 CPV</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환완료') }}</li>
+																			<!-- cost_per_action_type?-->
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">전환완료가치</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 1단계') }}</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 2단계') }}</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 3단계') }}</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 4단계') }}</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 5단계') }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -350,6 +342,7 @@
 				</div>
 			</div>
 		</div>
+		<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
 	</div>
 </template>
 
@@ -357,20 +350,39 @@
 // UI
 import Select from '@/components/ui/Select'
 import Calendar from '@/components/ui/Calendar'
+import Loading from '@/components/ui/Loading'
 
 export default {
 	name: 'TargetReport',
 
 	components: {
 		'ui-select': Select,
-		'ui-calendar':Calendar
+		'ui-calendar': Calendar,
+		'ui-loading': Loading
 	},
-	beforeMount() {
+
+	beforeMount () {
 		this.setDatas()
 	},
-	mounted() {
+
+	mounted () {
 		this.sortTableAutoWidth()
+		this.wResize()
+		window.addEventListener('resize', this.wResize)
 	},
+
+	beforeDestroy () {
+		window.removeEventListener('resize', this.wResize)
+	},
+	created () {
+		this.loadFbAdAccounts()
+		// this.getGridData()
+	},
+
+	// mounted () {
+	// 	this.loadFbAdAccounts()
+	// },
+
 	data () {
 		return {
 			categorySelectData: {
@@ -385,6 +397,17 @@ export default {
 					'여행',
 					'쇼핑몰',
 					'기타'
+				],
+				keyList: [
+					'all',
+					'loan',
+					'card',
+					'insurance',
+					'beauty',
+					'ngo',
+					'travel',
+					'shoppingmall',
+					'etc'
 				]
 			},
 			accountSelectData: {
@@ -394,7 +417,8 @@ export default {
 					'광고계정1',
 					'광고계정2',
 					'광고계정3'
-				]
+				],
+				keyList: []
 			},
 			sortSelectData: {
 				emptyText: '열 맞춤 설정',
@@ -402,23 +426,11 @@ export default {
 				listData: [],
 			},
 
-			listData:[
-				{
-					number:1,
-					name:'첫번째'
-				},
-				{
-					number:2,
-					name:'두번째'
-				},
-				{
-					number:3,
-					name:'세번째'
-				}
-			],
+			listData:{
+				data: []
+			},
 
 			tablesAutoWidth:4880,
-
 
 
 			show: false,
@@ -441,12 +453,41 @@ export default {
 						weeks: '일_월_화_수_목_금_토'.split('_') // weeks
 					}
 				}
-			}
+			},
+
+			isReport: true,
+			isLoading: false,
+			loadingTitle: '',
+			loadingDescription: ''
 		}
 	},
 
 	methods: {
-		setDatas() {
+		wResize (){
+			const wSize = window.innerWidth - 185
+			const el = document.getElementById('report-widget')
+			el.style = "width:" + wSize + 'px'
+		},
+
+		tootip (index) {
+			const tools = document.getElementsByClassName('interest_view')
+			const subId = event.target.className
+			const subEl = document.getElementById(subId)
+			if (subEl !== null) {
+				for(let i = 0; i < tools.length; i++) {
+					tools[i].style = "display:none"
+				}
+				if(index != 'close') {
+					if(subEl.style.display == 'block') {
+						subEl.style = "display:none"
+					}else{
+						subEl.style = "display:block"
+					}
+				}
+			}
+		},
+
+		setDatas () {
 
 			const label = ['광고주','캠페인명','기간','광고세트','연령','성별','관심사 개수','맞춤타겟 이름','광고비','노출','도달','도달빈도','사이트 유입 지표','슬라이드 소재 클릭 지표','영상캠페인 지표','전환 지표','페이지 참여 지표']
 			const sortData = []
@@ -463,16 +504,21 @@ export default {
 				this.sortSelectData.listData.push(setting)
 			}
 		},
-		selectCategory(item) {
+
+		selectCategory (item) {
 			this.categorySelectData.emptyText = item
+			this.loadFbAdAccounts()
 		},
-		selectAccount(item) {
+
+		selectAccount (item) {
 			this.accountSelectData.emptyText = item
 		},
-		sortSelectOnOff() {
+
+		sortSelectOnOff () {
 			this.sortSelectData.onShow = !this.sortSelectData.onShow
 		},
-		sortSelectFilter(item) {
+
+		sortSelectFilter (item) {
 			const me = this
 			item.setting.checked = !item.setting.checked
 			item.setting.show = !item.setting.show
@@ -480,7 +526,8 @@ export default {
 				me.sortTableAutoWidth()
 			}, 1)
 		},
-		sortTableAutoWidth(){
+
+		sortTableAutoWidth (){
 			const listEl = document.getElementById('report-list')
 			const ulEl = document.getElementById('report-list-head')
 			const liEl = ulEl.getElementsByClassName('report-line')
@@ -498,7 +545,109 @@ export default {
 		},
 		dc (e) {
 			this.show = this.$el.contains(e.target) && !this.disabled
+		},
+
+		loadFbAdAccounts () {
+			// fb_ad_accounts/accounts_by_category
+			// DB 저장 된 광고 계정 리스트 가져오기
+			let url = '/fb_ad_accounts/accounts_by_category'
+			this.$http.get(url, {
+				params: {
+					account_category: this.findSelectKey('categorySelectData')
+				}
+			})
+			.then(res => {
+				const response = res.data
+				const data = response.data
+				const success = response.success
+
+				if (success === "YES") {
+					if (data.length > 0) {
+						var accountNameList = []
+						var acountIdList = []
+						data.forEach(item => {
+							accountNameList.push(item.name)
+							acountIdList.push(item.ad_account_id)
+						})
+						this.accountSelectData.textList = accountNameList
+						this.accountSelectData.emptyText = accountNameList[0]
+						this.accountSelectData.keyList = acountIdList
+					} else {
+						this.accountSelectData.emptyText = '광고주 없음'
+					}
+				}
+			})
+			.catch(err => {
+				console.error('/fb_ad_accounts/accounts_by_category', err)
+			})
+		},
+
+		findSelectKey (selectName) {
+			/*
+			Select Key 가져오기
+			*/
+			const emptyText = this[selectName].emptyText
+			const textList = this[selectName].textList
+			const keyList = this[selectName].keyList
+			return keyList[textList.indexOf(emptyText)]
+		},
+
+		getGridData (account_id) {
+			var date_range = []
+			this.range.forEach(date => {
+				date_range.push(date.toISOString().split('T')[0])
+			})
+
+			this.isReport = false
+			this.isLoading = true
+			this.loadingTitle = '인사이트를 가져오는 중입니다.'
+			this.loadingDescription = '조금만 기다려 주시면, 인사이트를 가져옵니다.'
+
+			let url = '/ad_set_insights'
+			this.$http.get(url, {
+				params: {
+					account_id: this.findSelectKey('accountSelectData'),
+					since: date_range[0],
+					until: date_range[1]
+				}
+			})
+			.then(res => {
+				const response = res.data
+				const data = response.data
+				const success = response.success
+				if (success === "YES") {
+					data.forEach(item => {
+						this.listData.data.push(item)
+					})
+					this.isReport = true
+					this.isLoading = false
+				} else {
+					throw('success: ' + success)
+					this.isReport = true
+					this.isLoading = false
+				}
+			})
+			.catch(err => {
+				this.isLoading = false
+				console.error('/ad_set_insights', err)
+			})
+		},
+
+		getCustomMappingEvent (item, type) {
+			const pixel_event = item.pickdata_custom_pixel_event
+			let value = 0
+			pixel_event.forEach(elem => {
+				const name = elem.custom_name
+				if (name == type) {
+					value = elem.value
+				}
+				else {
+					// return 0
+				}
+			})
+			return value
 		}
+
 	}
 }
 </script>

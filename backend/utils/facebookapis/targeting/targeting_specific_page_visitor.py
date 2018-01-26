@@ -98,6 +98,7 @@ def create_specific_page_total_visitor_customers(account_id, name, pixel_id, ret
 def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, retention_days=30, input_percent=25,
                                     contain_list=[], eq_list=[]):
     try:
+        input_percent = int(input_percent)
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
@@ -117,78 +118,87 @@ def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, re
             })
 
         max_percent = 100
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+
+                },
+                "template": "TOP_TIME_SPENDERS",
+                "aggregation": {
+                    "type": "time_spent",
+                    "method": "percentile",
+                    "operator": "in_range",
+                    "value": {
+                        "from": max_percent - input_percent,
+                        "to": max_percent
+                    }
+                }
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "TOP_TIME_SPENDERS",
+                "aggregation": {
+                    "type": "time_spent",
+                    "method": "percentile",
+                    "operator": "in_range",
+                    "value": {
+                        "from": max_percent - input_percent,
+                        "to": max_percent
+                    }
+                }
+            }
+            rules.append(eq_rule)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-
-                        },
-                        "template": "TOP_TIME_SPENDERS",
-                        "aggregation": {
-                            "type": "time_spent",
-                            "method": "percentile",
-                            "operator": "in_range",
-                            "value": {
-                                "from": max_percent - input_percent,
-                                "to": max_percent
-                            }
-                        }
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "TOP_TIME_SPENDERS",
-                        "aggregation": {
-                            "type": "time_spent",
-                            "method": "percentile",
-                            "operator": "in_range",
-                            "value": {
-                                "from": max_percent - input_percent,
-                                "to": max_percent
-                            }
-                        }
-                    }
-                ]
+                "rules": rules
             }
         }
 

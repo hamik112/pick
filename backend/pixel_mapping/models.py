@@ -59,6 +59,7 @@ class PixelMapping(models.Model):
         created_cnt = 0
 
         fb_ad_account_id = fb_ad_account.id
+        filtered_category_ids = []
 
         for idx, pixel_mapping_category_id in enumerate(pixel_mapping_category_ids):
             if facebook_pixel_event_names[idx] != None:
@@ -79,9 +80,12 @@ class PixelMapping(models.Model):
                     pixel_mapping.pixel_mapping_category_id = pixel_mapping_category_id
                     pixel_mapping.facebook_pixel_event_name = facebook_pixel_event_names[idx]
 
+                filtered_category_ids.append(pixel_mapping_category_id)
                 pixel_mapping.save()
                 created_cnt += 1
 
+
+        self.objects.filter(fb_ad_account_id = fb_ad_account_id).exclude(pixel_mapping_category_id__in = filtered_category_ids).delete()
         return created_cnt
 
     class Meta:

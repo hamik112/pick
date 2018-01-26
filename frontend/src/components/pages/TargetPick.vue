@@ -2,13 +2,13 @@
 	<div id="main_wrap" class="clearfix" >
 
 		<transition name='modal'>
-			<TargetChartPop v-if="chartModal" @close="chartModal = false"></TargetChartPop>
-			<TargetMake1 v-if="makeModal1" @close="makeModal1 = false"></TargetMake1>
+			<target-chart v-if="chartModal" @close="chartModal = false"></target-chart>
+			<create-target v-if="makeModal" :makeType="this.makeType" :makeItem="this.makeItem" @close="makeModal = false"></create-target>
 		</transition>
 
 		<transition-group name='modal'>
-			<SetupPop v-if="setupPop" @close="setupPop = false" key="setup"></SetupPop>
-			<PixelNone v-if="pixelNone" @close="pixelNone = false" key="pixel"></PixelNone>
+			<advertising-account-setting v-if="setupPop" @close="setupPop = false" key="setup"></advertising-account-setting>
+			<not-available v-if="pixelNone" @close="pixelNone = false" key="pixel"></not-available>
 		</transition-group>
 
 		<div id="container" v-show="isPick">
@@ -22,7 +22,7 @@
 									<li><a id="p-menu1" href="javascript:void(0)" @click="tPickMenu('visitPages')" :class="[(this.targetOn == 'visitPages') ? 'on' : '']">사이트방문<span>{{ targetCount.visitPagesCount }}</span></a></li>
 									<li><a id="p-menu2" href="javascript:void(0)" @click="tPickMenu('visitSpecificPages')" :class="[(this.targetOn == 'visitSpecificPages') ? 'on' : '']">특정페이지 방문<span>{{ targetCount.visitSpecificPagesCount }}</span></a></li>
 									<li><a id="p-menu3" href="javascript:void(0)" @click="tPickMenu('neoTarget')" :class="[(this.targetOn == 'neoTarget') ? 'on' : '']">NEO 타겟<span>{{ targetCount.neoTargetCount }}</span></a></li>
-									<li><a id="p-menu4" href="javascript:void(0)" @click="tPickMenu('utmTarget')" :class="[(this.targetOn == 'utmTarget') ? 'on' : '']">UTM 티켓<span>{{ targetCount.utmTargetCount }}</span></a></li>
+									<li><a id="p-menu4" href="javascript:void(0)" @click="tPickMenu('utmTarget')" :class="[(this.targetOn == 'utmTarget') ? 'on' : '']">구글애널리틱스<span>{{ targetCount.utmTargetCount }}</span></a></li>
 									<li><a id="p-menu5" href="javascript:void(0)" @click="tPickMenu('purchase')" :class="[(this.targetOn == 'purchase') ? 'on' : '']">구매<span>{{ targetCount.purchaseCount }}</span></a></li>
 									<li><a id="p-menu6" href="javascript:void(0)" @click="tPickMenu('addToCart')" :class="[(this.targetOn == 'addToCart') ? 'on' : '']">장바구니<span>{{ targetCount.addToCartCount }}</span></a></li>
 									<li><a id="p-menu7" href="javascript:void(0)" @click="tPickMenu('registration')" :class="[(this.targetOn == 'registration') ? 'on' : '']">회원가입<span>{{ targetCount.registrationCount }}</span></a></li>
@@ -32,18 +32,21 @@
 							<div class="target_contents_wrap">
 								<div class="target_setup">
 									<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-									<button type="button" @click="makeModal1 = true">타겟만들기</button>
+									<button type="button" @click="popupOpenBtn('makeModal','add')">타겟만들기</button>
 								</div>
 								<div class="target_contents">
 									<ul>
-										<li v-for="item in this.targetList[this.targetOn]" @click="chartModal = true">
+										<li v-for="item in this.targetList[this.targetOn]">
 											<div class="target_icon">
-												<div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']"></div>
-												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']"></div>
+												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
+												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
+												<div class="icon_target" @click="popupOpenBtn('makeModal','modify', item)"></div>
+												<div class="icon_gragh" @click="chartModal = true"></div>
+												<button type="button" @click="popupOpenBtn('makeModal','modify', item)">수정</button>
 											</div>
 											<div class="target_info">
 												<p>{{ item.name }}</p>
-												<p>{{ item.display_count }}</p>
+												<p><span class="opensans">{{ item.display_count }}</span></p>
 											</div>
 											<div class="target_state">
 												<p>{{ item.description.pixel_mapping_category }}</p>
@@ -52,7 +55,7 @@
 												<p v-if="item.description.option != ''">{{ item.description.option }}</p>
 											</div>
 										</li>
-										<li class="target_last"><a href="javascript:void(0);" @click="makeModal1 = true"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
+										<li class="target_last"><a href="javascript:void(0);" @click="popupOpenBtn('makeModal','add')"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
 									</ul>
 								</div>
 
@@ -67,28 +70,28 @@
 </template>
 
 <script>
-	// 팝업
-	import TargetChartPop from '@/components/popup/Target_chart'
-	import TargetMake1 from '@/components/popup/Target_make_01'
+	// Popup
+	import TargetChart from '@/components/popup/TargetChart'
+	import CreateTarget from '@/components/popup/CreateTarget'
+	import AdvertisingAccountSetting from '@/components/popup/AdvertisingAccountSetting'
+	import NotAvailable from '@/components/popup/NotAvailable'
+
 	// UI
 	import Select from '@/components/ui/Select'
 	import Calendar from '@/components/ui/Calendar'
 	import Loading from '@/components/ui/Loading'
 
-	import SetupPop from '@/components/popup/Advertising_setup'
-	import PixelNone from '@/components/popup/Target_not_available'
-
 	export default {
 		name: 'TargetPick',
 
 		components: {
-			'TargetChartPop': TargetChartPop,
-			'TargetMake1': TargetMake1,
+			TargetChart,
+			CreateTarget,
+			AdvertisingAccountSetting,
+			NotAvailable,
 			'ui-select': Select,
 			'ui-calendar': Calendar,
 			'ui-loading': Loading,
-			'SetupPop': SetupPop,
-			'PixelNone': PixelNone
 		},
 
 		data () {
@@ -96,9 +99,12 @@
 				setupPop: false,
 				pixelNone: false,
 				chartModal: false,
-				makeModal1: false,
-				makeModal2: false,
+				makeModal: false,
+				makeType:'add',
+				makeItem: {},
+
 				targetOn:'total',
+
 				selectData: {
 					emptyText: '전체보기',
 					textList: [
@@ -110,12 +116,14 @@
 						'인구통계데이터가 있는 타겟만 보기'
 					]
 				},
+
 				itemObject: {
 					iconTargetClass: {
 						iconTarget: true,
 						on: false
 					}
 				},
+
 				targetList: {
 					total: [],
 					registration: [],
@@ -127,6 +135,7 @@
 					purchase: [],
 					neoTarget: []
 				},
+
 				targetCount: {
 					totalCount: 0,
 					registrationCount: 0,
@@ -138,10 +147,12 @@
 					purchaseCount: 0,
 					neoTargetCount: 0
 				},
+
 				isPick: false,
 				isLoading: false,
 				loadingTitle: '',
 				loadingDescription: ''
+
 			}
 		},
 
@@ -171,21 +182,21 @@
 				console.log(item)
 				let target_type = ""
 
-				if(item == "전체보기"){
+				if (item == "전체보기") {
 					target_type="all"
-				}else if (item == "전체보기"){
+				} else if (item == "전체보기") {
 					target_type="all"
-				}else if (item == "기본 타겟만 보기"){
+				} else if (item == "기본 타겟만 보기") {
 					target_type="default"
-				}else if (item == "생성 타겟만 보기"){
+				} else if (item == "생성 타겟만 보기") {
 					target_type="created"
-				}else if (item == "타겟팅 완료된 타겟만 보기"){
+				} else if (item == "타겟팅 완료된 타겟만 보기") {
 					target_type="targeting_completed"
-				}else if (item == "타겟팅 진행중인 타겟만 보기"){
+				} else if (item == "타겟팅 진행중인 타겟만 보기") {
 					target_type="targeting_progress"
-				}else if (item == "인구통계데이터가 있는 타겟만 보기"){
+				} else if (item == "인구통계데이터가 있는 타겟만 보기") {
 					target_type="demographic"
-				}else{
+				} else {
 					target_type="all"
 				}
 
@@ -264,7 +275,18 @@
 
 				this.selectData.emptyText = item
 			},
-			tPickMenu(type) {
+			popupOpenBtn (popupName, type, item) {
+				//팝업 오픈
+				//popupName = 팝업컴포넌트명, type = add,modify,delete
+				this[popupName] = true
+				if(popupName === 'makeModal') {
+					if (type === 'modify') {
+						this.makeItem = item
+					}
+					this.makeType = type
+				}
+			},
+			tPickMenu (type) {
 				//매뉴 온오프 or 리스트 필터
 				this.targetOn = type
 			},
@@ -289,7 +311,7 @@
 						this.pixelNone = false
 
 						if (bool_fb_ad_account == false) {
-							// Advertising_setup popup 호출
+							// AdvertisingAccountSetting popup 호출
 							this.isPick = false
 							this.setupPop = true
 							this.isLoading = false

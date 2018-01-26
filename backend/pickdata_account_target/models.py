@@ -40,6 +40,19 @@ class PickdataAccountTarget(models.Model):
             logger.error(traceback.format_exc())
             return None
 
+    def get_by_id(self, id):
+        try:
+            pickdata_account_target = self.objects.get(pk=id)
+
+            return pickdata_account_target
+        except self.DoesNotExist:
+            return None
+        except Exception as e:
+            print(traceback.format_exc())
+            logger.error(traceback.format_exc())
+            return None
+
+
     def create(self, fb_ad_account, target_audience_id, pixel_mapping_category, description, target_status=0, username="TEST"):
         try:
             created_account_target = PickdataAccountTarget()
@@ -57,6 +70,26 @@ class PickdataAccountTarget(models.Model):
             created_account_target.save()
 
             return created_account_target
+        except Exception as e:
+            print(traceback.format_exc())
+            logger.error(traceback.format_exc())
+            return None
+
+    def update(self, pickdata_account_target, fb_ad_account, target_audience_id, pixel_mapping_category, description, target_status=0, username="TEST"):
+        try:
+            pickdata_account_target.updated_by = username
+            pickdata_account_target.updated_by = username
+
+            pickdata_account_target.fb_ad_account = fb_ad_account
+            pickdata_account_target.target_audience_id = target_audience_id
+
+            pickdata_account_target.pixel_mapping_category = pixel_mapping_category
+            pickdata_account_target.target_status = target_status
+            pickdata_account_target.description = description
+
+            pickdata_account_target.save()
+
+            return pickdata_account_target
         except Exception as e:
             print(traceback.format_exc())
             logger.error(traceback.format_exc())
