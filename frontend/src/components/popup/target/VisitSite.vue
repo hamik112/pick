@@ -55,7 +55,7 @@
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createVisitSite()" v-if="makeType == 'add'">타겟 만들기</button>
-      <button class="next_btn" @click="createVisitSite()" v-if="makeType == 'modify'">수정</button>
+      <button class="next_btn" @click="updateVisitSite()" v-if="makeType == 'modify'">수정</button>
       <button class="delete_btn" @click="createVisitSiteDelete()" v-if="makeType == 'modify'">삭제</button>
     </div>
   </div>
@@ -209,11 +209,12 @@ export default {
     dialogOk() {
       const mode = this.dialogData.mode
 
-      if (mode == 'visitSite') {
+      if (mode === 'visitSite') {
         this.createVisitSiteNext()
       } else if (mode === 'visitSiteDelete') {
         this.$emit('deleteCustomTarget', this.makeItem.id)
-        // this.createVisiteSiteDeleteNext()
+      } else if (mode === 'visitSiteUpdate') {
+        this.updateVisitSiteNext()
       }
 
       //모드별 동작
@@ -307,6 +308,42 @@ export default {
 
     createVisitSiteDelete () {
       this.dialogOpen('삭제하시겠습니까?', 'confirm', 'visitSiteDelete')
+    },
+
+    updateVisitSite () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'visitSiteUpdate')
+    },
+
+    updateVisitSiteNext () {
+      console.log('update call')
+      let params = {
+        pickdata_account_target_id: this.makeItem.id,
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'visit_site',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      this.$http.put('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          this.dialogOpen('사이트방문 타겟 수정 실패', 'alert')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target delete: ', err)
+      })
     },
 
     // TODO Delete Function

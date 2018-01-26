@@ -188,6 +188,8 @@ class CustomTarget(APIView):
 
             pickdata_account_target_id = request.data.get('pickdata_account_target_id', 0)
             pickdata_account_target = PickdataAccountTarget.objects.get(id=pickdata_account_target_id)
+            if pickdata_account_target == None:
+                raise Exception('Not Exist pickdata_account_target')
             custom_audience_id = pickdata_account_target.target_audience_id
 
             try:
@@ -210,12 +212,175 @@ class CustomTarget(APIView):
     def put(self, request, format=None):
         response_data = {}
         try:
-            print('CustomTarget put')
-            print(request.data)
+            fb_ad_account_id = request.data.get('fb_ad_account_id', 0)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            # visit_site, visit_specific_pages, neo_target, utm_target, purchase, add_to_cart, registration,
+            target_type = request.data.get('target_type', None)
+            pixel_id = request.data.get('pixel_id', 0)
+            name = request.data.get('name', None)
+            retention_days = request.data.get('retention_days', 30)
+            retention_days = int(retention_days)
+
+            # Update PickdataAccountTarget
             pickdata_account_target_id = request.data.get('pickdata_account_target_id', 0)
-            print(pickdata_account_target_id)
+            pickdata_account_target = PickdataAccountTarget.objects.get(id=pickdata_account_target_id)
+            if pickdata_account_target == None:
+                raise Exception('Not Exist pickdata_account_target')
+            custom_audience_id = pickdata_account_target.target_audience_id
+
+            if target_type == "visit_site":
+                detail = request.data.get('detail', '')
+                pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
+                                                                                                  'visit pages')
+
+                description = {}
+                # 전체고객
+                if detail == "total":
+                    print('abc')
+                    created_target = targeting_visitor.update_total_customers(custom_audience_id, name,
+                                                                              pixel_id, retention_days=retention_days)
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "전체",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+
+                # 이용 시간 상위 고객
+                elif detail == "usage_time_top":
+                    input_percent = request.data.get('input_percent', 25)
+                    created_target = targeting_visitor.create_usage_time_top_customers(fb_ad_account.act_account_id,
+                                                                                       name, pixel_id,
+                                                                                       retention_days=retention_days,
+                                                                                       input_percent=input_percent)
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "이용시간상위" + str(input_percent) + "%",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+
+                # 특정일 동안 미방문 고객
+                elif detail == "non_visit":
+                    created_target = targeting_visitor.create_non_visition_customers(fb_ad_account.act_account_id, name,
+                                                                                     pixel_id,
+                                                                                     retention_days=retention_days)
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "미방문고객",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+
+                # 구매고객
+                elif detail == "purchase":
+                    # TODO DB 구매 이벤트 유무 확인
+                    created_target = targeting_visitor.create_visitor_and_purchase_customers(
+                        fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
+                        purchase_event_name="Purchase")
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "구매고객",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+
+                # 미 구매고객
+                elif detail == "non_purchase":
+                    # TODO DB 구매 이벤트 유무 확인
+                    created_target = targeting_visitor.create_visitor_and_non_purchase_customers(
+                        fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
+                        purchase_event_name="Purchase")
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "미구매고객",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+
+                # 장바구니 이용 고객
+                elif detail == "add_to_cart":
+                    # TODO 장바구니 이벤트 확인
+                    created_target = targeting_visitor.create_visitor_and_addtocart_customers(
+                        fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
+                        addtocart_evnet_name="AddToCart")
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "장바구니이용고객",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+
+                # 전환완료 고객
+                elif detail == "conversion":
+                    # TODO 전환완료 이벤트 확인
+                    created_target = targeting_visitor.create_visitor_and_coversion_customers(
+                        fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
+                        conversion_event_name="ViewContent")
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "전환완료고객",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+
+                # 미 전환 고객
+                elif detail == "non_conversion":
+                    # TODO 전환완료 이벤트 확인
+                    create_target = targeting_visitor.create_visitor_and_non_coversion_customers(
+                        fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
+                        conversion_event_name="ViewContent")
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "미전환고객",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+                # 회원가입 고객
+                elif detail == "registration":
+                    # TODO 회원가입 이벤트 확인
+                    created_target = targeting_visitor.create_visitor_and_registration_customers(
+                        fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
+                        registration_event_name="CompleteRegistration")
+                    description = {
+                        "pixel_mapping_category": "사이트방문",
+                        "retention_days": retention_days,
+                        "description": "회원가입고객",
+                        "option": "",
+                        "type": "custom",
+                        "params": request.data
+                    }
+                else:
+                    raise Exception("No valid detail parameter")
+
+            # pickdata Database Update Call
+            target = PickdataAccountTarget.update(PickdataAccountTarget, pickdata_account_target, fb_ad_account, created_target.get('id'),
+                                                  pixel_mapping_category, json.dumps(description), username='test')
+            serializer = PickdataAccountTargetSerializer(target)
 
             response_data['success'] = 'YES'
+            response_data['data'] = serializer.data
+
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         except Exception as e:
             print(traceback.format_exc())
