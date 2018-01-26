@@ -30,6 +30,7 @@ def get_custom_audience(audience_id):
         msg['error'] = e._error
         raise Exception(msg)
 
+
 def get_custom_audience_by_ids(audience_ids):
     try:
         custom_audience = CustomAudience()
@@ -45,7 +46,7 @@ def get_custom_audience_by_ids(audience_ids):
             CustomAudience.Field.time_updated
         ])
 
-        return_data = [ custom_audience._json for custom_audience  in custom_audiences ]
+        return_data = [custom_audience._json for custom_audience in custom_audiences]
 
         return return_data
 
@@ -56,26 +57,30 @@ def get_custom_audience_by_ids(audience_ids):
         msg['error'] = e._error
         raise Exception(msg)
 
+
 def get_dic_custom_audiences_by_ids(audience_ids):
     try:
-        custom_audience = CustomAudience()
-        custom_audiences = custom_audience.get_by_ids(audience_ids, fields=[
-            CustomAudience.Field.id,
-            CustomAudience.Field.name,
-            CustomAudience.Field.account_id,
-            CustomAudience.Field.approximate_count,
-            CustomAudience.Field.delivery_status,
-            CustomAudience.Field.operation_status,
-            CustomAudience.Field.pixel_id,
-            CustomAudience.Field.time_created,
-            CustomAudience.Field.time_updated
-        ], params={
-            'locale': 'ko_KR'
-        })
+        if audience_ids != []:
+            custom_audience = CustomAudience()
+            custom_audiences = custom_audience.get_by_ids(audience_ids, fields=[
+                CustomAudience.Field.id,
+                CustomAudience.Field.name,
+                CustomAudience.Field.account_id,
+                CustomAudience.Field.approximate_count,
+                CustomAudience.Field.delivery_status,
+                CustomAudience.Field.operation_status,
+                CustomAudience.Field.pixel_id,
+                CustomAudience.Field.time_created,
+                CustomAudience.Field.time_updated
+            ], params={
+                'locale': 'ko_KR'
+            })
 
-        return_data = { custom_audience.get('id') : custom_audience._json for custom_audience  in custom_audiences }
+            return_data = {custom_audience.get('id'): custom_audience._json for custom_audience in custom_audiences}
 
-        return return_data
+            return return_data
+        else:
+            return None
 
     except FacebookRequestError as e:
         print(e)
