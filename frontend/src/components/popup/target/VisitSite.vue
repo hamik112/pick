@@ -282,6 +282,7 @@ export default {
         pixel_id: this.findSelectKey('adAccountPixels'),
         name: this.targetName,
         retention_days: this.collectionPeriod,
+        exclusion_retention_days: this.unvisitedPeriod,
 
         detail: this.findSelectKey('selectUser'),
         input_percent: this.findSelectKey('selectSub')
@@ -323,6 +324,7 @@ export default {
         pixel_id: this.findSelectKey('adAccountPixels'),
         name: this.targetName,
         retention_days: this.collectionPeriod,
+        exclusion_retention_days: this.unvisitedPeriod,
 
         detail: this.findSelectKey('selectUser'),
         input_percent: this.findSelectKey('selectSub')
