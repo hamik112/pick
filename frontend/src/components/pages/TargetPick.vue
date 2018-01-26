@@ -32,6 +32,7 @@
 							<div class="target_contents_wrap">
 								<div class="target_setup">
 									<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+									<button type="button" class="refresh">새로고침</button>
 									<button type="button" @click="popupOpenBtn('makeModal','add')">타겟만들기</button>
 								</div>
 								<div class="target_contents">
