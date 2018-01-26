@@ -175,7 +175,21 @@ export default {
 					pixel_mapping_category_ids: this.pixelMappingCategoryIds,
 				})
 				.then(res => {
-
+					const response = res.data
+					const data = response.data
+					const success = response.success
+					if (success === 'YES') {
+						this.$http.get('/fb_ad_accounts/'+ localStorage.getItem('fb_ad_account_id') +'/default_target')
+						.then(res =>{
+							const response = res.data
+							const success = response.success
+							if (success === 'YES') {
+								console.log('default_target create success')
+							}else{
+								console.log('default_target create fail')
+							}
+						})
+					}
 				})
 			})
 			.then(() => {
