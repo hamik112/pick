@@ -53,13 +53,13 @@
 											@setCategory="setCategory">
 										</category-setting>
 										<!-- Step2: 네오 계정 연동 -->
-										<neo-account-linkage v-show="isActive[1]" 
+										<neo-account-linkage v-show="isActive[1]"
 											@backToSetCategory="backToSetCategory"
 											@setNeoAccountLinkage="setNeoAccountLinkage">
 										</neo-account-linkage>
 										<!-- Step3: 픽셀 이벤트 맵핑 -->
-										<pixel-event-mapping v-show="isActive[2]" 
-											@backToNeoAccountLinkage="backToNeoAccountLinkage" 
+										<pixel-event-mapping v-show="isActive[2]"
+											@backToNeoAccountLinkage="backToNeoAccountLinkage"
 											@setPixelEventMapping="setPixelEventMapping"
 											:emptyTextId="emptyTextId">
 										</pixel-event-mapping>
@@ -92,11 +92,11 @@ export default {
 			isActive: [true, false, false],
 
 			actAccountId: 0,
-			
+
 			accountCategoryId: 0,
 			emptyTextId: 0,
 			neoAdvIds: [],
-			neoAccountIds: [],			
+			neoAccountIds: [],
 			facebookPixelEventNames: [],
 			pixelMappingCategoryIds: []
 		}
@@ -148,7 +148,14 @@ export default {
 				account_category_id: this.accountCategoryId,
 				pixel_id: this.emptyTextId,
 			})
-			.then(() => {
+			.then(res => {
+				const response = res.data
+				const data = response.data
+				const success = response.success
+				if (success === "YES") {
+					localStorage.setItem('fb_ad_account_id', data.id)
+				}
+
 				// 네오 계정 연동 POST
 				this.$http.post('/neo_account/', {
 					fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
@@ -166,6 +173,23 @@ export default {
 					fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
 					facebook_pixel_event_names: this.facebookPixelEventNames,
 					pixel_mapping_category_ids: this.pixelMappingCategoryIds,
+				})
+				.then(res => {
+					const response = res.data
+					const data = response.data
+					const success = response.success
+					if (success === 'YES') {
+						this.$http.get('/fb_ad_accounts/'+ localStorage.getItem('fb_ad_account_id') +'/default_target')
+						.then(res =>{
+							const response = res.data
+							const success = response.success
+							if (success === 'YES') {
+								console.log('default_target create success')
+							}else{
+								console.log('default_target create fail')
+							}
+						})
+					}
 				})
 			})
 			.then(() => {

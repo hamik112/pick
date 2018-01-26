@@ -70,7 +70,7 @@
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createVisitSpecificPages()" v-if="makeType == 'add'">타겟 만들기</button>
       <button class="next_btn" @click="createVisitSpecificPages()" v-if="makeType == 'modify'">수정</button>
-      <button class="delete_btn" v-if="makeType == 'modify'">삭제</button>
+      <button class="delete_btn" @click="createVisitSpecificPagesDelete()" v-if="makeType == 'modify'">삭제</button>
     </div>
   </div>
 </template>
@@ -110,6 +110,9 @@ export default {
     },
     makeType: {
       type:String
+    },
+    makeItem: {
+      type: Object
     }
   },
 
@@ -187,7 +190,6 @@ export default {
   },
 
   methods: {
-
     dialogOpen(emptyText, type, mode) {
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type
@@ -197,8 +199,10 @@ export default {
     dialogOk() {
       const mode = this.dialogData.mode
 
-      if(mode == 'visiteSiteSpecific') {
-        this.createVisiteSpecificPagesNext()
+      if(mode == 'visitSpecificPages') {
+        this.createVisitSpecificPagesNext()
+      } else if (mode === 'visitSpecificPagesDelete') {
+        this.$emit('deleteCustomTarget', this.makeItem.id)
       }
 
       //모드별 동작
@@ -298,10 +302,11 @@ export default {
         this.dialogOpen('입력되지 않은 URL이 있습니다.', 'alert')
       } else {
         //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
-        this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'visiteSiteSpecific')
+        this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'visitSpecificPages')
       }
     },
-    createVisiteSpecificPagesNext() {
+
+    createVisitSpecificPagesNext () {
       let params = {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
         target_type: 'visit_specific_pages',
@@ -334,7 +339,11 @@ export default {
         this.$emit('close')
         console.log('/pickdata_account_target/custom_target: ', err)
       })
-    }
+    },
+
+    createVisitSpecificPagesDelete () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'visitSpecificPagesDelete')
+    },
   }
 }
 </script>
