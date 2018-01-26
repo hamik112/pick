@@ -166,6 +166,9 @@ class TargetChart(APIView):
         response_data = {}
         try:
             pickdata_target_id = request.query_params.get('pickdata_target_id', 0)
+            start_date = request.query_params.get('start_date', None)
+            end_date = request.query_params.get('start_date', None)
+
 
             if pickdata_target_id == 0:
                 raise Exception('Not Exist Pickdata Target.')
@@ -185,8 +188,8 @@ class TargetChart(APIView):
             target_audience_id = pickdata_target.target_audience_id
             print(target_audience_id)
             # TODO DELETE!!!
-            target_audience_id = 6103108565657
-            act_account_id = 'act_894360037304328'
+            target_audience_id = 6077632352897
+            act_account_id = 'act_107850179321216'
 
             adsets = AdSet.get_adsets_by_target_id(AdSet, target_audience_id)
             # for adset in adsets:
@@ -194,8 +197,13 @@ class TargetChart(APIView):
             #     print(adset.adset_id)
             # print(len(adsets))
 
-            placement_insights = adset_insight.get_adset_ids_placement_insights(act_account_id, [adset.adset_id for adset in adsets])
+            print([adset.adset_id for adset in adsets])
+
+            placement_insights = adset_insight.get_adset_ids_placement_insights(act_account_id, [adset.adset_id for adset in adsets], start_date=start_date, end_date=end_date)
             print(placement_insights)
+
+            age_gender_insights = adset_insight.get_adset_ids_agegender_insights(act_account_id, [adset.adset_id for adset in adsets], start_date=start_date, end_date=end_date)
+            print(age_gender_insights)
 
             response_data['success'] = 'YES'
 
