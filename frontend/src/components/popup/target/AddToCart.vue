@@ -1,7 +1,7 @@
 <template>
-  <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+  <div class="target_contents_wrap clearfix" v-if="isShow">
     <transition name="modal">
-      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+      <ui-dialog :dialogData="dialogData" v-if="dialogShow" @ok="dialogOk()" @cancel="dialogCancel()"></ui-dialog>
     </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
@@ -14,22 +14,22 @@
         </div>
         <div class="use_wrap">
           <div class="use_select">
-            <div class="contents_title">사용픽셀</div>
+            <div class="contents_title">사용 픽셀</div>
             <ui-select :selectData="adAccountPixels" data-key="adAccountPixels" :onClick="selectOnClick"></ui-select>
           </div>
           <div class="use_date">
-            <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="addToCartDay"><span>일</span></div>
+            <div>수집 기간 : 최근</div>
+            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
-          <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="addToCartName"></div>
+          <div class="contents_title">타겟 이름</div>
+          <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>12,000</span>명
+            <span>{{ this.audienceSize }}</span>명
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
             <div class="account_info">
               <div class="account_title">"장바구니 이용자" 중</div>
               <div>
-                <ui-select :selectData="this.selectAddToCartUser" data-key="selectAddToCartUser" :onClick="selectOnClick"></ui-select>
+                <ui-select :selectData="this.selectCustomer" data-key="selectCustomer" :onClick="selectOnClick"></ui-select>
               </div>
             </div>
           </div>
@@ -48,14 +48,15 @@
     </div>
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-      <button class="next_btn" @click="createAddToCart()" v-if="makeType == 'add'">타겟 만들기</button>
-      <button class="delete_btn" @click="createAddToCartDelete()" v-if="makeType == 'modify'">삭제</button>
-      <button class="next_btn" @click="createAddToCart()" v-if="makeType == 'modify'">타겟 수정하기</button>
+      <button class="next_btn" @click="createAddToCartTarget()" v-if="makeType === 'add'">타겟 만들기</button>
+      <button class="delete_btn" @click="deleteAddToCartTarget()" v-if="makeType === 'modify'">삭제</button>
+      <button class="next_btn" @click="updateAddToCartTarget()" v-if="makeType === 'modify'">타겟 수정하기</button>
     </div>
   </div>
 </template>
 
 <script>
+import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
 
@@ -74,32 +75,43 @@ export default {
         return false
       }
     },
+
     adAccountPixels: {
       type: Object,
       default () {
         return {
           emptyText: '불러오는 중 입니다.',
-          textList: [
-            '불러오는 중 입니다.'
-          ]
+          textList: [ '불러오는 중 입니다.' ]
         }
       }
     },
+    
     tabMove: {
       type: Function
     },
+
     makeType: {
       type:String
     },
+
     makeItem: {
       type: Object
     }
   },
 
+  created () {
+    this.$eventBus.$on('modifyAddToCartTarget', this.modifyAddToCartTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyAddToCartTarget', this.modifyAddToCartTarget)
+  },
+
   data () {
     return {
-      addToCartDay: '30',
-      addToCartName: '',
+      collectionPeriod: '30',
+      targetName: '',
+      audienceSize: '-',
 
       subSelect:false,
       subInput:false,
@@ -111,11 +123,11 @@ export default {
         mode:'sample'
       },
 
-      selectAddToCartUser: {
+      selectCustomer: {
         emptyText: '전체 고객',
         textList: [
           '전체 고객',
-          '미 구매 고객'
+          '미구매 고객'
         ],
         keyList: [
           'total',
@@ -133,20 +145,80 @@ export default {
       this.dialogShow = true;
     },
 
+    // 다이얼로그 확인 클릭시
     dialogOk () {
       const mode = this.dialogData.mode
 
-      if(mode == 'addToCart') {
-        // TODO
-      } else if (mode === 'addToCartDelete') {
+      if(mode === 'createAddToCartTarget') {
+        // Create Target -----------------------------------------------------------------
+        let params = {
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'add_to_cart',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+
+          detail: this.findSelectKey('selectCustomer')
+        }
+
+        this.$http.post('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success;
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            alert('장바구니 타겟 생성 실패')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target: ', err)
+        })
+
+      } else if (mode === 'deleteAddToCart') {
+        // Delete Target -----------------------------------------------------------------
         this.$emit('deleteCustomTarget', this.makeItem.id)
+
+      } else if (mode === 'updateAddToCart') {
+        // Update Target -----------------------------------------------------------------
+        let params = {
+          pickdata_account_target_id: this.makeItem.id,
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'add_to_cart',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+
+          detail: this.findSelectKey('selectCustomer'),
+        }
+
+        this.$http.put('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            alert('장바구니 타겟 생성 실패')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target delete: ', err)
+        })
       }
 
-      //모드별 동작
+      // 모드별 동작
       this.nextStage = true
       this.dialogShow = false;
     },
 
+    // 다이얼로그 취소 클릭시
     dialogCancel () {
       this.nextStage = false;
       this.dialogShow = false;
@@ -159,48 +231,63 @@ export default {
       this[key].emptyText = item
     },
 
+    findSelectText (selectName, key) {
+      // Select Text 가져오기
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
+    },
+
     findSelectKey (selectName) {
-      /*
-      Select Key 가져오기
-      */
+      // Select Key 가져오기
       const emptyText = this[selectName].emptyText
       const textList = this[selectName].textList
       const keyList = this[selectName].keyList
       return keyList[textList.indexOf(emptyText)]
     },
 
-    createAddToCart () {
-      let params = {
-        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'add_to_cart',
-        pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.addToCartName,
-        retention_days: this.addToCartDay,
+    // Create Target Dialog
+    createAddToCartTarget () {
+      this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'createAddToCartTarget')
+    },
 
-        detail: this.findSelectKey('selectAddToCartUser')
+    // Delete Target Dialog
+    deleteAddToCartTarget () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'deleteAddToCart')
+    },
+
+    // Update Target Dialog
+    updateAddToCartTarget () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateAddToCart')
+    },
+
+    // 수정 클릭시 타겟 생성 팝업 데이터 초기화 (/fb_ad_accounts/ad_account_pixels call after)
+    modifyAddToCartTarget () {
+      const description = this.makeItem.description
+      const params = description.params
+      const detail = params.detail
+
+      // 사용 픽셀
+      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', params.pixel_id)
+
+      // 수집 기간
+      this.collectionPeriod = numberFormatter(description.retention_days)
+
+      // 타겟 이름
+      this.targetName = this.makeItem.name
+
+      // 타겟 모수
+      this.audienceSize = numberFormatter(this.makeItem.display_count)
+
+      // 장바구니 이용자중 @
+      if (detail === 'total') {
+        // 전체 고객
+        this.selectCustomer.emptyText = '전체 고객'
+      } else if (detail === 'non_purchase') {
+        // 미구매 고객
+        this.selectCustomer.emptyText = '미구매 고객'
       }
-
-      this.$http.post('/pickdata_account_target/custom_target', params)
-      .then((response) => {
-        var success = response.data.success;
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          alert('장바구니 타겟 생성 실패')
-          throw('success: ' + success)
-        }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target: ', err)
-      })
-    },
-
-    createAddToCartDelete () {
-      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'addToCartDelete')
-    },
+    }
   }
 }
 </script>
