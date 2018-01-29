@@ -225,7 +225,7 @@ export default {
           } else if (targetType === 'add_to_cart') {
             this.$eventBus.$emit('modifyAddToCartTarget', this.adAccountPixels)
           } else if (targetType === 'registration') {
-            // TODO
+            this.$eventBus.$emit('modifyRegistrationTarget', this.adAccountPixels)
           } else if (targetType === 'conversion') {
             // TODO
           }
