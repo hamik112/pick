@@ -70,6 +70,8 @@ def get_adset_ids_agegender_insights(act_account_id, adset_ids , start_date=None
         fields = [
             AdsInsights.Field.adset_id,
             AdsInsights.Field.impressions,
+            AdsInsights.Field.spend,
+            AdsInsights.Field.actions
         ]
         params = {
             'level': 'adset',

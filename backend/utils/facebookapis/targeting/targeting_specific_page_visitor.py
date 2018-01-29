@@ -25,56 +25,66 @@ def create_specific_page_total_visitor_customers(account_id, name, pixel_id, ret
                 "value": str
             })
 
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        }, {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        }, {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(eq_rule)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                }, {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }, {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                }, {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules
             }
         }
 
@@ -114,56 +124,66 @@ def update_specific_page_total_visitor_customers(custom_audience_id, name, pixel
                 "value": str
             })
 
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        }, {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        }, {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(eq_rule)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                }, {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }, {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                }, {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules
             }
         }
 
@@ -452,112 +472,129 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
                 "value": str
             })
 
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        rules_exclusions = []
+        contain_rule_exclusions = {}
+        eq_rule_exclusions = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(eq_rule)
+
+        if (len(contain_filters) > 0):
+            contain_rule_exclusions = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules_exclusions.append(contain_rule_exclusions)
+
+        if (len(eq_filter) > 0):
+            eq_rule_exclusions = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules_exclusions.append(eq_rule_exclusions)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules
             },
             "exclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules_exclusions
             }
         }
 
@@ -598,112 +635,129 @@ def update_non_visition_customers(custom_audience_id, name, pixel_id, prefill=Tr
                 "value": str
             })
 
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        rules_exclusions = []
+        contain_rule_exclusions = {}
+        eq_rule_exclusions = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(eq_rule)
+
+        if (len(contain_filters) > 0):
+            contain_rule_exclusions = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules_exclusions.append(contain_rule_exclusions)
+
+        if (len(eq_filter) > 0):
+            eq_rule_exclusions = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules_exclusions.append(eq_rule_exclusions)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules
             },
             "exclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules_exclusions
             }
         }
 
@@ -1093,59 +1147,68 @@ def create_specific_page_and_non_purchase_customers(account_id, name, pixel_id, 
                 "value": str
             })
 
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": 15552000,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": 15552000,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(eq_rule)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules
             },
             "exclusions": {
                 "operator": "or",
@@ -1210,59 +1273,68 @@ def update_specific_page_and_non_purchase_customers(custom_audience_id, name, pi
                 "value": str
             })
 
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": 15552000,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": 15552000,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(eq_rule)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules
             },
             "exclusions": {
                 "operator": "or",
@@ -1503,59 +1575,68 @@ def create_specific_page_and_non_coversion_customers(account_id, name, pixel_id,
                 "value": str
             })
 
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": 15552000,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": 15552000,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(eq_rule)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules
             },
             "exclusions": {
                 "operator": "or",
@@ -1620,59 +1701,68 @@ def update_specific_page_and_non_coversion_customers(custom_audience_id, name, p
                 "value": str
             })
 
+        rule = {}
+        rules = []
+        contain_rule = {}
+        eq_rule = {}
+        if (len(contain_filters) > 0):
+            contain_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": 15552000,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": contain_filters
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(contain_rule)
+
+        if (len(eq_filter) > 0):
+            eq_rule = {
+                "event_sources": [
+                    {
+                        "type": "pixel",
+                        "id": pixel_id
+                    }
+                ],
+                "retention_seconds": 15552000,
+                "filter": {
+                    "operator": "and",
+                    "filters": [
+                        {
+                            "field": "url",
+                            "operator": "i_contains",
+                            "value": ""
+                        },
+                        {
+                            "operator": "or",
+                            "filters": eq_filter
+                        }
+                    ]
+                },
+                "template": "VISITORS_BY_URL"
+            }
+            rules.append(eq_rule)
+
         rule = {
             "inclusions": {
                 "operator": "or",
-                "rules": [
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": contain_filters
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    },
-                    {
-                        "event_sources": [
-                            {
-                                "type": "pixel",
-                                "id": pixel_id
-                            }
-                        ],
-                        "retention_seconds": 15552000,
-                        "filter": {
-                            "operator": "and",
-                            "filters": [
-                                {
-                                    "field": "url",
-                                    "operator": "i_contains",
-                                    "value": ""
-                                },
-                                {
-                                    "operator": "or",
-                                    "filters": eq_filter
-                                }
-                            ]
-                        },
-                        "template": "VISITORS_BY_URL"
-                    }
-                ]
+                "rules": rules
             },
             "exclusions": {
                 "operator": "or",

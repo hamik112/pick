@@ -1,5 +1,5 @@
 <template>
-  <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+  <div class="target_contents_wrap clearfix" v-if="isShow">
     <transition name="modal">
       <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
     </transition>
@@ -14,22 +14,22 @@
         </div>
         <div class="use_wrap">
           <div class="use_select">
-            <div class="contents_title">사용픽셀</div>
+            <div class="contents_title">사용 픽셀</div>
             <ui-select :selectData="adAccountPixels" data-key="adAccountPixels" :onClick="selectOnClick"></ui-select>
           </div>
           <div class="use_date">
-            <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="addToCartDay"><span>일</span></div>
+            <div>수집 기간 : 최근</div>
+            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
-          <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="addToCartName"></div>
+          <div class="contents_title">타겟 이름</div>
+          <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>12,000</span>명
+            <span>{{ this.audienceSize }}</span>명
           </div>
         </div>
       </div>
@@ -50,12 +50,13 @@
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createAddToCart()" v-if="makeType == 'add'">타겟 만들기</button>
       <button class="delete_btn" @click="createAddToCartDelete()" v-if="makeType == 'modify'">삭제</button>
-      <button class="next_btn" @click="createAddToCart()" v-if="makeType == 'modify'">타겟 수정하기</button>
+      <button class="next_btn" @click="updateAddToCart()" v-if="makeType == 'modify'">타겟 수정하기</button>
     </div>
   </div>
 </template>
 
 <script>
+import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
 
@@ -96,10 +97,19 @@ export default {
     }
   },
 
+  created () {
+    this.$eventBus.$on('modifyAddToCartTarget', this.modifyAddToCartTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyAddToCartTarget', this.modifyAddToCartTarget)
+  },
+
   data () {
     return {
-      addToCartDay: '30',
-      addToCartName: '',
+      collectionPeriod: '30',
+      targetName: '',
+      audienceSize: '-',
 
       subSelect:false,
       subInput:false,
@@ -140,6 +150,8 @@ export default {
         // TODO
       } else if (mode === 'addToCartDelete') {
         this.$emit('deleteCustomTarget', this.makeItem.id)
+      } else if (mode === 'addToCartUpdate') {
+        this.updateAddToCartNext()
       }
 
       //모드별 동작
@@ -159,6 +171,15 @@ export default {
       this[key].emptyText = item
     },
 
+    findSelectText (selectName, key) {
+      /*
+      Select Text 가져오기
+      */
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
+    },
+
     findSelectKey (selectName) {
       /*
       Select Key 가져오기
@@ -174,8 +195,8 @@ export default {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
         target_type: 'add_to_cart',
         pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.addToCartName,
-        retention_days: this.addToCartDay,
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
 
         detail: this.findSelectKey('selectAddToCartUser')
       }
@@ -201,6 +222,73 @@ export default {
     createAddToCartDelete () {
       this.dialogOpen('삭제하시겠습니까?', 'confirm', 'addToCartDelete')
     },
+
+    updateAddToCart () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'addToCartUpdate')
+    },
+
+    updateAddToCartNext () {
+      console.log('update call')
+      let params = {
+        pickdata_account_target_id: this.makeItem.id,
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'add_to_cart',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
+
+        detail: this.findSelectKey('selectAddToCartUser'),
+      }
+
+      this.$http.put('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          alert('장바구니 타겟 생성 실패')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target delete: ', err)
+      })
+    },
+
+    // /fb_ad_accounts/ad_account_pixels call after
+    modifyAddToCartTarget () {
+      console.log('modifyAddToCartTarget')
+      // Custom Target인 경우 params가 존재
+      if(this.makeItem.description.params) {
+        console.log('@ : ', this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id))
+        const params = this.makeItem.description.params
+        const detail = params.detail
+
+        // 사용 픽셀
+        this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
+
+        // 수집 기간
+        this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+
+        // 타겟 이름
+        this.targetName = this.makeItem.name
+
+        // 타겟 모수
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+
+        // 장바구니 이용자중 @
+        if (detail === 'total') {
+          // 전체 고객
+          this.selectAddToCartUser.emptyText = '전체 고객'
+        } else if (detail === 'non_purchase') {
+          // 미구매 고객
+          this.selectAddToCartUser.emptyText = '미구매 고객'
+        }
+      }
+    }
   }
 }
 </script>

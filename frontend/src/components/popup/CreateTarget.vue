@@ -175,6 +175,8 @@ export default {
   },
 
   mounted () {
+    const me = this
+
     // 수정인 경우 해당 탭으로 이동 해야한다.
     if (this.makeType === 'modify') {
       const modifyItem = this.makeItem
@@ -207,7 +209,26 @@ export default {
         this.adAccountPixels.keyList = keyList
 
         if (this.makeType === 'modify') {
-          this.$eventBus.$emit('modifyTarget', this.adAccountPixels)
+          console.log('ME: ', me.makeItem.description.params.target_type)
+          const targetType = me.makeItem.description.params.target_type
+          
+          if(targetType === 'visit_site') {
+            this.$eventBus.$emit('modifyVisitSiteTarget', this.adAccountPixels)
+          } else if (targetType === 'visit_specific_pages') {
+            this.$eventBus.$emit('modifyVisitSepcificPagesTarget', this.adAccountPixels)
+          } else if (targetType === 'neo_target') {
+            this.$eventBus.$emit('modifyNeoTarget', this.adAccountPixels)
+          } else if (targetType === 'utm_target') {
+            // TODO
+          } else if (targetType === 'purchase') {
+            this.$eventBus.$emit('modifyPurchaseTarget', this.adAccountPixels)
+          } else if (targetType === 'add_to_cart') {
+            this.$eventBus.$emit('modifyAddToCartTarget', this.adAccountPixels)
+          } else if (targetType === 'registration') {
+            this.$eventBus.$emit('modifyRegistrationTarget', this.adAccountPixels)
+          } else if (targetType === 'conversion') {
+            // TODO
+          }
         }
       } else {
         console.log('/fb_ad_accounts/ad_account_pixels fail')

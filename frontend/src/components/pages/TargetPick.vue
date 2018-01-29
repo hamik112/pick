@@ -32,7 +32,7 @@
 							<div class="target_contents_wrap">
 								<div class="target_setup">
 									<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
-									<button type="button" class="refresh">새로고침</button>
+									<button type="button" @click="refreshTarget" class="refresh">새로고침</button>
 									<button type="button" @click="popupOpenBtn('makeModal','add')">타겟만들기</button>
 								</div>
 								<div class="target_contents">
@@ -179,8 +179,10 @@
 		},
 
 		methods: {
+			refreshTarget () {
+				this.selectTarget(this.selectData.emptyText)
+			},
 			selectTarget (item) {
-				console.log(item)
 				let target_type = ""
 
 				if (item == "전체보기") {
@@ -279,11 +281,18 @@
 			popupOpenBtn (popupName, type, item) {
 				//팝업 오픈
 				//popupName = 팝업컴포넌트명, type = add,modify,delete
-				this[popupName] = true
-				if(popupName === 'makeModal') {
-					if (type === 'modify') {
-						this.makeItem = item
-					}
+
+				if(item === undefined) {
+					// 타겟 만들기
+					this[popupName] = true
+					this.makeType = type
+				} else if (item.description.type === 'default') {
+					// 기본 타겟 수정
+					alert('기본 타겟은 수정할 수 없습니다.')
+				} else if(item.description.type === 'custom') {
+					// 커스텀 타겟 수정
+					this[popupName] = true
+					this.makeItem = item
 					this.makeType = type
 				}
 			},

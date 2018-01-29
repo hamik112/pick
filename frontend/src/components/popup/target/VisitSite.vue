@@ -1,5 +1,5 @@
 <template>
-  <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+  <div class="target_contents_wrap clearfix" v-if="isShow">
     <transition name="modal">
       <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
     </transition>
@@ -104,11 +104,11 @@ export default {
   },
 
   created () {
-    this.$eventBus.$on('modifyTarget', this.modifyTarget)
+    this.$eventBus.$on('modifyVisitSiteTarget', this.modifyVisitSiteTarget)
   },
 
   beforeDestroy () {
-    this.$eventBus.$off('modifyTarget', this.modifyTarget)
+    this.$eventBus.$off('modifyVisitSiteTarget', this.modifyVisitSiteTarget)
   },
 
   data () {
@@ -385,60 +385,63 @@ export default {
     },
 
     // /fb_ad_accounts/ad_account_pixels call after
-    modifyTarget (pixelData) {
+    modifyVisitSiteTarget () {
+      console.log('사이트 방문')
       console.log('# : ', this.makeItem)
       console.log('@ : ', this.adAccountPixels.emptyText)
-      console.log('@ : ', this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id))
 
       // Custom Target인 경우 params가 존재
-      const params = this.makeItem.description.params
-      const detail = params.detail
+      if(this.makeItem.description.params) {
+        console.log('@ : ', this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id))
+        const params = this.makeItem.description.params
+        const detail = params.detail
 
-      // 사용 픽셀
-      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
+        // 사용 픽셀
+        this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
 
-      // 수집 기간
-      this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+        // 수집 기간
+        this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
 
-      // 타겟 이름
-      this.targetName = this.makeItem.name
+        // 타겟 이름
+        this.targetName = this.makeItem.name
 
-      // 타겟 모수
-      this.audienceSize = numberFormatter(this.makeItem.display_count)
+        // 타겟 모수
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
 
-      // 사이트 방문자중 @
-      if (detail === 'total') {
-        // 전체 고객
-        this.selectUser.emptyText = '전체 고객'
-      } else if (detail === 'usage_time_top') {
-        // 이용 시간 상위 고객
-        this.selectUser.emptyText = '이용 시간 상위 고객'
-        this.selectSub.emptyText = params.input_percent + '%'
-        this.subSelect = true
-      } else if (detail === 'non_visit') {
-        // 특정일 동안 미방문 고객
-        this.selectUser.emptyText = '특정일 동안 미방문 고객'
-        this.subInput = true
-      } else if (detail === 'purchase') {
-        // 구매 고객
-        this.selectUser.emptyText = '구매 고객'
-      } else if (detail === 'non_purchase') {
-        // 미구매 고객
-        this.selectUser.emptyText = '미구매 고객'
-      } else if (detail === 'add_to_cart') {
-        // 장바구니 이용 고객
-        this.selectUser.emptyText = '장바구니 이용 고객'
-      } else if (detail === 'conversion') {
-        // 전환완료 고객
-        this.selectUser.emptyText = '전환완료 고객'
-      } else if (detail === 'non_conversion') {
-        // 미전환 고객
-        this.selectUser.emptyText = '미전환 고객'
-      } else if (detail === 'registration') {
-        // 회원가입 고객
-        this.selectUser.emptyText = '회원가입 고객'
-      } else {
-        console.log('nothing..', detail)
+        // 사이트 방문자중 @
+        if (detail === 'total') {
+          // 전체 고객
+          this.selectUser.emptyText = '전체 고객'
+        } else if (detail === 'usage_time_top') {
+          // 이용 시간 상위 고객
+          this.selectUser.emptyText = '이용 시간 상위 고객'
+          this.selectSub.emptyText = params.input_percent + '%'
+          this.subSelect = true
+        } else if (detail === 'non_visit') {
+          // 특정일 동안 미방문 고객
+          this.selectUser.emptyText = '특정일 동안 미방문 고객'
+          this.subInput = true
+        } else if (detail === 'purchase') {
+          // 구매 고객
+          this.selectUser.emptyText = '구매 고객'
+        } else if (detail === 'non_purchase') {
+          // 미구매 고객
+          this.selectUser.emptyText = '미구매 고객'
+        } else if (detail === 'add_to_cart') {
+          // 장바구니 이용 고객
+          this.selectUser.emptyText = '장바구니 이용 고객'
+        } else if (detail === 'conversion') {
+          // 전환완료 고객
+          this.selectUser.emptyText = '전환완료 고객'
+        } else if (detail === 'non_conversion') {
+          // 미전환 고객
+          this.selectUser.emptyText = '미전환 고객'
+        } else if (detail === 'registration') {
+          // 회원가입 고객
+          this.selectUser.emptyText = '회원가입 고객'
+        } else {
+          console.log('nothing..', detail)
+        }
       }
     }
   }
