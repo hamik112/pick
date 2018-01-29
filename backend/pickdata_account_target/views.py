@@ -480,6 +480,97 @@ class CustomTarget(APIView):
                 else:
                     raise Exception("No valid detail parameter")
 
+            elif target_type == "neo_target":
+                neo_type = request.data.get('neo_type')
+                keywords = request.data.get('keywords')
+                neo_ids = request.data.get('neo_ids')
+                detail = request.data.get('detail', '')
+                custom_data = {
+                    "neo_type": neo_type,
+                    "keywords": keywords,
+                    "neo_ids": neo_ids
+                }
+                pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
+                                                                                                  'neo target')
+                description = {}
+                # 전체고객
+                if detail == "total":
+                    created_target = targeting_url.update_url_total_visitor_customers(custom_audience_id,
+                                                                                      name, pixel_id,
+                                                                                      retention_days=retention_days,
+                                                                                      contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "전체", "", "custom", request.data, custom_data)
+                # 이용 시간 상위 고객
+                elif detail == "usage_time_top":
+                    input_percent = request.data.get('input_percent', 25)
+                    created_target = targeting_url.update_usage_time_top_customers(custom_audience_id, name,
+                                                                                   pixel_id,
+                                                                                   retention_days=retention_days,
+                                                                                   input_percent=input_percent,
+                                                                                   contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "이용시간상위" + str(input_percent) + "%", "", "custom", request.data, custom_data)
+                # 특정일 동안 미방문 고객
+                elif detail == "non_visit":
+                    exclusion_retention_days = request.data.get('exclusion_retention_days', 1)
+                    exclusion_retention_days = int(exclusion_retention_days)
+                    created_target = targeting_url.update_non_visition_customers(custom_audience_id, name,
+                                                                                 pixel_id,
+                                                                                 retention_days=retention_days,
+                                                                                 contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "미방문고객", "", "custom", request.data, custom_data)
+                # 구매고객
+                elif detail == "purchase":
+                    # TODO DB 구매 이벤트 유무 확인
+                    created_target = targeting_url.update_url_and_purchase_customers(custom_audience_id, name,
+                                                                                     pixel_id,
+                                                                                     retention_days=retention_days,
+                                                                                     purchase_event_name="Purchase",
+                                                                                     contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "구매고객", "", "custom", request.data, custom_data)
+                # 미 구매고객
+                elif detail == "non_purchase":
+                    # TODO DB 구매 이벤트 유무 확인
+                    created_target = targeting_url.update_url_and_non_purchase_customers(custom_audience_id,
+                                                                                         name, pixel_id,
+                                                                                         retention_days=retention_days,
+                                                                                         purchase_event_name="Purchase",
+                                                                                         contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "미구매고객", "", "custom", request.data, custom_data)
+                # 장바구니 이용 고객
+                elif detail == "add_to_cart":
+                    # TODO 장바구니 이벤트 확인
+                    created_target = targeting_url.update_url_and_addtocart_customers(custom_audience_id,
+                                                                                      name, pixel_id,
+                                                                                      retention_days=retention_days,
+                                                                                      addtocart_evnet_name="AddToCart",
+                                                                                      contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "장바구니이용고객", "", "custom", request.data, custom_data)
+                # 전환완료 고객
+                elif detail == "conversion":
+                    # TODO 전환완료 이벤트 확인
+                    created_target = targeting_url.update_specific_page_and_coversion_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        conversion_event_name="ViewContent", contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "전환완료고객", "", "custom", request.data, custom_data)
+                # 미 전환 고객
+                elif detail == "non_conversion":
+                    # TODO 전환완료 이벤트 확인
+                    created_target = targeting_url.update_url_and_non_coversion_customers(custom_audience_id,
+                                                                                          name, pixel_id,
+                                                                                          retention_days=retention_days,
+                                                                                          conversion_event_name="ViewContent",
+                                                                                          contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "미전환고객", "", "custom", request.data, custom_data)
+                # 회원가입 고객
+                elif detail == "registration":
+                    # TODO 회원가입 이벤트 확인
+                    created_target = targeting_url.update_specific_page_and_registration_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        registration_event_name="CompleteRegistration", contain_list=neo_ids)
+                    description = self.make_description("네오타겟", retention_days, "회원가입고객", "", "custom", request.data, custom_data)
+                else:
+                    raise Exception("No valid detail parameter")
+
             # pickdata Database Update Call
             target = PickdataAccountTarget.update(PickdataAccountTarget, pickdata_account_target, fb_ad_account,
                                                   created_target.get('id'),
