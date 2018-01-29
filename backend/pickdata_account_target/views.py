@@ -706,6 +706,36 @@ class CustomTarget(APIView):
                 else:
                     raise Exception("No valid detail parameter")
 
+            # 구매
+            elif target_type == "purchase":
+                detail = request.data.get('detail', '')
+
+                pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
+                                                                                                  'purchase')
+
+                if detail == "total":
+                    created_target = targeting_purchase.update_purchase_customers(custom_audience_id, name,
+                                                                                  pixel_id,
+                                                                                  retention_days=retention_days,
+                                                                                  purchase_event_name="Purchase")
+                    description = self.make_description("구매", retention_days, "전체", "", "custom", request.data)
+                elif detail == "purchase_count":
+                    purchase_count = request.data.get('purchase_count', 0)
+                    created_target = targeting_purchase.update_more_than_x_timtes_purchase_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        purchase_evnet_name="Purchase", purchase_cnt=purchase_count)
+                    description = self.make_description("구매", retention_days, "구매횟수", str(purchase_count), "custom",
+                                                        request.data, {"purchase_count": purchase_count})
+                elif detail == "purchase_amount":
+                    purchase_amount = request.data.get('purchase_amount', 0)
+                    created_target = targeting_purchase.update_more_than_x_amount_purchjase_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        purchase_evnet_name="Purchase", minimum_val=purchase_amount)
+                    description = self.make_description("구매", retention_days, "구매금액", purchase_amount, "custom",
+                                                        request.data, {"purchase_amount": purchase_amount})
+                else:
+                    raise Exception("No valid detail parameter")
+
             # pickdata Database Update Call
             target = PickdataAccountTarget.update(PickdataAccountTarget, pickdata_account_target, fb_ad_account,
                                                   created_target.get('id'),
