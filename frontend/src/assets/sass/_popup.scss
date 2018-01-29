@@ -71,6 +71,7 @@
 }
 
 #ad_set_pop_1{
+	.pop_tab_wrap{padding:0px;}
 	.ad_info_wrap{background:#e8e8e8; padding:15px 20px; position:relative;
 		.ad_mask{width:40px; height:40px; position:absolute; top:15px; left:20px; z-index:1; background:url(assets/images/common/mask_type_02.png) 0 0 no-repeat;}
 		.ad_image{width:40px; height:40px; background:#fff; display:inline-block; *display:inline; vertical-align:middle;
@@ -104,10 +105,10 @@
 			p{font-size:14px; padding-top:5px;}
 		}
 		.tab-contents-widget{
+			#tab-list-1{padding:30px 48px;}
 			/*네오 계정 연동*/
-			#tab-list-2{
-			}
-			#tab-list-3{
+			#tab-list-2{padding:30px 48px;}
+			#tab-list-3{padding:30px 48px; height:582px;
 				.event_mapping_wrap{
 					li.select_btn{letter-spacing:-5px; margin-bottom:15px;}
 					li{
