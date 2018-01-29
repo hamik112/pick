@@ -279,16 +279,19 @@
 			popupOpenBtn (popupName, type, item) {
 				//팝업 오픈
 				//popupName = 팝업컴포넌트명, type = add,modify,delete
-				if(item.description.type === 'custom') {
+
+				if(item === undefined) {
+					// 타겟 만들기
 					this[popupName] = true
-					if(popupName === 'makeModal') {
-						if (type === 'modify') {
-							this.makeItem = item
-						}
-						this.makeType = type
-					}
-				} else {
+					this.makeType = type
+				} else if (item.description.type === 'default') {
+					// 기본 타겟 수정
 					alert('기본 타겟은 수정할 수 없습니다.')
+				} else if(item.description.type === 'custom') {
+					// 커스텀 타겟 수정
+					this[popupName] = true
+					this.makeItem = item
+					this.makeType = type
 				}
 			},
 			tPickMenu (type) {
