@@ -52,6 +52,54 @@ def create_addtocart_customers(account_id, name, pixel_id, retention_days=30, pr
         msg['error'] = e._error
         raise Exception(msg)
 
+def update_addtocart_customers(custom_audience_id, name, pixel_id, retention_days=30, prefill=True,
+                               addtocart_event_name="AddToCart"):
+    try:
+        custom_audience = CustomAudience(custom_audience_id)
+
+        rule = {
+            "inclusions": {
+                "operator": "or",
+                "rules": [
+                    {
+                        "event_sources": [
+                            {
+                                "type": "pixel",
+                                "id": pixel_id
+                            }
+                        ],
+                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        "filter": {
+                            "operator": "and",
+                            "filters": [
+                                {
+                                    "field": "event",
+                                    "operator": "eq",
+                                    "value": addtocart_event_name
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+
+        params = {}
+        params[CustomAudience.Field.name] = name
+        params[CustomAudience.Field.prefill] = prefill
+        params[CustomAudience.Field.rule] = rule
+
+        audience = custom_audience.remote_update(params=params)
+
+        return audience
+
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
+
 
 # 장바구니 전체 고객 & 미 구매 고객
 def create_addtocart_and_non_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
@@ -117,6 +165,79 @@ def create_addtocart_and_non_purchase_customers(account_id, name, pixel_id, rete
         params[CustomAudience.Field.rule] = rule
 
         audience = ad_account.create_custom_audience(params=params)
+
+        return audience
+
+    except FacebookRequestError as e:
+        print(e)
+        msg = {}
+        msg['request_context'] = e._request_context
+        msg['error'] = e._error
+        raise Exception(msg)
+
+def update_addtocart_and_non_purchase_customers(custom_audience_id, name, pixel_id, retention_days=30, prefill=True,
+                                                addtocart_evnet_name="AddToCart", puchase_event_name="Purchase"):
+    try:
+        custom_audience = CustomAudience(custom_audience_id)
+
+        rule = {
+            "inclusions": {
+                "operator": "and",
+                "rules": [
+                    {
+                        "event_sources": [
+                            {
+                                "type": "pixel",
+                                "id": pixel_id
+                            }
+                        ],
+                        # "retention_seconds": retention_days * 24 * 60 * 60,
+                        "retention_seconds": 15552000,
+                        "filter": {
+                            "operator": "and",
+                            "filters": [
+                                {
+                                    "field": "event",
+                                    "operator": "eq",
+                                    "value": addtocart_evnet_name
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "exclusions": {
+                "operator": "or",
+                "rules": [
+                    {
+                        "event_sources": [
+                            {
+                                "type": "pixel",
+                                "id": pixel_id
+                            }
+                        ],
+                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        "filter": {
+                            "operator": "and",
+                            "filters": [
+                                {
+                                    "field": "event",
+                                    "operator": "eq",
+                                    "value": puchase_event_name
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+
+        params = {}
+        params[CustomAudience.Field.name] = name
+        params[CustomAudience.Field.prefill] = prefill
+        params[CustomAudience.Field.rule] = rule
+
+        audience = custom_audience.remote_update(params=params)
 
         return audience
 

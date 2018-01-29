@@ -736,6 +736,27 @@ class CustomTarget(APIView):
                 else:
                     raise Exception("No valid detail parameter")
 
+            # 장바구니
+            elif target_type == "add_to_cart":
+                detail = request.data.get('detail', '')
+
+                pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
+                                                                                                  'add to cart')
+
+                if detail == "total":
+                    created_target = targeting_addtocart.update_addtocart_customers(custom_audience_id, name,
+                                                                                    pixel_id,
+                                                                                    retention_days=retention_days,
+                                                                                    addtocart_event_name="AddToCart")
+                    description = self.make_description("장바구니", retention_days, "전체", "", "custom", request.data)
+                elif detail == "non_purchase":
+                    created_target = targeting_addtocart.update_addtocart_and_non_purchase_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        addtocart_evnet_name="AddToCart", puchase_event_name="Purchase")
+                    description = self.make_description("장바구니", retention_days, "미구매고객", "", "custom", request.data)
+                else:
+                    raise Exception("No valid detail parameter")
+
             # pickdata Database Update Call
             target = PickdataAccountTarget.update(PickdataAccountTarget, pickdata_account_target, fb_ad_account,
                                                   created_target.get('id'),
