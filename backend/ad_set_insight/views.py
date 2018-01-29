@@ -600,8 +600,8 @@ class ReportExcelDownload(APIView):
             # data = json.loads(data)
             # insights_data = data['data']
 
-            book = xlwt.Workbook(encoding="utf-8")
-            sheet1 = book.add_sheet("Target Report", cell_overwrite_ok=True)
+            # book = xlwt.Workbook(encoding="utf-8")
+            # sheet1 = book.add_sheet("Target Report", cell_overwrite_ok=True)
 
             file_path = 'logs/'
             file_path = os.path.join(settings.PROJECT_DIR, file_path)
@@ -609,17 +609,17 @@ class ReportExcelDownload(APIView):
             # file_path = '/Users/chloelim/Desktop/'
             file_name = "target_report.xls"
 
-            row = 0
-            for data in target_insights:
-                column = 0
-                for title, value in data.items():
-                    sheet1.write(row + 0, column, title)
-                    sheet1.write(row+ 1, column, value)
-                    column += 1
-                row += 2
-            book.save(file_path + file_name)
-            # excel_report = ExcelReport()
-            # excel_report = excel_report.write_workbook(file_path, file_name, target_insights)
+            # row = 0
+            # for data in target_insights:
+            #     column = 0
+            #     for title, value in data.items():
+            #         sheet1.write(row + 0, column, title)
+            #         sheet1.write(row+ 1, column, value)
+            #         column += 1
+            #     row += 2
+            # book.save(file_path + file_name)
+            excel_report = ExcelReport()
+            excel_report = excel_report.write_workbook(file_path, file_name, target_insights)
             res = download_helper.respond_as_attachment(request, os.path.join(file_path, file_name), file_name)
 
             response_data['success'] = 'YES'
