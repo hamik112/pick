@@ -4,8 +4,8 @@
       <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
     </transition>
     <div class="cate_prologue">
-      <strong>현재 선택된 광고 계정의 카테고리를 지정해주세요</strong>
-      <p>통계 및 계정 유형 분석을 위해 반드시 선택하셔야 합니다.</p>
+      <strong>현재 선택된 광고 계정의 카테고리와 사용할 픽셀을 지정해 주세요.</strong>
+      <p>맞춤 타겟 생성 및 통계 분석을 위해 반드시 선택해 주세요.</p>
     </div>
     <div class="cate_contents_widget">
       <ul class="target_pick_01">

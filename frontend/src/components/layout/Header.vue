@@ -12,10 +12,7 @@
 			</div>
 			<div class="user_setup">
 				<p id="set_up"><router-link v-bind:to="{ path: '/setting' }"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></router-link></p>
-				<div class="setup_list">
-					<p><router-link v-bind:to="{ path: '/setting' }">설정</router-link></p>
-					<p><a href="javascript:void(0)" @click="logoutBtn">로그아웃</a></p>
-				</div>
+				<p><a href="javascript:void(0)" @click="logoutBtn"><img src="../../assets/images/icon/logout_i.png" alt="문" /></a></p>
 			</div>
 		</div>
 	</header>
@@ -97,6 +94,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.user_setup { margin-left:44px; padding-left:0px !important; }
-#set_up { cursor:pointer; }
 </style>

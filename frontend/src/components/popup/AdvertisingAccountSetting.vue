@@ -33,7 +33,7 @@
 									<ul>
 										<li rel="tab-list-1" v-bind:class="[currentStep === 0 ? 'active' : '']">
 											<p></p>
-											<a href="javascript:void(0);"><span>1</span>카테고리 설정</a>
+											<a href="javascript:void(0);"><span>1</span>카테고리/픽셀 선택</a>
 										</li>
 										<li rel="tab-list-2" v-bind:class="[currentStep === 1 ? 'active' : '']">
 											<p></p>

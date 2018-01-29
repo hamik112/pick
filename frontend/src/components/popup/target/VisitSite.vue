@@ -39,10 +39,10 @@
             <div class="account_info">
               <div class="account_title">"사이트 방문자"중</div>
               <div>
-                <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectOnClick"></ui-select>
+                <ui-select :selectData="selectUser" data-key="selectUser" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subSelect">
-                <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
+                <ui-select :selectData="selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
                 <input type="text" v-if="subInput" v-model="unvisitedPeriod" onkeyup="this.value=this.value.replace(/[^0-9]/g, '')"><span>일</span>
@@ -55,8 +55,8 @@
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createVisitSite()" v-if="makeType == 'add'">타겟 만들기</button>
-      <button class="next_btn" @click="updateVisitSite()" v-if="makeType == 'modify'">수정</button>
       <button class="delete_btn" @click="createVisitSiteDelete()" v-if="makeType == 'modify'">삭제</button>
+      <button class="next_btn" @click="updateVisitSite()" v-if="makeType == 'modify'">타겟 수정하기</button>
     </div>
   </div>
 </template>
@@ -103,13 +103,12 @@ export default {
     }
   },
 
-  mounted () {
-    console.log('mounted', this.makeItem)
-    if (this.makeType === 'modify') {
-      this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
-      this.targetName = this.makeItem.name
-      this.audienceSize = numberFormatter(this.makeItem.display_count)
-    }
+  created () {
+    this.$eventBus.$on('modifyTarget', this.modifyTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyTarget', this.modifyTarget)
   },
 
   data () {
@@ -282,6 +281,7 @@ export default {
         pixel_id: this.findSelectKey('adAccountPixels'),
         name: this.targetName,
         retention_days: this.collectionPeriod,
+        exclusion_retention_days: this.unvisitedPeriod,
 
         detail: this.findSelectKey('selectUser'),
         input_percent: this.findSelectKey('selectSub')
@@ -323,6 +323,7 @@ export default {
         pixel_id: this.findSelectKey('adAccountPixels'),
         name: this.targetName,
         retention_days: this.collectionPeriod,
+        exclusion_retention_days: this.unvisitedPeriod,
 
         detail: this.findSelectKey('selectUser'),
         input_percent: this.findSelectKey('selectSub')
@@ -381,6 +382,64 @@ export default {
         this.$emit('close')
         console.log('/pickdata_account_target/custom_target delete: ', err)
       })
+    },
+
+    // /fb_ad_accounts/ad_account_pixels call after
+    modifyTarget (pixelData) {
+      console.log('# : ', this.makeItem)
+      console.log('@ : ', this.adAccountPixels.emptyText)
+      console.log('@ : ', this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id))
+
+      // Custom Target인 경우 params가 존재
+      const params = this.makeItem.description.params
+      const detail = params.detail
+
+      // 사용 픽셀
+      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
+
+      // 수집 기간
+      this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+
+      // 타겟 이름
+      this.targetName = this.makeItem.name
+
+      // 타겟 모수
+      this.audienceSize = numberFormatter(this.makeItem.display_count)
+
+      // 사이트 방문자중 @
+      if (detail === 'total') {
+        // 전체 고객
+        this.selectUser.emptyText = '전체 고객'
+      } else if (detail === 'usage_time_top') {
+        // 이용 시간 상위 고객
+        this.selectUser.emptyText = '이용 시간 상위 고객'
+        this.selectSub.emptyText = params.input_percent + '%'
+        this.subSelect = true
+      } else if (detail === 'non_visit') {
+        // 특정일 동안 미방문 고객
+        this.selectUser.emptyText = '특정일 동안 미방문 고객'
+        this.subInput = true
+      } else if (detail === 'purchase') {
+        // 구매 고객
+        this.selectUser.emptyText = '구매 고객'
+      } else if (detail === 'non_purchase') {
+        // 미구매 고객
+        this.selectUser.emptyText = '미구매 고객'
+      } else if (detail === 'add_to_cart') {
+        // 장바구니 이용 고객
+        this.selectUser.emptyText = '장바구니 이용 고객'
+      } else if (detail === 'conversion') {
+        // 전환완료 고객
+        this.selectUser.emptyText = '전환완료 고객'
+      } else if (detail === 'non_conversion') {
+        // 미전환 고객
+        this.selectUser.emptyText = '미전환 고객'
+      } else if (detail === 'registration') {
+        // 회원가입 고객
+        this.selectUser.emptyText = '회원가입 고객'
+      } else {
+        console.log('nothing..', detail)
+      }
     }
   }
 }
