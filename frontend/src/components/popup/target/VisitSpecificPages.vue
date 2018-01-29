@@ -19,17 +19,17 @@
           </div>
           <div class="use_date">
             <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="visitSpecificPagesDay"><span>일</span></div>
+            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
           <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="visitSpecificPagesName"></div>
+          <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>12,000</span>명
+            <span>{{ audienceSize }}</span>명
           </div>
         </div>
       </div>
@@ -39,17 +39,17 @@
             <div class="account_info">
               <div class="account_title">"아래 그룹로 유입된 사람"중</div>
               <div>
-                <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectOnClick"></ui-select>
+                <ui-select :selectData="selectUser" data-key="selectUser" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subSelect">
-                <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
+                <ui-select :selectData="selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
                 <input type="text" v-if="subInput"><span>일</span>
               </div>
             </div>
             <div class="generate_url_list">
-              <div v-for="(item, index) in fields" class="url_list clearfix">
+              <div v-for="(item, index) in fields" :key="index" class="url_list clearfix">
                 <div class="url_select clearfix">
                   <ui-select :selectData="item.select" :data-key="index" :onClick="multiSelectOnClick"></ui-select>
                 </div>
@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
 
@@ -116,10 +117,19 @@ export default {
     }
   },
 
+  created () {
+    this.$eventBus.$on('modifyVisitSepcificPagesTarget', this.modifyVisitSepcificPagesTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyVisitSepcificPagesTarget', this.modifyVisitSepcificPagesTarget)
+  },
+
   data () {
     return {
-      visitSpecificPagesDay: '30',
-      visitSpecificPagesName: '',
+      collectionPeriod: '30',
+      targetName: '',
+      audienceSize: '-',
 
       subSelect:false,
       subInput:false,
@@ -244,10 +254,7 @@ export default {
           "key": index,
           "select": {
             emptyText: '전체URL',
-            textList: [
-              '전체URL',
-              '부분URL'
-            ]
+            textList: [ '전체URL', '부분URL' ]
           }
         }
         this.fields.push(obj)
@@ -255,6 +262,15 @@ export default {
         index--
         this.fields.splice(this.fields.indexOf(item), 1)
       }
+    },
+
+    findSelectText (selectName, key) {
+      /*
+      Select Text 가져오기
+      */
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
     },
 
     findSelectKey (selectName) {
@@ -311,8 +327,8 @@ export default {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
         target_type: 'visit_specific_pages',
         pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.visitSpecificPagesName,
-        retention_days: this.visitSpecificPagesDay,
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
 
         detail: this.findSelectKey('selectUser'),
         input_percent: this.findSelectKey('selectSub')
@@ -344,6 +360,105 @@ export default {
     createVisitSpecificPagesDelete () {
       this.dialogOpen('삭제하시겠습니까?', 'confirm', 'visitSpecificPagesDelete')
     },
+
+    modifyVisitSepcificPagesTarget () {
+      console.log('특정페이지 방문')
+
+      // Custom Target인 경우 params가 존재
+      if(this.makeItem.description.params) {
+        console.log('@ : ', this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id))
+        const params = this.makeItem.description.params
+        const detail = params.detail
+
+        // 사용 픽셀
+        this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
+
+        // 수집 기간
+        this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+
+        // 타겟 이름
+        this.targetName = this.makeItem.name
+
+        // 타겟 모수
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+
+        // 사이트 방문자중 @
+        if (detail === 'total') {
+          // 전체 고객
+          this.selectUser.emptyText = '전체 고객'
+        } else if (detail === 'usage_time_top') {
+          // 이용 시간 상위 고객
+          this.selectUser.emptyText = '이용 시간 상위 고객'
+          this.selectSub.emptyText = params.input_percent + '%'
+          this.subSelect = true
+        } else if (detail === 'non_visit') {
+          // 특정일 동안 미방문 고객
+          this.selectUser.emptyText = '특정일 동안 미방문 고객'
+          this.subInput = true
+        } else if (detail === 'purchase') {
+          // 구매 고객
+          this.selectUser.emptyText = '구매 고객'
+        } else if (detail === 'non_purchase') {
+          // 미구매 고객
+          this.selectUser.emptyText = '미구매 고객'
+        } else if (detail === 'add_to_cart') {
+          // 장바구니 이용 고객
+          this.selectUser.emptyText = '장바구니 이용 고객'
+        } else if (detail === 'conversion') {
+          // 전환완료 고객
+          this.selectUser.emptyText = '전환완료 고객'
+        } else if (detail === 'non_conversion') {
+          // 미전환 고객
+          this.selectUser.emptyText = '미전환 고객'
+        } else if (detail === 'registration') {
+          // 회원가입 고객
+          this.selectUser.emptyText = '회원가입 고객'
+        } else {
+          console.log('nothing..', detail)
+        }
+
+        this.fields = []
+        let index = 0
+
+        // 전체URL
+        if(this.makeItem.description.params.eq_list) {
+          this.makeItem.description.params.eq_list.forEach(url => {
+            let field = {
+              "url": url,
+              "number": index,
+              "key": index,
+              "select": {
+                emptyText: '전체URL',
+                textList: [ '전체URL', '부분URL' ]
+              }
+            }
+
+            index++
+            this.fields.push(field)
+          })
+        }
+
+        // 부분URL
+        if(this.makeItem.description.params.contain_list) {
+          this.makeItem.description.params.contain_list.forEach(url => {
+            let field = {
+              "url": url,
+              "number": index,
+              "key": index,
+              "select": {
+                emptyText: '부분URL',
+                textList: [ '전체URL', '부분URL' ]
+              }
+            }
+            
+            index++
+            this.fields.push(field)
+          })
+        }
+
+        console.log(this.fields)
+      }
+    }
   }
 }
 </script>
