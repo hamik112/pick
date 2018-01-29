@@ -19,12 +19,12 @@
           </div>
           <div class="use_date">
             <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="neoTargetDay"><span>일</span></div>
+            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
           <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="neoTargetName"></div>
+          <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_type">
           <div class="contents_title">Neo 유형</div>
@@ -78,7 +78,7 @@
                       <div class="result_tbody">
                         <ul id="list-neoaccount">
                           <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
-                          <li v-for="neoAccount in neoAccounts">
+                          <li v-for="(neoAccount, index) in neoAccounts" :key="index">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoAccounts" :value="neoAccount.centeraccountid" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.centeraccountid" :id="'neoAccount-check-' + neoAccount.centeraccountid"><label :for="'neoAccount-check-' + neoAccount.centeraccountid"></label></div>
                             <div class="result_account">{{ neoAccount.advname }}</div>
                             <div class="result_group">{{ neoAccount.accountname }}</div>
@@ -96,7 +96,7 @@
                 <div class="account_right clearfix">
                   <button type="button" v-on:click="deleteListNeo('add-list-neoaccount', 'neoAccounts', 'addNeoAccounts', 'all')" title="전체삭제"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button>
                   <ul id="add-list-neoaccount">
-                    <li v-for="addNeoAccount in addNeoAccounts" class="sticker_btn">
+                    <li v-for="(addNeoAccount, index) in addNeoAccounts" :key="index" class="sticker_btn">
                       <span>{{ addNeoAccount.accountname }}</span> <span @click="deleteListNeo('add-list-neoaccount', 'neoAccounts', 'addNeoAccounts', addNeoAccount)" :data-number="addNeoAccount.centeraccountid" title="삭제하기"><img src="../../../assets/images/target/target_list_close.png" alt=""></span>
                     </li>
                   </ul>
@@ -135,7 +135,7 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neocampaign">
-                          <li v-for="neoCampaign in neoCampaigns">
+                          <li v-for="(neoCampaign, index) in neoCampaigns" :key="index">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoCampaigns" :value="neoCampaign.campaignid" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.campaignid" :id="'neoCampaign-check-' + neoCampaign.campaignid"><label :for="'neoCampaign-check-' + neoCampaign.campaignid"></label></div>
                             <div class="result_account">{{ neoCampaign.advname }}</div>
                             <div class="result_group">{{ neoCampaign.campaignname }}</div>
@@ -153,7 +153,7 @@
                 <div class="account_right clearfix">
                   <button type="button" v-on:click="deleteListNeo('add-list-neocampaign', 'neoCampaigns', 'addNeoCampaigns', 'all')" title="전체삭제"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button>
                   <ul id="add-list-neocampaign">
-                    <li v-for="addNeoCampaign in addNeoCampaigns" class="sticker_btn">
+                    <li v-for="(addNeoCampaign, index) in addNeoCampaigns" :key="index" class="sticker_btn">
                       <span>{{ addNeoCampaign.campaignname }}</span> <span @click="deleteListNeo('add-list-neocampaign', 'neoCampaigns', 'addNeoCampaigns', addNeoCampaign)" :data-number="addNeoCampaign.campaignid" title="삭제하기"><img src="../../../assets/images/target/target_list_close.png" alt=""></span>
                     </li>
                   </ul>
@@ -192,7 +192,7 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neokeyword">
-                          <li v-for="neoKeyword in neoKeywords">
+                          <li v-for="(neoKeyword, index) in neoKeywords" :key="index">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoKeywords" :value="neoKeyword.keywordid" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.keywordid" :id="'neoKeyword-check-' + neoKeyword.keywordid"><label :for="'neoKeyword-check-' + neoKeyword.keywordid"></label></div>
                             <div class="result_account">{{ neoKeyword.advname }}</div>
                             <div class="result_group">{{ neoKeyword.keywordname }}</div>
@@ -210,7 +210,7 @@
                 <div class="account_right clearfix">
                   <button type="button" v-on:click="deleteListNeo('add-list-neokeyword', 'neoKeywords', 'addNeoKeywords', 'all')" title="전체삭제"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button>
                   <ul id="add-list-neokeyword">
-                    <li v-for="addNeoKeyword in addNeoKeywords" class="sticker_btn">
+                    <li v-for="(addNeoKeyword, index) in addNeoKeywords" :key="index" class="sticker_btn">
                       <span>{{ addNeoKeyword.keywordname }}</span> <span @click="deleteListNeo('add-list-neokeyword', 'neoKeywords', 'addNeoKeywords', addNeoKeyword)" :data-number="addNeoKeyword.keywordid" title="삭제하기"><img src="../../../assets/images/target/target_list_close.png" alt=""></span>
                     </li>
                   </ul>
@@ -255,7 +255,7 @@
                 <div class="account_right clearfix">
                   <button type="button" v-on:click="deleteAddAdvs('all')" title="전체삭제"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button>
                   <ul id="adv-list-2">
-                    <li v-for="addAdv in addAdvs" class="sticker_btn">
+                    <li v-for="(addAdv, index) in addAdvs" :key="index" class="sticker_btn">
                       <span>{{ addAdv.name }}</span> <span @click="deleteAddAdvs(addAdv)" :data-number="addAdv.number" title="삭제하기"><img src="../../../assets/images/target/target_list_close.png" alt=""></span>
                     </li>
                   </ul>
@@ -464,10 +464,18 @@ export default {
     })
   },
 
+  created () {
+    this.$eventBus.$on('modifyNeoTarget', this.modifyNeoTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyNeoTarget', this.modifyNeoTarget)
+  },
+
   data () {
     return {
-      neoTargetDay: '30',
-      neoTargetName: '',
+      collectionPeriod: '30',
+      targetName: '',
       neoTargetType: 'media',
 
       neoAccounts: [],
@@ -603,6 +611,15 @@ export default {
       this[key].emptyText = item
     },
 
+    findSelectText (selectName, key) {
+      /*
+      Select Text 가져오기
+      */
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
+    },
+
     findSelectKey (selectName) {
       /*
       Select Key 가져오기
@@ -689,8 +706,8 @@ export default {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
         target_type: 'neo_target',
         pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.neoTargetName,
-        retention_days: this.neoTargetDay,
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
         neo_type: this.neoTargetType,
 
         detail: this.findSelectKey('selectUser'),
@@ -747,6 +764,64 @@ export default {
       }else{
         this.addAdvs.splice(this.addAdvs.indexOf(item), 1)
         this.advs.push(item)
+      }
+    },
+
+    modifyNeoTarget () {
+      console.log('modifyNeoTarget')
+
+      // Custom Target인 경우 params가 존재
+      if(this.makeItem.description.params) {
+        const description = this.makeItem.description
+        const params = description.params
+        const detail = params.detail
+
+        // 사용 픽셀
+        this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
+
+        // 수집 기간
+        this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+
+        // 타겟 이름
+        this.targetName = this.makeItem.name
+
+        // 사이트 방문자중 @
+        if (detail === 'total') {
+          // 전체 고객
+          this.selectUser.emptyText = '전체 고객'
+        } else if (detail === 'usage_time_top') {
+          // 이용 시간 상위 고객
+          this.selectUser.emptyText = '이용 시간 상위 고객'
+          this.selectSub.emptyText = params.input_percent + '%'
+          this.subSelect = true
+        } else if (detail === 'non_visit') {
+          // 특정일 동안 미방문 고객
+          this.selectUser.emptyText = '특정일 동안 미방문 고객'
+          this.subInput = true
+        } else if (detail === 'purchase') {
+          // 구매 고객
+          this.selectUser.emptyText = '구매 고객'
+        } else if (detail === 'non_purchase') {
+          // 미구매 고객
+          this.selectUser.emptyText = '미구매 고객'
+        } else if (detail === 'add_to_cart') {
+          // 장바구니 이용 고객
+          this.selectUser.emptyText = '장바구니 이용 고객'
+        } else if (detail === 'conversion') {
+          // 전환완료 고객
+          this.selectUser.emptyText = '전환완료 고객'
+        } else if (detail === 'non_conversion') {
+          // 미전환 고객
+          this.selectUser.emptyText = '미전환 고객'
+        } else if (detail === 'registration') {
+          // 회원가입 고객
+          this.selectUser.emptyText = '회원가입 고객'
+        } else {
+          console.log('nothing..', detail)
+        }
+
+        // Neo 유형
+        console.log(description.custom_data.neo_type)
       }
     }
   }

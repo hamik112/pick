@@ -385,7 +385,7 @@ export default {
     },
 
     // /fb_ad_accounts/ad_account_pixels call after
-    modifyVisitSiteTarget (pixelData) {
+    modifyVisitSiteTarget () {
       console.log('사이트 방문')
       console.log('# : ', this.makeItem)
       console.log('@ : ', this.adAccountPixels.emptyText)

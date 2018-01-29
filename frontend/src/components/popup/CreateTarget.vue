@@ -216,6 +216,8 @@ export default {
             this.$eventBus.$emit('modifyVisitSiteTarget', this.adAccountPixels)
           } else if (targetType === 'visit_specific_pages') {
             this.$eventBus.$emit('modifyVisitSepcificPagesTarget', this.adAccountPixels)
+          } else if (targetType === 'neo_target') {
+            this.$eventBus.$emit('modifyNeoTarget', this.adAccountPixels)
           }
         }
       } else {
