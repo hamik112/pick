@@ -19,7 +19,7 @@ export default {
     const me = this
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : '284297631740545',
+        appId      : '1456607077970548',
         cookie     : true,  // enable cookies to allow the server to access
         // the session
         xfbml      : true,  // parse social plugins on this page

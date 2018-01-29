@@ -121,8 +121,8 @@
         <div class="btn_wrap">
           <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
           <button class="next_btn" @click="createUtmTarget()" v-if="makeType == 'add'">타겟 만들기</button>
-          <button class="next_btn" @click="createUtmTarget()" v-if="makeType == 'modify'">수정</button>
           <button class="delete_btn" @click="createUtmTargetDelete()" v-if="makeType == 'modify'">삭제</button>
+          <button class="next_btn" @click="createUtmTarget()" v-if="makeType == 'modify'">타겟 수정하기</button>
         </div>
       </div>
     </div>
@@ -242,7 +242,7 @@ export default {
           'utm_campaign',
           'utm_term',
           'utm_content',
-          'utm_custom'
+          'custom'
         ]
       },
       wTab: {

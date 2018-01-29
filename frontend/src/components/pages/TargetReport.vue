@@ -1,6 +1,6 @@
 <template>
 	<div id="main_wrap" class="clearfix">
-		<div id="container" v-show="isReport">
+		<div id="container">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
 					<div id="report-widget" class="tab-contents-widget">
@@ -25,7 +25,7 @@
 									</div>
 									<button class="report_search" v-on:click="getGridData('349408409', [])">검색</button>
 								</div>
-								<div class="target_report_wrap">
+								<div class="target_report_wrap" v-show="isReport">
 									<div class="target_setup">
 										<div class="select_btn">
 											<div class="select_contents control-select">
@@ -337,12 +337,12 @@
 									</div>
 								</div>
 							</div>
+							<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
 	</div>
 </template>
 
@@ -413,12 +413,9 @@ export default {
 			accountSelectData: {
 				emptyText: '전체',
 				textList: [
-					'전체',
-					'광고계정1',
-					'광고계정2',
-					'광고계정3'
 				],
-				keyList: []
+				keyList: [
+				]
 			},
 			sortSelectData: {
 				emptyText: '열 맞춤 설정',
@@ -473,10 +470,10 @@ export default {
 			const tools = document.getElementsByClassName('interest_view')
 			const subId = event.target.className
 			const subEl = document.getElementById(subId)
+			for(let i = 0; i < tools.length; i++) {
+				tools[i].style = "display:none"
+			}
 			if (subEl !== null) {
-				for(let i = 0; i < tools.length; i++) {
-					tools[i].style = "display:none"
-				}
 				if(index != 'close') {
 					if(subEl.style.display == 'block') {
 						subEl.style = "display:none"
@@ -570,8 +567,10 @@ export default {
 							acountIdList.push(item.ad_account_id)
 						})
 						this.accountSelectData.textList = accountNameList
+						this.accountSelectData.textList.splice(0, 0, "전체")
 						this.accountSelectData.emptyText = accountNameList[0]
 						this.accountSelectData.keyList = acountIdList
+						this.accountSelectData.keyList.splice(0, 0, 0)
 					} else {
 						this.accountSelectData.emptyText = '광고주 없음'
 					}

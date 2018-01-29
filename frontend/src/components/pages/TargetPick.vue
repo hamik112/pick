@@ -32,11 +32,12 @@
 							<div class="target_contents_wrap">
 								<div class="target_setup">
 									<ui-select :selectData="this.selectData" :onClick="selectTarget"></ui-select>
+									<button type="button" class="refresh">새로고침</button>
 									<button type="button" @click="popupOpenBtn('makeModal','add')">타겟만들기</button>
 								</div>
 								<div class="target_contents">
 									<ul>
-										<li v-for="item in this.targetList[this.targetOn]">
+										<li v-for="(item, index) in this.targetList[this.targetOn]" :key="index">
 											<div class="target_icon">
 												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
 												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
