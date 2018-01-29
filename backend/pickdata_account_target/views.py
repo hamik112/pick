@@ -571,6 +571,141 @@ class CustomTarget(APIView):
                 else:
                     raise Exception("No valid detail parameter")
 
+            # 구글애널리틱스
+            elif target_type == "utm_target":
+                sources = request.data.get('sources')
+                mediums = request.data.get('mediums')
+                campaigns = request.data.get('campaigns')
+                terms = request.data.get('terms')
+                contents = request.data.get('contents')
+                customs = request.data.get('customs')
+
+                convert_sources = []
+                convert_mediums = []
+                convert_campaigns = []
+                convert_terms = []
+                convert_contents = []
+
+                for source in sources:
+                    convert_sources.append("utm_source=" + source)
+
+                for medium in mediums:
+                    convert_mediums.append("utm_medium=" + medium)
+
+                for campaign in campaigns:
+                    convert_campaigns.append("utm_campaign=" + campaign)
+
+                for term in terms:
+                    convert_terms.append("utm_term=" + term)
+
+                for content in contents:
+                    convert_contents.append("utm_content=" + content)
+
+                utm_ids = convert_sources + convert_mediums + convert_campaigns + convert_terms + convert_contents + customs
+
+                detail = request.data.get('detail', '')
+
+                custom_data = {
+                    "sources": sources,
+                    "mediums": mediums,
+                    "campaigns": campaigns,
+                    "terms": terms,
+                    "contents": contents,
+                    "customs": customs
+                }
+
+                pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
+                                                                                                  'utm target')
+
+                description = {}
+
+                # 전체고객
+                if detail == "total":
+                    created_target = targeting_url.update_url_total_visitor_customers(custom_audience_id,
+                                                                                      name, pixel_id,
+                                                                                      retention_days=retention_days,
+                                                                                      contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "전체", "", "custom", request.data,
+                                                        custom_data)
+                # 이용 시간 상위 고객
+                elif detail == "usage_time_top":
+                    input_percent = request.data.get('input_percent', 25)
+                    created_target = targeting_url.update_usage_time_top_customers(custom_audience_id, name,
+                                                                                   pixel_id,
+                                                                                   retention_days=retention_days,
+                                                                                   input_percent=input_percent,
+                                                                                   contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "이용시간상위" + str(input_percent) + "%",
+                                                        "", "custom", request.data, custom_data)
+                # 특정일 동안 미방문 고객
+                elif detail == "non_visit":
+                    exclusion_retention_days = request.data.get('exclusion_retention_days', 1)
+                    exclusion_retention_days = int(exclusion_retention_days)
+                    created_target = targeting_url.update_non_visition_customers(custom_audience_id, name,
+                                                                                 pixel_id,
+                                                                                 retention_days=retention_days,
+                                                                                 contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "미방문고객", "", "custom", request.data,
+                                                        custom_data)
+                # 구매고객
+                elif detail == "purchase":
+                    # TODO DB 구매 이벤트 유무 확인
+                    created_target = targeting_url.update_url_and_purchase_customers(custom_audience_id, name,
+                                                                                     pixel_id,
+                                                                                     retention_days=retention_days,
+                                                                                     purchase_event_name="Purchase",
+                                                                                     contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "구매고객", "", "custom", request.data,
+                                                        custom_data)
+                # 미 구매고객
+                elif detail == "non_purchase":
+                    # TODO DB 구매 이벤트 유무 확인
+                    created_target = targeting_url.update_url_and_non_purchase_customers(custom_audience_id,
+                                                                                         name, pixel_id,
+                                                                                         retention_days=retention_days,
+                                                                                         purchase_event_name="Purchase",
+                                                                                         contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "미구매고객", "", "custom", request.data,
+                                                        custom_data)
+                # 장바구니 이용 고객
+                elif detail == "add_to_cart":
+                    # TODO 장바구니 이벤트 확인
+                    created_target = targeting_url.update_url_and_addtocart_customers(custom_audience_id,
+                                                                                      name, pixel_id,
+                                                                                      retention_days=retention_days,
+                                                                                      addtocart_evnet_name="AddToCart",
+                                                                                      contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "장바구니이용고객", "", "custom", request.data,
+                                                        custom_data)
+                # 전환완료 고객
+                elif detail == "conversion":
+                    # TODO 전환완료 이벤트 확인
+                    created_target = targeting_url.update_specific_page_and_coversion_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        conversion_event_name="ViewContent", contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "전환완료고객", "", "custom", request.data,
+                                                        custom_data)
+                # 미 전환 고객
+                elif detail == "non_conversion":
+                    # TODO 전환완료 이벤트 확인
+                    created_target = targeting_url.update_url_and_non_coversion_customers(custom_audience_id,
+                                                                                          name, pixel_id,
+                                                                                          retention_days=retention_days,
+                                                                                          conversion_event_name="ViewContent",
+                                                                                          contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "미전환고객", "", "custom", request.data,
+                                                        custom_data)
+                # 회원가입 고객
+                elif detail == "registration":
+                    # TODO 회원가입 이벤트 확인
+                    created_target = targeting_url.update_specific_page_and_registration_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        registration_event_name="CompleteRegistration", contain_list=utm_ids)
+                    description = self.make_description("UTM타겟", retention_days, "회원가입고객", "", "custom", request.data,
+                                                        custom_data)
+                else:
+                    raise Exception("No valid detail parameter")
+
             # pickdata Database Update Call
             target = PickdataAccountTarget.update(PickdataAccountTarget, pickdata_account_target, fb_ad_account,
                                                   created_target.get('id'),
