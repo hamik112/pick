@@ -18,6 +18,7 @@ from facebookads.adobjects.customconversion import CustomConversion
 from utils.facebookapis.api_init import (api_init, api_init_by_system_user)
 from utils.facebookapis.ad_account import ad_sets as ad_sets_api
 from utils.common import download_helper
+from utils.common.excel_report import ExcelReport
 
 import os
 import json
@@ -41,15 +42,16 @@ class AdSetInsightByAccount(APIView):
             api_init_by_system_user()
             # TODO Session token
 
-            ad_set_insights = None
+            # ad_set_insights = None
 
             fb_account_id = request.query_params.get('account_id', '0')
+            category_name = request.query_params.get('category_name', 'all')
             page = request.query_params.get('page', '1')
             start = request.query_params.get('start', '0')
             limit = request.query_params.get('limit', '25')
 
-            since = request.query_params.get('since', '2018-01-13')
-            until = request.query_params.get('until', '2018-01-14')
+            since = request.query_params.get('since', '')
+            until = request.query_params.get('until', '')
             # since = '2017-12-14'
             # until = '2017-12-15'
             start = datetime.strptime(since, '%Y-%m-%d')
@@ -58,11 +60,18 @@ class AdSetInsightByAccount(APIView):
             date_diff = diff.days + 1
 
             if fb_account_id == '0':
-                # account_name = ''
-                # account_category = ''
                 # 전체 광고 계정 인사이트
-                print('all account Insights')
-                accounts = FbAdAccount.objects.all()
+                if category_name == 'all':
+                    print('all category')
+                    accounts = FbAdAccount.objects.all()
+                else:
+                    print('category filter NEED')
+                    account_category = AccountCategory.objects.filter(category_label_en=category_name)
+                    for category in account_category:
+                        category_id = category.id
+
+                    accounts = FbAdAccount.objects.filter(account_category_id=category_id)
+
                 target_insights = []
                 for account in accounts:
                     fb_account_id = account.ad_account_id
@@ -81,30 +90,28 @@ class AdSetInsightByAccount(APIView):
                         pixel_dict['custom_event'] =pixel_mapping_category.category_label_en
                         pixel_mapping_category_list.append(pixel_dict)
 
-                    target_insights = self.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
-                    print(target_insights)
+                    target_insight = self.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
+                    # print(target_insight)
+                    target_insights += target_insight
 
                 # TODO 전체 데이터 모아서, 픽셀매핑 필요
-                # target_insights = [item for sublist in target_insights for item in sublist]
-                # print(target_insights)
                 # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
-                # for da in target_insights:
-                #     result = []
-                #     for key, items in da.items():
-                #         if '_event' in key:
-                #             if type(items) is dict:
-                #                 # result = []
-                #                 for pix in pixel_mapping_category_list:
-                #                     if items['name'] == pix['fb_event']:
-                #                         # print(pix['fb_event'])
-                #                         custom = {}
-                #                         custom['custom_name'] = pix['name']
-                #                         custom['fb_event'] = items['name']
-                #                         custom['value'] = items['value']
-                #                         print(custom)
-                #                         result.append(custom)
-                #     da['pickdata_custom_pixel_event'] = result
-
+                for da in target_insights:
+                    result = []
+                    for key, items in da.items():
+                        if '_event' in key:
+                            if type(items) is dict:
+                                # result = []
+                                for pix in pixel_mapping_category_list:
+                                    if items['name'] == pix['fb_event']:
+                                        # print(pix['fb_event'])
+                                        custom = {}
+                                        custom['custom_name'] = pix['name']
+                                        custom['fb_event'] = items['name']
+                                        custom['value'] = items['value']
+                                        print(custom)
+                                        result.append(custom)
+                    da['pickdata_custom_pixel_event'] = result
 
             else:
                 # 광고계정 별 인사이트
@@ -128,7 +135,6 @@ class AdSetInsightByAccount(APIView):
                     pixel_mapping_category_list.append(pixel_dict)
 
                 target_insights = self.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
-                print(target_insights)
 
                 # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
                 for da in target_insights:
@@ -147,8 +153,6 @@ class AdSetInsightByAccount(APIView):
                                         print(custom)
                                         result.append(custom)
                     da['pickdata_custom_pixel_event'] = result
-
-                print(target_insights)
 
             response_data['success'] = 'YES'
             response_data['total_count'] = len(target_insights)
@@ -482,30 +486,140 @@ class ReportExcelDownload(APIView):
         file_path = ''
         file_name = ''
         try:
+            insights = AdSetInsightByAccount()
+
+            api_init_by_system_user()
+            # TODO Session token
+
+            fb_account_id = request.query_params.get('account_id', '0')
+            category_name = request.query_params.get('category_name', 'all')
+            since = request.query_params.get('since', '2018-01-01')
+            until = request.query_params.get('until', '2018-01-29')
+            start = datetime.strptime(since, '%Y-%m-%d')
+            end = datetime.strptime(until, '%Y-%m-%d')
+            diff = end - start
+            date_diff = diff.days + 1
+
+            if fb_account_id == '0':
+                # 전체 광고 계정 인사이트
+                if category_name == 'all':
+                    accounts = FbAdAccount.objects.all()
+                else:
+                    account_category = AccountCategory.objects.filter(category_label_en=category_name)
+                    for category in account_category:
+                        category_id = category.id
+
+                    accounts = FbAdAccount.objects.filter(account_category_id=category_id)
+
+                target_insights = []
+                for account in accounts:
+                    fb_account_id = account.ad_account_id
+                    account_name = account.name
+                    account_category = AccountCategory.objects.get(pk=account.account_category_id)
+                    account_category_name = account_category.category_label_kr
+                    account_category_name_en = account_category.category_label_en
+                    # 픽셀매핑
+                    pixel_mapping_category_list = []
+                    pixel_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, account.id)
+                    for pm in pixel_mapping:
+                        pixel_dict = {}
+                        pixel_dict['fb_event'] = pm.facebook_pixel_event_name
+                        pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_id(PixelMappingCategory, pm.pixel_mapping_category_id)
+                        pixel_dict['name'] = pixel_mapping_category.category_label_kr
+                        pixel_dict['custom_event'] =pixel_mapping_category.category_label_en
+                        pixel_mapping_category_list.append(pixel_dict)
+
+                    target_insight = insights.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
+                    # print(target_insight)
+                    target_insights += target_insight
+
+                # TODO 전체 데이터 모아서, 픽셀매핑 필요
+                # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
+                for da in target_insights:
+                    result = []
+                    for key, items in da.items():
+                        if '_event' in key:
+                            if type(items) is dict:
+                                # result = []
+                                for pix in pixel_mapping_category_list:
+                                    if items['name'] == pix['fb_event']:
+                                        # print(pix['fb_event'])
+                                        custom = {}
+                                        custom['custom_name'] = pix['name']
+                                        custom['fb_event'] = items['name']
+                                        custom['value'] = items['value']
+                                        print(custom)
+                                        result.append(custom)
+                    da['pickdata_custom_pixel_event'] = result
+
+            else:
+                # 광고계정 별 인사이트
+                account = FbAdAccount.find_by_ad_account_id(FbAdAccount, 'act_'+fb_account_id)
+                if fb_account_id == None or account == None:
+                    raise Exception("Not Existing FbAdAccount.")
+                account_name = account.name
+                # 카테고리
+                account_category = AccountCategory.objects.get(pk=account.account_category_id)
+                account_category_name = account_category.category_label_kr
+                account_category_name_en = account_category.category_label_en
+                # 픽셀매핑
+                pixel_mapping_category_list = []
+                pixel_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, account.id)
+                for pm in pixel_mapping:
+                    pixel_dict = {}
+                    pixel_dict['fb_event'] = pm.facebook_pixel_event_name
+                    pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_id(PixelMappingCategory, pm.pixel_mapping_category_id)
+                    pixel_dict['name'] = pixel_mapping_category.category_label_kr
+                    pixel_dict['custom_event'] =pixel_mapping_category.category_label_en
+                    pixel_mapping_category_list.append(pixel_dict)
+
+                target_insights = insights.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
+
+                # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
+                for da in target_insights:
+                    result = []
+                    for key, items in da.items():
+                        if '_event' in key:
+                            if type(items) is dict:
+                                # result = []
+                                for pix in pixel_mapping_category_list:
+                                    if items['name'] == pix['fb_event']:
+                                        # print(pix['fb_event'])
+                                        custom = {}
+                                        custom['custom_name'] = pix['name']
+                                        custom['fb_event'] = items['name']
+                                        custom['value'] = items['value']
+                                        print(custom)
+                                        result.append(custom)
+                    da['pickdata_custom_pixel_event'] = result
+
             # TODO 인사이트 가져오기
-            url = "http://dev.snack.emforce.co.kr:8000/ad_set_insights/?account_id=349408409&since=2018-01-01&until=2018-01-29"
-            res = urllib.request.urlopen(url)
-            data = res.read().decode('utf8')
-            data = json.loads(data)
-            insights_data = data['data']
+            # url = "http://dev.snack.emforce.co.kr:8000/ad_set_insights/?account_id=349408409&since=2018-01-01&until=2018-01-29"
+            # res = urllib.request.urlopen(url)
+            # data = res.read().decode('utf8')
+            # data = json.loads(data)
+            # insights_data = data['data']
 
             book = xlwt.Workbook(encoding="utf-8")
             sheet1 = book.add_sheet("Target Report", cell_overwrite_ok=True)
 
+            file_path = 'logs/'
+            file_path = os.path.join(settings.PROJECT_DIR, file_path)
+            # logger.info('file_path : %s' % (file_path))
+            # file_path = '/Users/chloelim/Desktop/'
+            file_name = "target_report.xls"
+
             row = 0
-            for data in insights_data:
+            for data in target_insights:
                 column = 0
                 for title, value in data.items():
                     sheet1.write(row + 0, column, title)
                     sheet1.write(row+ 1, column, value)
                     column += 1
                 row += 2
-            file_path = 'logs/'
-            file_path = os.path.join(settings.PROJECT_DIR, file_path)
-            # logger.info('file_path : %s' % (file_path))
-            # file_path = '/Users/chloelim/Desktop/'
-            file_name = "target_report.xls"
             book.save(file_path + file_name)
+            # excel_report = ExcelReport()
+            # excel_report = excel_report.write_workbook(file_path, file_name, target_insights)
             res = download_helper.respond_as_attachment(request, os.path.join(file_path, file_name), file_name)
 
             response_data['success'] = 'YES'
