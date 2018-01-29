@@ -757,6 +757,52 @@ class CustomTarget(APIView):
                 else:
                     raise Exception("No valid detail parameter")
 
+            # 회원가입
+            elif target_type == "registration":
+                detail = request.data.get('detail', '')
+
+                pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,
+                                                                                                  'registration')
+
+                if detail == "total":
+                    created_target = targeting_registration.update_regestration_customers(custom_audience_id,
+                                                                                          name, pixel_id,
+                                                                                          retention_days=retention_days,
+                                                                                          registration_event_name="CompleteRegistration")
+                    description = self.make_description("회원가입", retention_days, "전체", "", "custom", request.data)
+                elif detail == "usage_time_top":
+                    input_percent = request.data.get('input_percent', 25)
+                    created_target = targeting_registration.update_regestration_usage_time_top_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        regestration_event_name="CompleteRegistration", input_percent=input_percent)
+                    description = self.make_description("회원가입", retention_days, "이용시간상위" + str(input_percent) + "%", "",
+                                                        "custom", request.data)
+                elif detail == "non_purchase":
+                    created_target = targeting_registration.update_regestration_and_non_purchase_customers(
+                        custom_audience_id, name, pixel_id, retention_days=retention_days,
+                        regestration_event_name="CompleteRegistration",
+                        purchase_event_name="Purchase")
+                    description = self.make_description("회원가입", retention_days, "미구매", "", "custom", request.data)
+                elif detail == "conversion":
+                    created_target = targeting_registration.update_regestration_and_conversion_customers(
+                        custom_audience_id, name, pixel_id, retention_days=30,
+                        regestration_event_name="CompleteRegistration",
+                        conversion_event_name="ViewContent")
+                    description = self.make_description("회원가입", retention_days, "전환고객", "", "custom", request.data)
+                elif detail == "non_conversion":
+                    created_target = targeting_registration.update_regestration_non_conversion_customers(
+                        custom_audience_id, name, pixel_id, retention_days=30,
+                        regestration_event_name="CompleteRegistration",
+                        conversion_event_name="ViewContent")
+                    description = self.make_description("회원가입", retention_days, "미전환고객", "", "custom", request.data)
+                else:
+                    raise Exception("No valid detail parameter")
+
+            elif target_type == "conversion":
+                pass
+            else:
+                raise Exception("No valid target_type.")
+
             # pickdata Database Update Call
             target = PickdataAccountTarget.update(PickdataAccountTarget, pickdata_account_target, fb_ad_account,
                                                   created_target.get('id'),
