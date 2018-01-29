@@ -279,12 +279,16 @@
 			popupOpenBtn (popupName, type, item) {
 				//팝업 오픈
 				//popupName = 팝업컴포넌트명, type = add,modify,delete
-				this[popupName] = true
-				if(popupName === 'makeModal') {
-					if (type === 'modify') {
-						this.makeItem = item
+				if(item.description.type === 'custom') {
+					this[popupName] = true
+					if(popupName === 'makeModal') {
+						if (type === 'modify') {
+							this.makeItem = item
+						}
+						this.makeType = type
 					}
-					this.makeType = type
+				} else {
+					alert('기본 타겟은 수정할 수 없습니다.')
 				}
 			},
 			tPickMenu (type) {
