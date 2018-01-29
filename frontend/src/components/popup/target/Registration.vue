@@ -1,7 +1,7 @@
 <template>
   <div class="target_contents_wrap clearfix" v-if="isShow">
     <transition name="modal">
-      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+      <ui-dialog :dialogData="dialogData" v-if="dialogShow" @ok="dialogOk()" @cancel="dialogCancel()"></ui-dialog>
     </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
@@ -39,7 +39,7 @@
             <div class="account_info">
               <div class="account_title">"회원가입한 사람" 중</div>
               <div>
-                <ui-select :selectData="this.selectRegistrationUser" data-key="selectRegistrationUser" :onClick="selectOnClick"></ui-select>
+                <ui-select :selectData="this.selectCustomer" data-key="selectCustomer" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subSelect">
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
@@ -54,9 +54,9 @@
     </div>
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-      <button class="next_btn" @click="createRegistration()" v-if="makeType == 'add'">타겟 만들기</button>
-      <button class="delete_btn" @click="createRegistrationDelete()" v-if="makeType == 'modify'">삭제</button>
-      <button class="next_btn" @click="updateRegistration()" v-if="makeType == 'modify'">타겟 수정하기</button>
+      <button class="next_btn" @click="createRegistrationTarget()" v-if="makeType === 'add'">타겟 만들기</button>
+      <button class="delete_btn" @click="deleteRegistrationTarget()" v-if="makeType === 'modify'">삭제</button>
+      <button class="next_btn" @click="updateRegistrationTarget()" v-if="makeType === 'modify'">타겟 수정하기</button>
     </div>
   </div>
 </template>
@@ -81,23 +81,25 @@ export default {
         return false
       }
     },
+
     adAccountPixels: {
       type: Object,
       default () {
         return {
           emptyText: '불러오는 중 입니다.',
-          textList: [
-            '불러오는 중 입니다.'
-          ]
+          textList: [ '불러오는 중 입니다.' ]
         }
       }
     },
+
     tabMove: {
       type: Function
     },
+
     makeType: {
       type:String
     },
+
     makeItem: {
       type: Object
     }
@@ -117,18 +119,18 @@ export default {
       targetName: '',
       audienceSize: '-',
 
-      subSelect:false,
-      subInput:false,
+      subSelect: false,
+      subInput: false,
 
-      dialogShow:false,
-      dialogData:{
+      dialogShow: false,
+      dialogData: {
         emptyText:'sample',
         type:'confirm',
         mode:'sample'
       },
       nextStage:false,
 
-      selectRegistrationUser: {
+      selectCustomer: {
         emptyText: '전체 고객',
         textList: [
           '전체 고객',
@@ -162,30 +164,91 @@ export default {
   },
 
   methods: {
-    dialogOpen(emptyText, type, mode) {
+    dialogOpen (emptyText, type, mode) {
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type
       this.dialogData['mode'] = mode
       this.dialogShow = true;
     },
 
-    dialogOk() {
+    // 다이얼로그 확인 클릭시
+    dialogOk () {
       const mode = this.dialogData.mode
 
-      if(mode == 'registration') {
-        // TODO
-      } else if (mode === 'registrationDelete') {
+      if(mode === 'createRegistrationTarget') {
+        // Create Target -----------------------------------------------------------------
+        let params = {
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'registration',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+
+          detail: this.findSelectKey('selectCustomer'),
+          input_percent: this.findSelectKey('selectSub')
+        }
+
+        this.$http.post('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success;
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+            this.dialogOpen('회원가입 타겟 생성 실패', 'alert')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target: ', err)
+        })
+
+      } else if (mode === 'deleteRegistrationTarget') {
+        // Delete Target -----------------------------------------------------------------
         this.$emit('deleteCustomTarget', this.makeItem.id)
-      } else if (mode === 'registrationUpdate') {
-        this.updateRegistrationNext()
+
+      } else if (mode === 'updateRegistrationTarget') {
+        // Update Target -----------------------------------------------------------------
+        let params = {
+          pickdata_account_target_id: this.makeItem.id,
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'registration',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+
+          detail: this.findSelectKey('selectCustomer'),
+          input_percent: this.findSelectKey('selectSub')
+        }
+
+        this.$http.put('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            this.dialogOpen('회원가입 타겟 생성 실패', 'alert')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target delete: ', err)
+        })
       }
 
-      //모드별 동작
+      // 모드별 동작
       this.nextStage = true
       this.dialogShow = false
     },
 
-    dialogCancel() {
+    // 다이얼로그 취소 클릭시
+    dialogCancel () {
       this.nextStage = false
       this.dialogShow = false
     },
@@ -196,7 +259,7 @@ export default {
       this.subSelect = false
       this.subInput = false
 
-      //서브 입력창 체크
+      // 서브 입력창 체크
       if(textCheck === '이용시간상위고객' || key === 'selectSub') {
         this.subSelect = true
       }else if(textCheck === '특정일동안미방문고객') {
@@ -206,135 +269,71 @@ export default {
     },
 
     findSelectText (selectName, key) {
-      /*
-      Select Text 가져오기
-      */
+      // Select Text 가져오기
       const textList = this[selectName].textList
       const keyList = this[selectName].keyList
       return textList[keyList.indexOf(key)]
     },
 
     findSelectKey (selectName) {
-      /*
-      Select Key 가져오기
-      */
+      // Select Key 가져오기
       const emptyText = this[selectName].emptyText
       const textList = this[selectName].textList
       const keyList = this[selectName].keyList
       return keyList[textList.indexOf(emptyText)]
     },
 
-    createRegistration () {
-      let params = {
-        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'registration',
-        pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.targetName,
-        retention_days: this.collectionPeriod,
-
-        detail: this.findSelectKey('selectRegistrationUser'),
-        input_percent: this.findSelectKey('selectSub')
-      }
-
-      this.$http.post('/pickdata_account_target/custom_target', params)
-      .then((response) => {
-        var success = response.data.success;
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
-          this.dialogOpen('회원가입 타겟 생성 실패', 'alert')
-          throw('success: ' + success)
-        }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target: ', err)
-      })
+    // Create Target Dialog
+    createRegistrationTarget () {
+      this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createRegistrationTarget')
     },
 
-    createRegistrationDelete () {
-      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'registrationDelete')
+    // Delete Target Dialog
+    deleteRegistrationTarget () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'deleteRegistrationTarget')
     },
 
-    updateRegistration () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'registrationUpdate')
+    // Update Target Dialog
+    updateRegistrationTarget () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateRegistrationTarget')
     },
 
-    updateRegistrationNext () {
-      console.log('update call')
-      let params = {
-        pickdata_account_target_id: this.makeItem.id,
-        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'registration',
-        pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.targetName,
-        retention_days: this.collectionPeriod,
-
-        detail: this.findSelectKey('selectRegistrationUser'),
-        input_percent: this.findSelectKey('selectSub')
-      }
-
-      this.$http.put('/pickdata_account_target/custom_target', params)
-      .then((response) => {
-        var success = response.data.success
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          this.dialogOpen('회원가입 타겟 생성 실패', 'alert')
-          throw('success: ' + success)
-        }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target delete: ', err)
-      })
-    },
-
-    // /fb_ad_accounts/ad_account_pixels call after
+    // 수정 클릭시 타겟 생성 팝업 데이터 초기화 (/fb_ad_accounts/ad_account_pixels call after)
     modifyRegistrationTarget () {
-      console.log('modifyVisitSiteTarget')
+      const description = this.makeItem.description
+      const params = description.params
+      const detail = params.detail
 
-      // Custom Target인 경우 params가 존재
-      if(this.makeItem.description.params) {
-        const params = this.makeItem.description.params
-        const detail = params.detail
+      // 사용 픽셀
+      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', params.pixel_id)
 
-        // 사용 픽셀
-        this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
+      // 수집 기간
+      this.collectionPeriod = numberFormatter(description.retention_days)
 
-        // 수집 기간
-        this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+      // 타겟 이름
+      this.targetName = this.makeItem.name
 
-        // 타겟 이름
-        this.targetName = this.makeItem.name
+      // 타겟 모수
+      this.audienceSize = numberFormatter(this.makeItem.display_count)
 
-        // 타겟 모수
-        this.audienceSize = numberFormatter(this.makeItem.display_count)
-
-        // 회원가입한 사람중 @
-        if (detail === 'total') {
-          // 전체 고객
-          this.selectRegistrationUser.emptyText = '전체 고객'
-        } else if (detail === 'usage_time_top') {
-          // 이용 시간 상위 고객
-          this.selectRegistrationUser.emptyText = '이용 시간 상위 고객'
-          this.selectSub.emptyText = params.input_percent + '%'
-          this.subSelect = true
-        } else if (detail === 'non_purchase') {
-          // 미구매 고객
-          this.selectRegistrationUser.emptyText = '미구매 고객'
-        } else if (detail === 'conversions') {
-          // 전환 완료 고객
-          this.selectRegistrationUser.emptyText = '전완 완료 고객'
-        } else if (detail === 'non_conversion') {
-          // 미전환 고객
-          this.selectRegistrationUser.emptyText = '미전환 고객'
-        }
+      // 회원가입한 사람중 @
+      if (detail === 'total') {
+        // 전체 고객
+        this.selectCustomer.emptyText = '전체 고객'
+      } else if (detail === 'usage_time_top') {
+        // 이용 시간 상위 고객
+        this.selectCustomer.emptyText = '이용 시간 상위 고객'
+        this.selectSub.emptyText = params.input_percent + '%'
+        this.subSelect = true
+      } else if (detail === 'non_purchase') {
+        // 미구매 고객
+        this.selectCustomer.emptyText = '미구매 고객'
+      } else if (detail === 'conversions') {
+        // 전환 완료 고객
+        this.selectCustomer.emptyText = '전완 완료 고객'
+      } else if (detail === 'non_conversion') {
+        // 미전환 고객
+        this.selectCustomer.emptyText = '미전환 고객'
       }
     }
   }
