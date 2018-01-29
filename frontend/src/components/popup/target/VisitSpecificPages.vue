@@ -70,7 +70,7 @@
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createVisitSpecificPages()" v-if="makeType == 'add'">타겟 만들기</button>
       <button class="delete_btn" @click="createVisitSpecificPagesDelete()" v-if="makeType == 'modify'">삭제</button>
-      <button class="next_btn" @click="createVisitSpecificPages()" v-if="makeType == 'modify'">타겟 수정하기</button>
+      <button class="next_btn" @click="updateVisitSpecificPages()" v-if="makeType == 'modify'">타겟 수정하기</button>
     </div>
   </div>
 </template>
@@ -206,6 +206,7 @@ export default {
       this.dialogData['mode'] = mode
       this.dialogShow = true;
     },
+
     dialogOk() {
       const mode = this.dialogData.mode
 
@@ -213,6 +214,8 @@ export default {
         this.createVisitSpecificPagesNext()
       } else if (mode === 'visitSpecificPagesDelete') {
         this.$emit('deleteCustomTarget', this.makeItem.id)
+      } else if (mode === 'visitSpecificPagesUpdate') {
+        this.updateVisitSpecificPagesNext()
       }
 
       //모드별 동작
@@ -361,6 +364,49 @@ export default {
       this.dialogOpen('삭제하시겠습니까?', 'confirm', 'visitSpecificPagesDelete')
     },
 
+    updateVisitSpecificPages () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'visitSpecificPagesUpdate')
+    },
+
+    updateVisitSpecificPagesNext () {
+      console.log('update call')
+      let body = {
+        pickdata_account_target_id: this.makeItem.id,
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'visit_specific_pages',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
+        exclusion_retention_days: this.unvisitedPeriod,
+
+        detail: this.findSelectKey('selectUser'),
+        input_percent: this.findSelectKey('selectSub')
+      }
+
+      const urlParams = this.findVisitSpecificPagesParam()
+      body['eq_list'] = urlParams['eqList']
+      body['contain_list'] = urlParams['containList']
+
+      this.$http.put('/pickdata_account_target/custom_target', body)
+      .then((response) => {
+        var success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          this.dialogOpen('특정페이지방문 타겟 수정 실패', 'alert')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target delete: ', err)
+      })
+
+      console.log('BODY: ', body)
+    },
+
     modifyVisitSepcificPagesTarget () {
       console.log('특정페이지 방문')
 
@@ -450,7 +496,7 @@ export default {
                 textList: [ '전체URL', '부분URL' ]
               }
             }
-            
+
             index++
             this.fields.push(field)
           })
