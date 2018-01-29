@@ -15,9 +15,9 @@ from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_
 from utils.facebookapis.targeting import custom_audience
 from utils.facebookapis.ad_account import custom_audiences as custom_audience_api
 from utils.common.string_formatter import string_to_literal
+from utils.common import convert_chart_data
 
-from utils.facebookapis.targeting import targeting_visitor, targeting_specific_page_visitor, targeting_url, \
-    targeting_purchase, targeting_addtocart, targeting_registration
+from utils.facebookapis.targeting import targeting_visitor, targeting_specific_page_visitor, targeting_url, targeting_purchase, targeting_addtocart, targeting_registration
 
 from django.conf import settings
 
@@ -188,24 +188,40 @@ class TargetChart(APIView):
             target_audience_id = pickdata_target.target_audience_id
             print(target_audience_id)
             # TODO DELETE!!!
-            target_audience_id = 6077632352897
-            act_account_id = 'act_107850179321216'
+            from random import randint
+
+            random_i = randint(0,2)
+            print(random_i)
+            target_audience_id = [6081089433857, 6081089396457, 6090733823497][random_i]
+            act_account_id = ['act_894360037304328', 'act_894360037304328', 'act_107850179321216'][random_i]
 
             adsets = AdSet.get_adsets_by_target_id(AdSet, target_audience_id)
             # for adset in adsets:
             #     print(adset.id)
             #     print(adset.adset_id)
             # print(len(adsets))
+            # print([adset.adset_id for adset in adsets])
+            approximate_count = custom_audience.get_custom_audience(target_audience_id).get('approximate_count')
 
-            print([adset.adset_id for adset in adsets])
-
+            # print("placement insight start")
             placement_insights = adset_insight.get_adset_ids_placement_insights(act_account_id, [adset.adset_id for adset in adsets], start_date=start_date, end_date=end_date)
-            print(placement_insights)
+            # print(placement_insights)
+            placement_data = convert_chart_data.convert_placement_chart_data(placement_insights)
+            # print("placement insight end")
 
+            # print("age gender insight start")
             age_gender_insights = adset_insight.get_adset_ids_agegender_insights(act_account_id, [adset.adset_id for adset in adsets], start_date=start_date, end_date=end_date)
-            print(age_gender_insights)
+            # print(age_gender_insights)
+            age_gender_data, total_spend, total_conversion, cta = convert_chart_data.convert_agegender_chart_data(age_gender_insights)
+            # print("age gender insight end")
 
             response_data['success'] = 'YES'
+            response_data['age_gender_data'] = age_gender_data
+            response_data['placement_data'] = placement_data
+            response_data['audience_count'] = approximate_count
+            response_data['total_spend'] = total_spend
+            response_data['total_conversion'] = total_conversion
+            response_data['cta'] = cta
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         except Exception as e:
