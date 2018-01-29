@@ -62,10 +62,8 @@ class AdSetInsightByAccount(APIView):
             if fb_account_id == '0':
                 # 전체 광고 계정 인사이트
                 if category_name == 'all':
-                    print('all category')
                     accounts = FbAdAccount.objects.all()
                 else:
-                    print('category filter NEED')
                     account_category = AccountCategory.objects.filter(category_label_en=category_name)
                     for category in account_category:
                         category_id = category.id
@@ -91,25 +89,21 @@ class AdSetInsightByAccount(APIView):
                         pixel_mapping_category_list.append(pixel_dict)
 
                     target_insight = self.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
-                    # print(target_insight)
                     target_insights += target_insight
 
-                # TODO 전체 데이터 모아서, 픽셀매핑 필요
                 # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
                 for da in target_insights:
                     result = []
                     for key, items in da.items():
                         if '_event' in key:
                             if type(items) is dict:
-                                # result = []
                                 for pix in pixel_mapping_category_list:
                                     if items['name'] == pix['fb_event']:
-                                        # print(pix['fb_event'])
                                         custom = {}
                                         custom['custom_name'] = pix['name']
                                         custom['fb_event'] = items['name']
                                         custom['value'] = items['value']
-                                        print(custom)
+                                        logger.info(custom)
                                         result.append(custom)
                     da['pickdata_custom_pixel_event'] = result
 
@@ -142,15 +136,13 @@ class AdSetInsightByAccount(APIView):
                     for key, items in da.items():
                         if '_event' in key:
                             if type(items) is dict:
-                                # result = []
                                 for pix in pixel_mapping_category_list:
                                     if items['name'] == pix['fb_event']:
-                                        # print(pix['fb_event'])
                                         custom = {}
                                         custom['custom_name'] = pix['name']
                                         custom['fb_event'] = items['name']
                                         custom['value'] = items['value']
-                                        print(custom)
+                                        logger.info(custom)
                                         result.append(custom)
                     da['pickdata_custom_pixel_event'] = result
 
@@ -548,7 +540,7 @@ class ReportExcelDownload(APIView):
                                         custom['custom_name'] = pix['name']
                                         custom['fb_event'] = items['name']
                                         custom['value'] = items['value']
-                                        print(custom)
+                                        logger.info(custom)
                                         result.append(custom)
                     da['pickdata_custom_pixel_event'] = result
 
@@ -589,35 +581,17 @@ class ReportExcelDownload(APIView):
                                         custom['custom_name'] = pix['name']
                                         custom['fb_event'] = items['name']
                                         custom['value'] = items['value']
-                                        print(custom)
+                                        logger.info(custom)
                                         result.append(custom)
                     da['pickdata_custom_pixel_event'] = result
 
-            # TODO 인사이트 가져오기
-            # url = "http://dev.snack.emforce.co.kr:8000/ad_set_insights/?account_id=349408409&since=2018-01-01&until=2018-01-29"
-            # res = urllib.request.urlopen(url)
-            # data = res.read().decode('utf8')
-            # data = json.loads(data)
-            # insights_data = data['data']
-
-            # book = xlwt.Workbook(encoding="utf-8")
-            # sheet1 = book.add_sheet("Target Report", cell_overwrite_ok=True)
-
+            # 인사이트 다운로드
             file_path = 'logs/'
             file_path = os.path.join(settings.PROJECT_DIR, file_path)
             # logger.info('file_path : %s' % (file_path))
             # file_path = '/Users/chloelim/Desktop/'
             file_name = "target_report.xls"
 
-            # row = 0
-            # for data in target_insights:
-            #     column = 0
-            #     for title, value in data.items():
-            #         sheet1.write(row + 0, column, title)
-            #         sheet1.write(row+ 1, column, value)
-            #         column += 1
-            #     row += 2
-            # book.save(file_path + file_name)
             excel_report = ExcelReport()
             excel_report = excel_report.write_workbook(file_path, file_name, target_insights)
             res = download_helper.respond_as_attachment(request, os.path.join(file_path, file_name), file_name)

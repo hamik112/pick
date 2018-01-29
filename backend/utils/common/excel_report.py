@@ -39,11 +39,21 @@ class ExcelReport():
     def write_worksheet(self, workbook, target_insights):
         try:
             print("WRITE WORKSHEET - %")
+            # format_dict = self.workbook_format(workbook)
+            integer = workbook.add_format({'num_format': '0'})
+            decimal = workbook.add_format({'num_format': '0.00'})
+            percentage = workbook.add_format({'num_format': '0.00%'})
+            currency = workbook.add_format({'num_format': '₩#,##0'})
+            number = workbook.add_format({'num_format': '#,##0'})
+
             actions_name_list = self.find_insight_actions_name_list(target_insights)
             actions_name_list.remove('pickdata_custom_pixel_event')
             head_list = self.facebook_insight_to_headlist(target_insights, actions_name_list)
+
             worksheet = workbook.add_worksheet('Report')
+
             worksheet.write_row('A1', head_list)
+
             for idx, item in enumerate(target_insights):
                 row_name = 'A' + str(idx + 2)
                 worksheet.write_row(row_name, self.facebook_insight_to_list(item, actions_name_list))
@@ -53,6 +63,11 @@ class ExcelReport():
             for idx, item in enumerate(target_insights):
                 row_name = 'U' + str(idx + 2)
                 worksheet.write_row(row_name, self.facebook_fb_event_to_list(item, actions_name_list))
+
+            worksheet.set_column('I', None, currency)
+            worksheet.set_column('J:K', None, number)
+            worksheet.set_column('M:N', None, number)
+            worksheet.set_column('Q:T', None, number)
 
         except Exception as e:
             logger.error(e)
