@@ -14,22 +14,22 @@
         </div>
         <div class="use_wrap">
           <div class="use_select">
-            <div class="contents_title">사용픽셀</div>
+            <div class="contents_title">사용 픽셀</div>
             <ui-select :selectData="adAccountPixels" data-key="adAccountPixels" :onClick="selectOnClick"></ui-select>
           </div>
           <div class="use_date">
             <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="purchaseDay"><span>일</span></div>
+            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
-          <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="purchaseName"></div>
+          <div class="contents_title">타겟 이름</div>
+          <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>12,000</span>명
+            <span>{{ this.audienceSize }}</span>명
           </div>
         </div>
       </div>
@@ -56,12 +56,13 @@
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createPurchase()" v-if="makeType == 'add'">타겟 만들기</button>
       <button class="delete_btn" @click="createPurchaseDelete()" v-if="makeType == 'modify'">삭제</button>
-      <button class="next_btn" @click="createPurchase()" v-if="makeType == 'modify'">타겟 수정하기</button>
+      <button class="next_btn" @click="updatePurchase()" v-if="makeType == 'modify'">타겟 수정하기</button>
     </div>
   </div>
 </template>
 
 <script>
+import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
 
@@ -102,10 +103,19 @@ export default {
     }
   },
 
+  created () {
+    this.$eventBus.$on('modifyPurchaseTarget', this.modifyPurchaseTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyPurchaseTarget', this.modifyPurchaseTarget)
+  },
+
   data () {
     return {
-      purchaseDay: '30',
-      purchaseName: '',
+      collectionPeriod: '30',
+      targetName: '',
+      audienceSize: '-',
       purchaseCount: '0',
       purchaseAmount: '0',
 
@@ -150,6 +160,8 @@ export default {
         // TODO
       } else if (mode === 'purchaseDelete') {
         this.$emit('deleteCustomTarget', this.makeItem.id)
+      } else if (mode === 'purchaseUpdate') {
+         this.updatePurchaseNext()
       }
 
       //모드별 동작
@@ -178,6 +190,15 @@ export default {
       this[key].emptyText = item
     },
 
+    findSelectText (selectName, key) {
+      /*
+      Select Text 가져오기
+      */
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
+    },
+
     findSelectKey (selectName) {
       /*
       Select Key 가져오기
@@ -194,8 +215,8 @@ export default {
         fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
         target_type: 'purchase',
         pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.purchaseName,
-        retention_days: this.purchaseDay,
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
 
         detail: this.findSelectKey('selectPurchaseUser'),
         purchase_count: this.purchaseCount,
@@ -223,6 +244,85 @@ export default {
 
     createPurchaseDelete () {
       this.dialogOpen('삭제하시겠습니까?', 'confirm', 'purchaseDelete')
+    },
+
+    updatePurchase () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'purchaseUpdate')
+    },
+
+    updatePurchaseNext () {
+      console.log('update call')
+      let params = {
+        pickdata_account_target_id: this.makeItem.id,
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        target_type: 'purchase',
+        pixel_id: this.findSelectKey('adAccountPixels'),
+        name: this.targetName,
+        retention_days: this.collectionPeriod,
+        exclusion_retention_days: this.unvisitedPeriod,
+
+        detail: this.findSelectKey('selectPurchaseUser'),
+        purchase_count: this.purchaseCount,
+        purchase_amount: this.purchaseAmount
+      }
+
+      this.$http.put('/pickdata_account_target/custom_target', params)
+      .then((response) => {
+        var success = response.data.success
+        if (success == "YES") {
+          // success
+          this.$eventBus.$emit('getAccountTarget')
+        } else {
+          this.dialogOpen('구매 타겟 수정 실패', 'alert')
+          throw('success: ' + success)
+        }
+        this.$emit('close')
+      })
+      .catch(err => {
+        this.$emit('close')
+        console.log('/pickdata_account_target/custom_target delete: ', err)
+      })
+    },
+
+    modifyPurchaseTarget () {
+      console.log('modifyPurchaseTarget')
+      console.log('# : ', this.makeItem)
+      console.log('@ : ', this.adAccountPixels.emptyText)
+
+      // Custom Target인 경우 params가 존재
+      if(this.makeItem.description.params) {
+        console.log('@ : ', this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id))
+        const params = this.makeItem.description.params
+        const detail = params.detail
+
+        // 사용 픽셀
+        this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
+
+        // 수집 기간
+        this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+
+        // 타겟 이름
+        this.targetName = this.makeItem.name
+
+        // 타겟 모수
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+
+        // 구매한 사람중 @
+        if (detail === 'total') {
+          // 전체 고객
+          this.selectPurchaseUser.emptyText = '전체 고객'
+        } else if (detail === 'purchase_count') {
+          // 특정 구매횟수 이상 구매 고객
+          this.selectPurchaseUser.emptyText = '특정 구매횟수 이상 구매 고객'
+          this.purchaseCount = params.purchase_count
+          this.subInputPurchaseCount = true
+        } else if (detail === 'purchase_amount') {
+          // 특정 구매금액 이상 구매 고객
+          this.selectPurchaseUser.emptyText = '특정 구매금액 이상 구매 고객'
+          this.purchaseAmount = params.purchase_amount
+          this.subInputPurchaseAmount = true
+        }
+      }
     }
   }
 }
