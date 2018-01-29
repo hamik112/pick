@@ -223,7 +223,7 @@ export default {
           } else if (targetType === 'purchase') {
             this.$eventBus.$emit('modifyPurchaseTarget', this.adAccountPixels)
           } else if (targetType === 'add_to_cart') {
-            // TODO
+            this.$eventBus.$emit('modifyAddToCartTarget', this.adAccountPixels)
           } else if (targetType === 'registration') {
             // TODO
           } else if (targetType === 'conversion') {
