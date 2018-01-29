@@ -40,13 +40,19 @@ class ExcelReport():
         try:
             print("WRITE WORKSHEET - %")
             actions_name_list = self.find_insight_actions_name_list(target_insights)
-            print('****')
+            actions_name_list.remove('pickdata_custom_pixel_event')
             head_list = self.facebook_insight_to_headlist(target_insights, actions_name_list)
             worksheet = workbook.add_worksheet('Report')
             worksheet.write_row('A1', head_list)
             for idx, item in enumerate(target_insights):
                 row_name = 'A' + str(idx + 2)
                 worksheet.write_row(row_name, self.facebook_insight_to_list(item, actions_name_list))
+            for idx, item in enumerate(target_insights):
+                row_name = 'T' + str(idx + 2)
+                worksheet.write_row(row_name, self.facebook_pickdata_event_to_list(item))
+            for idx, item in enumerate(target_insights):
+                row_name = 'U' + str(idx + 2)
+                worksheet.write_row(row_name, self.facebook_fb_event_to_list(item, actions_name_list))
 
         except Exception as e:
             logger.error(e)
@@ -124,8 +130,8 @@ class ExcelReport():
             head_list.append("video_10_sec_view")
             head_list.append("video_30_sec_view")
             head_list.append("conversions")
+            head_list.append("pickdata_custom_pixel_event")
             # TODO 전환지표
-
             head_list = head_list + actions_name_list
             print(head_list)
         except Exception as e:
@@ -134,8 +140,42 @@ class ExcelReport():
             logger.error("insight to headlist Fail")
         return head_list
 
+    def facebook_pickdata_event_to_list(self, insight):
+        insight_list = []
+        try:
+            print(insight["pickdata_custom_pixel_event"])
+            if insight["pickdata_custom_pixel_event"] != []:
+                insight_list.append(insight["pickdata_custom_pixel_event"])
+            else:
+                insight_list.append('0')
+
+        except Exception as e:
+            logger.error(e)
+            logger.error(traceback.format_exc())
+            logger.error("insight to list Fail")
+        return insight_list
+
+    def facebook_fb_event_to_list(self, insight, actions_name_list):
+        print(actions_name_list)
+        insight_list = []
+        try:
+            for actions_name in actions_name_list:
+                # insight_list.append('0')
+                if actions_name in insight:
+                    insight_list.append(insight[actions_name])
+                else:
+                    insight_list.append('0')
+            else:
+                insight_list.append('0')
+
+        except Exception as e:
+            logger.error(e)
+            logger.error(traceback.format_exc())
+            logger.error("insight to list Fail")
+        return insight_list
+
     def facebook_insight_to_list(self, insight, actions_name_list):
-        print('insight_to_list')
+        print(insight)
         insight_list = []
         try:
             insight_list.append(insight["account_category"])
@@ -145,16 +185,15 @@ class ExcelReport():
             insight_list.append(insight["age"])
             insight_list.append(insight["gender"])
             if insight["interest_list"] != []:
-                list_item = ','.join(insight["interest_list"])
+                list_item = ', '.join(insight["interest_list"])
                 insight_list.append(list_item)
             else:
                 insight_list.append('0')
             if insight["custom_audience"] != []:
-                list_item = ','.join(insight["custom_audience"])
+                list_item = ', '.join(insight["custom_audience"])
                 insight_list.append(list_item)
             else:
                 insight_list.append('0')
-            # insight_list.append(insight["custom_audience"])
             insight_list.append(insight["spend"])
             insight_list.append(insight["impressions"])
             insight_list.append(insight["reach"])
@@ -163,22 +202,17 @@ class ExcelReport():
             insight_list.append(insight["inline_link_clicks"])
             insight_list.append(insight["ctr"])
             insight_list.append(insight["cpc"])
-            if insight["custom_audience"] != []:
+            if 'video_10_sec_view' in insight:
                 insight_list.append(insight["video_10_sec_view"])
             else:
                 insight_list.append('0')
-            if insight["custom_audience"] != []:
+            if 'video_30_sec_view' in insight:
                 insight_list.append(insight["video_30_sec_view"])
             else:
                 insight_list.append('0')
+
             insight_list.append(insight["conversions"])
 
-            # for elem in actions_name_list:
-            #     if elem in insight.keys():
-            #         insight_list.append(insight[elem])
-            #     # insight_list.append(insight[elem])
-            # else:
-            #     insight_list.append('0')
         except Exception as e:
             logger.error(e)
             logger.error(traceback.format_exc())
@@ -190,7 +224,6 @@ class ExcelReport():
         name_list = []
         try:
             for insight in insights:
-                print(insight)
                 for elem in insight.keys():
                     if "_event" in elem:
                         name_list.append(elem)
