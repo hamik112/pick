@@ -58,7 +58,7 @@
 											@setNeoAccountLinkage="setNeoAccountLinkage">
 										</neo-account-linkage>
 										<!-- Step3: 픽셀 이벤트 맵핑 -->
-										<pixel-event-mapping v-show="isActive[2]"
+										<pixel-event-mapping v-show="isActive[2]" class="pop-scroll"
 											@backToNeoAccountLinkage="backToNeoAccountLinkage"
 											@setPixelEventMapping="setPixelEventMapping"
 											:emptyTextId="emptyTextId">

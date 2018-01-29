@@ -1,5 +1,5 @@
 <template>
-  <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+  <div class="target_contents_wrap clearfix" v-if="isShow">
     <transition name="modal">
       <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
     </transition>
