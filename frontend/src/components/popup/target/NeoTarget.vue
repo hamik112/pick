@@ -395,8 +395,6 @@ export default {
       } else {
         throw('success: ' + success)
       }
-      //부분로딩 삭제
-      this.loadShow = false
       return data
     })
     .then(data => {
@@ -404,6 +402,7 @@ export default {
         item['count_formatter'] = numberFormatter(item['count'])
       })
       this.neoAccounts = data
+      this.modifyNeoTargetType('media')
     })
     .catch(err => {
       console.error('/neo_db/get_roi_report type: account ', err)
@@ -431,6 +430,7 @@ export default {
         item['count_formatter'] = numberFormatter(item['count'])
       })
       this.neoCampaigns = data
+      this.modifyNeoTargetType('group')
     })
     .catch(err => {
       console.error('/neo_db/get_roi_report type: campaign ', err)
@@ -451,6 +451,8 @@ export default {
       } else {
         throw('success: ' + success)
       }
+      //부분로딩 삭제
+      this.loadShow = false
       return data
     })
     .then(data => {
@@ -458,6 +460,7 @@ export default {
         item['count_formatter'] = numberFormatter(item['count'])
       })
       this.neoKeywords = data
+      this.modifyNeoTargetType('keyword')
     })
     .catch(err => {
       console.error('/neo_db/get_roi_report type: keyword', err)
@@ -764,6 +767,65 @@ export default {
       }else{
         this.addAdvs.splice(this.addAdvs.indexOf(item), 1)
         this.advs.push(item)
+      }
+    },
+
+    modifyNeoTargetType (type) {
+      const me = this
+      if (this.makeType === 'modify') {
+        const description = this.makeItem.description
+        const params = description.params
+
+        if (type === params.neo_type) {
+          let modifyData = []
+          let checkedData = []
+          let neoType = params.neo_type
+          let neoIds = params.neo_ids
+          neoIds = Array.from(new Set(neoIds))
+
+          this.neoTargetType = neoType
+          if (neoType == 'media') {
+            this.wTabs(0,'wTab')
+            modifyData = this.neoAccounts
+          } else if (neoType == 'group') {
+            this.wTabs(1,'wTab')
+            modifyData = this.neoCampaigns
+          } else if (neoType == 'keyword') {
+            this.wTabs(2,'wTab')
+            modifyData = this.neoKeywords
+          } else if (neoType == 'excel') {
+            this.wTabs(3,'wTab')
+          }
+
+          neoIds.forEach(function (item, index) {
+            modifyData.forEach(function (neoItem, i) {
+              if (item === neoItem['param']) {
+                checkedData.push(neoItem)
+              }
+            })
+          })
+
+          if (neoType === 'media') {
+            this.checkDataNeoAccounts = checkedData
+            setTimeout(function() {
+              me.checkListNeo('list-neoaccount', 'centeraccountid', 'neoAccounts', 'checkDataNeoAccounts', 'addNeoAccounts', 'selectedNeoAccounts')
+            }, 100)
+          } else if (neoType === 'group') {
+            this.checkDataNeoCampaigns = checkedData
+            setTimeout(function() {
+              me.checkListNeo('list-neocampaign', 'campaignid', 'neoCampaigns', 'checkDataNeoCampaigns', 'addNeoCampaigns', 'selectedNeoCampaigns')
+            }, 100)
+          } else if (neoType === 'keyword') {
+            this.checkDataNeoKeywords = checkedData
+            // this.checkFilterNeo('list-neokeyword', 'keywordid', 'neoKeywords', 'checkDataNeoKeywords')
+            setTimeout(function() {
+              me.checkListNeo('list-neokeyword', 'keywordid', 'neoKeywords', 'checkDataNeoKeywords', 'addNeoKeywords', 'selectedNeoKeywords')
+            }, 100)
+
+          } else if (neoType === 'excel') {
+            // Nothing
+          }
+        }
       }
     },
 
