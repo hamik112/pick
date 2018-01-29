@@ -17,9 +17,12 @@ from facebookads.adobjects.adset import AdSet
 from facebookads.adobjects.customconversion import CustomConversion
 from utils.facebookapis.api_init import (api_init, api_init_by_system_user)
 from utils.facebookapis.ad_account import ad_sets as ad_sets_api
+from utils.common import download_helper
 
 import os
 import json
+import urllib.request
+import requests
 import logging
 import traceback
 from datetime import datetime
@@ -27,6 +30,7 @@ from itertools import groupby
 from operator import itemgetter
 import itertools
 import operator
+import xlwt
 
 logger = logging.getLogger(__name__)
 
@@ -478,14 +482,38 @@ class ReportExcelDownload(APIView):
         file_path = ''
         file_name = ''
         try:
-            AdSetInsight = AdSetInsightByAccount()
-            print(insight)
+            # TODO 인사이트 가져오기
+            url = "http://dev.snack.emforce.co.kr:8000/ad_set_insights/?account_id=349408409&since=2018-01-01&until=2018-01-29"
+            res = urllib.request.urlopen(url)
+            data = res.read().decode('utf8')
+            data = json.loads(data)
+            insights_data = data['data']
+
+            book = xlwt.Workbook(encoding="utf-8")
+            sheet1 = book.add_sheet("Target Report", cell_overwrite_ok=True)
+
+            row = 0
+            for data in insights_data:
+                column = 0
+                for title, value in data.items():
+                    sheet1.write(row + 0, column, title)
+                    sheet1.write(row+ 1, column, value)
+                    column += 1
+                row += 2
+            file_path = 'logs/'
+            file_path = os.path.join(settings.PROJECT_DIR, file_path)
+            # logger.info('file_path : %s' % (file_path))
+            # file_path = '/Users/chloelim/Desktop/'
+            file_name = "target_report.xls"
+            book.save(file_path + file_name)
+            res = download_helper.respond_as_attachment(request, os.path.join(file_path, file_name), file_name)
 
             response_data['success'] = 'YES'
-            # response_data['total_count'] = len(AdSetInsight)
-            response_data['data'] = AdSetInsight
         except Exception as e:
             print(traceback.format_exc())
             response_data['success'] = 'NO'
             response_data['msg'] = str(e)
-        return HttpResponse(json.dumps(response_data), content_type="application/json")
+        finally:
+            if os.path.exists(os.path.join(file_path, file_name)):
+                os.remove(os.path.join(file_path, file_name))
+        return res
