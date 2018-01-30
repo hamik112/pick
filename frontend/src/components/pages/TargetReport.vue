@@ -392,16 +392,16 @@
 																</div>
 															</li>
 															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
-															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">{{ item.spend }}</li>
-															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
-															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ item.reach }}</li>
-															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ item.frequency }}</li>
+															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">￦ {{ numberFormat(item.spend) }}</li>
+															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
+															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
+															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
 															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li>{{ item.inline_link_clicks }}</li>
+																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
 																			<li>{{ item.inline_link_click_ctr }}</li>
 																			<li>{{ item.cpc }}</li>
 																		</ul>
@@ -428,10 +428,10 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ numberFormat(item.video_10_sec_watched_actions) }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_vtr }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_cpv }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ numberFormat(item.video_30_sec_watched_actions) }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_vtr }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_cpv }}</li>
 																		</ul>
@@ -815,7 +815,12 @@ export default {
 			// ad_set_insights/?account_id=349408409&since=2018-01-01&until=2018-01-15
 			let url = '/ad_set_insights/download?account_id=' + account_id + '&category_name=' + category_name + '&since=' + since + '&until=' + until
 			window.open(url, '_blank')
+		},
+
+		numberFormat (n) {
+			return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
+
 	}
 }
 </script>
