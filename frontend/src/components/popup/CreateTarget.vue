@@ -14,32 +14,30 @@
 			  <div class="pop_tab_wrap clearfix" v-if="tabAction.tabActive1.show">
 				<div class="cate_contents_widget">
 				  <ul class="target_pick_01">
-					<li @click="tabMove(1)" class="disabled">
-					  <span>사이트방문</span>
-					</li>
-					<li @click="tabMove(2)">
-					  <span>특정페이지 방문</span>
-					</li>
-					<li @click="tabMove(3)">
-					  <span>NEO 타겟</span>
-					</li>
-					<li @click="tabMove(4)">
-					  <span>구글애널리틱스</span>
-					</li>
+            <li v-if="this.targetActive.visitSite.isActive" @click="tabMove(1)"><span>사이트방문</span></li>
+					  <li v-else class='disabled'><span>사이트방문</span></li>
+
+            <li v-if="this.targetActive.visitSpecificPages.isActive" @click="tabMove(2)"><span>특정페이지 방문</span></li>
+            <li v-else class='disabled'><span>특정페이지 방문</span></li>
+
+            <li v-if="this.targetActive.neoTarget.isActive" @click="tabMove(3)"><span>NEO 타겟</span></li>
+            <li v-else class='disabled'><span>NEO 타겟</span></li>
+
+            <li v-if="this.targetActive.utmTarget.isActive" @click="tabMove(4)"><span>구글애널리틱스</span></li>
+            <li v-else class='disabled'><span>구글애널리틱스</span></li>
 				  </ul>
 				  <ul class="target_pick_02">
-					<li @click="tabMove(5)">
-					  <span>구매</span>
-					</li>
-					<li @click="tabMove(6)">
-					  <span>장바구니</span>
-					</li>
-					<li @click="tabMove(7)">
-					  <span>회원가입</span>
-					</li>
-					<li @click="tabMove(8)">
-					  <span>단계별 전환</span>
-					</li>
+            <li v-if="this.targetActive.purchase.isActive" @click="tabMove(5)"><span>구매</span></li>
+            <li v-else class='disabled'><span>구매</span></li>
+
+            <li v-if="this.targetActive.addToCart.isActive" @click="tabMove(6)"><span>장바구니</span></li>
+            <li v-else class='disabled'><span>장바구니</span></li>
+
+            <li v-if="this.targetActive.registration.isActive" @click="tabMove(7)"><span>회원가입</span></li>
+            <li v-else class='disabled'><span>회원가입</span></li>
+
+            <li v-if="this.targetActive.conversion.isActive" @click="tabMove(8)"><span>단계별 전환</span></li>
+            <li v-else class='disabled'><span>단계별 전환</span></li>
 				  </ul>
 				</div>
 				<div class="btn_wrap">
@@ -154,24 +152,45 @@ export default {
   name: 'TargetMake01',
 
   components:{
-	VisitSite,
-	VisitSpecificPages,
-	NeoTarget,
-	UtmTarget,
-	Purchase,
-	AddToCart,
-	Registration,
-	Conversion,
-	'ui-select': Select,
+    VisitSite,
+    VisitSpecificPages,
+    NeoTarget,
+    UtmTarget,
+    Purchase,
+    AddToCart,
+    Registration,
+    Conversion,
+    'ui-select': Select,
   },
 
   props: {
-	makeType: {
-	  type: String
-	},
-	makeItem: {
-	  type: Object
-	}
+    makeType: {
+      type: String
+    },
+
+    makeItem: {
+      type: Object
+    }
+  },
+
+  created () {
+    this.$http.get('/pickdata_account_target/target_check', {
+      params: {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id')
+      }
+    })
+    .then(res => {
+      const data = res.data.data
+      
+      this.targetActive.addToCart.isActive = data.add_to_cart
+      this.targetActive.conversion.isActive = data.conversion
+      this.targetActive.neoTarget.isActive = data.neo_target
+      this.targetActive.purchase.isActive = data.purchase
+      this.targetActive.registration.isActive = data.registration
+      this.targetActive.utmTarget.isActive = data.utm_target
+      this.targetActive.visitSite.isActive = data.visit_site
+      this.targetActive.visitSpecificPages.isActive = data.visit_specific_pages
+    })
   },
 
   mounted () {
@@ -238,42 +257,69 @@ export default {
 
   data () {
 	return {
-	  tabAction:{
-		tabActive1:{
-		  show:true
-		},
-		tabActive2:{
-		  show:false
-		},
-		tabActive3:{
-		  show:false
-		},
-		tabActive4:{
-		  show:false
-		},
-		tabActive5:{
-		  show:false
-		},
-		tabActive6:{
-		  show:false
-		},
-		tabActive7:{
-		  show:false
-		},
-		tabActive8:{
-		  show:false
-		},
-		tabActive9:{
-		  show:false
-		}
+    targetActive: {
+      addToCart: {
+        isActive: false
+      },
+      conversion: {
+        isActive: false
+      },
+      neoTarget: {
+        isActive: false
+      },
+      purchase: {
+        isActive: false
+      },
+      registration: {
+        isActive: false
+      },
+      utmTarget: {
+        isActive: false
+      },
+      visitSite: {
+        isActive: false
+      },
+      visitSpecificPages: {
+        isActive: false
+      },
+    },
+
+	  tabAction: {
+      tabActive1:{
+        show:true
+      },
+      tabActive2:{
+        show:false
+      },
+      tabActive3:{
+        show:false
+      },
+      tabActive4:{
+        show:false
+      },
+      tabActive5:{
+        show:false
+      },
+      tabActive6:{
+        show:false
+      },
+      tabActive7:{
+        show:false
+      },
+      tabActive8:{
+        show:false
+      },
+      tabActive9:{
+        show:false
+      }
 	  },
 
 	  //싱글 셀렉트
 	  adAccountPixels: {
-		emptyText: '불러오는 중 입니다.',
-		textList: [
-		  '불러오는 중 입니다.'
-		]
+      emptyText: '불러오는 중 입니다.',
+      textList: [
+        '불러오는 중 입니다.'
+      ]
 	  }
 	}
   },
