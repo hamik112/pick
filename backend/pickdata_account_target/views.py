@@ -57,8 +57,8 @@ class TargetPick(APIView):
                 raise Exception("Not Existg FbAdAccount.")
 
             pickdata_targets = PickdataAccountTarget.get_list(PickdataAccountTarget, fb_ad_account_id)
-            dic_audience_targets = custom_audience.get_dic_custom_audiences_by_ids(
-                [pickdata_target.target_audience_id for pickdata_target in pickdata_targets])
+
+            dic_audience_targets = custom_audience.get_dic_custom_audiences_by_ids([pickdata_target.target_audience_id for pickdata_target in pickdata_targets])
 
             pixel_mapping_categories = PixelMappingCategory.objects.all()
 
@@ -1598,7 +1598,7 @@ class CustomTarget(APIView):
 
                     if detail == "non_conversion":
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,'conversion complete')
-                        created_target = targeting_conversion.create_conversion_customers(fb_ad_account.act_account_id, name, pixel_id, retention_days=30, conversion_event_name=complete_pixel_mapping_category)
+                        created_target = targeting_conversion.create_conversion_customers(fb_ad_account.act_account_id, name, pixel_id, retention_days=30, conversion_event_name=conversion_event_name)
                         description = self.make_description("단계별 전환", retention_days, "미전환고객", "", "custom", request.data)
 
                     elif detail == "conversion 1step":
