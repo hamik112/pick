@@ -14,22 +14,23 @@
         </div>
         <div class="use_wrap">
           <div class="use_select">
-            <div class="contents_title">사용픽셀</div>
+            <div class="contents_title">사용 픽셀</div>
             <ui-select :selectData="adAccountPixels" data-key="adAccountPixels" :onClick="selectOnClick"></ui-select>
           </div>
           <div class="use_date">
-            <div>수집기간 : 최근</div>
+            <div>수집 기간 : 최근</div>
             <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
-          <div class="contents_title">타겟이름</div>
+          <div class="contents_title">타겟 이름</div>
           <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>-</span>명
+            <span>{{ this.audienceSize }}</span>
+            <span v-show="isNumber">명</span>
           </div>
         </div>
       </div>
@@ -66,8 +67,9 @@
             </div>
           </div>
         </div>
+        <div v-if="makeType === 'modify'" class="modify_prologue">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
         <div class="btn_wrap">
-          <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+          <button class="before_btn close_pop" @click="makeType === 'modify' ? $emit('close') : tabMove(0)">취소</button>
           <button class="next_btn" @click="createConversionTarget()" v-if="makeType == 'add'">타겟 만들기</button>
           <button class="delete_btn" @click="deleteConversionTarget()" v-if="makeType == 'modify'">삭제</button>
           <button class="next_btn" @click="updateConversionTarget()" v-if="makeType == 'modify'">타겟 수정하기</button>
@@ -131,6 +133,9 @@ export default {
     return {
       collectionPeriod: '30',
       targetName: '',
+      audienceSize: '-',
+      isNumber: false,
+
       conversionSubText: '',
       conversionCompleteUrl: '',
       conversionNextCompleteUrl: '',
@@ -378,7 +383,18 @@ export default {
       this.targetName = this.makeItem.name
 
       // 타겟 모수
-      this.audienceSize = numberFormatter(this.makeItem.display_count)
+      const displayCount = this.makeItem.display_count
+
+      if (displayCount === '규모가 적음') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else if (displayCount === '생성중') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else {
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+        this.isNumber = true
+      }
 
       // 사이트 방문자중 @
       if (detail === 'non_conversion') {

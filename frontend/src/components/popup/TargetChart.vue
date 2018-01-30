@@ -15,18 +15,19 @@
 										<div class="select_btn">
 											<div class="select_contents">
 												<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
-												<ui-calendar v-model="range"></ui-calendar>
+												<ui-calendar inputId="chartDate" v-model="range"></ui-calendar>
+												<button type="button" id="chart-search-btn" @click="chartsDatas" v-if="chartOn">조회</button>
+												<button type="button" id="chart-search-btn" v-if="!chartOn"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img"></button>
 											</div>
 										</div>
 									</div>
 									<div class="target_chart_top clearfix">
 										<div class="use_limit clearfix">
 											<div>
-												<span>장바구니 이용고객_7일간</span>
+												<span>{{ chartName }}</span>
 												<ui-hover></ui-hover>
 											</div>
-											<p>글자수제한</p>
-											<strong v-if="!chartOn">-명</strong>
+											<strong v-if="!chartOn">-</strong>
 											<strong v-if="chartOn">{{ total.audience }}명</strong>
 										</div>
 										<div class="expense_price">
@@ -100,44 +101,17 @@ export default {
   		}
   	}
   },
+
   created() {
-  	const targetId = this.chartItem.id
-  	this.$http.get('/pickdata_account_target/target_chart', {
-  		params: {
-			pickdata_target_id:targetId,
-		}
-    })
-    .then(res => {
-      const response = res.data
-      const success = response.success
-      if (success === 'YES') {
-      	//totalData
-      	this.total.audience = numberFormatter(response.audience_count)
-      	this.total.convertion = numberFormatter(response.total_conversion)
-      	this.total.spend = numberFormatter(response.total_spend)
-      	this.total.cpa = numberFormatter(Math.round(response.cpa))
-      	//genderData
-      	this.chartGenderData.series[0]['data'] = this.chartsRedatas(response.age_gender_data.data.male.percents)
-      	this.chartGenderData.series[1]['data'] = this.chartsRedatas(response.age_gender_data.data.female.percents)
-      	//placementsData
-      	this.chartPlacementData['legend'] = response.placement_data.legend
-      	this.chartPlacementData['xAxis'] = response.placement_data.xAxis
-      	this.chartPlacementData.series[0]['data'] = response.placement_data.data.PC.vals
-      	this.chartPlacementData.series[1]['data'] = response.placement_data.data.Mobile.vals
-
-      	this.chartOn = true
-      }else{
-      	throw('success: ' + success)
-      }
-
-    })
+  	this.chartsDatas()
   },
 
   data () {
 		return {
 			//loading
 			chartOn:false,
-
+			//chartName
+			chartName:"-",
 			//totalData
 			total:{
 				audience:0,
@@ -236,6 +210,7 @@ export default {
 									position: 'insideLeft',
 									formatter: '{c}K'
 								},
+
 								color:'#45ceb4'
 							}
 						}
@@ -271,9 +246,62 @@ export default {
   	chartsRedatas(data) {
   		const reDatas = []
   		for(let i = 0; i < data.length; i++) {
-  			reDatas.push(numberToFixed(data[i]))
+  			reDatas.push(numberToFixed(data[i], 2))
   		}
   		return reDatas
+  	},
+  	chartsDatas() {
+  		this.chartOn = false
+  		const targetId = this.chartItem.id
+	  	const dateVal = document.getElementById('chartDate').value.replace(/\s/gi, "")
+	  	//오늘날짜
+	  	const d = new Date;
+		const yy = d.getFullYear()
+		const mm = ((d.getMonth() + 1) < 10) ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)
+		const dd = (d.getDate() < 10) ? '0' + d.getDate() : d.getDate()
+
+		let firstDate = yy + '-' + mm + '-' + dd
+		let endDate = firstDate
+
+	  	if(dateVal != '') {
+			const dateSplit = dateVal.split('~')
+			firstDate = dateSplit[0]
+			endDate = dateSplit[1]
+		}
+
+	  	this.$http.get('/pickdata_account_target/target_chart', {
+	  		params: {
+				pickdata_target_id:targetId,
+				start_date:firstDate,
+				end_date:endDate
+			}
+	    })
+	    .then(res => {
+	      const response = res.data
+	      const success = response.success
+	      if (success === 'YES') {
+	      	//네임
+	      	this.chartName = response.name
+	      	//totalData
+	      	this.total.audience = numberFormatter(response.audience_count)
+	      	this.total.convertion = numberFormatter(response.total_conversion)
+	      	this.total.spend = numberFormatter(response.total_spend)
+	      	this.total.cpa = numberFormatter(Math.round(response.cpa))
+	      	//genderData
+	      	this.chartGenderData.series[0]['data'] = this.chartsRedatas(response.age_gender_data.data.male.percents)
+	      	this.chartGenderData.series[1]['data'] = this.chartsRedatas(response.age_gender_data.data.female.percents)
+	      	//placementsData
+	      	this.chartPlacementData['legend'] = response.placement_data.legend
+	      	this.chartPlacementData['xAxis'] = response.placement_data.xAxis
+	      	this.chartPlacementData.series[0]['data'] = response.placement_data.data.PC.vals
+	      	this.chartPlacementData.series[1]['data'] = response.placement_data.data.Mobile.vals
+
+	      	this.chartOn = true
+	      }else{
+	      	throw('success: ' + success)
+	      }
+
+	    })
   	}
   }
 }
@@ -282,4 +310,8 @@ export default {
 <style lang="css" scoped>
 .graph_type01,
 .graph_type02 { overflow:hidden; }
+.select_btn { width:460px; }
+.vue-calendar { float:left; width:350px; }
+#chart-search-btn { float:right; width:100px; height:40px; line-height:40px; background:#375b96; text-align:center; color:#fff; }
+.loading-img { display:block; width:20px; }
 </style>

@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from fb_ad_account.models import FbAdAccount
 from pixel_mapping_category.models import PixelMappingCategory
 from pixel_mapping_category.serializers import PixelMappingCategorySerializer
+from neo_account.models import NeoAccount
+from pixel_mapping.models import PixelMapping
 
 from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
@@ -25,6 +27,7 @@ from django.conf import settings
 
 facebook_app_id = settings.FACEBOOK_APP_ID
 
+import csv
 import json
 import logging
 import traceback
@@ -36,6 +39,64 @@ class PickdataAccountTargetViewSet(viewsets.ModelViewSet):
     queryset = PickdataAccountTarget.objects.all()
     serializer_class = PickdataAccountTargetSerializer
 
+class TargetCheck(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', None)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            targetCheckData = self.makeDefaultTarget()
+            targetCheckData['neo_target'] = self.checkNeoTarget(fb_ad_account)
+            targetCheckData['purchase'] = self.checkPixelMapping(fb_ad_account, 'purchase')
+            targetCheckData['add_to_cart'] = self.checkPixelMapping(fb_ad_account, 'add to cart')
+            targetCheckData['registration'] = self.checkPixelMapping(fb_ad_account, 'registration')
+
+            response_data['success'] = 'YES'
+            response_data['data'] = targetCheckData
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    def makeDefaultTarget(self):
+        return {
+            "visit_site": True,
+            "visit_specific_pages": True,
+            "neo_target": False,
+            "utm_target": True,
+            "purchase": False,
+            "add_to_cart": False,
+            "registration": False,
+            "conversion": True
+        }
+
+    def checkNeoTarget(self, fb_ad_account):
+        try:
+            neo_accounts = NeoAccount.objects.filter(fb_ad_account=fb_ad_account)
+            return True if len(neo_accounts) > 0 else False
+        except Exception as e:
+            print(traceback.format_exc())
+            return False
+
+    def checkPixelMapping(self, fb_ad_account, key_string):
+        try:
+            pixel_mapping_category = PixelMappingCategory.objects.get(category_label_en=key_string)
+            pixel_mappings = PixelMapping.objects.filter(fb_ad_account=fb_ad_account, pixel_mapping_category=pixel_mapping_category)
+            return True if len(pixel_mappings) > 0 else False
+        except Exception as e:
+            print(traceback.format_exc())
+            return False
 
 class TargetPick(APIView):
     def get(self, request, format=None):
@@ -243,6 +304,69 @@ class TargetChart(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+class NeoCustomTarget(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="neo_template.csv"'
+
+            writer = csv.writer(response)
+            writer.writerow(['EKAMS CODE'])
+
+            return response
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    def post(self, request, format=None):
+        response_data = {}
+        try:
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+
+            fb_ad_account_id = request.data.get('fb_ad_account_id', 0)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            ekams_data = []
+            if 'upload_file' in request.FILES:
+                upload_file = request.FILES['upload_file']
+                if not upload_file.name.endswith('.csv'):
+                    raise Exception('upload_file format error.')
+                if upload_file.multiple_chunks():
+                    raise Exception('upload_file file is too big.')
+
+                file_data = upload_file.read().decode('utf-8')
+
+                lines = file_data.split('\n')
+
+                for index, line in enumerate(lines):
+                    if index == 0:
+                        # Template header pass
+                        continue
+                    fields = line.split(',')
+                    ekams = {}
+                    ekams['id'] = index
+                    ekams['name'] = fields[0]
+                    ekams_data.append(ekams)
+            else:
+                raise Exception('Not Exist upload_file.')
+
+            response_data['success'] = 'YES'
+            response_data['data'] = ekams_data
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 class CustomTarget(APIView):
     def make_description(self, pixel_mapping_category, retention_days, description, option, type_name, params,

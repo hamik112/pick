@@ -29,7 +29,8 @@
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>{{ this.audienceSize }}</span>명
+            <span>{{ this.audienceSize }}</span>
+            <span v-show="isNumber">명</span>
           </div>
         </div>
       </div>
@@ -168,23 +169,24 @@
             <!-- UTM Custom -->
             <div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
               <ul>
-                <li v-for="(item, index) in gAddData.utm_custom" :key="index" class="sticker_btn">
+                <li v-for="(item, index) in gAddData.custom" :key="index" class="sticker_btn">
                   <span>{{ item.name }}</span>
-                  <span class="close-btn" @click="deleteAnalyData(item, 'utm_custom')">
+                  <span class="close-btn" @click="deleteAnalyData(item, 'custom')">
                     <img src="../../../assets/images/target/target_list_close.png" alt="">
                   </span>
                 </li>
               </ul>
               <div class="list_close_btn">
-                <button type="button" @click="deleteAnalyData('all', 'utm_custom')">
+                <button type="button" @click="deleteAnalyData('all', 'custom')">
                   <img src="../../../assets/images/target/target_close_btn.png" alt="">
                 </button>
               </div>
             </div>
           </div>
         </div>
+        <div v-if="makeType === 'modify'" class="modify_prologue">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
         <div class="btn_wrap">
-          <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+          <button class="before_btn close_pop" @click="makeType === 'modify' ? $emit('close') : tabMove(0)">취소</button>
           <button class="next_btn" @click="createUtmTarget()" v-if="makeType == 'add'">타겟 만들기</button>
           <button class="delete_btn" @click="deleteUtmTarget()" v-if="makeType == 'modify'">삭제</button>
           <button class="next_btn" @click="updateUtmTarget()" v-if="makeType == 'modify'">타겟 수정하기</button>
@@ -251,9 +253,11 @@ export default {
   data () {
     return {
       collectionPeriod: '30',
+      unvisitedPeriod: '',
       targetName: '',
       inputUtmName: '',
       audienceSize: '-',
+      isNumber: false,
 
       subSelect: false,
       subInput: false,
@@ -264,7 +268,7 @@ export default {
         utm_campaign: [],
         utm_term: [],
         utm_content: [],
-        utm_custom: []
+        custom: []
       },
 
       dialogShow: false,
@@ -365,7 +369,7 @@ export default {
           campaigns: this.convertUtmName(this.gAddData.utm_campaign),
           terms: this.convertUtmName(this.gAddData.utm_term),
           contents: this.convertUtmName(this.gAddData.utm_content),
-          customs: this.convertUtmName(this.gAddData.utm_custom)
+          customs: this.convertUtmName(this.gAddData.custom)
         }
 
         this.$http.post('/pickdata_account_target/custom_target', params)
@@ -408,7 +412,7 @@ export default {
           campaigns: this.convertUtmName(this.gAddData.utm_campaign),
           terms: this.convertUtmName(this.gAddData.utm_term),
           contents: this.convertUtmName(this.gAddData.utm_content),
-          customs: this.convertUtmName(this.gAddData.utm_custom)
+          customs: this.convertUtmName(this.gAddData.custom)
         }
 
         this.$http.put('/pickdata_account_target/custom_target', params)
@@ -566,7 +570,18 @@ export default {
       this.targetName = this.makeItem.name
 
       // 타겟 모수
-      this.audienceSize = numberFormatter(this.makeItem.display_count)
+      const displayCount = this.makeItem.display_count
+
+      if (displayCount === '규모가 적음') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else if (displayCount === '생성중') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else {
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+        this.isNumber = true
+      }
 
       // 아래 UTM 속성으로 유입된 사람중 @
       if (detail === 'total') {
@@ -629,7 +644,7 @@ export default {
 
       params.customs.forEach(customs => {
         let data = { name: custom }
-        this.gAddData.utm_custom.push(data)
+        this.gAddData.custom.push(data)
       })
 
       // this.gAddData.utm_source = params.sources.slice(0)

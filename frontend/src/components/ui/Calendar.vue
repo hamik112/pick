@@ -1,7 +1,7 @@
 <template>
 	<div class="vue-calendar">
 		<div class="datepicker" :class="{'datepicker-range':range,'datepicker__clearable':clearable&&text&&!disabled}">
-			<input readonly :value="text" :class="[show ? 'focus' : '', inputClass]" :disabled="disabled" :placeholder="placeholder" :name="name" v-if="type!=='inline'"/>
+			<input :id="inputId" readonly :value="text" :class="[show ? 'focus' : '', inputClass]" :disabled="disabled" :placeholder="placeholder" :name="name" v-if="type!=='inline'"/>
 			<a class="datepicker-close" href="javascript:void(0)" @click.stop="cls"></a>
 			<transition name="datepicker-anim">
 				<div class="datepicker-popup clearfix" :class="[popupClass,{'datepicker-inline':type==='inline'}]" tabindex="-1" v-if="show||type==='inline'">
@@ -53,12 +53,13 @@
 
 	export default {
 		name: 'Calendar',
-		
-	  components: { 
-			VueDatepickerLocalCalendar 
+
+	  components: {
+			VueDatepickerLocalCalendar
 		},
 
 	  props: {
+	  		inputId:[String],
 			name: [String],
 			inputClass: [String],
 			popupClass: [String],
@@ -90,21 +91,21 @@
 			local: {
 				type: Object,
 				default () {
-				return {
-					dow: 0, // Sunday is the first day of the week
-					hourTip: 'Select Hour', // tip of select hour
-					minuteTip: 'Select Minute', // tip of select minute
-					secondTip: 'Select Second', // tip of select second
-					yearSuffix: '', // suffix of head year
-					yearSuffix: '년', // format of head
-					monthsHead: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of head
-					months: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of panel
-					weeks: '일_월_화_수_목_금_토'.split('_') // weeks
-				}
+					return {
+						dow: 0, // Sunday is the first day of the week
+						hourTip: 'Select Hour', // tip of select hour
+						minuteTip: 'Select Minute', // tip of select minute
+						secondTip: 'Select Second', // tip of select second
+						yearSuffix: '', // suffix of head year
+						yearSuffix: '년', // format of head
+						monthsHead: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of head
+						months: '1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월'.split('_'), // months of panel
+						weeks: '일_월_화_수_목_금_토'.split('_') // weeks
+					}
 				}
 			}
 		},
-		
+
 	  data () {
 			return {
 				calListActive: null,
@@ -113,7 +114,7 @@
 				textDate:''
 			}
 		},
-		
+
 	  computed: {
 			range () {
 				return this.dates.length === 2
@@ -135,13 +136,13 @@
 				}
 			},
 		},
-		
+
 	  watch: {
 			value (val) {
 				this.dates = this.vi(this.value)
 			}
 		},
-		
+
 	  methods: {
 	  	op(set,act) {
 				const today = new Date()

@@ -26,6 +26,13 @@
           <div class="contents_title">타겟 이름</div>
           <div><input type="text" v-model="targetName"></div>
         </div>
+        <div class="target_data">
+          <div class="contents_title">타겟 모수</div>
+          <div>
+            <span>{{ this.audienceSize }}</span>
+            <span v-show="isNumber">명</span>
+          </div>
+        </div>
         <div class="target_type">
           <div class="contents_title">Neo 유형</div>
           <ul>
@@ -39,7 +46,7 @@
               <div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword" v-model="neoTargetType"><label for="target_type03">키워드</label></div>
             </li>
             <li>
-              <div class="result_check" v-show="false"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel" v-model="neoTargetType"><label for="target_type04">엑셀업로드</label></div>
+              <div class="result_check"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="csv" v-model="neoTargetType"><label for="target_type04">CSV업로드</label></div>
             </li>
           </ul>
         </div>
@@ -78,7 +85,7 @@
                       <div class="result_tbody">
                         <ul id="list-neoaccount">
                           <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
-                          <li v-for="(neoAccount, index) in neoAccounts" :key="index">
+                          <li v-for="(neoAccount, index) in neoAccounts" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoAccounts" :value="neoAccount.centeraccountid" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.centeraccountid" :id="'neoAccount-check-' + neoAccount.centeraccountid"><label :for="'neoAccount-check-' + neoAccount.centeraccountid"></label></div>
                             <div class="result_account">{{ neoAccount.advname }}</div>
                             <div class="result_group">{{ neoAccount.accountname }}</div>
@@ -135,7 +142,8 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neocampaign">
-                          <li v-for="(neoCampaign, index) in neoCampaigns" :key="index">
+                          <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
+                          <li v-for="(neoCampaign, index) in neoCampaigns" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoCampaigns" :value="neoCampaign.campaignid" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.campaignid" :id="'neoCampaign-check-' + neoCampaign.campaignid"><label :for="'neoCampaign-check-' + neoCampaign.campaignid"></label></div>
                             <div class="result_account">{{ neoCampaign.advname }}</div>
                             <div class="result_group">{{ neoCampaign.campaignname }}</div>
@@ -192,7 +200,8 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neokeyword">
-                          <li v-for="(neoKeyword, index) in neoKeywords" :key="index">
+                          <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
+                          <li v-for="(neoKeyword, index) in neoKeywords" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoKeywords" :value="neoKeyword.keywordid" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.keywordid" :id="'neoKeyword-check-' + neoKeyword.keywordid"><label :for="'neoKeyword-check-' + neoKeyword.keywordid"></label></div>
                             <div class="result_account">{{ neoKeyword.advname }}</div>
                             <div class="result_group">{{ neoKeyword.keywordname }}</div>
@@ -218,7 +227,7 @@
               </div>
             </div>
           </div>
-          <!-- 엑셀 -->
+          <!-- CSV -->
           <div class="cate_contents target_excel" v-if="wTab.tab4">
             <div class="account_info target_generate">
               <div class="account_title">"아래 등록 양식으로 유입된 사람" 중</div>
@@ -235,28 +244,27 @@
             <div class="account_wrap account_wrapper">
               <div class="account_inner_wrap clearfix">
                 <div class="account_left">
-                  <strong>양식에 맞추어 엑셀을 입력해 주세요.</strong>
-                  <p>양식에 맞추어 엑셀을 업로드 해주시면,</p>
+                  <strong>양식에 맞추어 CSV을 입력해 주세요.</strong>
+                  <p>양식에 맞추어 CSV을 업로드 해주시면,</p>
                   <p>해당 파라미터를 타겟으로 만들 수 있습니다.</p>
                   <div class="excel_wrap">
                     <div class="download_wrap clearfix">
-                      <button><strong>엑셀업로드</strong></button>
-                      <button>양식 다운로드</button>
+                      <button><strong>CSV업로드</strong></button>
+                      <button @click="downloadTemplate()">양식 다운로드</button>
                     </div>
                     <div class="input_wrap clearfix">
                       <div>
-                        <input type="text">
+                        <input type="file" @change="uploadTemplate($event)">
                       </div>
-                      <button></button>
                     </div>
-                    <button class="upload_btn view_alert"><strong>업로드</strong></button>
+                    <button class="upload_btn view_alert" @click="upoloadNeoTargetFile()"><strong>업로드</strong></button>
                   </div>
                 </div>
                 <div class="account_right clearfix">
-                  <button type="button" v-on:click="deleteAddAdvs('all')" title="전체삭제"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button>
-                  <ul id="adv-list-2">
-                    <li v-for="(addAdv, index) in addAdvs" :key="index" class="sticker_btn">
-                      <span>{{ addAdv.name }}</span> <span @click="deleteAddAdvs(addAdv)" :data-number="addAdv.number" title="삭제하기"><img src="../../../assets/images/target/target_list_close.png" alt=""></span>
+                  <button type="button" v-on:click="deleteAddCsvItems('all')" title="전체삭제"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button>
+                  <ul id="add-list-csv">
+                    <li v-for="(item, index) in addCsvItems" :key="index" class="sticker_btn">
+                      <span>{{ item.name }}</span> <span @click="deleteAddCsvItems(item)" :data-number="item.name" title="삭제하기"><img src="../../../assets/images/target/target_list_close.png" alt=""></span>
                     </li>
                   </ul>
                 </div>
@@ -266,8 +274,9 @@
         </div>
       </div>
     </div>
+    <div v-if="makeType === 'modify'" class="modify_prologue">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
     <div class="btn_wrap">
-      <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+      <button class="before_btn close_pop" @click="makeType === 'modify' ? $emit('close') : tabMove(0)">취소</button>
       <button class="next_btn" @click="createNeoTarget()" v-if="makeType === 'add'">타겟 만들기</button>
       <button class="delete_btn" @click="deleteNeoTarget()" v-if="makeType === 'modify'">삭제</button>
       <button class="next_btn" @click="updateNeoTarget()" v-if="makeType === 'modify'">타겟 수정하기</button>
@@ -343,7 +352,7 @@ export default {
         this.selectedNeoAccounts = selected
       }
     },
-    
+
     selectAllNeoCampaigns: {
       get () {
         let neoCampaignKeys = Object.keys(this.neoCampaigns)
@@ -471,6 +480,8 @@ export default {
     .catch(err => {
       console.error('/neo_db/get_roi_report type: keyword', err)
     })
+
+    this.modifyNeoTargetType('csv')
   },
 
   created () {
@@ -486,6 +497,8 @@ export default {
       collectionPeriod: '30',
       targetName: '',
       neoTargetType: 'media',
+      audienceSize: '-',
+      isNumber: false,
 
       neoAccounts: [],
       neoCampaigns: [],
@@ -499,6 +512,8 @@ export default {
       addNeoAccounts:[],
       addNeoCampaigns:[],
       addNeoKeywords:[],
+
+      uploadFile: '',
 
       subSelect: false,
       subInput: false,
@@ -560,10 +575,8 @@ export default {
       },
       nextStage:false,
 
-      // TODO 제거 또는 변경 필요
-      addAdvs:[],
-      checkData:[],
-      selected:[]
+      csvItems: [],
+      addCsvItems: []
     }
   },
 
@@ -602,6 +615,9 @@ export default {
         } else if (this.neoTargetType === 'keyword') {
           params['keywords'] = this.findSelectedNeoKey('addNeoKeywords', 'keywordname')
           params['neo_ids'] = this.findSelectedNeoKey('addNeoKeywords', 'param')
+        } else if (this.neoTargetType === 'csv') {
+          params['keywords'] = this.findSelectedNeoKey('addCsvItems', 'name')
+          params['neo_ids'] = this.findSelectedNeoKey('addCsvItems', 'name')
         } else {
           console.log('this.neoTargetType', this.neoTargetType)
           return
@@ -653,6 +669,9 @@ export default {
         } else if (this.neoTargetType === 'keyword') {
           params['keywords'] = this.findSelectedNeoKey('addNeoKeywords', 'keywordname')
           params['neo_ids'] = this.findSelectedNeoKey('addNeoKeywords', 'param')
+        } else if (this.neoTargetType === 'csv') {
+          params['keywords'] = this.findSelectedNeoKey('addCsvItems', 'name')
+          params['neo_ids'] = this.findSelectedNeoKey('addCsvItems', 'name')
         } else {
           console.log('this.neoTargetType', this.neoTargetType)
           return
@@ -819,18 +838,18 @@ export default {
     },
 
     // TODO 제거 또는 변경 필요
-    deleteAddAdvs(item) {
-      const checkAdd = this.addAdvs
-      const addListEl = document.getElementById('adv-list-2')
+    deleteAddCsvItems(item) {
+      const checkAdd = this.addCsvItems
+      const addListEl = document.getElementById('add-list-csv')
       const addlistLi = addListEl.getElementsByTagName('li')
       if(item === 'all') {
         for(let i = 0; i < addlistLi.length; i++) {
-          this.advs.push(checkAdd[i])
+          this.csvItems.push(checkAdd[i])
         }
-        this.addAdvs.splice(0, addlistLi.length)
+        this.addCsvItems.splice(0, addlistLi.length)
       }else{
-        this.addAdvs.splice(this.addAdvs.indexOf(item), 1)
-        this.advs.push(item)
+        this.addCsvItems.splice(this.addCsvItems.indexOf(item), 1)
+        this.csvItems.push(item)
       }
     },
 
@@ -857,7 +876,7 @@ export default {
           } else if (neoType == 'keyword') {
             this.wTabs(2,'wTab')
             modifyData = this.neoKeywords
-          } else if (neoType == 'excel') {
+          } else if (neoType == 'csv') {
             this.wTabs(3,'wTab')
           }
 
@@ -886,8 +905,15 @@ export default {
               me.checkListNeo('list-neokeyword', 'keywordid', 'neoKeywords', 'checkDataNeoKeywords', 'addNeoKeywords', 'selectedNeoKeywords')
             }, 100)
 
-          } else if (neoType === 'excel') {
-            // Nothing
+          } else if (neoType === 'csv') {
+            let ekamsData = []
+            neoIds.forEach(function (item, index) {
+              ekamsData.push({
+                id: index,
+                name: item
+              })
+            })
+            this.addCsvItems = ekamsData
           }
         }
       }
@@ -906,6 +932,20 @@ export default {
 
       // 타겟 이름
       this.targetName = this.makeItem.name
+
+      // 타겟 모수
+      const displayCount = this.makeItem.display_count
+
+      if (displayCount === '규모가 적음') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else if (displayCount === '생성중') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else {
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+        this.isNumber = true
+      }
 
       // 사이트 방문자중 @
       if (detail === 'total') {
@@ -941,6 +981,48 @@ export default {
       } else {
         console.log('nothing..', detail)
       }
+    },
+
+    downloadTemplate () {
+      window.open('/pickdata_account_target/neo_custom_target', '_blank')
+    },
+
+    uploadTemplate (event) {
+      this.uploadFile = event.target.files[0]
+    },
+
+    upoloadNeoTargetFile () {
+      let data = new FormData()
+      data.append('fb_ad_account_id', localStorage.getItem('fb_ad_account_id'))
+      data.append('upload_file', this.uploadFile)
+      let config = {
+        onUploadProgress: function(progressEvent) {
+          let percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+        }
+      };
+
+      if (this.uploadFile == '') {
+        this.dialogOpen('업로드 파일이 없습니다.', 'alert')
+        return
+      }
+
+      this.$http.post('/pickdata_account_target/neo_custom_target', data, config)
+      .then((response) => {
+        const success = response.data.success
+        if (success == "YES") {
+          const data = response.data.data
+          // success
+          this.dialogOpen('파일 업로드를 완료했습니다.', 'alert')
+          this.addCsvItems = data
+        } else {
+          throw('success: ' + success)
+        }
+      })
+      .catch(err => {
+        // this.$emit('close')
+        this.dialogOpen('파일 업로드에 실패했습니다.', 'alert')
+        console.log('/pickdata_account_target/neo_custom_target: ', err)
+      })
     }
   }
 }
