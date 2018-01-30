@@ -906,7 +906,14 @@ export default {
             }, 100)
 
           } else if (neoType === 'csv') {
-            this.addCsvItems = params.ekams_data
+            let ekamsData = []
+            neoIds.forEach(function (item, index) {
+              ekamsData.push({
+                id: index,
+                name: item
+              })
+            })
+            this.addCsvItems = ekamsData
           }
         }
       }
