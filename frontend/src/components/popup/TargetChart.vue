@@ -16,7 +16,8 @@
 											<div class="select_contents">
 												<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
 												<ui-calendar inputId="chartDate" v-model="range"></ui-calendar>
-												<button type="button" id="chart-search-btn" @click="chartsDatas">조회</button>
+												<button type="button" id="chart-search-btn" @click="chartsDatas" v-if="chartOn">조회</button>
+												<button type="button" id="chart-search-btn" v-if="!chartOn"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img"></button>
 											</div>
 										</div>
 									</div>
@@ -275,7 +276,6 @@ export default {
 			}
 	    })
 	    .then(res => {
-	    	console.log(res)
 	      const response = res.data
 	      const success = response.success
 	      if (success === 'YES') {
@@ -312,4 +312,5 @@ export default {
 .select_btn { width:460px; }
 .vue-calendar { float:left; width:350px; }
 #chart-search-btn { float:right; width:100px; height:40px; line-height:40px; background:#375b96; text-align:center; color:#fff; }
+.loading-img { display:block; width:20px; }
 </style>
