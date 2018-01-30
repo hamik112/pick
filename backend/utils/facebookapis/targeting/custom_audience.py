@@ -86,8 +86,8 @@ def get_dic_custom_audiences_by_ids(audience_ids):
                     'locale': 'ko_KR'
                 })
 
-            data = {custom_audience.get('id'): custom_audience._json for custom_audience in custom_audiences}
-            return_data = return_data.update(data)
+                data = {custom_audience.get('id'): custom_audience._json for custom_audience in custom_audiences}
+                return_data.update(data)
 
             return return_data
         else:
