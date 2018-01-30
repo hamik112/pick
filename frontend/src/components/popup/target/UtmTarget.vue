@@ -684,7 +684,7 @@ export default {
         this.gAddData.utm_content.push(data)
       })
 
-      params.customs.forEach(customs => {
+      params.customs.forEach(custom => {
         let data = { name: custom }
         this.gAddData.custom.push(data)
       })

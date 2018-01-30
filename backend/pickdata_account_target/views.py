@@ -748,6 +748,7 @@ class CustomTarget(APIView):
                     created_target = targeting_url.update_non_visition_customers(custom_audience_id, name,
                                                                                  pixel_id,
                                                                                  retention_days=retention_days,
+                                                                                 exclusion_retention_days=exclusion_retention_days,
                                                                                  contain_list=neo_ids)
                     description = self.make_description("네오타겟", retention_days, "미방문고객", "", "custom", request.data,
                                                         custom_data)
@@ -913,6 +914,7 @@ class CustomTarget(APIView):
                     created_target = targeting_url.update_non_visition_customers(custom_audience_id, name,
                                                                                  pixel_id,
                                                                                  retention_days=retention_days,
+                                                                                 exclusion_retention_days=exclusion_retention_days,
                                                                                  contain_list=utm_ids)
                     description = self.make_description("UTM타겟", retention_days, "미방문고객", "", "custom", request.data,
                                                         custom_data)
@@ -1605,6 +1607,7 @@ class CustomTarget(APIView):
                     created_target = targeting_url.create_non_visition_customers(fb_ad_account.act_account_id, name,
                                                                                  pixel_id,
                                                                                  retention_days=retention_days,
+                                                                                 exclusion_retention_days=exclusion_retention_days,
                                                                                  contain_list=neo_ids)
                     description = self.make_description("네오타겟", retention_days, "미방문고객", "", "custom", request.data,
                                                         custom_data)
@@ -1778,8 +1781,8 @@ class CustomTarget(APIView):
                     exclusion_retention_days = int(exclusion_retention_days)
                     created_target = targeting_url.create_non_visition_customers(fb_ad_account.act_account_id, name,
                                                                                  pixel_id,
-
                                                                                  retention_days=retention_days,
+                                                                                 exclusion_retention_days=exclusion_retention_days,
                                                                                  contain_list=utm_ids)
                     description = self.make_description("UTM타겟", retention_days, "미방문고객", "", "custom", request.data,
                                                         custom_data)
