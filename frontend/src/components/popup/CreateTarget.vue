@@ -211,7 +211,7 @@ export default {
         if (this.makeType === 'modify') {
           console.log('ME: ', me.makeItem.description.params.target_type)
           const targetType = me.makeItem.description.params.target_type
-          
+
           if(targetType === 'visit_site') {
             this.$eventBus.$emit('modifyVisitSiteTarget', this.adAccountPixels)
           } else if (targetType === 'visit_specific_pages') {
@@ -219,7 +219,7 @@ export default {
           } else if (targetType === 'neo_target') {
             this.$eventBus.$emit('modifyNeoTarget', this.adAccountPixels)
           } else if (targetType === 'utm_target') {
-            // TODO
+            this.$eventBus.$emit('modifyUtmTarget', this.adAccountPixels)
           } else if (targetType === 'purchase') {
             this.$eventBus.$emit('modifyPurchaseTarget', this.adAccountPixels)
           } else if (targetType === 'add_to_cart') {
@@ -227,7 +227,7 @@ export default {
           } else if (targetType === 'registration') {
             this.$eventBus.$emit('modifyRegistrationTarget', this.adAccountPixels)
           } else if (targetType === 'conversion') {
-            // TODO
+            this.$eventBus.$emit('modifyConversionTarget', this.adAccountPixels)
           }
         }
       } else {

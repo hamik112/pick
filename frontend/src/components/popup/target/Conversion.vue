@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
 
@@ -116,6 +117,14 @@ export default {
     makeItem: {
       type: Object
     }
+  },
+
+  created () {
+    this.$eventBus.$on('modifyConversionTarget', this.modifyConversionTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyConversionTarget', this.modifyConversionTarget)
   },
 
   data () {
@@ -258,6 +267,7 @@ export default {
       } else if (mode === 'updateConversion') {
         // Update Target -----------------------------------------------------------------
         let params = {
+          pickdata_account_target_id: this.makeItem.id,
           fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
           target_type: 'conversion',
           pixel_id: this.findSelectKey('adAccountPixels'),
@@ -266,7 +276,7 @@ export default {
 
           detail: this.findSelectKey('selectConversionUser')
         }
-        if (detail == 'conversion url') {
+        if (this.findSelectKey('selectConversionUser') == 'conversion url') {
           params['step_name'] = this.conversionSubText
           params['current_complete_url'] = this.conversionCompleteUrl
           params['next_complete_url'] = this.conversionNextCompleteUrl
@@ -312,6 +322,13 @@ export default {
       this[key].emptyText = item
     },
 
+    findSelectText (selectName, key) {
+      // Select Text 가져오기
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
+    },
+
     findSelectKey (selectName) {
       /*
       Select Key 가져오기
@@ -344,6 +361,54 @@ export default {
     // Update Target Dialog
     updateConversionTarget () {
       this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateConversion')
+    },
+
+    modifyConversionTarget () {
+      const description = this.makeItem.description
+      const params = description.params
+      const detail = params.detail
+
+      // 사용 픽셀
+      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', params.pixel_id)
+
+      // 수집 기간
+      this.collectionPeriod = numberFormatter(description.retention_days)
+
+      // 타겟 이름
+      this.targetName = this.makeItem.name
+
+      // 타겟 모수
+      this.audienceSize = numberFormatter(this.makeItem.display_count)
+
+      // 사이트 방문자중 @
+      if (detail === 'non_conversion') {
+        // 미 전환 고객
+        this.selectConversionUser.emptyText = '미 전환 고객'
+      } else if (detail === 'conversion 1step') {
+        // 전환 1단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 1단계 완료 고객'
+      } else if (detail === 'conversion 2step') {
+        // 전환 2단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 2단계 완료 고객'
+      } else if (detail === 'conversion 3step') {
+        // 전환 3단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 3단계 완료 고객'
+      } else if (detail === 'conversion 4step') {
+        // 전환 4단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 4단계 완료 고객'
+      } else if (detail === 'conversion 5step') {
+        // 전환 5단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 5단계 완료 고객'
+      } else if (detail === 'conversion url') {
+        // 특정 단계 완료(URL)
+        this.selectConversionUser.emptyText = '특정 단계 완료(URL)'
+        this.subConversionInput = true
+        this.conversionSubText = params.step_name
+        this.conversionCompleteUrl = params.current_complete_url
+        this.conversionNextCompleteUrl = params.next_complete_url
+      } else {
+        console.log('nothing..', detail)
+      }
     }
   }
 }

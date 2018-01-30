@@ -20,13 +20,13 @@ export default {
 		chartData: {
 			type: Object,
 			default () {
-			return {
-				tooltip:{},
-				legend:[],
-				xAxis: [],
-				yAxis:{},
-				series:[]
-			}
+				return {
+					tooltip:{},
+					legend:[],
+					xAxis: [],
+					yAxis:{},
+					series:[]
+				}
 			}
 		}
 	},
