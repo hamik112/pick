@@ -206,6 +206,7 @@ class TargetChart(APIView):
             # print(len(adsets))
             # print([adset.adset_id for adset in adsets])
             approximate_count = custom_audience.get_custom_audience(target_audience_id).get('approximate_count')
+            name = custom_audience.get_custom_audience(target_audience_id).get('name')
 
             # print("placement insight start")
             placement_insights = adset_insight.get_adset_ids_placement_insights(act_account_id,
@@ -222,7 +223,7 @@ class TargetChart(APIView):
                                                                                  start_date=start_date,
                                                                                  end_date=end_date)
             # print(age_gender_insights)
-            age_gender_data, total_spend, total_conversion, cta = convert_chart_data.convert_agegender_chart_data(
+            age_gender_data, total_spend, total_conversion, cpa = convert_chart_data.convert_agegender_chart_data(
                 age_gender_insights)
             # print("age gender insight end")
 
@@ -232,7 +233,8 @@ class TargetChart(APIView):
             response_data['audience_count'] = approximate_count
             response_data['total_spend'] = total_spend
             response_data['total_conversion'] = total_conversion
-            response_data['cta'] = cta
+            response_data['cpa'] = cpa
+            response_data['name'] = name
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         except Exception as e:
