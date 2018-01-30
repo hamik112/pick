@@ -557,7 +557,7 @@ class CustomTarget(APIView):
                     if conversion_pixel_mapping_category.id in pixel_categories:
                         conversion_event_name = pixel_categories.get(
                             conversion_pixel_mapping_category.id).facebook_pixel_event_name
-                        create_target = targeting_visitor.update_visitor_and_non_coversion_customers(
+                        created_target = targeting_visitor.update_visitor_and_non_coversion_customers(
                             custom_audience_id, name, pixel_id, retention_days=retention_days,
                             conversion_event_name=conversion_event_name)
                         description = self.make_description("사이트방문", retention_days, "미전환고객", "", "custom",
@@ -684,7 +684,7 @@ class CustomTarget(APIView):
                     if conversion_pixel_mapping_category.id in pixel_categories:
                         conversion_event_name = pixel_categories.get(
                             conversion_pixel_mapping_category.id).facebook_pixel_event_name
-                        create_target = targeting_specific_page_visitor.update_specific_page_and_non_coversion_customers(
+                        created_target = targeting_specific_page_visitor.update_specific_page_and_non_coversion_customers(
                             custom_audience_id, name, pixel_id, retention_days=retention_days,
                             conversion_event_name=conversion_event_name, contain_list=contain_list, eq_list=eq_list)
                         description = self.make_description("특정페이지방문", retention_days, "미전환고객", "", "custom",
@@ -1375,7 +1375,7 @@ class CustomTarget(APIView):
 
                         created_target = targeting_visitor.create_visitor_and_addtocart_customers(
                             fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
-                            addtocart_evnet_Zname=addtocart_event_name)
+                            addtocart_evnet_name=addtocart_event_name)
                         description = self.make_description("사이트방문", retention_days, "장바구니 이용 고객", "", "custom",
                                                             request.data)
                     else:
@@ -1401,7 +1401,7 @@ class CustomTarget(APIView):
                         conversion_event_name = pixel_categories.get(
                             conversion_pixel_mapping_category.id).facebook_pixel_event_name
 
-                        create_target = targeting_visitor.create_visitor_and_non_coversion_customers(
+                        created_target = targeting_visitor.create_visitor_and_non_coversion_customers(
                             fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
                             conversion_event_name=conversion_event_name)
                         description = self.make_description("사이트방문", retention_days, "미전환고객", "", "custom",
@@ -1535,7 +1535,7 @@ class CustomTarget(APIView):
                     if conversion_pixel_mapping_category.id in pixel_categories:
                         conversion_event_name = pixel_categories.get(
                             conversion_pixel_mapping_category.id).facebook_pixel_event_name
-                        create_target = targeting_specific_page_visitor.create_specific_page_and_non_coversion_customers(
+                        created_target = targeting_specific_page_visitor.create_specific_page_and_non_coversion_customers(
                             fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
                             conversion_event_name=conversion_event_name, contain_list=contain_list, eq_list=eq_list)
                         description = self.make_description("특정페이지방문", retention_days, "미전환고객", "", "custom",
