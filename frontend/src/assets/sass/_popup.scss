@@ -452,7 +452,7 @@
 					}
 				}
 				.use_limit{font-size:17px; color:#fff;
-					strong{font-size:38px; line-height:2;}
+					strong{ display:block; clear:both; font-size:38px; line-height:2;}
 				}
 				.expense_price{background:#fff url(assets/images/target/chart_01.jpg) center 28px no-repeat;
 					p{line-height:1.4;}
