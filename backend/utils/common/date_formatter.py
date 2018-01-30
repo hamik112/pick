@@ -4,6 +4,7 @@ import datetime
 import traceback
 import logging
 import time
+from datetime import timedelta, date
 
 logger = logging.getLogger(__name__)
 
@@ -161,3 +162,7 @@ def caldate(day, format='%Y-%m-%d'):
 	calday = date.fromtimestamp(time.time() - 60*60*24*day)
 
 	return calday.strftime(format)
+
+def daterange(date1, date2):
+    for n in range(int ((date2 - date1).days)+1):
+        yield date1 + timedelta(n)
