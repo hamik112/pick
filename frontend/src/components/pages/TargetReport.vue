@@ -57,19 +57,39 @@
 														<li class="line-8 normal_depth report-line" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
 														<li class="line-9 report-line" v-if="sortSelectData.listData[8].setting.show">
 															<span>광고비</span>
-															<span class="sort_btn"></span>
+															<span class="sort_type_01">
+																<div>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																</div>
+															</span>
 														</li>
 														<li class="line-10 report-line" v-if="sortSelectData.listData[9].setting.show">
 															<span>노출</span>
-															<span class="sort_btn"></span>
+															<span class="sort_type_01">
+																<div>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																</div>
+															</span>
 														</li>
 														<li class="line-11 report-line" v-if="sortSelectData.listData[10].setting.show">
 															<span>도달</span>
-															<span class="sort_btn"></span>
+															<span class="sort_type_01">
+																<div>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																</div>
+															</span>
 														</li>
 														<li class="line-12 report-line" v-if="sortSelectData.listData[11].setting.show">
 															<span>도달빈도</span>
-															<span class="sort_btn"></span>
+															<span class="sort_type_01">
+																<div>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																</div>
+															</span>
 														</li>
 														<li class="line-13 th_sub depth1 report-line" v-if="sortSelectData.listData[12].setting.show">
 															<dl>
@@ -78,15 +98,30 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[12].setting.show">
 																			<span>링크클릭</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[12].setting.show">
 																			<span>CTR</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[12].setting.show">
 																			<span>CPC</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -99,27 +134,57 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>1번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>2번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>3번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>4번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>5번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>6번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -132,27 +197,57 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 View</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 VTR</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 CPV</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>30초 이상 View</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>30초 이상 VTR</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>30초 이상 CPV</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -165,31 +260,66 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>전환 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>전환 완료 가치</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>1단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>2단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>3단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>4단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>5단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -202,19 +332,39 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[16].setting.show">
 																			<span>공유</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[16].setting.show">
 																			<span>좋아요</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[16].setting.show">
 																			<span>댓글</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[16].setting.show">
 																			<span>공감</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
