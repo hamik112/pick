@@ -85,7 +85,7 @@
                       <div class="result_tbody">
                         <ul id="list-neoaccount">
                           <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
-                          <li v-for="(neoAccount, index) in neoAccounts" :key="index">
+                          <li v-for="(neoAccount, index) in neoAccounts" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoAccounts" :value="neoAccount.centeraccountid" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.centeraccountid" :id="'neoAccount-check-' + neoAccount.centeraccountid"><label :for="'neoAccount-check-' + neoAccount.centeraccountid"></label></div>
                             <div class="result_account">{{ neoAccount.advname }}</div>
                             <div class="result_group">{{ neoAccount.accountname }}</div>
@@ -142,7 +142,8 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neocampaign">
-                          <li v-for="(neoCampaign, index) in neoCampaigns" :key="index">
+                          <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
+                          <li v-for="(neoCampaign, index) in neoCampaigns" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoCampaigns" :value="neoCampaign.campaignid" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.campaignid" :id="'neoCampaign-check-' + neoCampaign.campaignid"><label :for="'neoCampaign-check-' + neoCampaign.campaignid"></label></div>
                             <div class="result_account">{{ neoCampaign.advname }}</div>
                             <div class="result_group">{{ neoCampaign.campaignname }}</div>
@@ -199,7 +200,8 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neokeyword">
-                          <li v-for="(neoKeyword, index) in neoKeywords" :key="index">
+                          <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
+                          <li v-for="(neoKeyword, index) in neoKeywords" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoKeywords" :value="neoKeyword.keywordid" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.keywordid" :id="'neoKeyword-check-' + neoKeyword.keywordid"><label :for="'neoKeyword-check-' + neoKeyword.keywordid"></label></div>
                             <div class="result_account">{{ neoKeyword.advname }}</div>
                             <div class="result_group">{{ neoKeyword.keywordname }}</div>
