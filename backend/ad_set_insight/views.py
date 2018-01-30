@@ -20,6 +20,7 @@ from utils.facebookapis.api_init import (api_init, api_init_by_system_user)
 from utils.facebookapis.ad_account import ad_sets as ad_sets_api
 from utils.common import download_helper
 from utils.common.excel_report import ExcelReport
+from utils.common.string_formatter import string_to_literal
 
 import os
 import json
@@ -33,7 +34,6 @@ from operator import itemgetter
 import itertools
 import operator
 import xlwt
-import ast
 
 logger = logging.getLogger(__name__)
 
@@ -266,7 +266,7 @@ class AdSetInsightByAccount(APIView):
             campaign_name = adset.campaign_name
             targeting = adset.targeting
             genders = adset.gender
-            genders = ast.literal_eval(genders)
+            genders = string_to_literal(genders)
             g = ''
             gender = ''.join(str(g) for g in genders)
             if gender == '1':
@@ -279,9 +279,9 @@ class AdSetInsightByAccount(APIView):
                 gender = ''
 
             interests = adset.include_interests
-            interests = ast.literal_eval(interests)
+            interests = string_to_literal(interests)
             custom_audiences = adset.custom_audiences
-            custom_audiences = ast.literal_eval(custom_audiences)
+            custom_audiences = string_to_literal(custom_audiences)
 
             interest_list = []
             if interests != []:
