@@ -19,17 +19,17 @@
           </div>
           <div class="use_date">
             <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="coversionDay"><span>일</span></div>
+            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
           <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="coversionName"></div>
+          <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>12,000</span>명
+            <span>-</span>명
           </div>
         </div>
       </div>
@@ -42,17 +42,17 @@
                 <ui-select :selectData="this.selectConversionUser" data-key="selectConversionUser" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="value_input_wrap" v-if="subConversionInput">
-                <input type="text">
+                <input type="text" v-model="conversionSubText">
                 <p>단계 완료 후 이탈 고객</p>
               </div>
             </div>
-            <div class="generate_url_list">
+            <div class="generate_url_list" v-if="subConversionInput">
               <div class="url_list clearfix">
                 <div class="url_text clearfix">
                   <p>해당 단계 완료 URL</p>
                 </div>
                 <div class="url_input">
-                  <input type="text">
+                  <input type="text" v-model="conversionCompleteUrl">
                 </div>
               </div>
               <div class="url_list clearfix">
@@ -60,7 +60,7 @@
                   <p>다음 단계 완료 URL</p>
                 </div>
                 <div class="url_input">
-                  <input type="text">
+                  <input type="text" v-model="conversionNextCompleteUrl">
                 </div>
               </div>
             </div>
@@ -68,9 +68,9 @@
         </div>
         <div class="btn_wrap">
           <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-          <button class="next_btn" @click="createConversion()" v-if="makeType == 'add'">타겟 만들기</button>
-          <button class="delete_btn" @click="createConversionDelete()" v-if="makeType == 'modify'">삭제</button>
-          <button class="next_btn" @click="createConversion()" v-if="makeType == 'modify'">타겟 수정하기</button>
+          <button class="next_btn" @click="createConversionTarget()" v-if="makeType == 'add'">타겟 만들기</button>
+          <button class="delete_btn" @click="deleteConversionTarget()" v-if="makeType == 'modify'">삭제</button>
+          <button class="next_btn" @click="updateConversionTarget()" v-if="makeType == 'modify'">타겟 수정하기</button>
         </div>
       </div>
     </div>
@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
 
@@ -118,10 +119,21 @@ export default {
     }
   },
 
+  created () {
+    this.$eventBus.$on('modifyConversionTarget', this.modifyConversionTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyConversionTarget', this.modifyConversionTarget)
+  },
+
   data () {
     return {
-      coversionDay: '30',
-      coversionName: '',
+      collectionPeriod: '30',
+      targetName: '',
+      conversionSubText: '',
+      conversionCompleteUrl: '',
+      conversionNextCompleteUrl: '',
 
       subConversionInput: false,
 
@@ -142,7 +154,45 @@ export default {
           '전환 4단계 완료 고객',
           '전환 5단계 완료 고객',
           '특정 단계 완료(URL)'//단계완료 이탈 입력박스
+        ],
+        keyList: [
+          'non_conversion',
+          'conversion 1step',
+          'conversion 2step',
+          'conversion 3step',
+          'conversion 4step',
+          'conversion 5step',
+          'conversion url'
         ]
+      }
+    }
+  },
+
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        // 컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
+        this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        // 컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
+        this.targetName = name.substr(0,48)
+      }
+    },
+
+    conversionSubText (name) {
+      if (name.length > 8) {
+        // 컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('최대 8자까지만 가능합니다.', 'alert')
+        this.conversionSubText = name.substr(0,8)
       }
     }
   },
@@ -169,6 +219,92 @@ export default {
       this.dialogShow = false;
     },
 
+    // 다이얼로그 확인 클릭시
+    dialogOk () {
+      const mode = this.dialogData.mode
+
+      if (mode === 'createConversion') {
+        // Create Target -----------------------------------------------------------------
+        let params = {
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'conversion',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+
+          detail: this.findSelectKey('selectConversionUser')
+        }
+        if (this.findSelectKey('selectConversionUser') == 'conversion url') {
+          params['step_name'] = this.conversionSubText
+          params['current_complete_url'] = this.conversionCompleteUrl
+          params['next_complete_url'] = this.conversionNextCompleteUrl
+        }
+
+        this.$http.post('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+            this.dialogOpen('단계별 전환 타겟 생성 실패', 'alert')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target: ', err)
+        })
+
+
+      } else if (mode === 'deleteConversion') {
+        // Delete Target -----------------------------------------------------------------
+        this.$emit('deleteCustomTarget', this.makeItem.id)
+
+
+      } else if (mode === 'updateConversion') {
+        // Update Target -----------------------------------------------------------------
+        let params = {
+          pickdata_account_target_id: this.makeItem.id,
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'conversion',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+
+          detail: this.findSelectKey('selectConversionUser')
+        }
+        if (this.findSelectKey('selectConversionUser') == 'conversion url') {
+          params['step_name'] = this.conversionSubText
+          params['current_complete_url'] = this.conversionCompleteUrl
+          params['next_complete_url'] = this.conversionNextCompleteUrl
+        }
+
+        this.$http.put('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            this.dialogOpen('단계별 전환 타겟 수정 실패', 'alert')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target delete: ', err)
+        })
+      }
+
+      // 모드별 동작
+      this.nextStay = true
+      this.dialogShow = false
+    },
+
     dialogCancel () {
       this.nextStage = false;
       this.dialogShow = false;
@@ -186,6 +322,13 @@ export default {
       this[key].emptyText = item
     },
 
+    findSelectText (selectName, key) {
+      // Select Text 가져오기
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
+    },
+
     findSelectKey (selectName) {
       /*
       Select Key 가져오기
@@ -196,40 +339,77 @@ export default {
       return keyList[textList.indexOf(emptyText)]
     },
 
-    createConversion () {
-      console.log('TODO createConversion')
-      // let params = {
-      //   fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-      //   target_type: 'visit_site',
-      //   pixel_id: this.findSelectKey('adAccountPixels'),
-      //   name: this.visitSiteName,
-      //   retention_days: this.visitSiteDay,
-      //
-      //   detail: this.findSelectKey('selectUser'),
-      //   input_percent: this.findSelectKey('selectSub')
-      // }
-      //
-      // this.$http.post('/pickdata_account_target/custom_target', params)
-      // .then((response) => {
-      //   var success = response.data.success
-      //   if (success == "YES") {
-      //     // success
-      //     this.$eventBus.$emit('getAccountTarget')
-      //   } else {
-      //     alert('사이트방문 타겟 생성 실패')
-      //     throw('success: ' + success)
-      //   }
-      //   this.$emit('close')
-      // })
-      // .catch(err => {
-      //   this.$emit('close')
-      //   console.log('/pickdata_account_target/custom_target: ', err)
-      // })
+    // Create Target Dialog
+    createConversionTarget () {
+      if (this.collectionPeriod.length === 0) {
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createConversion')
+      }
     },
 
-    createConversionDelete () {
-      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'conversionDelete')
+    // Delete Target Dialog
+    deleteConversionTarget () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'deleteConversion')
     },
+
+    // Update Target Dialog
+    updateConversionTarget () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateConversion')
+    },
+
+    modifyConversionTarget () {
+      const description = this.makeItem.description
+      const params = description.params
+      const detail = params.detail
+
+      // 사용 픽셀
+      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', params.pixel_id)
+
+      // 수집 기간
+      this.collectionPeriod = numberFormatter(description.retention_days)
+
+      // 타겟 이름
+      this.targetName = this.makeItem.name
+
+      // 타겟 모수
+      this.audienceSize = numberFormatter(this.makeItem.display_count)
+
+      // 사이트 방문자중 @
+      if (detail === 'non_conversion') {
+        // 미 전환 고객
+        this.selectConversionUser.emptyText = '미 전환 고객'
+      } else if (detail === 'conversion 1step') {
+        // 전환 1단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 1단계 완료 고객'
+      } else if (detail === 'conversion 2step') {
+        // 전환 2단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 2단계 완료 고객'
+      } else if (detail === 'conversion 3step') {
+        // 전환 3단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 3단계 완료 고객'
+      } else if (detail === 'conversion 4step') {
+        // 전환 4단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 4단계 완료 고객'
+      } else if (detail === 'conversion 5step') {
+        // 전환 5단계 완료 고객
+        this.selectConversionUser.emptyText = '전환 5단계 완료 고객'
+      } else if (detail === 'conversion url') {
+        // 특정 단계 완료(URL)
+        this.selectConversionUser.emptyText = '특정 단계 완료(URL)'
+        this.subConversionInput = true
+        this.conversionSubText = params.step_name
+        this.conversionCompleteUrl = params.current_complete_url
+        this.conversionNextCompleteUrl = params.next_complete_url
+      } else {
+        console.log('nothing..', detail)
+      }
+    }
   }
 }
 </script>

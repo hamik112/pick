@@ -211,7 +211,7 @@ export default {
         if (this.makeType === 'modify') {
           console.log('ME: ', me.makeItem.description.params.target_type)
           const targetType = me.makeItem.description.params.target_type
-          
+
           if(targetType === 'visit_site') {
             this.$eventBus.$emit('modifyVisitSiteTarget', this.adAccountPixels)
           } else if (targetType === 'visit_specific_pages') {
@@ -227,7 +227,7 @@ export default {
           } else if (targetType === 'registration') {
             this.$eventBus.$emit('modifyRegistrationTarget', this.adAccountPixels)
           } else if (targetType === 'conversion') {
-            // TODO
+            this.$eventBus.$emit('modifyConversionTarget', this.adAccountPixels)
           }
         }
       } else {

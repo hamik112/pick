@@ -422,53 +422,55 @@
 	}
 }
 #target_chart{background:#f5f5f5;
-	.target_chart_graph_inner{padding:30px 25px; padding-bottom:0px;
-		.target_chart_select{margin-bottom:12px;
-			.select_btn{width:350px; float:right;
-				.select{height:40px; line-height:40px;
-					p{ background:url(assets/images/icon/calendar.png) center right no-repeat;}
-				}
-			}
-		}
-		.target_chart_top{
-			.use_limit{position:relative;}
-			.prologue_area{
-				.prologue_view{ display:none; width:329px; padding-bottom:4px; color:#fff; background:url(assets/images/target/prologue_type01.png) center bottom no-repeat; position:absolute; top:-67px; left:36px; z-index:1;
-					p{background: #222933; padding: 15px 10px; color:#fff; font-size:12px; line-height:1.4; font-weight:normal;}
-				}
-				.icon:hover{
-					& + .prologue_view{display:block;}
-				}
-			}
-			> div{width:186px; height:186px; float:left; background:#fff; margin-left:18px; padding-top:108px;
-				p{font-size:17px; text-align:center;
-					&:last-child{font-size:24px; font-weight:bold; color:#375b96;}
-				}
-				&:first-child{width:233px; height:186px; background:#375b96; color:#fff; margin-left:0px; padding:20px 16px; clear:both;
-					p{text-align:left; clear:both;}
-					span{float:left;
-						&:last-child{padding-left:4px; cursor:pointer;}
+	.target_chart_graph_wrap{height:650px;
+		.target_chart_graph_inner{padding:30px 25px; padding-bottom:0px;
+			.target_chart_select{margin-bottom:12px;
+				.select_btn{width:350px; float:right;
+					.select{height:40px; line-height:40px;
+						p{ background:url(assets/images/icon/calendar.png) center right no-repeat;}
 					}
 				}
 			}
-			.use_limit{font-size:17px; color:#fff;
-				strong{font-size:38px; line-height:2;}
+			.target_chart_top{
+				.use_limit{position:relative;}
+				.prologue_area{
+					.prologue_view{ display:none; width:329px; padding-bottom:4px; color:#fff; background:url(assets/images/target/prologue_type01.png) center bottom no-repeat; position:absolute; top:-67px; left:36px; z-index:1;
+						p{background: #222933; padding: 15px 10px; color:#fff; font-size:12px; line-height:1.4; font-weight:normal;}
+					}
+					.icon:hover{
+						& + .prologue_view{display:block;}
+					}
+				}
+				> div{width:186px; height:186px; float:left; background:#fff; margin-left:18px; padding-top:108px;
+					p{font-size:17px; text-align:center;
+						&:last-child{font-size:24px; font-weight:bold; color:#375b96;}
+					}
+					&:first-child{width:233px; height:186px; background:#375b96; color:#fff; margin-left:0px; padding:20px 16px; clear:both;
+						p{text-align:left; clear:both;}
+						span{float:left;
+							&:last-child{padding-left:4px; cursor:pointer;}
+						}
+					}
+				}
+				.use_limit{font-size:17px; color:#fff;
+					strong{font-size:38px; line-height:2;}
+				}
+				.expense_price{background:#fff url(assets/images/target/chart_01.jpg) center 28px no-repeat;
+					p{line-height:1.4;}
+				}
+				.all_switch{background:#fff url(assets/images/target/chart_02.jpg) center 28px no-repeat;
+					p{line-height:1.4;}
+				}
+				.cpa_chart{background:#fff url(assets/images/target/chart_03.jpg) center 28px no-repeat;
+					p{line-height:1.4;}
+				}
 			}
-			.expense_price{background:#fff url(assets/images/target/chart_01.jpg) center 28px no-repeat;
-				p{line-height:1.4;}
+			.target_chart_wrap{clear:both; margin-top:12px; border:1px solid #ebeef3; border-top:0px;
+				> div{background:#fff;
+					&:first-child{margin-bottom:12px;}
+				}
+				h2{height: 38px; font-size: 18px; line-height: 38px; font-weight: bold; border-top:1px solid #ebeef3; border-bottom:1px solid #ebeef3; padding-left:23px; background:url(assets/images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%;}
 			}
-			.all_switch{background:#fff url(assets/images/target/chart_02.jpg) center 28px no-repeat;
-				p{line-height:1.4;}
-			}
-			.cpa_chart{background:#fff url(assets/images/target/chart_03.jpg) center 28px no-repeat;
-				p{line-height:1.4;}
-			}
-		}
-		.target_chart_wrap{clear:both; margin-top:12px; border:1px solid #ebeef3; border-top:0px;
-			> div{background:#fff;
-				&:first-child{margin-bottom:12px;}
-			}
-			h2{height: 38px; font-size: 18px; line-height: 38px; font-weight: bold; border-top:1px solid #ebeef3; border-bottom:1px solid #ebeef3; padding-left:23px; background:url(assets/images/common/select_bg.jpg) 0 0 repeat; background-size:100% 100%;}
 		}
 	}
 }
