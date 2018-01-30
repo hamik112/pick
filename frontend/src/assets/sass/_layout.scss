@@ -256,8 +256,18 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 								.normal_depth{width:250px!important;}
 								.table_head{letter-spacing:-4px;
 									.head_th{
-										li{width:120px; height:73px; line-height:73px; text-align:center; background:url(assets/images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%; border-right:1px solid #ededed; border-bottom:1px solid #ededed; font-weight:bold; display:inline-block; vertical-align:middle; letter-spacing:0px;
+										li{position:relative; width:120px; height:73px; line-height:73px; text-align:center; background:url(assets/images/common/select_bg.jpg) 0 0 no-repeat; background-size:100% 100%; border-right:1px solid #ededed; border-bottom:1px solid #ededed; font-weight:bold; display:inline-block; vertical-align:middle; letter-spacing:0px;
 											&:last-child{border-right:0px;}
+											.sort_type_01{position:absolute; top:40%; right:10%;
+												p{
+													&:first-child{padding-bottom:1px;}
+												}
+											}
+											.sort_type_02{position:absolute; top:30%; right:10%;
+												p{
+													&:first-child{padding-bottom:1px;}
+												}
+											}
 										}
 										.th_sub{line-height:1.2; padding:0px; width:auto;
 											dl{
