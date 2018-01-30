@@ -169,15 +169,15 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 			.target_contents_wrap{padding-top:33px; padding-left:189px;
 				.target_contents{clear:both;
 					ul{display: table; width:100%;
-						li{width:19%; min-height:330px; background:$basic_type01; display:inline-block; vertical-align:top; box-shadow:$Bshadow_type01; margin-right:1%; padding:12px 23px; margin-bottom:15px; cursor:pointer; @include boxSizing;
+						li{width:19%; min-height:330px; background:$basic_type01; display:inline-block; vertical-align:top; box-shadow:$Bshadow_type01; margin-right:1%; padding:12px 23px; margin-bottom:15px; @include boxSizing;
 						}
 					 }
 					 .target_icon{
 					 	div{width:26px; height:26px; display:inline-block; vertical-align:middle;}
 					 	.icon_target{background:url(assets/images/icon/target_icon_n.png) 0 0 no-repeat; margin-right:10px;}
-					 	.icon_target:hover {background:url(assets/images/icon/target_icon_o.png) 0 0 no-repeat; }
+					 	.icon_target.on { background:url(assets/images/icon/target_icon_o.png) 0 0 no-repeat; }
 					 	.icon_gragh{background:url(assets/images/icon/graph_icon_n.png) 0 0 no-repeat;}
-					 	.icon_gragh:hover {background:url(assets/images/icon/graph_icon_o.png) 0 0 no-repeat;}
+					 	.icon_gragh.on { cursor:pointer; background:url(assets/images/icon/graph_icon_o.png) 0 0 no-repeat;}
 					 	button{float:right; height:26px; line-height:25px; text-decoration:underline;}
 					 }
 

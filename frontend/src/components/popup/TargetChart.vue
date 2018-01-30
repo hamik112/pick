@@ -15,18 +15,17 @@
 										<div class="select_btn">
 											<div class="select_contents">
 												<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
-												<ui-calendar v-model="range"></ui-calendar>
+												<ui-calendar inputId="chartDate" v-model="range"></ui-calendar>
 											</div>
 										</div>
 									</div>
 									<div class="target_chart_top clearfix">
 										<div class="use_limit clearfix">
 											<div>
-												<span>장바구니 이용고객_7일간</span>
+												<span>{{ chartName }}</span>
 												<ui-hover></ui-hover>
 											</div>
-											<p>글자수제한</p>
-											<strong v-if="!chartOn">-명</strong>
+											<strong v-if="!chartOn">-</strong>
 											<strong v-if="chartOn">{{ total.audience }}명</strong>
 										</div>
 										<div class="expense_price">
@@ -102,15 +101,35 @@ export default {
   },
   created() {
   	const targetId = this.chartItem.id
+  	const dateVal = document.getElementById('chartDate').value.replace(/\s/gi, "")
+  	//오늘날짜
+  	const d = new Date;
+	const yy = d.getFullYear()
+	const mm = ((d.getMonth() + 1) < 10) ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)
+	const dd = (d.getDate() < 10) ? '0' + d.getDate() : d.getDate()
+
+	let firstDate = yy + '-' + mm + '-' + dd
+	let endDate = firstDate
+
+  	if(dateVal != '') {
+		const dateSplit = dateVal.split('~')
+		firstDate = dateSplit[0]
+		endDate = dateSplit[1]
+	}
+
   	this.$http.get('/pickdata_account_target/target_chart', {
   		params: {
 			pickdata_target_id:targetId,
+			start_date:firstDate,
+			end_date:endDate
 		}
     })
     .then(res => {
       const response = res.data
       const success = response.success
       if (success === 'YES') {
+      	//네임
+      	this.chartName = response.name
       	//totalData
       	this.total.audience = numberFormatter(response.audience_count)
       	this.total.convertion = numberFormatter(response.total_conversion)
@@ -137,7 +156,8 @@ export default {
 		return {
 			//loading
 			chartOn:false,
-
+			//chartName
+			chartName:"-",
 			//totalData
 			total:{
 				audience:0,
