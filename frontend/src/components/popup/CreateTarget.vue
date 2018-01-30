@@ -219,7 +219,7 @@ export default {
           } else if (targetType === 'neo_target') {
             this.$eventBus.$emit('modifyNeoTarget', this.adAccountPixels)
           } else if (targetType === 'utm_target') {
-            // TODO
+            this.$eventBus.$emit('modifyUtmTarget', this.adAccountPixels)
           } else if (targetType === 'purchase') {
             this.$eventBus.$emit('modifyPurchaseTarget', this.adAccountPixels)
           } else if (targetType === 'add_to_cart') {
