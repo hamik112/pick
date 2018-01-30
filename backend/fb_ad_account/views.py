@@ -422,7 +422,7 @@ class FbAdAccountDefaultTarget(APIView):
                 description = {
                     "pixel_mapping_category" : "사이트방문",
                     "retention_days" : 30,
-                    "description" : "이용시간상위5%",
+                    "description" : "이용시간상위5%고객",
                     "option": "",
                     "type": "default"
                 }
@@ -613,7 +613,7 @@ class FbAdAccountDefaultTarget(APIView):
 
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "전환완료",
+                        "description": "전환완료고객",
                         "option": "",
                         "type": "default"
                     }
@@ -628,7 +628,7 @@ class FbAdAccountDefaultTarget(APIView):
                     description = {
                         "pixel_mapping_category": "단계별 전환",
                         "retention_days": 30,
-                        "description": "미전환",
+                        "description": "미전환고객",
                         "option": "",
                         "type": "default"
                     }

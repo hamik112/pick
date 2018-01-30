@@ -1,7 +1,7 @@
 <template>
-  <div class="target_contents_wrap pop-scroll clearfix" v-if="isShow">
+  <div class="target_contents_wrap clearfix" v-if="isShow">
     <transition name="modal">
-      <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+      <ui-dialog :dialogData="dialogData" v-if="dialogShow" @ok="dialogOk()" @cancel="dialogCancel"></ui-dialog>
     </transition>
     <div class="target_contents_inner">
       <div class="target_thead">
@@ -37,9 +37,9 @@
         <div class="target_inner_tbody clearfix">
           <div class="target_generate">
             <div class="account_info">
-              <div class="account_title">"사이트 방문자"중</div>
+              <div class="account_title">"사이트 방문자" 중</div>
               <div>
-                <ui-select :selectData="selectUser" data-key="selectUser" :onClick="selectOnClick"></ui-select>
+                <ui-select :selectData="selectCustomer" data-key="selectCustomer" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subSelect">
                 <ui-select :selectData="selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
@@ -54,9 +54,9 @@
     </div>
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
-      <button class="next_btn" @click="createVisitSite()" v-if="makeType == 'add'">타겟 만들기</button>
-      <button class="delete_btn" @click="createVisitSiteDelete()" v-if="makeType == 'modify'">삭제</button>
-      <button class="next_btn" @click="updateVisitSite()" v-if="makeType == 'modify'">타겟 수정하기</button>
+      <button class="next_btn" @click="createVisitSiteTarget()" v-if="makeType === 'add'">타겟 만들기</button>
+      <button class="delete_btn" @click="deleteVisitSiteTarget()" v-if="makeType === 'modify'">삭제</button>
+      <button class="next_btn" @click="updateVisitSiteTarget()" v-if="makeType === 'modify'">타겟 수정하기</button>
     </div>
   </div>
 </template>
@@ -71,7 +71,7 @@ export default {
 
   components: {
     'ui-select': Select,
-    'ui-dialog':Dialog
+    'ui-dialog': Dialog
   },
 
   props: {
@@ -81,34 +81,36 @@ export default {
         return false
       }
     },
+
     adAccountPixels: {
       type: Object,
       default () {
         return {
           emptyText: '불러오는 중 입니다.',
-          textList: [
-            '불러오는 중 입니다.'
-          ]
+          textList: [ '불러오는 중 입니다.' ]
         }
       }
     },
+
     tabMove: {
       type: Function
     },
+
     makeType: {
-      type:String
+      type: String
     },
+
     makeItem: {
       type: Object
     }
   },
 
   created () {
-    this.$eventBus.$on('modifyTarget', this.modifyTarget)
+    this.$eventBus.$on('modifyVisitSiteTarget', this.modifyVisitSiteTarget)
   },
 
   beforeDestroy () {
-    this.$eventBus.$off('modifyTarget', this.modifyTarget)
+    this.$eventBus.$off('modifyVisitSiteTarget', this.modifyVisitSiteTarget)
   },
 
   data () {
@@ -121,15 +123,15 @@ export default {
       subSelect: false,
       subInput: false,
 
-      dialogShow:false,
-      dialogData:{
-        emptyText:'sample',
-        type:'confirm',
-        mode:'sample'
+      dialogShow: false,
+      dialogData: {
+        emptyText: 'sample',
+        type: 'confirm',
+        mode: 'sample'
       },
-      nextStay:false,
+      nextStay: false,
 
-      selectUser: {
+      selectCustomer: {
         emptyText: '전체 고객',
         textList: [
           '전체 고객',
@@ -156,24 +158,17 @@ export default {
       },
       selectSub: {
         emptyText: '5%',
-        textList: [
-          '5%',
-          '15%',
-          '25%'
-        ],
-        keyList: [
-          '5',
-          '15',
-          '25'
-        ]
+        textList: [ '5%', '15%', '25%' ],
+        keyList: [ '5', '15', '25' ]
       }
     }
   },
 
+  // Create Target Validation
   watch: {
     collectionPeriod (day) {
       if (day > 180) {
-        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        // 컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
         this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
         this.collectionPeriod = 180
       } else if (this.collectionPeriod === '0') {
@@ -191,7 +186,7 @@ export default {
 
     targetName (name) {
       if (name.length > 48) {
-        //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+        // 컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
         this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
         this.targetName = name.substr(0,48)
       }
@@ -199,38 +194,106 @@ export default {
   },
 
   methods: {
-    dialogOpen(emptyText, type, mode) {
+    dialogOpen (emptyText, type, mode) {
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type
       this.dialogData['mode'] = mode
       this.dialogShow = true;
     },
-    dialogOk() {
+
+    // 다이얼로그 확인 클릭시
+    dialogOk () {
       const mode = this.dialogData.mode
 
-      if (mode === 'visitSite') {
-        this.createVisitSiteNext()
-      } else if (mode === 'visitSiteDelete') {
+      if (mode === 'createVisitSite') {
+        // Create Target -----------------------------------------------------------------
+        let params = {
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'visit_site',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
+
+          detail: this.findSelectKey('selectCustomer'),
+          input_percent: this.findSelectKey('selectSub')
+        }
+
+        this.$http.post('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+            this.dialogOpen('사이트방문 타겟 생성 실패', 'alert')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target: ', err)
+        })
+
+
+      } else if (mode === 'deleteVisitSite') {
+        // Delete Target -----------------------------------------------------------------
         this.$emit('deleteCustomTarget', this.makeItem.id)
-      } else if (mode === 'visitSiteUpdate') {
-        this.updateVisitSiteNext()
+
+
+      } else if (mode === 'updateVisitSite') {
+        // Update Target -----------------------------------------------------------------
+        let params = {
+          pickdata_account_target_id: this.makeItem.id,
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'visit_site',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
+
+          detail: this.findSelectKey('selectCustomer'),
+          input_percent: this.findSelectKey('selectSub')
+        }
+
+        this.$http.put('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            this.dialogOpen('사이트방문 타겟 수정 실패', 'alert')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target delete: ', err)
+        })
       }
 
-      //모드별 동작
+      // 모드별 동작
       this.nextStay = true
-      this.dialogShow = false;
+      this.dialogShow = false
     },
-    dialogCancel() {
+
+    // 다이얼로그 취소 클릭시
+    dialogCancel () {
       this.nextStay = false;
       this.dialogShow = false;
     },
+
     selectOnClick (item) {
       const key = event.target.closest('.select_btn').getAttribute('data-key')
       const textCheck = item.replace(/\s/gi, "")
       this.subSelect = false
       this.subInput = false
 
-      //서브 입력창 체크
+      // 서브 입력창 체크
       if(textCheck === '이용시간상위고객' || key === 'selectSub') {
         this.subSelect = true
       }else if(textCheck === '특정일동안미방문고객') {
@@ -240,25 +303,22 @@ export default {
     },
 
     findSelectText (selectName, key) {
-      /*
-      Select Text 가져오기
-      */
+      // Select Text 가져오기
       const textList = this[selectName].textList
       const keyList = this[selectName].keyList
       return textList[keyList.indexOf(key)]
     },
 
     findSelectKey (selectName) {
-      /*
-      Select Key 가져오기
-      */
+      // Select Key 가져오기
       const emptyText = this[selectName].emptyText
       const textList = this[selectName].textList
       const keyList = this[selectName].keyList
       return keyList[textList.indexOf(emptyText)]
     },
 
-    createVisitSite () {
+    // Create Target Dialog
+    createVisitSiteTarget () {
       if (this.collectionPeriod.length === 0) {
         //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
         this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
@@ -270,135 +330,31 @@ export default {
         this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
       } else {
         //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
-        this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'visitSite')
+        this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createVisitSite')
       }
     },
-
-    createVisitSiteNext () {
-      let params = {
-        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'visit_site',
-        pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.targetName,
-        retention_days: this.collectionPeriod,
-        exclusion_retention_days: this.unvisitedPeriod,
-
-        detail: this.findSelectKey('selectUser'),
-        input_percent: this.findSelectKey('selectSub')
-      }
-
-      this.$http.post('/pickdata_account_target/custom_target', params)
-      .then((response) => {
-        var success = response.data.success
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
-          this.dialogOpen('사이트방문 타겟 생성 실패', 'alert')
-          throw('success: ' + success)
-        }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target: ', err)
-      })
+    
+    // Delete Target Dialog
+    deleteVisitSiteTarget () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'deleteVisitSite')
     },
 
-    createVisitSiteDelete () {
-      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'visitSiteDelete')
+    // Update Target Dialog
+    updateVisitSiteTarget () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateVisitSite')
     },
 
-    updateVisitSite () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'visitSiteUpdate')
-    },
-
-    updateVisitSiteNext () {
-      console.log('update call')
-      let params = {
-        pickdata_account_target_id: this.makeItem.id,
-        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'visit_site',
-        pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.targetName,
-        retention_days: this.collectionPeriod,
-        exclusion_retention_days: this.unvisitedPeriod,
-
-        detail: this.findSelectKey('selectUser'),
-        input_percent: this.findSelectKey('selectSub')
-      }
-
-      this.$http.put('/pickdata_account_target/custom_target', params)
-      .then((response) => {
-        var success = response.data.success
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          this.dialogOpen('사이트방문 타겟 수정 실패', 'alert')
-          throw('success: ' + success)
-        }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target delete: ', err)
-      })
-    },
-
-    // TODO Delete Function
-    createVisiteSiteDeleteNext () {
-      console.log('delete call')
-
-      // this.$http.put('/pickdata_account_target/custom_target', {
-      //   pickdata_account_target_id: this.makeItem.id
-      // })
-      // .then((response) => {
-      //   console.log(response)
-      // })
-      // .catch(err => {
-      //   this.$emit('close')
-      //   console.log('/pickdata_account_target/custom_target delete: ', err)
-      // })\\
-      this.$http.delete('/pickdata_account_target/custom_target', {
-        data: {
-          pickdata_account_target_id: this.makeItem.id
-        }
-      })
-      .then((response) => {
-        const success = response.data.success
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
-          this.dialogOpen('사이트방문 타겟 삭제 실패', 'alert')
-          throw('success: ' + success)
-        }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target delete: ', err)
-      })
-    },
-
-    // /fb_ad_accounts/ad_account_pixels call after
-    modifyTarget (pixelData) {
-      console.log('# : ', this.makeItem)
-      console.log('@ : ', this.adAccountPixels.emptyText)
-      console.log('@ : ', this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id))
-
-      // Custom Target인 경우 params가 존재
-      const params = this.makeItem.description.params
+    // 수정 클릭시 타겟 생성 팝업 데이터 초기화 (/fb_ad_accounts/ad_account_pixels call after)
+    modifyVisitSiteTarget () {
+      const description = this.makeItem.description
+      const params = description.params
       const detail = params.detail
 
       // 사용 픽셀
-      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', this.makeItem.description.params.pixel_id)
+      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', params.pixel_id)
 
       // 수집 기간
-      this.collectionPeriod = numberFormatter(this.makeItem.description.retention_days)
+      this.collectionPeriod = numberFormatter(description.retention_days)
 
       // 타겟 이름
       this.targetName = this.makeItem.name
@@ -409,34 +365,34 @@ export default {
       // 사이트 방문자중 @
       if (detail === 'total') {
         // 전체 고객
-        this.selectUser.emptyText = '전체 고객'
+        this.selectCustomer.emptyText = '전체 고객'
       } else if (detail === 'usage_time_top') {
         // 이용 시간 상위 고객
-        this.selectUser.emptyText = '이용 시간 상위 고객'
+        this.selectCustomer.emptyText = '이용 시간 상위 고객'
         this.selectSub.emptyText = params.input_percent + '%'
         this.subSelect = true
       } else if (detail === 'non_visit') {
         // 특정일 동안 미방문 고객
-        this.selectUser.emptyText = '특정일 동안 미방문 고객'
+        this.selectCustomer.emptyText = '특정일 동안 미방문 고객'
         this.subInput = true
       } else if (detail === 'purchase') {
         // 구매 고객
-        this.selectUser.emptyText = '구매 고객'
+        this.selectCustomer.emptyText = '구매 고객'
       } else if (detail === 'non_purchase') {
         // 미구매 고객
-        this.selectUser.emptyText = '미구매 고객'
+        this.selectCustomer.emptyText = '미구매 고객'
       } else if (detail === 'add_to_cart') {
         // 장바구니 이용 고객
-        this.selectUser.emptyText = '장바구니 이용 고객'
+        this.selectCustomer.emptyText = '장바구니 이용 고객'
       } else if (detail === 'conversion') {
         // 전환완료 고객
-        this.selectUser.emptyText = '전환완료 고객'
+        this.selectCustomer.emptyText = '전환완료 고객'
       } else if (detail === 'non_conversion') {
         // 미전환 고객
-        this.selectUser.emptyText = '미전환 고객'
+        this.selectCustomer.emptyText = '미전환 고객'
       } else if (detail === 'registration') {
         // 회원가입 고객
-        this.selectUser.emptyText = '회원가입 고객'
+        this.selectCustomer.emptyText = '회원가입 고객'
       } else {
         console.log('nothing..', detail)
       }
