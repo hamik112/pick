@@ -34,7 +34,7 @@ class AdSet(models.Model):
     custom_audiences = models.TextField(null=True)
     excluded_custom_audiences = models.TextField(null=True)
 
-    def create_or_update(self, adset_id, account_id=None, account_name=None, campaign_id=None, campaign_name=None, campaign_objective=None,
+    def create_or_update(self, adset_id, user_name=None, account_id=None, account_name=None, campaign_id=None, campaign_name=None, campaign_objective=None,
                          adset_name=None, daily_budget=None, lifetime_budget=None, age_min=None, age_max=None,
                          gender=None, targeting=None, include_interests=[], include_behaviors=[], exclude_interests=[],
                          exclude_behaviors=[], custom_audiences=[], excluded_custom_audiences=[]):
@@ -78,6 +78,9 @@ class AdSet(models.Model):
                 params['custom_audiences'] = custom_audiences
             if excluded_custom_audiences != None:
                 params['excluded_custom_audiences'] = excluded_custom_audiences
+            if user_name != None:
+                params['created_by'] = user_name
+                params['updated_by'] = user_name
 
             obj, created = AdSet.objects.update_or_create(
                 adset_id=adset_id, defaults=params

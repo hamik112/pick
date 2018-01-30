@@ -140,7 +140,7 @@ class Command(BaseCommand):
                 video_p50_watched_actions = item.get('video_p50_watched_actions')
                 video_p75_watched_actions = item.get('video_p75_watched_actions')
                 video_p95_watched_actions = item.get('video_p95_watched_actions')
-                website_ctr = insight.get('website_ctr')
+                website_ctr = item.get('website_ctr')
 
                 # ad_set_insight model
                 adset_insight = AdSetInsight()

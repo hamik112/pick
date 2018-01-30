@@ -172,7 +172,7 @@ class TargetChart(APIView):
         try:
             pickdata_target_id = request.query_params.get('pickdata_target_id', 0)
             start_date = request.query_params.get('start_date', None)
-            end_date = request.query_params.get('start_date', None)
+            end_date = request.query_params.get('end_date', None)
 
             if pickdata_target_id == 0:
                 raise Exception('Not Exist Pickdata Target.')

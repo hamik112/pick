@@ -76,6 +76,7 @@ def get_my_ad_sets(account_id, limit=25, after=None, fields=field_list()):
 
         params = default_params()
         params['limit'] = limit
+        params['locale'] = 'ko_KR'
 
         if after != None:
             params['after'] = after
