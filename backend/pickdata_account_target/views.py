@@ -311,6 +311,38 @@ class CustomTarget(APIView):
                 raise Exception('Not Exist pickdata_account_target')
             custom_audience_id = pickdata_account_target.target_audience_id
 
+
+            # pixel_category
+            visit_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'visit pages')
+            purchase_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'purchase')
+            addtocart_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'add to cart')
+            registration_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'registration')
+            conversion_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion complete')
+
+            step1_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 1step')
+            step2_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 2step')
+            step3_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 3step')
+            step4_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 4step')
+            step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 5step')
+
+            pixel_mappings = PixelMapping.objects.filter(fb_ad_account_id=fb_ad_account_id)
+
+            pixel_categories = {}
+
+            for pixel_mapping in pixel_mappings:
+                pixel_categories[pixel_mapping.pixel_mapping_category_id] = pixel_mapping
+
+
             # 사이트 방문
             if target_type == "visit_site":
                 detail = request.data.get('detail', '')
@@ -342,48 +374,75 @@ class CustomTarget(APIView):
                                                                                      retention_days=retention_days,
                                                                                      exclusion_retention_days=exclusion_retention_days)
                     description = self.make_description("사이트방문", retention_days, "미방문고객", "", "custom", request.data)
+
+
                 # 구매고객
                 elif detail == "purchase":
-                    # TODO DB 구매 이벤트 유무 확인
-                    created_target = targeting_visitor.update_visitor_and_purchase_customers(
-                        custom_audience_id, name, pixel_id, retention_days=retention_days,
-                        purchase_event_name="Purchase")
-                    description = self.make_description("사이트방문", retention_days, "구매고객", "", "custom", request.data)
+                    if purchase_pixel_mapping_category.id in pixel_categories:
+                        purchase_event_name = pixel_categories.get(purchase_pixel_mapping_category.id).facebook_pixel_event_name
+
+                        created_target = targeting_visitor.update_visitor_and_purchase_customers(
+                            custom_audience_id, name, pixel_id, retention_days=retention_days,
+                            purchase_event_name="Purchase")
+                        description = self.make_description("사이트방문", retention_days, "구매고객", "", purchase_event_name, request.data)
+                    else:
+                        raise Exception("Not mapping Purchase Category.")
+
                 # 미 구매고객
                 elif detail == "non_purchase":
-                    # TODO DB 구매 이벤트 유무 확인
-                    created_target = targeting_visitor.update_visitor_and_non_purchase_customers(
-                        custom_audience_id, name, pixel_id, retention_days=retention_days,
-                        purchase_event_name="Purchase")
-                    description = self.make_description("사이트방문", retention_days, "미구매고객", "", "custom", request.data)
+                    if purchase_pixel_mapping_category.id in pixel_categories:
+                        purchase_event_name = pixel_categories.get(purchase_pixel_mapping_category.id).facebook_pixel_event_name
+                        created_target = targeting_visitor.update_visitor_and_non_purchase_customers(
+                            custom_audience_id, name, pixel_id, retention_days=retention_days,
+                            purchase_event_name=purchase_event_name)
+                        description = self.make_description("사이트방문", retention_days, "미구매고객", "", "custom", request.data)
+                    else:
+                        raise Exception("Not mapping Purchase Category.")
+
                 # 장바구니 이용 고객
                 elif detail == "add_to_cart":
-                    # TODO 장바구니 이벤트 확인
-                    created_target = targeting_visitor.update_visitor_and_addtocart_customers(
-                        custom_audience_id, name, pixel_id, retention_days=retention_days,
-                        addtocart_evnet_name="AddToCart")
-                    description = self.make_description("사이트방문", retention_days, "장바구니이용고객", "", "custom", request.data)
+                    if addtocart_pixel_mapping_category.id in pixel_categories:
+                        addtocart_event_name = pixel_categories.get(addtocart_pixel_mapping_category.id).facebook_pixel_event_name
+                        created_target = targeting_visitor.update_visitor_and_addtocart_customers(
+                            custom_audience_id, name, pixel_id, retention_days=retention_days,
+                            addtocart_evnet_name=addtocart_event_name)
+                        description = self.make_description("사이트방문", retention_days, "장바구니이용고객", "", "custom", request.data)
+                    else:
+                        raise Exception("Not mapping AddToCart Category.")
+
                 # 전환완료 고객
                 elif detail == "conversion":
-                    # TODO 전환완료 이벤트 확인
-                    created_target = targeting_visitor.update_visitor_and_coversion_customers(
-                        custom_audience_id, name, pixel_id, retention_days=retention_days,
-                        conversion_event_name="ViewContent")
-                    description = self.make_description("사이트방문", retention_days, "전환완료고객", "", "custom", request.data)
+                    if conversion_pixel_mapping_category.id in pixel_categories:
+                        conversion_event_name = pixel_categories.get(conversion_pixel_mapping_category.id).facebook_pixel_event_name
+                        created_target = targeting_visitor.update_visitor_and_coversion_customers(
+                            custom_audience_id, name, pixel_id, retention_days=retention_days,
+                            conversion_event_name=conversion_event_name)
+                        description = self.make_description("사이트방문", retention_days, "전환완료고객", "", "custom", request.data)
+                    else:
+                        raise Exception("Not mapping Conversion Category.")
+
                 # 미 전환 고객
                 elif detail == "non_conversion":
-                    # TODO 전환완료 이벤트 확인
-                    create_target = targeting_visitor.update_visitor_and_non_coversion_customers(
-                        custom_audience_id, name, pixel_id, retention_days=retention_days,
-                        conversion_event_name="ViewContent")
-                    description = self.make_description("사이트방문", retention_days, "미전환고객", "", "custom", request.data)
+                    if conversion_pixel_mapping_category.id in pixel_categories:
+                        conversion_event_name = pixel_categories.get(conversion_pixel_mapping_category.id).facebook_pixel_event_name
+                        create_target = targeting_visitor.update_visitor_and_non_coversion_customers(
+                            custom_audience_id, name, pixel_id, retention_days=retention_days,
+                            conversion_event_name=conversion_event_name)
+                        description = self.make_description("사이트방문", retention_days, "미전환고객", "", "custom", request.data)
+                    else:
+                        raise Exception("Not mapping Conversion Category.")
+
                 # 회원가입 고객
                 elif detail == "registration":
-                    # TODO 회원가입 이벤트 확인
-                    created_target = targeting_visitor.update_visitor_and_registration_customers(
-                        custom_audience_id, name, pixel_id, retention_days=retention_days,
-                        registration_event_name="CompleteRegistration")
-                    description = self.make_description("사이트방문", retention_days, "회원가입고객", "", "custom", request.data)
+                    if registration_pixel_mapping_category.id in pixel_categories:
+                        registration_event_name = pixel_categories.get(registration_pixel_mapping_category.id).facebook_pixel_event_name
+
+                        created_target = targeting_visitor.update_visitor_and_registration_customers(
+                            custom_audience_id, name, pixel_id, retention_days=retention_days,
+                            registration_event_name=registration_event_name)
+                        description = self.make_description("사이트방문", retention_days, "회원가입고객", "", "custom", request.data)
+                    else:
+                        raise Exception("Not mapping Registration Category.")
                 else:
                     raise Exception("No valid detail parameter")
 
