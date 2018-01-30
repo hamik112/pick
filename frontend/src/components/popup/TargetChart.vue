@@ -210,6 +210,7 @@ export default {
 									position: 'insideLeft',
 									formatter: '{c}K'
 								},
+
 								color:'#45ceb4'
 							}
 						}
@@ -245,7 +246,7 @@ export default {
   	chartsRedatas(data) {
   		const reDatas = []
   		for(let i = 0; i < data.length; i++) {
-  			reDatas.push(numberToFixed(data[i]))
+  			reDatas.push(numberToFixed(data[i], 2))
   		}
   		return reDatas
   	},

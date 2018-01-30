@@ -1,5 +1,6 @@
 /* 팝업 */
 .layer-pop-widget {  position:relative; z-index:100;
+	.modify_prologue{padding-top:15px;}
 	.result_on{background:#ecf7fc;}
 	.pop-bg { position:fixed; left:0; top:0; z-index:100; width:100%; height:100%; background:rgba(0,0,0,0.5); }
 	.popup-widget { background-color:#fff; border-radius:10px;}
@@ -189,19 +190,31 @@
 }
 #target_pop_01{
 	.cate_contents_widget{
+		.disabled{opacity:0.5; cursor:default;}
 		.target_pick_01{
 			li{
 				&:nth-child(1){background:url(assets/images/target/target_icon_01.png) center 30px no-repeat;
 					&:hover{background:url(assets/images/target/target_icon_01_ho.png) center 30px no-repeat;}
 				}
+				&:nth-child(1).disabled{
+					&:hover{background:url(assets/images/target/target_icon_01.png) center 30px no-repeat; border:1px solid #dadedf; color:#999;}}
 				&:nth-child(2){background:url(assets/images/target/target_icon_02.png) center 30px no-repeat;
 					&:hover{background:url(assets/images/target/target_icon_02_ho.png) center 30px no-repeat;}
+				}
+				&:nth-child(2).disabled{
+					&:hover{background:url(assets/images/target/target_icon_02.png) center 30px no-repeat; border:1px solid #dadedf; color:#999;}
 				}
 				&:nth-child(3){background:url(assets/images/target/target_icon_03.png) center 30px no-repeat;
 					&:hover{background:url(assets/images/target/target_icon_03_ho.png) center 30px no-repeat;}
 				}
+				&:nth-child(3).disabled{
+					&:hover{background:url(assets/images/target/target_icon_03.png) center 30px no-repeat; border:1px solid #dadedf; color:#999;}
+				}
 				&:nth-child(4){background:url(assets/images/target/target_icon_04.png) center 30px no-repeat; margin-right:0px;
 					&:hover{background:url(assets/images/target/target_icon_04_ho.png) center 30px no-repeat;}
+				}
+				&:nth-child(4).disabled{
+					&:hover{background:url(assets/images/target/target_icon_04.png) center 30px no-repeat; border:1px solid #dadedf; color:#999;}
 				}
 				span{padding-top:98px;}
 			}
@@ -217,14 +230,26 @@
 				&:nth-child(1){background:url(assets/images/target/target_icon_05.png) center 30px no-repeat;
 					&:hover{background:url(assets/images/target/target_icon_05_ho.png) center 30px no-repeat;}
 				}
+				&:nth-child(1).disabled{
+					&:hover{background:url(assets/images/target/target_icon_05.png) center 30px no-repeat; border:1px solid #dadedf; color:#999;}
+				}
 				&:nth-child(2){background:url(assets/images/target/target_icon_06.png) center 30px no-repeat;
 					&:hover{background:url(assets/images/target/target_icon_06_ho.png) center 30px no-repeat;}
+				}
+				&:nth-child(2).disabled{
+					&:hover{background:url(assets/images/target/target_icon_06.png) center 30px no-repeat; border:1px solid #dadedf; color:#999;}
 				}
 				&:nth-child(3){background:url(assets/images/target/target_icon_07.png) center 30px no-repeat;
 					&:hover{background:url(assets/images/target/target_icon_07_ho.png) center 30px no-repeat;}
 				}
+				&:nth-child(3).disabled{
+					&:hover{background:url(assets/images/target/target_icon_07.png) center 30px no-repeat; border:1px solid #dadedf; color:#999;}
+				}
 				&:nth-child(4){background:url(assets/images/target/target_icon_08.png) center 30px no-repeat; margin-right:0px;
 					&:hover{background:url(assets/images/target/target_icon_08_ho.png) center 30px no-repeat;}
+				}
+				&:nth-child(4).disabled{
+					&:hover{background:url(assets/images/target/target_icon_08.png) center 30px no-repeat; border:1px solid #dadedf; color:#999;}
 				}
 				span{padding-top:98px;}
 			}
@@ -424,7 +449,7 @@
 	.target_chart_graph_wrap{height:650px;
 		.target_chart_graph_inner{padding:30px 25px; padding-bottom:0px;
 			.target_chart_select{margin-bottom:12px;
-				.select_btn{ float:right;
+				.select_btn{float:right;
 					.select{height:40px; line-height:40px;
 						p{ background:url(assets/images/icon/calendar.png) center right no-repeat;}
 					}
@@ -452,7 +477,7 @@
 					}
 				}
 				.use_limit{font-size:17px; color:#fff;
-					strong{ display:block; clear:both; font-size:38px; line-height:2;}
+					strong{font-size:38px; line-height:2;}
 				}
 				.expense_price{background:#fff url(assets/images/target/chart_01.jpg) center 28px no-repeat;
 					p{line-height:1.4;}
