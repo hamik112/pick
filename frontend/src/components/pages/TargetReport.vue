@@ -461,10 +461,10 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">좋아요</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">댓글</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">좋아요</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">댓글</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.post_event }}</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.like_event }}</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.comment_event }}</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.post_reaction_event }}</li>
 																		</ul>
 																	</dd>
 																</dl>

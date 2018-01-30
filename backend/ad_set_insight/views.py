@@ -11,6 +11,7 @@ from pixel_mapping.models import PixelMapping
 from pixel_mapping_category.models import PixelMappingCategory
 from fb_ad_account.models import FbAdAccount
 from ad_set_insight.models import AdSetInsight
+from ad_set.models import AdSet as AdSetModel
 from ad_set_insight.serializers import AdSetInsightSerializer
 
 from facebookads.adobjects.adset import AdSet
@@ -32,6 +33,7 @@ from operator import itemgetter
 import itertools
 import operator
 import xlwt
+import ast
 
 logger = logging.getLogger(__name__)
 
@@ -258,53 +260,47 @@ class AdSetInsightByAccount(APIView):
             result = {}
             # target report data
             adset_id = insight['adset_id']
-            adset = ad_sets_api.get_ad_set(adset_id)
-            adset_name = adset.get('name')
-            campaign = adset.get('campaign')
-            objective = campaign['objective']
-            campaign_name = campaign['name']
-            targeting = adset.get('targeting')
+            adset = AdSetModel.objects.get(adset_id=adset_id)
+            adset_name = adset.adset_name
+            objective = adset.campaign_objective
+            campaign_name = adset.campaign_name
+            targeting = adset.targeting
+            genders = adset.gender
+            genders = ast.literal_eval(genders)
+            g = ''
+            gender = ''.join(str(g) for g in genders)
+            if gender == '1':
+                gender = 'male'
+            elif gender == '2':
+                gender = 'female'
+            elif gender == '0':
+                gender = 'all'
+            else:
+                gender = ''
+
+            interests = adset.include_interests
+            interests = ast.literal_eval(interests)
+            custom_audiences = adset.custom_audiences
+            custom_audiences = ast.literal_eval(custom_audiences)
 
             interest_list = []
-            if 'flexible_spec' in targeting:
-                flexible_spec = targeting.get('flexible_spec')
-                for fs in flexible_spec:
-                    if 'interests' in fs:
-                        interests = fs['interests']
-                        for interest in interests:
-                            name = interest['name']
-                            interest_list.append(name)
-                    else:
-                        interests = []
+            if interests != []:
+                for interest in interests:
+                    item = interest['name']
+                    interest_list.append(item)
             else:
-                interests = []
+                pass
 
             custom_audience_list = []
-            if 'custom_audiences' in targeting:
-                custom_audiences = targeting.get('custom_audiences')
-                for ca in custom_audiences:
-                    name = ca['name']
-                    custom_audience_list.append(name)
+            if custom_audiences != '[]':
+                for audience in custom_audiences:
+                    item = audience['name']
+                    custom_audience_list.append(item)
             else:
-                custom_audiences = []
+                pass
 
-            g = ''
-            if 'genders' in targeting:
-                genders = targeting['genders']
-                gender = ''.join(str(g) for g in genders)
-                if gender == '1':
-                    gender = 'male'
-                elif gender == '2':
-                    gender = 'female'
-                elif gender == '0':
-                    gender = 'all'
-                else:
-                    gender = ''
-            else:
-                gender = 'all'
-
-            age_max = targeting['age_max']
-            age_min = targeting['age_min']
+            age_max = adset.age_max
+            age_min = adset.age_min
             age = str(age_min) + '-' + str(age_max)
             report_date = str(since) + ' ~ ' + str(until)
             impressions = insight.get('impressions')
@@ -468,6 +464,7 @@ class AdSetInsightByAccount(APIView):
                         output['value'] = items
                         output['name'] = p['name']
                         data[key] = output
+        # print(target_insights)
 
         return target_insights
 
