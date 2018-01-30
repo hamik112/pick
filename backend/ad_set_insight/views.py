@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.core.management.base import BaseCommand, CommandError
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
@@ -260,7 +261,11 @@ class AdSetInsightByAccount(APIView):
             result = {}
             # target report data
             adset_id = insight['adset_id']
-            adset = AdSetModel.objects.get(adset_id=adset_id)
+            try:
+                adset = AdSetModel.objects.get(adset_id=adset_id)
+            except ObjectDoesNotExist:
+                pass
+                # raise CommandError('does not exist')
             adset_name = adset.adset_name
             objective = adset.campaign_objective
             campaign_name = adset.campaign_name
