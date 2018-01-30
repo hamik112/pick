@@ -104,18 +104,17 @@ export default {
 		}
     })
     .then(res => {
-      const response = res
-      const success = response.status
-      if (success === 200) {
-      	let data = response.data
+      const response = res.data
+      const success = response.success
+      if (success === 'YES') {
       	//genderData
-      	this.chartGenderData.series[0]['data'] = this.chartsRedatas(data.age_gender_data.data.male.percents, 2)
-      	this.chartGenderData.series[1]['data'] = this.chartsRedatas(data.age_gender_data.data.female.percents, 2)
+      	this.chartGenderData.series[0]['data'] = this.chartsRedatas(response.age_gender_data.data.male.percents, 3)
+      	this.chartGenderData.series[1]['data'] = this.chartsRedatas(response.age_gender_data.data.female.percents, 3)
       	//placementsData
-      	this.chartPlacementData['legend'] = data.placement_data.legend
-      	this.chartPlacementData['xAxis'] = data.placement_data.xAxis
-      	this.chartPlacementData.series[0]['data'] = data.placement_data.data.PC.vals
-      	this.chartPlacementData.series[1]['data'] = data.placement_data.data.Mobile.vals
+      	this.chartPlacementData['legend'] = response.placement_data.legend
+      	this.chartPlacementData['xAxis'] = response.placement_data.xAxis
+      	this.chartPlacementData.series[0]['data'] = response.placement_data.data.PC.vals
+      	this.chartPlacementData.series[1]['data'] = response.placement_data.data.Mobile.vals
 
       	this.chartOn = true
       }else{

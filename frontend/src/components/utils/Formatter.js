@@ -15,5 +15,5 @@ export function numberFormatter (num) {
 
 
 export function numberToFixed(num,cut) {
-	return num.toFixed(cut)
+	return Math.floor(num*100)/100
 }
