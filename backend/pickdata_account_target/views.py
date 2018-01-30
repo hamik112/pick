@@ -322,10 +322,30 @@ class NeoCustomTarget(APIView):
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     def post(self, request, format=None):
+        response_data = {}
         try:
-            pass
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+
+            fb_ad_account_id = request.data.get('fb_ad_account_id', 0)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+            print(request.FILES)
+            if 'upload_file' in request.FILES:
+                upload_file = request.FILES['upload_file']
+                print(upload_file)
+
+            response_data['success'] = 'YES'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
         except Exception as e:
-            raise
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 class CustomTarget(APIView):
     def make_description(self, pixel_mapping_category, retention_days, description, option, type_name, params,

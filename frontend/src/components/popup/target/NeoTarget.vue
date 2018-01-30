@@ -252,10 +252,10 @@
                     </div>
                     <div class="input_wrap clearfix">
                       <div>
-                        <input type="file">
+                        <input type="file" @change="uploadTemplate($event)">
                       </div>
                     </div>
-                    <button class="upload_btn view_alert"><strong>업로드</strong></button>
+                    <button class="upload_btn view_alert" @click="upoloadNeoTargetFile()"><strong>업로드</strong></button>
                   </div>
                 </div>
                 <div class="account_right clearfix">
@@ -508,6 +508,8 @@ export default {
       addNeoAccounts:[],
       addNeoCampaigns:[],
       addNeoKeywords:[],
+
+      uploadFile: '',
 
       subSelect: false,
       subInput: false,
@@ -968,6 +970,39 @@ export default {
 
     downloadTemplate () {
       window.open('/pickdata_account_target/neo_custom_target', '_blank')
+    },
+
+    uploadTemplate (event) {
+      console.log(event.target)
+      console.log(event.target.files[0])
+      this.uploadFile = event.target.files[0]
+    },
+
+    upoloadNeoTargetFile () {
+      let params = {
+        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+        upload_file: this.uploadFile
+      }
+
+      if (this.uploadFile == '') {
+        this.dialogOpen('업로드 파일이 없습니다.', 'alert')
+        return
+      }
+
+      this.$http.post('/pickdata_account_target/neo_custom_target', params)
+      .then((response) => {
+        var success = response.data.success
+        if (success == "YES") {
+          // success
+          console.log('success')
+        } else {
+          throw('success: ' + success)
+        }
+      })
+      .catch(err => {
+        // this.$emit('close')
+        console.log('/pickdata_account_target/neo_custom_target: ', err)
+      })
     }
   }
 }
