@@ -372,13 +372,13 @@ export default {
         this.subSelect = true
       } else if (detail === 'non_purchase') {
         // 미구매 고객
-        this.selectCustomer.emptyText = '미구매 고객'
-      } else if (detail === 'conversions') {
+        this.selectCustomer.emptyText = '미 구매 고객'
+      } else if (detail === 'conversion') {
         // 전환 완료 고객
-        this.selectCustomer.emptyText = '전완 완료 고객'
+        this.selectCustomer.emptyText = '전환 완료 고객'
       } else if (detail === 'non_conversion') {
         // 미전환 고객
-        this.selectCustomer.emptyText = '미전환 고객'
+        this.selectCustomer.emptyText = '미 전환 고객'
       }
     }
   }
