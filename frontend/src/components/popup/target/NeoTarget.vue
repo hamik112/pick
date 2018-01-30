@@ -1005,10 +1005,10 @@ export default {
         this.subInput = true
       } else if (detail === 'purchase') {
         // 구매 고객
-        this.selectCustomer.emptyText = '구매 고객'
+        this.selectCustomer.emptyText = '구매고객'
       } else if (detail === 'non_purchase') {
         // 미구매 고객
-        this.selectCustomer.emptyText = '미구매 고객'
+        this.selectCustomer.emptyText = '미 구매고객'
       } else if (detail === 'add_to_cart') {
         // 장바구니 이용 고객
         this.selectCustomer.emptyText = '장바구니 이용 고객'
@@ -1017,7 +1017,7 @@ export default {
         this.selectCustomer.emptyText = '전환완료 고객'
       } else if (detail === 'non_conversion') {
         // 미전환 고객
-        this.selectCustomer.emptyText = '미전환 고객'
+        this.selectCustomer.emptyText = '미 전환 고객'
       } else if (detail === 'registration') {
         // 회원가입 고객
         this.selectCustomer.emptyText = '회원가입 고객'
