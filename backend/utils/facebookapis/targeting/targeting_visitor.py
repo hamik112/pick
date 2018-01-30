@@ -282,7 +282,7 @@ def create_non_visition_customers(account_id, name, pixel_id, retention_days=30,
 
         params = {}
         params[CustomAudience.Field.name] = name
-        params[CustomAudience.Field.rule] = str(rule)
+        params[CustomAudience.Field.rule] = rule
         params[CustomAudience.Field.prefill] = prefill
 
         audience = ad_account.create_custom_audience(params=params)
@@ -357,7 +357,7 @@ def update_non_visition_customers(custom_audience_id, name, pixel_id, retention_
 
         params = {}
         params[CustomAudience.Field.name] = name
-        params[CustomAudience.Field.rule] = str(rule)
+        params[CustomAudience.Field.rule] = rule
         params[CustomAudience.Field.prefill] = prefill
 
         audience = custom_audience.remote_update(params=params)

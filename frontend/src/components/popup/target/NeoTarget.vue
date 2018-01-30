@@ -64,7 +64,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="account_wrap account_wrapper">
@@ -122,7 +122,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="account_wrap account_wrapper">
@@ -180,7 +180,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="account_wrap account_wrapper">
@@ -238,7 +238,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="account_wrap account_wrapper">
@@ -627,6 +627,7 @@ export default {
           pixel_id: this.findSelectKey('adAccountPixels'),
           name: this.targetName,
           retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
           neo_type: this.neoTargetType,
 
           detail: this.findSelectKey('selectCustomer'),
@@ -681,6 +682,7 @@ export default {
           pixel_id: this.findSelectKey('adAccountPixels'),
           name: this.targetName,
           retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
           neo_type: this.neoTargetType,
 
           detail: this.findSelectKey('selectCustomer'),
