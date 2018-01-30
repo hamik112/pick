@@ -253,6 +253,7 @@ export default {
   data () {
     return {
       collectionPeriod: '30',
+      unvisitedPeriod: '',
       targetName: '',
       inputUtmName: '',
       audienceSize: '-',
