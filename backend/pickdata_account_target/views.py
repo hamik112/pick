@@ -233,7 +233,7 @@ class TargetChart(APIView):
         try:
             pickdata_target_id = request.query_params.get('pickdata_target_id', 0)
             start_date = request.query_params.get('start_date', None)
-            end_date = request.query_params.get('start_date', None)
+            end_date = request.query_params.get('end_date', None)
 
             if pickdata_target_id == 0:
                 raise Exception('Not Exist Pickdata Target.')
@@ -509,8 +509,7 @@ class CustomTarget(APIView):
                         created_target = targeting_visitor.update_visitor_and_purchase_customers(
                             custom_audience_id, name, pixel_id, retention_days=retention_days,
                             purchase_event_name="Purchase")
-                        description = self.make_description("사이트방문", retention_days, "구매고객", "", purchase_event_name,
-                                                            request.data)
+                        description = self.make_description("사이트방문", retention_days, "구매고객", "", "custom", request.data)
                     else:
                         raise Exception("Not mapping Purchase Category.")
 

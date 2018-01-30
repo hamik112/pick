@@ -69,7 +69,7 @@
         </div>
         <div v-if="makeType === 'modify'" class="modify_prologue">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
         <div class="btn_wrap">
-          <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+          <button class="before_btn close_pop" @click="makeType === 'modify' ? $emit('close') : tabMove(0)">취소</button>
           <button class="next_btn" @click="createConversionTarget()" v-if="makeType == 'add'">타겟 만들기</button>
           <button class="delete_btn" @click="deleteConversionTarget()" v-if="makeType == 'modify'">삭제</button>
           <button class="next_btn" @click="updateConversionTarget()" v-if="makeType == 'modify'">타겟 수정하기</button>
@@ -365,7 +365,13 @@ export default {
 
     // Update Target Dialog
     updateConversionTarget () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateConversion')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateConversion')
+      }
     },
 
     modifyConversionTarget () {

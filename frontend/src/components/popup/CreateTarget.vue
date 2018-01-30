@@ -181,7 +181,7 @@ export default {
     })
     .then(res => {
       const data = res.data.data
-      
+
       this.targetActive.addToCart.isActive = data.add_to_cart
       this.targetActive.conversion.isActive = data.conversion
       this.targetActive.neoTarget.isActive = data.neo_target
@@ -194,65 +194,65 @@ export default {
   },
 
   mounted () {
-	const me = this
+    const me = this
 
-	// 수정인 경우 해당 탭으로 이동 해야한다.
-	if (this.makeType === 'modify') {
-	  const modifyItem = this.makeItem
-	  this.moveModifyTab(modifyItem)
-	}
-	let emptyText = ''
-	let textList = []
-	let keyList = []
+    // 수정인 경우 해당 탭으로 이동 해야한다.
+    if (this.makeType === 'modify') {
+      const modifyItem = this.makeItem
+      this.moveModifyTab(modifyItem)
+    }
+    let emptyText = ''
+    let textList = []
+    let keyList = []
 
-	this.$http.get('/fb_ad_accounts/ad_account_pixels', {
-	  params: {
-		'fb_ad_account_id': localStorage.getItem('fb_ad_account_id')
-	  }
-	})
-	.then(res => {
-	  const response = res.data
-	  const data = response.data
-	  const success = response.success
-	  if (success === 'YES') {
-		data.forEach(function(item, index) {
-		  textList.push(item.name)
-		  keyList.push(item.id)
-		  if (index === 0) {
-			emptyText = item.name
-		  }
-		})
+    this.$http.get('/fb_ad_accounts/ad_account_pixels', {
+      params: {
+        'fb_ad_account_id': localStorage.getItem('fb_ad_account_id')
+      }
+    })
+    .then(res => {
+      const response = res.data
+      const data = response.data
+      const success = response.success
+      if (success === 'YES') {
+        data.forEach(function(item, index) {
+          textList.push(item.name)
+          keyList.push(item.id)
+          if (index === 0) {
+            emptyText = item.name
+          }
+        })
 
-		this.adAccountPixels.emptyText = emptyText
-		this.adAccountPixels.textList = textList
-		this.adAccountPixels.keyList = keyList
+        this.adAccountPixels.emptyText = emptyText
+        this.adAccountPixels.textList = textList
+        this.adAccountPixels.keyList = keyList
 
-		if (this.makeType === 'modify') {
-		  console.log('ME: ', me.makeItem.description.params.target_type)
-		  const targetType = me.makeItem.description.params.target_type
+        if (this.makeType === 'modify') {
+          console.log('ME: ', me.makeItem.description.params.target_type)
+          const targetType = me.makeItem.description.params.target_type
 
-		  if(targetType === 'visit_site') {
-			this.$eventBus.$emit('modifyVisitSiteTarget', this.adAccountPixels)
-		  } else if (targetType === 'visit_specific_pages') {
-			this.$eventBus.$emit('modifyVisitSepcificPagesTarget', this.adAccountPixels)
-		  } else if (targetType === 'neo_target') {
-			this.$eventBus.$emit('modifyNeoTarget', this.adAccountPixels)
-		  } else if (targetType === 'utm_target') {
-			this.$eventBus.$emit('modifyUtmTarget', this.adAccountPixels)
-		  } else if (targetType === 'purchase') {
-			this.$eventBus.$emit('modifyPurchaseTarget', this.adAccountPixels)
-		  } else if (targetType === 'add_to_cart') {
-			this.$eventBus.$emit('modifyAddToCartTarget', this.adAccountPixels)
-		  } else if (targetType === 'registration') {
-			this.$eventBus.$emit('modifyRegistrationTarget', this.adAccountPixels)
-		  } else if (targetType === 'conversion') {
-			this.$eventBus.$emit('modifyConversionTarget', this.adAccountPixels)
-		  }
-		}
-	  } else {
-		console.log('/fb_ad_accounts/ad_account_pixels fail')
-	  }
-	})
+          if(targetType === 'visit_site') {
+            this.$eventBus.$emit('modifyVisitSiteTarget', this.adAccountPixels)
+          } else if (targetType === 'visit_specific_pages') {
+            this.$eventBus.$emit('modifyVisitSepcificPagesTarget', this.adAccountPixels)
+          } else if (targetType === 'neo_target') {
+            this.$eventBus.$emit('modifyNeoTarget', this.adAccountPixels)
+          } else if (targetType === 'utm_target') {
+            this.$eventBus.$emit('modifyUtmTarget', this.adAccountPixels)
+          } else if (targetType === 'purchase') {
+            this.$eventBus.$emit('modifyPurchaseTarget', this.adAccountPixels)
+          } else if (targetType === 'add_to_cart') {
+            this.$eventBus.$emit('modifyAddToCartTarget', this.adAccountPixels)
+          } else if (targetType === 'registration') {
+            this.$eventBus.$emit('modifyRegistrationTarget', this.adAccountPixels)
+          } else if (targetType === 'conversion') {
+            this.$eventBus.$emit('modifyConversionTarget', this.adAccountPixels)
+          }
+        }
+      } else {
+        console.log('/fb_ad_accounts/ad_account_pixels fail')
+      }
+    })
   },
 
   data () {

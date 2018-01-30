@@ -55,7 +55,7 @@
     </div>
     <div v-if="makeType === 'modify'" class="modify_prologue">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
     <div class="btn_wrap">
-      <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+      <button class="before_btn close_pop" @click="makeType === 'modify' ? $emit('close') : tabMove(0)">취소</button>
       <button class="next_btn" @click="createRegistrationTarget()" v-if="makeType === 'add'">타겟 만들기</button>
       <button class="delete_btn" @click="deleteRegistrationTarget()" v-if="makeType === 'modify'">삭제</button>
       <button class="next_btn" @click="updateRegistrationTarget()" v-if="makeType === 'modify'">타겟 수정하기</button>
@@ -117,7 +117,7 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
+      collectionPeriod: 30,
       targetName: '',
       audienceSize: '-',
       isNumber: false,
@@ -162,6 +162,25 @@ export default {
           '15',
           '25'
         ]
+      }
+    }
+  },
+
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
+        this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
+        this.targetName = name.substr(0,48)
       }
     }
   },
@@ -288,7 +307,13 @@ export default {
 
     // Create Target Dialog
     createRegistrationTarget () {
-      this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createRegistrationTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createRegistrationTarget')
+      }
     },
 
     // Delete Target Dialog
@@ -298,7 +323,13 @@ export default {
 
     // Update Target Dialog
     updateRegistrationTarget () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateRegistrationTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateRegistrationTarget')
+      }
     },
 
     // 수정 클릭시 타겟 생성 팝업 데이터 초기화 (/fb_ad_accounts/ad_account_pixels call after)

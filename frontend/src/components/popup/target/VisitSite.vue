@@ -55,7 +55,7 @@
     </div>
     <div v-if="makeType === 'modify'" class="modify_prologue">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
     <div class="btn_wrap">
-      <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+      <button class="before_btn close_pop" @click="makeType === 'modify' ? $emit('close') : tabMove(0)">취소</button>
       <button class="next_btn" @click="createVisitSiteTarget()" v-if="makeType === 'add'">타겟 만들기</button>
       <button class="delete_btn" @click="deleteVisitSiteTarget()" v-if="makeType === 'modify'">삭제</button>
       <button class="next_btn" @click="updateVisitSiteTarget()" v-if="makeType === 'modify'">타겟 수정하기</button>
@@ -117,8 +117,8 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
-      unvisitedPeriod: '1',
+      collectionPeriod: 30,
+      unvisitedPeriod: 0,
       targetName: '',
       audienceSize: '-',
       isNumber: false,
@@ -391,10 +391,10 @@ export default {
         this.subInput = true
       } else if (detail === 'purchase') {
         // 구매 고객
-        this.selectCustomer.emptyText = '구매 고객'
+        this.selectCustomer.emptyText = '구매고객'
       } else if (detail === 'non_purchase') {
         // 미구매 고객
-        this.selectCustomer.emptyText = '미구매 고객'
+        this.selectCustomer.emptyText = '미 구매고객'
       } else if (detail === 'add_to_cart') {
         // 장바구니 이용 고객
         this.selectCustomer.emptyText = '장바구니 이용 고객'
@@ -403,7 +403,7 @@ export default {
         this.selectCustomer.emptyText = '전환완료 고객'
       } else if (detail === 'non_conversion') {
         // 미전환 고객
-        this.selectCustomer.emptyText = '미전환 고객'
+        this.selectCustomer.emptyText = '미 전환 고객'
       } else if (detail === 'registration') {
         // 회원가입 고객
         this.selectCustomer.emptyText = '회원가입 고객'

@@ -186,7 +186,7 @@
         </div>
         <div v-if="makeType === 'modify'" class="modify_prologue">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
         <div class="btn_wrap">
-          <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+          <button class="before_btn close_pop" @click="makeType === 'modify' ? $emit('close') : tabMove(0)">취소</button>
           <button class="next_btn" @click="createUtmTarget()" v-if="makeType == 'add'">타겟 만들기</button>
           <button class="delete_btn" @click="deleteUtmTarget()" v-if="makeType == 'modify'">삭제</button>
           <button class="next_btn" @click="updateUtmTarget()" v-if="makeType == 'modify'">타겟 수정하기</button>
@@ -252,8 +252,8 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
-      unvisitedPeriod: '',
+      collectionPeriod: 30,
+      unvisitedPeriod: 0,
       targetName: '',
       inputUtmName: '',
       audienceSize: '-',
@@ -335,6 +335,32 @@ export default {
         tab4: false,
         tab5: false,
         tab6: false
+      }
+    }
+  },
+
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
+        this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    unvisitedPeriod (day) {
+      if(day >= this.collectionPeriod) {
+        alert('미방문 기간은 수집 기간보다 작아야합니다.')
+        this.unvisitedPeriod = this.collectionPeriod - 1
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
+        this.targetName = name.substr(0,48)
       }
     }
   },
@@ -542,7 +568,15 @@ export default {
 
     // Create Target Dialog
     createUtmTarget () {
-      this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createUtmTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createUtmTarget')
+      }
     },
 
     // Delete Target Dialog
@@ -552,7 +586,15 @@ export default {
 
     // Update Target Dialog
     updateUtmTarget () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateUtmTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateUtmTarget')
+      }
     },
 
     modifyUtmTarget () {
