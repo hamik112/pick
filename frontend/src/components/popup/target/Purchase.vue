@@ -113,7 +113,7 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
+      collectionPeriod: 30,
       targetName: '',
       audienceSize: '-',
       isNumber: false,
@@ -144,6 +144,25 @@ export default {
           'purchase_count',
           'purchase_amount'
         ]
+      }
+    }
+  },
+
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
+        this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
+        this.targetName = name.substr(0,48)
       }
     }
   },
@@ -272,7 +291,13 @@ export default {
 
     // Create Target Dialog
     createPurchaseTarget () {
-      this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'createPurchaseTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'createPurchaseTarget')
+      }
     },
 
     // Delete Target Dialog
@@ -282,7 +307,13 @@ export default {
 
     // Update Target Dialog
     updatePurchaseTarget () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updatePurchaseTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updatePurchaseTarget')
+      }
     },
 
     // 수정 클릭시 타겟 생성 팝업 데이터 초기화 (/fb_ad_accounts/ad_account_pixels call after)
