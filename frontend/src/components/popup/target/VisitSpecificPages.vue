@@ -239,6 +239,7 @@ export default {
           pixel_id: this.findSelectKey('adAccountPixels'),
           name: this.targetName,
           retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
 
           detail: this.findSelectKey('selectCustomer'),
           input_percent: this.findSelectKey('selectSub')
@@ -495,7 +496,7 @@ export default {
         this.subInput = true
       } else if (detail === 'purchase') {
         // 구매 고객
-        this.selectCustomer.emptyText = '구매 고객'
+        this.selectCustomer.emptyText = '구매고객'
       } else if (detail === 'non_purchase') {
         // 미구매 고객
         this.selectCustomer.emptyText = '미구매 고객'
