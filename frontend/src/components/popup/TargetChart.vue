@@ -115,7 +115,7 @@ export default {
       	this.total.audience = numberFormatter(response.audience_count)
       	this.total.convertion = numberFormatter(response.total_conversion)
       	this.total.spend = numberFormatter(response.total_spend)
-      	this.total.cpa = numberFormatter(Math.round(response.cta))
+      	this.total.cpa = numberFormatter(Math.round(response.cpa))
       	//genderData
       	this.chartGenderData.series[0]['data'] = this.chartsRedatas(response.age_gender_data.data.male.percents)
       	this.chartGenderData.series[1]['data'] = this.chartsRedatas(response.age_gender_data.data.female.percents)
