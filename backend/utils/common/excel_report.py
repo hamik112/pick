@@ -23,7 +23,6 @@ class ExcelReport():
     def write_workbook(self, file_path, file_name, target_insights):
         try:
             print("FILE : %s"%(os.path.join(file_path, file_name)))
-            print("WRITE WORKBOOK")
             workbook = xlsxwriter.Workbook(os.path.join(file_path, file_name))
             format_dict = self.workbook_format(workbook)
 
@@ -38,7 +37,6 @@ class ExcelReport():
 
     def write_worksheet(self, workbook, target_insights):
         try:
-            print("WRITE WORKSHEET - %")
             # format_dict = self.workbook_format(workbook)
             integer = workbook.add_format({'num_format': '0'})
             decimal = workbook.add_format({'num_format': '0.00'})
@@ -75,10 +73,14 @@ class ExcelReport():
             # HEAD 덮어쓰기
             worksheet.write_row('A1', head_list)
 
-            worksheet.set_column('I', None, currency)
+            # total_col = 19 + len(head_list)
+            # print(total_col)
+            # 기본 19개 + haed_list
+            worksheet.set_column('I:I', 15, currency)
             worksheet.set_column('J:K', None, number)
             worksheet.set_column('M:N', None, number)
-            worksheet.set_column('Q:T', None, number)
+            worksheet.set_column(20, int(total_col), None, number)
+            # TODO dynamic fields는 포맷 어떻게?
 
         except Exception as e:
             logger.error(e)
@@ -134,7 +136,6 @@ class ExcelReport():
         return format_dict
 
     def facebook_insight_to_headlist(self, target_insights, actions_name_list):
-        print('headlist')
         head_list = []
         try:
             head_list.append("account_category")
