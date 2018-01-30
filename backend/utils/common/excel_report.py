@@ -67,8 +67,8 @@ class ExcelReport():
             # CUSTOM_EVENT 한글화
             new_headlist = self.facebook_custom_event_to_ko(target_insights, actions_name_list)
             for n, i in enumerate(head_list):
-                for item in new_headlist:
-                    for key, value in item.items():
+                for new in new_headlist:
+                    for key, value in new.items():
                         if i == key:
                             head_list[n] = value
 
@@ -157,9 +157,9 @@ class ExcelReport():
             head_list.append("video_30_sec_view")
             head_list.append("conversions")
             head_list.append("pickdata_custom_pixel_event")
-            # TODO 전환지표
+
             head_list = head_list + actions_name_list
-            print(head_list)
+
         except Exception as e:
             logger.error(e)
             logger.error(traceback.format_exc())
@@ -192,8 +192,6 @@ class ExcelReport():
                         insight_list.append(insight[actions_name])
                 else:
                     insight_list.append('0')
-            else:
-                insight_list.append('0')
 
         except Exception as e:
             logger.error(e)
@@ -202,7 +200,6 @@ class ExcelReport():
         return insight_list
 
     def facebook_insight_to_list(self, insight, actions_name_list):
-        print(insight)
         insight_list = []
         try:
             insight_list.append(insight["account_category"])
@@ -247,7 +244,6 @@ class ExcelReport():
         return insight_list
 
     def find_insight_actions_name_list(self, insights):
-        print('find_insight_actions')
         name_list = []
         try:
             for insight in insights:
@@ -255,7 +251,10 @@ class ExcelReport():
                     if "_event" in elem:
                         name_list.append(elem)
                         name_list = list(set(name_list))
+                    else:
+                        pass
             name_list = sorted(name_list)
+
         except Exception as e:
             logger.error(e)
             logger.error(traceback.format_exc())
