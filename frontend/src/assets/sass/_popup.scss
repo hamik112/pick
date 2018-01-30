@@ -412,9 +412,8 @@
 				}
 				.input_wrap{ margin-top:10px;
 					div{float:left;
-						input{width:300px; height:40px; line-height:40px; border:$Border_type01;}
+						input{width:340px; border:$Border_type01; padding:10px;}
 					}
-					button{width:40px; height:40px; float:left; background:#375b96 url(assets/images/target/excel_btn.jpg) 0 0 no-repeat;}
 				}
 				.upload_btn{width:144px; height:33px; line-height:33px; background:#000; text-align:center; color:#fff; margin-top:15px;}
 			}
