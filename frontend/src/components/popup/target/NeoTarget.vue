@@ -39,7 +39,7 @@
               <div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword" v-model="neoTargetType"><label for="target_type03">키워드</label></div>
             </li>
             <li>
-              <div class="result_check" v-show="false"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel" v-model="neoTargetType"><label for="target_type04">엑셀업로드</label></div>
+              <div class="result_check"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel" v-model="neoTargetType"><label for="target_type04">엑셀업로드</label></div>
             </li>
           </ul>
         </div>
@@ -241,11 +241,11 @@
                   <div class="excel_wrap">
                     <div class="download_wrap clearfix">
                       <button><strong>엑셀업로드</strong></button>
-                      <button>양식 다운로드</button>
+                      <button @click="downloadTemplate()">양식 다운로드</button>
                     </div>
                     <div class="input_wrap clearfix">
                       <div>
-                        <input type="text">
+                        <input type="file">
                       </div>
                       <button></button>
                     </div>
@@ -343,7 +343,7 @@ export default {
         this.selectedNeoAccounts = selected
       }
     },
-    
+
     selectAllNeoCampaigns: {
       get () {
         let neoCampaignKeys = Object.keys(this.neoCampaigns)
@@ -941,6 +941,10 @@ export default {
       } else {
         console.log('nothing..', detail)
       }
+    },
+
+    downloadTemplate () {
+      window.open('/pickdata_account_target/neo_custom_target', '_blank')
     }
   }
 }
