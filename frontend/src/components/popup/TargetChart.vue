@@ -45,13 +45,15 @@
 										<div>
 											<h2>인구 통계학적 특성</h2>
 											<div class="graph_type01">
-												<ui-charts :chartData="this.chart1"></ui-charts>
+												<ui-PartialLoading  v-if="!chartOn" />
+												<ui-charts :chartData="this.chartGenderData" v-if="chartOn"></ui-charts>
 											</div>
 										</div>
 										<div>
 											<h2>노출위치</h2>
 											<div class="graph_type02">
-												<ui-charts :chartData="this.chart2"></ui-charts>
+												<ui-PartialLoading v-if="!chartOn" />
+												<ui-charts :chartData="this.chartPlacementData" v-if="chartOn"></ui-charts>
 											</div>
 										</div>
 									</div>
@@ -72,21 +74,65 @@ import Select from '@/components/ui/Select'
 import Charts from '@/components/ui/Charts'
 import Calendar from '@/components/ui/Calendar'
 import Hover from '@/components/ui/Hover'
+import PartialLoading from '@/components/ui/partialLoading'
+import { numberToFixed } from '@/components/utils/formatter'
 
 export default {
-	name: 'TargetChartPop',
-	
+  name: 'TargetChartPop',
+
   components: {
 		'ui-select': Select,
 		'ui-charts': Charts,
 		'ui-calendar': Calendar,
-		'ui-hover': Hover
-	},
-	
+		'ui-hover': Hover,
+		'ui-PartialLoading': PartialLoading
+  },
+
+  props:{
+  	chartItem: {
+  		type:Object,
+  		default () {
+  			return {}
+  		}
+  	}
+  },
+  created() {
+  	const targetId = this.chartItem.id
+  	this.$http.get('/pickdata_account_target/target_chart', {
+  		params: {
+			pickdata_target_id:targetId,
+		}
+    })
+    .then(res => {
+      const response = res
+      const success = response.status
+      if (success === 200) {
+      	let data = response.data
+      	//genderData
+      	this.chartGenderData.series[0]['data'] = this.chartsRedatas(data.age_gender_data.data.male.percents, 2)
+      	this.chartGenderData.series[1]['data'] = this.chartsRedatas(data.age_gender_data.data.female.percents, 2)
+      	//placementsData
+      	this.chartPlacementData['legend'] = data.placement_data.legend
+      	this.chartPlacementData['xAxis'] = data.placement_data.xAxis
+      	this.chartPlacementData.series[0]['data'] = data.placement_data.data.PC.vals
+      	this.chartPlacementData.series[1]['data'] = data.placement_data.data.Mobile.vals
+
+      	this.chartOn = true
+      }else{
+      	throw('success: ' + success)
+      }
+
+    })
+  },
+
   data () {
 		return {
-			//charts Data sample
-			chart1: {
+			//loading
+			chartOn:false,
+
+
+			//chartGenderData
+			chartGenderData: {
 				legend: ['모든남성 50%(3,250)','모든 여성 50%(3,250)'],
 				xAxis: ['13-17세','18-24세','25-34세','35-44세','45-54세','55-64세','65세이상'],
 				yAxis: {
@@ -94,12 +140,12 @@ export default {
 					'name':'%',
 					'max':100
 				},
-				
+
 				series:[
 					{
 						name:'모든남성 50%(3,250)',
 						type:'bar',
-						data:[22, 63, 78, 33, 27, 25, 31],
+						data:[],
 						barWidth: '10%',
 
 						itemStyle:{
@@ -113,10 +159,11 @@ export default {
 							}
 						}
 					},
+
 					{
 						name:'모든 여성 50%(3,250)',
 						type:'bar',
-						data:[33, 22, 44, 66, 23, 87, 21],
+						data:[],
 						barWidth: '10%',
 						itemStyle:{
 							normal: {
@@ -131,17 +178,18 @@ export default {
 					}
 				]
 			},
-			chart2:{
+
+			//chartPlacementData
+			chartPlacementData:{
 				//네임
-				legend: ['PC','Mobile'],
+				legend: [],
 
 				//X데이터 네임
-				xAxis: ['FaceBook','Audience Network','Instagram','Messanger'],
+				xAxis: [],
 
 				yAxis: {
 					'type':'value',
-					'name':'K',
-					'max':6
+					'name':'K'
 				},
 
 				//순차적 데이터
@@ -149,7 +197,7 @@ export default {
 					{
 						name: 'PC',
 						type: 'bar',
-						data: [4.3, 2.5, 5.0, 2.2, 1.6],
+						data: [],
 						barWidth: '5%',
 						itemStyle: {
 							normal: {
@@ -165,7 +213,7 @@ export default {
 					{
 						name: 'Mobile',
 						type: 'bar',
-						data: [2.6, 5.9, 4.0, 5.4, 3.7],
+						data: [],
 						barWidth: '5%',
 						itemStyle: {
 							normal: {
@@ -204,9 +252,20 @@ export default {
 				}
 			}
 		}
+  },
+  methods: {
+  	chartsRedatas(data) {
+  		const reDatas = []
+  		for(let i = 0; i < data.length; i++) {
+  			reDatas.push(numberToFixed(data[i]))
+  		}
+  		return reDatas
+  	}
   }
 }
 </script>
 
 <style lang="css" scoped>
+.graph_type01,
+.graph_type02 { overflow:hidden; }
 </style>
