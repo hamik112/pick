@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from fb_ad_account.models import FbAdAccount
 from pixel_mapping_category.models import PixelMappingCategory
 from pixel_mapping_category.serializers import PixelMappingCategorySerializer
+from neo_account.models import NeoAccount
+from pixel_mapping.models import PixelMapping
 
 from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
@@ -52,8 +54,11 @@ class TargetCheck(APIView):
             if fb_ad_account == None:
                 raise Exception('Not Exist fb_ad_account.')
 
-            print(fb_ad_account_id)
             targetCheckData = self.makeDefaultTarget()
+            targetCheckData['neo_target'] = self.checkNeoTarget(fb_ad_account)
+            targetCheckData['purchase'] = self.checkPixelMapping(fb_ad_account, 'purchase')
+            targetCheckData['add_to_cart'] = self.checkPixelMapping(fb_ad_account, 'add to cart')
+            targetCheckData['registration'] = self.checkPixelMapping(fb_ad_account, 'registration')
 
             response_data['success'] = 'YES'
             response_data['data'] = targetCheckData
@@ -75,6 +80,23 @@ class TargetCheck(APIView):
             "registration": False,
             "conversion": True
         }
+
+    def checkNeoTarget(self, fb_ad_account):
+        try:
+            neo_accounts = NeoAccount.objects.filter(fb_ad_account=fb_ad_account)
+            return True if len(neo_accounts) > 0 else False
+        except Exception as e:
+            print(traceback.format_exc())
+            return False
+
+    def checkPixelMapping(self, fb_ad_account, key_string):
+        try:
+            pixel_mapping_category = PixelMappingCategory.objects.get(category_label_en=key_string)
+            pixel_mappings = PixelMapping.objects.filter(fb_ad_account=fb_ad_account, pixel_mapping_category=pixel_mapping_category)
+            return True if len(pixel_mappings) > 0 else False
+        except Exception as e:
+            print(traceback.format_exc())
+            return False
 
 class TargetPick(APIView):
     def get(self, request, format=None):
