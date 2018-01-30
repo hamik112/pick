@@ -169,15 +169,15 @@
             <!-- UTM Custom -->
             <div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
               <ul>
-                <li v-for="(item, index) in gAddData.utm_custom" :key="index" class="sticker_btn">
+                <li v-for="(item, index) in gAddData.custom" :key="index" class="sticker_btn">
                   <span>{{ item.name }}</span>
-                  <span class="close-btn" @click="deleteAnalyData(item, 'utm_custom')">
+                  <span class="close-btn" @click="deleteAnalyData(item, 'custom')">
                     <img src="../../../assets/images/target/target_list_close.png" alt="">
                   </span>
                 </li>
               </ul>
               <div class="list_close_btn">
-                <button type="button" @click="deleteAnalyData('all', 'utm_custom')">
+                <button type="button" @click="deleteAnalyData('all', 'custom')">
                   <img src="../../../assets/images/target/target_close_btn.png" alt="">
                 </button>
               </div>
@@ -267,7 +267,7 @@ export default {
         utm_campaign: [],
         utm_term: [],
         utm_content: [],
-        utm_custom: []
+        custom: []
       },
 
       dialogShow: false,
@@ -368,7 +368,7 @@ export default {
           campaigns: this.convertUtmName(this.gAddData.utm_campaign),
           terms: this.convertUtmName(this.gAddData.utm_term),
           contents: this.convertUtmName(this.gAddData.utm_content),
-          customs: this.convertUtmName(this.gAddData.utm_custom)
+          customs: this.convertUtmName(this.gAddData.custom)
         }
 
         this.$http.post('/pickdata_account_target/custom_target', params)
@@ -411,7 +411,7 @@ export default {
           campaigns: this.convertUtmName(this.gAddData.utm_campaign),
           terms: this.convertUtmName(this.gAddData.utm_term),
           contents: this.convertUtmName(this.gAddData.utm_content),
-          customs: this.convertUtmName(this.gAddData.utm_custom)
+          customs: this.convertUtmName(this.gAddData.custom)
         }
 
         this.$http.put('/pickdata_account_target/custom_target', params)
@@ -643,7 +643,7 @@ export default {
 
       params.customs.forEach(customs => {
         let data = { name: custom }
-        this.gAddData.utm_custom.push(data)
+        this.gAddData.custom.push(data)
       })
 
       // this.gAddData.utm_source = params.sources.slice(0)
