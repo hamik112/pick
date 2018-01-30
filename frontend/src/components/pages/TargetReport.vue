@@ -23,7 +23,7 @@
 											</div>
 										</div>
 									</div>
-									<button class="report_search" v-on:click="getGridData('349408409', [])">검색</button>
+									<button class="report_search" v-on:click="getGridData()">검색</button>
 								</div>
 								<div class="target_report_wrap" v-show="isReport">
 									<div class="target_setup">
@@ -39,7 +39,7 @@
 											<span>
 												<img src="../../assets/images/icon/excel_icon.png" alt="">
 											</span>
-											<span>엑셀로 내보내기</span>
+											<span v-on:click="downloadReport()">엑셀로 내보내기</span>
 										</button>
 									</div>
 									<div class="target_report_contents">
@@ -567,12 +567,14 @@ export default {
 							acountIdList.push(item.ad_account_id)
 						})
 						this.accountSelectData.textList = accountNameList
-						this.accountSelectData.textList.splice(0, 0, "전체")
-						this.accountSelectData.emptyText = accountNameList[0]
 						this.accountSelectData.keyList = acountIdList
+						this.accountSelectData.textList.splice(0, 0, "전체")
 						this.accountSelectData.keyList.splice(0, 0, 0)
+						this.accountSelectData.emptyText = accountNameList[0]
 					} else {
 						this.accountSelectData.emptyText = '광고주 없음'
+						this.accountSelectData.textList = []
+						this.accountSelectData.keyList = []
 					}
 				}
 			})
@@ -591,12 +593,13 @@ export default {
 			return keyList[textList.indexOf(emptyText)]
 		},
 
-		getGridData (account_id) {
+		getGridData () {
 			var date_range = []
 			this.range.forEach(date => {
 				date_range.push(date.toISOString().split('T')[0])
 			})
 
+			this.listData.data = []
 			this.isReport = false
 			this.isLoading = true
 			this.loadingTitle = '인사이트를 가져오는 중입니다.'
@@ -606,6 +609,7 @@ export default {
 			this.$http.get(url, {
 				params: {
 					account_id: this.findSelectKey('accountSelectData'),
+					category_name: this.findSelectKey('categorySelectData'),
 					since: date_range[0],
 					until: date_range[1]
 				}
@@ -645,8 +649,23 @@ export default {
 				}
 			})
 			return value
-		}
+		},
 
+		downloadReport () {
+			console.log('download')
+			var date_range = []
+			this.range.forEach(date => {
+				date_range.push(date.toISOString().split('T')[0])
+			})
+			const account_id = this.findSelectKey('accountSelectData')
+			const category_name = this.findSelectKey('categorySelectData')
+			const since = date_range[0]
+			const until = date_range[1]
+
+			// ad_set_insights/?account_id=349408409&since=2018-01-01&until=2018-01-15
+			let url = '/ad_set_insights/download?account_id=' + account_id + '&category_name=' + category_name + '&since=' + since + '&until=' + until
+			window.open(url, '_blank')
+		}
 	}
 }
 </script>
