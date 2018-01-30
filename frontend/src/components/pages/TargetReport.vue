@@ -23,7 +23,7 @@
 											</div>
 										</div>
 									</div>
-									<button class="report_search" v-on:click="getGridData('349408409', [])">검색</button>
+									<button class="report_search" v-on:click="getGridData()">검색</button>
 								</div>
 								<div class="target_report_wrap" v-show="isReport">
 									<div class="target_setup">
@@ -39,7 +39,7 @@
 											<span>
 												<img src="../../assets/images/icon/excel_icon.png" alt="">
 											</span>
-											<span>엑셀로 내보내기</span>
+											<span v-on:click="downloadReport()">엑셀로 내보내기</span>
 										</button>
 									</div>
 									<div class="target_report_contents">
@@ -57,19 +57,39 @@
 														<li class="line-8 normal_depth report-line" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
 														<li class="line-9 report-line" v-if="sortSelectData.listData[8].setting.show">
 															<span>광고비</span>
-															<span class="sort_btn"></span>
+															<span class="sort_type_01">
+																<div>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																</div>
+															</span>
 														</li>
 														<li class="line-10 report-line" v-if="sortSelectData.listData[9].setting.show">
 															<span>노출</span>
-															<span class="sort_btn"></span>
+															<span class="sort_type_01">
+																<div>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																</div>
+															</span>
 														</li>
 														<li class="line-11 report-line" v-if="sortSelectData.listData[10].setting.show">
 															<span>도달</span>
-															<span class="sort_btn"></span>
+															<span class="sort_type_01">
+																<div>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																</div>
+															</span>
 														</li>
 														<li class="line-12 report-line" v-if="sortSelectData.listData[11].setting.show">
 															<span>도달빈도</span>
-															<span class="sort_btn"></span>
+															<span class="sort_type_01">
+																<div>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																</div>
+															</span>
 														</li>
 														<li class="line-13 th_sub depth1 report-line" v-if="sortSelectData.listData[12].setting.show">
 															<dl>
@@ -78,15 +98,30 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[12].setting.show">
 																			<span>링크클릭</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[12].setting.show">
 																			<span>CTR</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[12].setting.show">
 																			<span>CPC</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -99,27 +134,57 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>1번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>2번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>3번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>4번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>5번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[13].setting.show">
 																			<span>6번</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -132,27 +197,57 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 View</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 VTR</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>10초 이상 CPV</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>30초 이상 View</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>30초 이상 VTR</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
 																			<span>30초 이상 CPV</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -165,31 +260,66 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>전환 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>전환 완료 가치</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>1단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>2단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>3단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>4단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[15].setting.show">
 																			<span>5단계 완료</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -202,19 +332,39 @@
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[16].setting.show">
 																			<span>공유</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[16].setting.show">
 																			<span>좋아요</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[16].setting.show">
 																			<span>댓글</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[16].setting.show">
 																			<span>공감</span>
-																			<span class="sort_btn"></span>
+																			<span class="sort_type_02">
+																				<div>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																				</div>
+																			</span>
 																		</li>
 																	</ul>
 																</dd>
@@ -242,16 +392,16 @@
 																</div>
 															</li>
 															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
-															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">{{ item.spend }}</li>
-															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ item.impressions }}</li>
-															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ item.reach }}</li>
-															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ item.frequency }}</li>
+															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">￦{{ numberFormat(item.spend) }}</li>
+															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
+															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
+															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
 															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li>{{ item.inline_link_clicks }}</li>
+																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
 																			<li>{{ item.inline_link_click_ctr }}</li>
 																			<li>{{ item.cpc }}</li>
 																		</ul>
@@ -567,12 +717,14 @@ export default {
 							acountIdList.push(item.ad_account_id)
 						})
 						this.accountSelectData.textList = accountNameList
-						this.accountSelectData.textList.splice(0, 0, "전체")
-						this.accountSelectData.emptyText = accountNameList[0]
 						this.accountSelectData.keyList = acountIdList
+						this.accountSelectData.textList.splice(0, 0, "전체")
 						this.accountSelectData.keyList.splice(0, 0, 0)
+						this.accountSelectData.emptyText = accountNameList[0]
 					} else {
 						this.accountSelectData.emptyText = '광고주 없음'
+						this.accountSelectData.textList = []
+						this.accountSelectData.keyList = []
 					}
 				}
 			})
@@ -591,12 +743,13 @@ export default {
 			return keyList[textList.indexOf(emptyText)]
 		},
 
-		getGridData (account_id) {
+		getGridData () {
 			var date_range = []
 			this.range.forEach(date => {
 				date_range.push(date.toISOString().split('T')[0])
 			})
 
+			this.listData.data = []
 			this.isReport = false
 			this.isLoading = true
 			this.loadingTitle = '인사이트를 가져오는 중입니다.'
@@ -606,6 +759,7 @@ export default {
 			this.$http.get(url, {
 				params: {
 					account_id: this.findSelectKey('accountSelectData'),
+					category_name: this.findSelectKey('categorySelectData'),
 					since: date_range[0],
 					until: date_range[1]
 				}
@@ -645,6 +799,31 @@ export default {
 				}
 			})
 			return value
+		},
+
+		downloadReport () {
+			console.log('download')
+			var date_range = []
+			this.range.forEach(date => {
+				date_range.push(date.toISOString().split('T')[0])
+			})
+			const account_id = this.findSelectKey('accountSelectData')
+			const category_name = this.findSelectKey('categorySelectData')
+			const since = date_range[0]
+			const until = date_range[1]
+
+			// ad_set_insights/?account_id=349408409&since=2018-01-01&until=2018-01-15
+			let url = '/ad_set_insights/download?account_id=' + account_id + '&category_name=' + category_name + '&since=' + since + '&until=' + until
+			window.open(url, '_blank')
+		},
+
+		// currencyFormat (n) {
+		// 	return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		// 	// return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '￦1,');
+		// },
+
+		numberFormat (n) {
+			return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 
 	}

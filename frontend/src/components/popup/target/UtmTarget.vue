@@ -14,22 +14,23 @@
         </div>
         <div class="use_wrap">
           <div class="use_select">
-            <div class="contents_title">사용픽셀</div>
+            <div class="contents_title">사용 픽셀</div>
             <ui-select :selectData="adAccountPixels" data-key="adAccountPixels" :onClick="selectOnClick"></ui-select>
           </div>
           <div class="use_date">
-            <div>수집기간 : 최근</div>
-            <div><input type="text" v-model="utmTargetDay"><span>일</span></div>
+            <div>수집 기간 : 최근</div>
+            <div><input type="text" v-model="collectionPeriod"><span>일</span></div>
           </div>
         </div>
         <div class="target_name">
-          <div class="contents_title">타겟이름</div>
-          <div><input type="text" v-model="utmTargetName"></div>
+          <div class="contents_title">타겟 이름</div>
+          <div><input type="text" v-model="targetName"></div>
         </div>
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>12,000</span>명
+            <span>{{ this.audienceSize }}</span>
+            <span v-show="isNumber">명</span>
           </div>
         </div>
       </div>
@@ -41,7 +42,7 @@
               <div>
                 <div class="select_btn">
                   <div class="select_contents">
-                    <ui-select :selectData="this.selectUser" data-key="selectUser" :onClick="selectOnClick"></ui-select>
+                    <ui-select :selectData="this.selectCustomer" data-key="selectCustomer" :onClick="selectOnClick"></ui-select>
                   </div>
                 </div>
               </div>
@@ -49,7 +50,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="generate_url_list">
@@ -74,55 +75,121 @@
               <li @click="wTabs(0,'wTab')" v-bind:class="[(wTab.tab1 === true) ? 'active' : '']">source</li>
               <li @click="wTabs(1,'wTab')" v-bind:class="[(wTab.tab2 === true) ? 'active' : '']">medium</li>
               <li @click="wTabs(2,'wTab')" v-bind:class="[(wTab.tab3 === true) ? 'active' : '']">campaign</li>
-              <li @click="wTabs(3,'wTab')" v-bind:class="[(wTab.tab4 === true) ? 'active' : '']">team</li>
+              <li @click="wTabs(3,'wTab')" v-bind:class="[(wTab.tab4 === true) ? 'active' : '']">term</li>
               <li @click="wTabs(4,'wTab')" v-bind:class="[(wTab.tab5 === true) ? 'active' : '']">content</li>
               <li @click="wTabs(5,'wTab')" v-bind:class="[(wTab.tab6 === true) ? 'active' : '']">custom</li>
             </ul>
           </div>
           <div class="analytics_tab_list">
+            <!-- UTM Source -->
             <div id="tab_list_1" class="analytics_tab_contents clearfix" v-if="wTab.tab1">
               <ul>
-                <li v-for="(item,index) in gAddData.utm_source" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_source')"><img src="../../../assets/images/target/target_list_close.png" alt=""></span></li>
+                <li v-for="(item, index) in gAddData.utm_source" :key="index" class="sticker_btn">
+                  <span>{{ item.name }}</span>
+                  <span class="close-btn" @click="deleteAnalyData(item, 'utm_source')">
+                    <img src="../../../assets/images/target/target_list_close.png" alt="">
+                  </span>
+                </li>
               </ul>
-              <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_source')"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button></div>
+              <div class="list_close_btn">
+                <button type="button" @click="deleteAnalyData('all', 'utm_source')">
+                  <img src="../../../assets/images/target/target_close_btn.png" alt="">
+                </button>
+              </div>
+
+            <!-- UTM Medium -->
             </div>
             <div id="tab_list_2" class="analytics_tab_contents clearfix" v-if="wTab.tab2">
               <ul>
-                <li v-for="(item,index) in gAddData.utm_medium" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_medium')"><img src="../../../assets/images/target/target_list_close.png" alt=""></span></li>
+                <li v-for="(item, index) in gAddData.utm_medium" :key="index" class="sticker_btn">
+                  <span>{{ item.name }}</span>
+                  <span class="close-btn" @click="deleteAnalyData(item, 'utm_medium')">
+                    <img src="../../../assets/images/target/target_list_close.png" alt="">
+                  </span>
+                </li>
               </ul>
-              <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_meidum')"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button></div>
+              <div class="list_close_btn">
+                <button type="button" @click="deleteAnalyData('all', 'utm_meidum')">
+                  <img src="../../../assets/images/target/target_close_btn.png" alt="">
+                </button>
+              </div>
+
+            <!-- UTM Campaign -->
             </div>
             <div id="tab_list_3" class="analytics_tab_contents clearfix" v-if="wTab.tab3">
               <ul>
-                <li v-for="(item,index) in gAddData.utm_campaign" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_campaign')"><img src="../../../assets/images/target/target_list_close.png" alt=""></span></li>
+                <li v-for="(item, index) in gAddData.utm_campaign" :key="index" class="sticker_btn">
+                  <span>{{ item.name }}</span>
+                  <span class="close-btn" @click="deleteAnalyData(item, 'utm_campaign')">
+                    <img src="../../../assets/images/target/target_list_close.png" alt="">
+                  </span>
+                </li>
               </ul>
-              <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_campaign')"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button></div>
+              <div class="list_close_btn">
+                <button type="button" @click="deleteAnalyData('all', 'utm_campaign')">
+                  <img src="../../../assets/images/target/target_close_btn.png" alt="">
+                </button>
+              </div>
             </div>
+
+            <!-- UTM Term -->
             <div id="tab_list_4" class="analytics_tab_contents clearfix" v-if="wTab.tab4">
               <ul>
-                <li v-for="(item,index) in gAddData.utm_term" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_term')"><img src="../../../assets/images/target/target_list_close.png" alt=""></span></li>
+                <li v-for="(item, index) in gAddData.utm_term" :key="index" class="sticker_btn">
+                  <span>{{ item.name }}</span>
+                  <span class="close-btn" @click="deleteAnalyData(item, 'utm_term')">
+                    <img src="../../../assets/images/target/target_list_close.png" alt="">
+                  </span>
+                </li>
               </ul>
-              <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_term')"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button></div>
+              <div class="list_close_btn">
+                <button type="button" @click="deleteAnalyData('all', 'utm_term')">
+                  <img src="../../../assets/images/target/target_close_btn.png" alt="">
+                </button>
+              </div>
             </div>
+
+            <!-- UTM Content -->
             <div id="tab_list_5" class="analytics_tab_contents clearfix" v-if="wTab.tab5">
               <ul>
-                <li v-for="(item,index) in gAddData.utm_content" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_content')"><img src="../../../assets/images/target/target_list_close.png" alt=""></span></li>
+                <li v-for="(item, index) in gAddData.utm_content" :key="index" class="sticker_btn">
+                  <span>{{ item.name }}</span>
+                  <span class="close-btn" @click="deleteAnalyData(item, 'utm_content')">
+                    <img src="../../../assets/images/target/target_list_close.png" alt="">
+                  </span>
+                </li>
               </ul>
-              <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_content')"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button></div>
+              <div class="list_close_btn">
+                <button type="button" @click="deleteAnalyData('all', 'utm_content')">
+                  <img src="../../../assets/images/target/target_close_btn.png" alt="">
+                </button>
+              </div>
             </div>
+
+            <!-- UTM Custom -->
             <div id="tab_list_6" class="analytics_tab_contents clearfix" v-if="wTab.tab6">
               <ul>
-                <li v-for="(item,index) in gAddData.utm_custom" class="sticker_btn"><span>{{ item.name }}</span><span class="close-btn" @click="deleteAnalyData(item,'utm_custom')"><img src="../../../assets/images/target/target_list_close.png" alt=""></span></li>
+                <li v-for="(item, index) in gAddData.custom" :key="index" class="sticker_btn">
+                  <span>{{ item.name }}</span>
+                  <span class="close-btn" @click="deleteAnalyData(item, 'custom')">
+                    <img src="../../../assets/images/target/target_list_close.png" alt="">
+                  </span>
+                </li>
               </ul>
-              <div class="list_close_btn"><button type="button" @click="deleteAnalyData('all','utm_custom')"><img src="../../../assets/images/target/target_close_btn.png" alt=""></button></div>
+              <div class="list_close_btn">
+                <button type="button" @click="deleteAnalyData('all', 'custom')">
+                  <img src="../../../assets/images/target/target_close_btn.png" alt="">
+                </button>
+              </div>
             </div>
           </div>
         </div>
+        <div v-if="makeType === 'modify'" class="modify_prologue">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
         <div class="btn_wrap">
-          <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
+          <button class="before_btn close_pop" @click="makeType === 'modify' ? $emit('close') : tabMove(0)">취소</button>
           <button class="next_btn" @click="createUtmTarget()" v-if="makeType == 'add'">타겟 만들기</button>
-          <button class="delete_btn" @click="createUtmTargetDelete()" v-if="makeType == 'modify'">삭제</button>
-          <button class="next_btn" @click="createUtmTarget()" v-if="makeType == 'modify'">타겟 수정하기</button>
+          <button class="delete_btn" @click="deleteUtmTarget()" v-if="makeType == 'modify'">삭제</button>
+          <button class="next_btn" @click="updateUtmTarget()" v-if="makeType == 'modify'">타겟 수정하기</button>
         </div>
       </div>
     </div>
@@ -130,6 +197,7 @@
 </template>
 
 <script>
+import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
 
@@ -138,7 +206,7 @@ export default {
 
   components: {
     'ui-select': Select,
-    'ui-dialog':Dialog
+    'ui-dialog': Dialog
   },
 
   props: {
@@ -148,6 +216,7 @@ export default {
         return false
       }
     },
+
     adAccountPixels: {
       type: Object,
       default () {
@@ -159,25 +228,39 @@ export default {
         }
       }
     },
+
     tabMove: {
       type: Function
     },
+
     makeType: {
       type:String
     },
+
     makeItem: {
       type: Object
     }
   },
 
+  created () {
+    this.$eventBus.$on('modifyUtmTarget', this.modifyUtmTarget)
+  },
+
+  beforeDestroy () {
+    this.$eventBus.$off('modifyUtmTarget', this.modifyUtmTarget)
+  },
+
   data () {
     return {
-      utmTargetDay: '30',
-      utmTargetName: '',
+      collectionPeriod: '30',
+      unvisitedPeriod: '',
+      targetName: '',
       inputUtmName: '',
+      audienceSize: '-',
+      isNumber: false,
 
-      subSelect:false,
-      subInput:false,
+      subSelect: false,
+      subInput: false,
 
       gAddData: {
         utm_source: [],
@@ -185,18 +268,18 @@ export default {
         utm_campaign: [],
         utm_term: [],
         utm_content: [],
-        utm_custom: []
+        custom: []
       },
 
-      dialogShow:false,
-      dialogData:{
+      dialogShow: false,
+      dialogData: {
         emptyText:'sample',
         type:'confirm',
         mode:'sample'
       },
-      nextStage:false,
+      nextStage: false,
 
-      selectUser: {
+      selectCustomer: {
         emptyText: '전체 고객',
         textList: [
           '전체 고객',
@@ -257,27 +340,106 @@ export default {
   },
 
   methods: {
-
-    dialogOpen(emptyText, type, mode) {
+    dialogOpen (emptyText, type, mode) {
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type
       this.dialogData['mode'] = mode
-      this.dialogShow = true;
+      this.dialogShow = true
     },
-    dialogOk() {
+
+    // 다이얼로그 확인 클릭시
+    dialogOk () {
       const mode = this.dialogData.mode
 
-      if(mode == 'utmTarget') {
-        // todo
-      } else if (mode === 'utmTargetDelete') {
+      if (mode === 'createUtmTarget') {
+        // Create Target ————————————————————————————————
+        let params = {
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'utm_target',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
+
+          detail: this.findSelectKey('selectCustomer'),
+          input_percent: this.findSelectKey('selectSub'),
+
+          sources: this.convertUtmName(this.gAddData.utm_source),
+          mediums: this.convertUtmName(this.gAddData.utm_medium),
+          campaigns: this.convertUtmName(this.gAddData.utm_campaign),
+          terms: this.convertUtmName(this.gAddData.utm_term),
+          contents: this.convertUtmName(this.gAddData.utm_content),
+          customs: this.convertUtmName(this.gAddData.custom)
+        }
+
+        this.$http.post('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+            this.dialogOpen('구글애널리틱스 타겟 생성 실패', 'alert')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target: ', err)
+        })
+      } else if (mode === 'deleteUtmTarget') {
+        // Delete Target ————————————————————————————————
         this.$emit('deleteCustomTarget', this.makeItem.id)
+
+      } else if (mode === 'updateUtmTarget') {
+        // Update Target ————————————————————————————————
+        let params = {
+          pickdata_account_target_id: this.makeItem.id,
+          fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
+          target_type: 'utm_target',
+          pixel_id: this.findSelectKey('adAccountPixels'),
+          name: this.targetName,
+          retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
+
+          detail: this.findSelectKey('selectCustomer'),
+          input_percent: this.findSelectKey('selectSub'),
+
+          sources: this.convertUtmName(this.gAddData.utm_source),
+          mediums: this.convertUtmName(this.gAddData.utm_medium),
+          campaigns: this.convertUtmName(this.gAddData.utm_campaign),
+          terms: this.convertUtmName(this.gAddData.utm_term),
+          contents: this.convertUtmName(this.gAddData.utm_content),
+          customs: this.convertUtmName(this.gAddData.custom)
+        }
+
+        this.$http.put('/pickdata_account_target/custom_target', params)
+        .then((response) => {
+          var success = response.data.success
+          if (success == "YES") {
+            // success
+            this.$eventBus.$emit('getAccountTarget')
+          } else {
+            this.dialogOpen('구글애널리틱스 타겟 생성 실패', 'alert')
+            throw('success: ' + success)
+          }
+          this.$emit('close')
+        })
+        .catch(err => {
+          this.$emit('close')
+          console.log('/pickdata_account_target/custom_target delete: ', err)
+        })
       }
 
-      //모드별 동작
+      // 모드별 동작
       this.nextStage = true
       this.dialogShow = false;
     },
-    dialogCancel() {
+
+    // 다이얼로그 취소 클릭시
+    dialogCancel () {
       this.nextStage = false;
       this.dialogShow = false;
     },
@@ -293,7 +455,7 @@ export default {
       }
     },
 
-    addAnalyData() {
+    addAnalyData () {
       const elId = event.target.id
       const utmKey = document.getElementById('utm_key').getElementsByClassName('select')[0].innerText.replace(/\s/gi, "")
       const utmName = document.getElementById('utm_name').value
@@ -303,16 +465,18 @@ export default {
         number: gData.length + 1,
         name: utmName
       }
+
+      // const newData = utmName
       //선택필드 탭 활성화
       for(let i = 0; i < keyData.length; i++) {
-        if(keyData[i] === utmKey) {
+        if (keyData[i] === utmKey) {
           this.wTabs(i, 'wTab')
           break
         }
       }
       //동일 이름 체크
       for(let i = 0; i < gData.length; i++) {
-        if(gData[i].name === utmName) {
+        if (gData[i].name === utmName) {
           //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
           this.dialogOpen('같은 UTM값이 존재합니다.', 'alert')
           break
@@ -326,7 +490,7 @@ export default {
       return false
     },
 
-    deleteAnalyData(item, key){
+    deleteAnalyData (item, key){
       const elId = event.target.closest('.analytics_tab_contents').id
       const addListEl = document.getElementById(elId)
       const addlistLi = addListEl.getElementsByTagName('li')
@@ -353,10 +517,15 @@ export default {
       this[key].emptyText = item
     },
 
+    findSelectText (selectName, key) {
+      // Select Text 가져오기
+      const textList = this[selectName].textList
+      const keyList = this[selectName].keyList
+      return textList[keyList.indexOf(key)]
+    },
+
     findSelectKey (selectName) {
-      /*
-      Select Key 가져오기
-      */
+      // Select Key 가져오기
       const emptyText = this[selectName].emptyText
       const textList = this[selectName].textList
       const keyList = this[selectName].keyList
@@ -371,46 +540,119 @@ export default {
       return result
     },
 
+    // Create Target Dialog
     createUtmTarget () {
-      let params = {
-        fb_ad_account_id: localStorage.getItem('fb_ad_account_id'),
-        target_type: 'utm_target',
-        pixel_id: this.findSelectKey('adAccountPixels'),
-        name: this.utmTargetName,
-        retention_days: this.utmTargetDay,
-
-        detail: this.findSelectKey('selectUser'),
-        input_percent: this.findSelectKey('selectSub'),
-
-        sources: this.convertUtmName(this.gAddData.utm_source),
-        mediums: this.convertUtmName(this.gAddData.utm_medium),
-        campaigns: this.convertUtmName(this.gAddData.utm_campaign),
-        terms: this.convertUtmName(this.gAddData.utm_term),
-        contents: this.convertUtmName(this.gAddData.utm_content),
-        customs: this.convertUtmName(this.gAddData.utm_custom)
-      }
-
-      this.$http.post('/pickdata_account_target/custom_target', params)
-      .then((response) => {
-        var success = response.data.success
-        if (success == "YES") {
-          // success
-          this.$eventBus.$emit('getAccountTarget')
-        } else {
-          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
-          this.dialogOpen('구글애널리틱스 타겟 생성 실패', 'alert')
-          throw('success: ' + success)
-        }
-        this.$emit('close')
-      })
-      .catch(err => {
-        this.$emit('close')
-        console.log('/pickdata_account_target/custom_target: ', err)
-      })
+      this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createUtmTarget')
     },
 
-    createUtmTargetDelete () {
-      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'utmTargetDelete')
+    // Delete Target Dialog
+    deleteUtmTarget () {
+      this.dialogOpen('삭제하시겠습니까?', 'confirm', 'deleteUtmTarget')
+    },
+
+    // Update Target Dialog
+    updateUtmTarget () {
+      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateUtmTarget')
+    },
+
+    modifyUtmTarget () {
+      const description = this.makeItem.description
+      const params = description.params
+      const detail = params.detail
+
+      // 사용 픽셀
+      this.adAccountPixels.emptyText = this.findSelectText('adAccountPixels', params.pixel_id)
+
+      // 수집 기간
+      this.collectionPeriod = numberFormatter(description.retention_days)
+
+      // 타겟 이름
+      this.targetName = this.makeItem.name
+
+      // 타겟 모수
+      const displayCount = this.makeItem.display_count
+
+      if (displayCount === '규모가 적음') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else if (displayCount === '생성중') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else {
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+        this.isNumber = true
+      }
+
+      // 아래 UTM 속성으로 유입된 사람중 @
+      if (detail === 'total') {
+        // 전체 고객
+        this.selectCustomer.emptyText = '전체 고객'
+      } else if (detail === 'usage_time_top') {
+        // 이용 시간 상위 고객
+        this.selectCustomer.emptyText = '이용 시간 상위 고객'
+        this.subSelect = true
+        this.selectSub.emptyText = params.input_percent + '%'
+      } else if (detail === 'non_visit') {
+        // 특정일 동안 미방문 고객
+        this.selectCustomer.emptyText = '특정일 동안 미방문 고객'
+        this.subInput = true
+      } else if (detail === 'purchase') {
+        // 구매 고객
+        this.selectCustomer.emptyText = '구매 고객'
+      } else if (detail === 'non_purchase') {
+        // 미구매 고객
+        this.selectCustomer.emptyText = '미구매 고객'
+      } else if (detail === 'add_to_cart') {
+        // 장바구니 이용 고객
+        this.selectCustomer.emptyText = '장바구니 이용 고객'
+      } else if (detail === 'conversion') {
+        // 전환완료 고객
+        this.selectCustomer.emptyText = '전환완료 고객'
+      } else if (detail === 'non_conversion') {
+        // 미전환 고객
+        this.selectCustomer.emptyText = '미전환 고객'
+      } else if (detail === 'registration') {
+        // 회원가입 고객
+        this.selectCustomer.emptyText = '회원가입 고객'
+      }
+
+      // UTM 속성
+      params.sources.forEach(source => {
+        let data = { name: source }
+        this.gAddData.utm_source.push(data)
+      })
+
+      params.mediums.forEach(medium => {
+        let data = { name: medium }
+        this.gAddData.utm_medium.push(data)
+      })
+
+      params.campaigns.forEach(campaign => {
+        let data = { name: campaign }
+        this.gAddData.utm_campaign.push(data)
+      })
+
+      params.terms.forEach(term => {
+        let data = { name: term }
+        this.gAddData.utm_term.push(data)
+      })
+
+      params.contents.forEach(content => {
+        let data = { name: content }
+        this.gAddData.utm_content.push(data)
+      })
+
+      params.customs.forEach(customs => {
+        let data = { name: custom }
+        this.gAddData.custom.push(data)
+      })
+
+      // this.gAddData.utm_source = params.sources.slice(0)
+      // this.gAddData.utm_medium = params.mediums.slice(0)
+      // this.gAddData.utm_campaign = params.campaigns.slice(0)
+      // this.gAddData.utm_term = params.terms.slice(0)
+      // this.gAddData.utm_content = params.contents.slice(0)
+      // this.gAddData.utm_custom = params.customs.slice(0)
     }
   }
 }

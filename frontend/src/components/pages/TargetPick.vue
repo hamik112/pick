@@ -2,7 +2,7 @@
 	<div id="main_wrap" class="clearfix" >
 
 		<transition name='modal'>
-			<target-chart v-if="chartModal" @close="chartModal = false"></target-chart>
+			<target-chart v-if="chartModal" @close="chartModal = false" :chartItem="this.chartItem"></target-chart>
 			<create-target v-if="makeModal" :makeType="this.makeType" :makeItem="this.makeItem" @close="makeModal = false"></create-target>
 		</transition>
 
@@ -39,10 +39,9 @@
 									<ul>
 										<li v-for="(item, index) in this.targetList[this.targetOn]" :key="index">
 											<div class="target_icon">
-												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
-												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
-												<div class="icon_target" @click="popupOpenBtn('makeModal','modify', item)"></div>
-												<div class="icon_gragh" @click="chartModal = true"></div>
+												<div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']"></div>
+												<div class="icon_gragh" v-if="!item.demographic_complete"></div>
+												<div class="icon_gragh on" v-if="item.demographic_complete" @click="popupOpenChart('chartModal', item)"></div>
 												<button type="button" @click="popupOpenBtn('makeModal','modify', item)">수정</button>
 											</div>
 											<div class="target_info">
@@ -103,6 +102,8 @@
 				makeModal: false,
 				makeType:'add',
 				makeItem: {},
+
+				chartItem: {},
 
 				targetOn:'total',
 
@@ -295,6 +296,10 @@
 					this.makeItem = item
 					this.makeType = type
 				}
+			},
+			popupOpenChart(popupName, item) {
+				this[popupName] = true
+				this.chartItem = item
 			},
 			tPickMenu (type) {
 				//매뉴 온오프 or 리스트 필터

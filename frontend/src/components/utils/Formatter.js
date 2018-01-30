@@ -12,3 +12,7 @@ export function dateFormatter (str) {
 export function numberFormatter (num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+export function numberToFixed (num, cut) {
+  return num.toFixed(cut)
+}

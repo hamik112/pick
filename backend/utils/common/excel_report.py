@@ -23,7 +23,6 @@ class ExcelReport():
     def write_workbook(self, file_path, file_name, target_insights):
         try:
             print("FILE : %s"%(os.path.join(file_path, file_name)))
-            print("WRITE WORKBOOK")
             workbook = xlsxwriter.Workbook(os.path.join(file_path, file_name))
             format_dict = self.workbook_format(workbook)
 
@@ -38,7 +37,6 @@ class ExcelReport():
 
     def write_worksheet(self, workbook, target_insights):
         try:
-            print("WRITE WORKSHEET - %")
             # format_dict = self.workbook_format(workbook)
             integer = workbook.add_format({'num_format': '0'})
             decimal = workbook.add_format({'num_format': '0.00'})
@@ -64,10 +62,25 @@ class ExcelReport():
                 row_name = 'U' + str(idx + 2)
                 worksheet.write_row(row_name, self.facebook_fb_event_to_list(item, actions_name_list))
 
-            worksheet.set_column('I', None, currency)
+            # CUSTOM_EVENT 한글화
+            new_headlist = self.facebook_custom_event_to_ko(target_insights, actions_name_list)
+            for n, i in enumerate(head_list):
+                for new in new_headlist:
+                    for key, value in new.items():
+                        if i == key:
+                            head_list[n] = value
+
+            # HEAD 덮어쓰기
+            worksheet.write_row('A1', head_list)
+
+            # total_col = 19 + len(head_list)
+            # print(total_col)
+            # 기본 19개 + haed_list
+            worksheet.set_column('I:I', 15, currency)
             worksheet.set_column('J:K', None, number)
             worksheet.set_column('M:N', None, number)
-            worksheet.set_column('Q:T', None, number)
+            worksheet.set_column(20, int(total_col), None, number)
+            # TODO dynamic fields는 포맷 어떻게?
 
         except Exception as e:
             logger.error(e)
@@ -123,7 +136,6 @@ class ExcelReport():
         return format_dict
 
     def facebook_insight_to_headlist(self, target_insights, actions_name_list):
-        print('headlist')
         head_list = []
         try:
             head_list.append("account_category")
@@ -146,9 +158,9 @@ class ExcelReport():
             head_list.append("video_30_sec_view")
             head_list.append("conversions")
             head_list.append("pickdata_custom_pixel_event")
-            # TODO 전환지표
+
             head_list = head_list + actions_name_list
-            print(head_list)
+
         except Exception as e:
             logger.error(e)
             logger.error(traceback.format_exc())
@@ -158,7 +170,6 @@ class ExcelReport():
     def facebook_pickdata_event_to_list(self, insight):
         insight_list = []
         try:
-            print(insight["pickdata_custom_pixel_event"])
             if insight["pickdata_custom_pixel_event"] != []:
                 insight_list.append(insight["pickdata_custom_pixel_event"])
             else:
@@ -171,17 +182,17 @@ class ExcelReport():
         return insight_list
 
     def facebook_fb_event_to_list(self, insight, actions_name_list):
-        print(actions_name_list)
         insight_list = []
         try:
             for actions_name in actions_name_list:
                 # insight_list.append('0')
                 if actions_name in insight:
-                    insight_list.append(insight[actions_name])
+                    if 'offsite_conversion.' in actions_name:
+                        insight_list.append(insight[actions_name]['value'])
+                    else:
+                        insight_list.append(insight[actions_name])
                 else:
                     insight_list.append('0')
-            else:
-                insight_list.append('0')
 
         except Exception as e:
             logger.error(e)
@@ -190,7 +201,6 @@ class ExcelReport():
         return insight_list
 
     def facebook_insight_to_list(self, insight, actions_name_list):
-        print(insight)
         insight_list = []
         try:
             insight_list.append(insight["account_category"])
@@ -235,7 +245,6 @@ class ExcelReport():
         return insight_list
 
     def find_insight_actions_name_list(self, insights):
-        print('find_insight_actions')
         name_list = []
         try:
             for insight in insights:
@@ -243,9 +252,34 @@ class ExcelReport():
                     if "_event" in elem:
                         name_list.append(elem)
                         name_list = list(set(name_list))
+                    else:
+                        pass
             name_list = sorted(name_list)
+
         except Exception as e:
             logger.error(e)
             logger.error(traceback.format_exc())
             logger.error("insight actions name list Fail")
         return name_list
+
+    def facebook_custom_event_to_ko(self, insights, actions_name_list):
+        event_list = []
+        try:
+            for actions_name in actions_name_list:
+                for insight in insights:
+                    if actions_name in insight:
+                        if 'offsite_conversion.custom' in actions_name:
+                            convert = {}
+                            convert[actions_name] = insight[actions_name]['name']
+                            event_list.append(convert)
+                            actions_name = insight[actions_name]['name']
+                        else:
+                            pass
+                    else:
+                        pass
+
+        except Exception as e:
+            logger.error(e)
+            logger.error(traceback.format_exc())
+            logger.error("insight to list Fail")
+        return event_list

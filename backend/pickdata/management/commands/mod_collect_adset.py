@@ -1,7 +1,7 @@
 __author__ = 'parkjiminy'
 from ad_set.models import AdSet
 from utils.facebookapis import api_init
-from utils.facebookapis.ad_account import ad_accounts
+from utils.facebookapis.ad_account import ad_accounts, ad_sets as account_adset_api
 
 import logging
 import traceback
@@ -41,7 +41,7 @@ class Command(BaseCommand):
                 account_id = my_account.get('id')
                 account_name = my_account.get('name')
 
-                ad_sets = ad_sets.get_my_ad_sets(account_id)
+                ad_sets = account_adset_api.get_my_ad_sets(account_id)
 
                 for ad_set in ad_sets:
                     ad_set = ad_set._json
@@ -89,6 +89,8 @@ class Command(BaseCommand):
                         age_max = targeting.get('age_max', 0)
                         gender = targeting.get('gender', [0])
 
+                        user_name = "Module"
+
                         create_adset = AdSet.create_or_update(AdSet, adset_id, account_id=account_id,
                                                               account_name=account_name,
                                                               campaign_id=campaign_id, campaign_name=campaign_name,
@@ -102,7 +104,8 @@ class Command(BaseCommand):
                                                               exclude_interests=exclude_interests,
                                                               exclude_behaviors=exclude_behaviors,
                                                               custom_audiences=custom_audiences,
-                                                              excluded_custom_audiences=excluded_custom_audiences)
+                                                              excluded_custom_audiences=excluded_custom_audiences,
+                                                              user_name=user_name)
                         time.sleep(1)
 
             logger.info("collect adset module complete")

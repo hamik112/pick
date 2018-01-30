@@ -15,43 +15,50 @@
 										<div class="select_btn">
 											<div class="select_contents">
 												<!-- <div class="select"><p>오늘:2017/11/13</p></div> -->
-												<ui-calendar v-model="range"></ui-calendar>
+												<ui-calendar inputId="chartDate" v-model="range"></ui-calendar>
+												<button type="button" id="chart-search-btn" @click="chartsDatas" v-if="chartOn">조회</button>
+												<button type="button" id="chart-search-btn" v-if="!chartOn"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img"></button>
 											</div>
 										</div>
 									</div>
 									<div class="target_chart_top clearfix">
 										<div class="use_limit clearfix">
 											<div>
-												<span>장바구니 이용고객_7일간</span>
+												<span>{{ chartName }}</span>
 												<ui-hover></ui-hover>
 											</div>
-											<p>글자수제한</p>
-											<strong>6,500명</strong>
+											<strong v-if="!chartOn">-</strong>
+											<strong v-if="chartOn">{{ total.audience }}명</strong>
 										</div>
 										<div class="expense_price">
 											<p>총 지출 금액(원)</p>
-											<p>1,152,352,000</p>
+											<p v-if="!chartOn">-</p>
+											<p v-if="chartOn">{{ total.spend }}</p>
 										</div>
 										<div class="all_switch">
 											<p>총 전환</p>
-											<p>3,512</p>
+											<p v-if="!chartOn">-</p>
+											<p v-if="chartOn">{{ total.convertion }}</p>
 										</div>
 										<div class="cpa_chart">
 											<p>CPA</p>
-											<p>815</p>
+											<p v-if="!chartOn">-</p>
+											<p v-if="chartOn">{{ total.cpa }}</p>
 										</div>
 									</div>
 									<div class="target_chart_wrap">
 										<div>
 											<h2>인구 통계학적 특성</h2>
 											<div class="graph_type01">
-												<ui-charts :chartData="this.chart1"></ui-charts>
+												<ui-PartialLoading  v-if="!chartOn" />
+												<ui-charts :chartData="this.chartGenderData" v-if="chartOn"></ui-charts>
 											</div>
 										</div>
 										<div>
 											<h2>노출위치</h2>
 											<div class="graph_type02">
-												<ui-charts :chartData="this.chart2"></ui-charts>
+												<ui-PartialLoading v-if="!chartOn" />
+												<ui-charts :chartData="this.chartPlacementData" v-if="chartOn"></ui-charts>
 											</div>
 										</div>
 									</div>
@@ -72,21 +79,48 @@ import Select from '@/components/ui/Select'
 import Charts from '@/components/ui/Charts'
 import Calendar from '@/components/ui/Calendar'
 import Hover from '@/components/ui/Hover'
+import PartialLoading from '@/components/ui/partialLoading'
+import { numberToFixed,numberFormatter } from '@/components/utils/formatter'
 
 export default {
-	name: 'TargetChartPop',
-	
+  name: 'TargetChartPop',
+
   components: {
 		'ui-select': Select,
 		'ui-charts': Charts,
 		'ui-calendar': Calendar,
-		'ui-hover': Hover
-	},
-	
+		'ui-hover': Hover,
+		'ui-PartialLoading': PartialLoading
+  },
+
+  props:{
+  	chartItem: {
+  		type:Object,
+  		default () {
+  			return {}
+  		}
+  	}
+  },
+
+  created() {
+  	this.chartsDatas()
+  },
+
   data () {
 		return {
-			//charts Data sample
-			chart1: {
+			//loading
+			chartOn:false,
+			//chartName
+			chartName:"-",
+			//totalData
+			total:{
+				audience:0,
+				conversion:0,
+				spend:0,
+				cta:0
+			},
+			//chartGenderData
+			chartGenderData: {
 				legend: ['모든남성 50%(3,250)','모든 여성 50%(3,250)'],
 				xAxis: ['13-17세','18-24세','25-34세','35-44세','45-54세','55-64세','65세이상'],
 				yAxis: {
@@ -94,12 +128,12 @@ export default {
 					'name':'%',
 					'max':100
 				},
-				
+
 				series:[
 					{
 						name:'모든남성 50%(3,250)',
 						type:'bar',
-						data:[22, 63, 78, 33, 27, 25, 31],
+						data:[],
 						barWidth: '10%',
 
 						itemStyle:{
@@ -113,10 +147,11 @@ export default {
 							}
 						}
 					},
+
 					{
 						name:'모든 여성 50%(3,250)',
 						type:'bar',
-						data:[33, 22, 44, 66, 23, 87, 21],
+						data:[],
 						barWidth: '10%',
 						itemStyle:{
 							normal: {
@@ -131,17 +166,18 @@ export default {
 					}
 				]
 			},
-			chart2:{
+
+			//chartPlacementData
+			chartPlacementData:{
 				//네임
-				legend: ['PC','Mobile'],
+				legend: [],
 
 				//X데이터 네임
-				xAxis: ['FaceBook','Audience Network','Instagram','Messanger'],
+				xAxis: [],
 
 				yAxis: {
 					'type':'value',
-					'name':'K',
-					'max':6
+					'name':'K'
 				},
 
 				//순차적 데이터
@@ -149,7 +185,7 @@ export default {
 					{
 						name: 'PC',
 						type: 'bar',
-						data: [4.3, 2.5, 5.0, 2.2, 1.6],
+						data: [],
 						barWidth: '5%',
 						itemStyle: {
 							normal: {
@@ -165,7 +201,7 @@ export default {
 					{
 						name: 'Mobile',
 						type: 'bar',
-						data: [2.6, 5.9, 4.0, 5.4, 3.7],
+						data: [],
 						barWidth: '5%',
 						itemStyle: {
 							normal: {
@@ -174,6 +210,7 @@ export default {
 									position: 'insideLeft',
 									formatter: '{c}K'
 								},
+
 								color:'#45ceb4'
 							}
 						}
@@ -204,9 +241,77 @@ export default {
 				}
 			}
 		}
+  },
+  methods: {
+  	chartsRedatas(data) {
+  		const reDatas = []
+  		for(let i = 0; i < data.length; i++) {
+  			reDatas.push(numberToFixed(data[i], 2))
+  		}
+  		return reDatas
+  	},
+  	chartsDatas() {
+  		this.chartOn = false
+  		const targetId = this.chartItem.id
+	  	const dateVal = document.getElementById('chartDate').value.replace(/\s/gi, "")
+	  	//오늘날짜
+	  	const d = new Date;
+		const yy = d.getFullYear()
+		const mm = ((d.getMonth() + 1) < 10) ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)
+		const dd = (d.getDate() < 10) ? '0' + d.getDate() : d.getDate()
+
+		let firstDate = yy + '-' + mm + '-' + dd
+		let endDate = firstDate
+
+	  	if(dateVal != '') {
+			const dateSplit = dateVal.split('~')
+			firstDate = dateSplit[0]
+			endDate = dateSplit[1]
+		}
+
+	  	this.$http.get('/pickdata_account_target/target_chart', {
+	  		params: {
+				pickdata_target_id:targetId,
+				start_date:firstDate,
+				end_date:endDate
+			}
+	    })
+	    .then(res => {
+	      const response = res.data
+	      const success = response.success
+	      if (success === 'YES') {
+	      	//네임
+	      	this.chartName = response.name
+	      	//totalData
+	      	this.total.audience = numberFormatter(response.audience_count)
+	      	this.total.convertion = numberFormatter(response.total_conversion)
+	      	this.total.spend = numberFormatter(response.total_spend)
+	      	this.total.cpa = numberFormatter(Math.round(response.cpa))
+	      	//genderData
+	      	this.chartGenderData.series[0]['data'] = this.chartsRedatas(response.age_gender_data.data.male.percents)
+	      	this.chartGenderData.series[1]['data'] = this.chartsRedatas(response.age_gender_data.data.female.percents)
+	      	//placementsData
+	      	this.chartPlacementData['legend'] = response.placement_data.legend
+	      	this.chartPlacementData['xAxis'] = response.placement_data.xAxis
+	      	this.chartPlacementData.series[0]['data'] = response.placement_data.data.PC.vals
+	      	this.chartPlacementData.series[1]['data'] = response.placement_data.data.Mobile.vals
+
+	      	this.chartOn = true
+	      }else{
+	      	throw('success: ' + success)
+	      }
+
+	    })
+  	}
   }
 }
 </script>
 
 <style lang="css" scoped>
+.graph_type01,
+.graph_type02 { overflow:hidden; }
+.select_btn { width:460px; }
+.vue-calendar { float:left; width:350px; }
+#chart-search-btn { float:right; width:100px; height:40px; line-height:40px; background:#375b96; text-align:center; color:#fff; }
+.loading-img { display:block; width:20px; }
 </style>
