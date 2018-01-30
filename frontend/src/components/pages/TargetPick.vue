@@ -40,7 +40,7 @@
 										<li v-for="(item, index) in this.targetList[this.targetOn]" :key="index">
 											<div class="target_icon">
 												<div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']"></div>
-												<div class="icon_gragh" v-if="!item.demographic_complete"></div>
+												<div class="icon_gragh" v-if="!item.demographic_complete" @click="popupOpenChart('chartModal', item)"></div>
 												<div class="icon_gragh on" v-if="item.demographic_complete" @click="popupOpenChart('chartModal', item)"></div>
 												<button type="button" @click="popupOpenBtn('makeModal','modify', item)">수정</button>
 											</div>
