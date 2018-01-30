@@ -494,7 +494,8 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
+      collectionPeriod: 30,
+      unvisitedPeriod: 0,
       targetName: '',
       neoTargetType: 'media',
       audienceSize: '-',
@@ -577,6 +578,32 @@ export default {
 
       csvItems: [],
       addCsvItems: []
+    }
+  },
+
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
+        this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    unvisitedPeriod (day) {
+      if(day >= this.collectionPeriod) {
+        alert('미방문 기간은 수집 기간보다 작아야합니다.')
+        this.unvisitedPeriod = this.collectionPeriod - 1
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
+        this.targetName = name.substr(0,48)
+      }
     }
   },
 
@@ -824,7 +851,15 @@ export default {
 
     // Create Target Dialog
     createNeoTarget () {
-      this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createNeoTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createNeoTarget')
+      }
     },
 
     // Delete Target Dialog
@@ -834,7 +869,15 @@ export default {
 
     // Update Target Dialog
     updateNeoTarget () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateNeoTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateNeoTarget')
+      }
     },
 
     // TODO 제거 또는 변경 필요

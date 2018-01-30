@@ -117,8 +117,8 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
-      unvisitedPeriod: '1',
+      collectionPeriod: 30,
+      unvisitedPeriod: 0,
       targetName: '',
       audienceSize: '-',
       isNumber: false,

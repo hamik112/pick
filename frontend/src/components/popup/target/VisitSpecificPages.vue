@@ -46,7 +46,7 @@
                 <ui-select :selectData="selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="generate_url_list">
@@ -131,7 +131,8 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
+      collectionPeriod: 30,
+      unvisitedPeriod: 0,
       targetName: '',
       audienceSize: '-',
       isNumber: false,
@@ -189,6 +190,32 @@ export default {
           }
         }
       ]
+    }
+  },
+
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
+        this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    unvisitedPeriod (day) {
+      if(day >= this.collectionPeriod) {
+        alert('미방문 기간은 수집 기간보다 작아야합니다.')
+        this.unvisitedPeriod = this.collectionPeriod - 1
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
+        this.targetName = name.substr(0,48)
+      }
     }
   },
 
@@ -380,6 +407,12 @@ export default {
       if (validation === false) {
         //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
         this.dialogOpen('입력되지 않은 URL이 있습니다.', 'alert')
+      } else if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
       } else {
         //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
         this.dialogOpen('입력한 내용으로 타겟을 생성하겠습니까?', 'confirm', 'visitSpecificPages')
@@ -393,7 +426,29 @@ export default {
 
     // Update Target Dialog
     updateVisitSpecificPages () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateVisitSpecificPages')
+      // URL 목록
+      let fieldUrls = []
+      this.fields.forEach(field => {
+        fieldUrls.push(field.url)
+      })
+
+      // URL이 모두 입력 되었는지 확인
+      let validation = fieldUrls.every(fieldUrl => {
+        // 빈 URL이 없다면 true 반환
+        return fieldUrl !== ''
+      })
+
+      if (validation === false) {
+        this.dialogOpen('입력되지 않은 URL이 있습니다.', 'alert')
+      } else if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateVisitSpecificPages')
+      }
     },
 
     // 수정 클릭시 타겟 생성 팝업 데이터 초기화 (/fb_ad_accounts/ad_account_pixels call after)
