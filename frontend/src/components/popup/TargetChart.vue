@@ -26,19 +26,23 @@
 												<ui-hover></ui-hover>
 											</div>
 											<p>글자수제한</p>
-											<strong>6,500명</strong>
+											<strong v-if="!chartOn">-명</strong>
+											<strong v-if="chartOn">{{ total.audience }}명</strong>
 										</div>
 										<div class="expense_price">
 											<p>총 지출 금액(원)</p>
-											<p>1,152,352,000</p>
+											<p v-if="!chartOn">-</p>
+											<p v-if="chartOn">{{ total.spend }}</p>
 										</div>
 										<div class="all_switch">
 											<p>총 전환</p>
-											<p>3,512</p>
+											<p v-if="!chartOn">-</p>
+											<p v-if="chartOn">{{ total.convertion }}</p>
 										</div>
 										<div class="cpa_chart">
 											<p>CPA</p>
-											<p>815</p>
+											<p v-if="!chartOn">-</p>
+											<p v-if="chartOn">{{ total.cpa }}</p>
 										</div>
 									</div>
 									<div class="target_chart_wrap">
@@ -75,7 +79,7 @@ import Charts from '@/components/ui/Charts'
 import Calendar from '@/components/ui/Calendar'
 import Hover from '@/components/ui/Hover'
 import PartialLoading from '@/components/ui/partialLoading'
-import { numberToFixed } from '@/components/utils/formatter'
+import { numberToFixed,numberFormatter } from '@/components/utils/formatter'
 
 export default {
   name: 'TargetChartPop',
@@ -107,6 +111,11 @@ export default {
       const response = res.data
       const success = response.success
       if (success === 'YES') {
+      	//totalData
+      	this.total.audience = numberFormatter(response.audience_count)
+      	this.total.convertion = numberFormatter(response.total_conversion)
+      	this.total.spend = numberFormatter(response.total_spend)
+      	this.total.cpa = numberFormatter(Math.round(response.cta))
       	//genderData
       	this.chartGenderData.series[0]['data'] = this.chartsRedatas(response.age_gender_data.data.male.percents)
       	this.chartGenderData.series[1]['data'] = this.chartsRedatas(response.age_gender_data.data.female.percents)
@@ -129,7 +138,13 @@ export default {
 			//loading
 			chartOn:false,
 
-
+			//totalData
+			total:{
+				audience:0,
+				conversion:0,
+				spend:0,
+				cta:0
+			},
 			//chartGenderData
 			chartGenderData: {
 				legend: ['모든남성 50%(3,250)','모든 여성 50%(3,250)'],
