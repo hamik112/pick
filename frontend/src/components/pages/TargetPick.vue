@@ -39,10 +39,9 @@
 									<ul>
 										<li v-for="(item, index) in this.targetList[this.targetOn]" :key="index">
 											<div class="target_icon">
-												<!-- <div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']" @click="makeModal1 = true"></div>
-												<div class="icon_gragh" v-bind:class="[(item.demographic_complete) ? 'on' : '']" @click="chartModal = true"></div> -->
-												<div class="icon_target" @click="popupOpenBtn('makeModal','modify', item)"></div>
-												<div class="icon_gragh" @click="popupOpenChart('chartModal', item)"></div>
+												<div class="icon_target" v-bind:class="[(item.targeting_complete) ? 'on' : '']"></div>
+												<div class="icon_gragh" v-if="!item.demographic_complete"></div>
+												<div class="icon_gragh on" v-if="item.demographic_complete" @click="popupOpenChart('chartModal', item)"></div>
 												<button type="button" @click="popupOpenBtn('makeModal','modify', item)">수정</button>
 											</div>
 											<div class="target_info">

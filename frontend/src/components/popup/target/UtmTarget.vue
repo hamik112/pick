@@ -29,7 +29,8 @@
         <div class="target_data">
           <div class="contents_title">타겟 모수</div>
           <div>
-            <span>{{ this.audienceSize }}</span>명
+            <span>{{ this.audienceSize }}</span>
+            <span v-show="isNumber">명</span>
           </div>
         </div>
       </div>
@@ -183,6 +184,7 @@
             </div>
           </div>
         </div>
+        <div v-if="makeType === 'modify'">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
         <div class="btn_wrap">
           <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
           <button class="next_btn" @click="createUtmTarget()" v-if="makeType == 'add'">타겟 만들기</button>
@@ -254,6 +256,7 @@ export default {
       targetName: '',
       inputUtmName: '',
       audienceSize: '-',
+      isNumber: false,
 
       subSelect: false,
       subInput: false,
@@ -566,7 +569,18 @@ export default {
       this.targetName = this.makeItem.name
 
       // 타겟 모수
-      this.audienceSize = numberFormatter(this.makeItem.display_count)
+      const displayCount = this.makeItem.display_count
+
+      if (displayCount === '규모가 적음') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else if (displayCount === '생성중') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else {
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+        this.isNumber = true
+      }
 
       // 아래 UTM 속성으로 유입된 사람중 @
       if (detail === 'total') {

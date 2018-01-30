@@ -26,6 +26,13 @@
           <div class="contents_title">타겟 이름</div>
           <div><input type="text" v-model="targetName"></div>
         </div>
+        <div class="target_data">
+          <div class="contents_title">타겟 모수</div>
+          <div>
+            <span>{{ this.audienceSize }}</span>
+            <span v-show="isNumber">명</span>
+          </div>
+        </div>
         <div class="target_type">
           <div class="contents_title">Neo 유형</div>
           <ul>
@@ -39,7 +46,7 @@
               <div class="result_check"><input type="radio" id="target_type03" name="neo_type"  @change="wTabs(2,'wTab')" value="keyword" v-model="neoTargetType"><label for="target_type03">키워드</label></div>
             </li>
             <li>
-              <div class="result_check" v-show="false"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel" v-model="neoTargetType"><label for="target_type04">엑셀업로드</label></div>
+              <div class="result_check"><input type="radio" id="target_type04" name="neo_type" @change="wTabs(3,'wTab')" value="excel" v-model="neoTargetType"><label for="target_type04">엑셀업로드</label></div>
             </li>
           </ul>
         </div>
@@ -241,13 +248,12 @@
                   <div class="excel_wrap">
                     <div class="download_wrap clearfix">
                       <button><strong>엑셀업로드</strong></button>
-                      <button>양식 다운로드</button>
+                      <button @click="downloadTemplate()">양식 다운로드</button>
                     </div>
                     <div class="input_wrap clearfix">
                       <div>
-                        <input type="text">
+                        <input type="file">
                       </div>
-                      <button></button>
                     </div>
                     <button class="upload_btn view_alert"><strong>업로드</strong></button>
                   </div>
@@ -266,6 +272,7 @@
         </div>
       </div>
     </div>
+    <div v-if="makeType === 'modify'">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createNeoTarget()" v-if="makeType === 'add'">타겟 만들기</button>
@@ -343,7 +350,7 @@ export default {
         this.selectedNeoAccounts = selected
       }
     },
-    
+
     selectAllNeoCampaigns: {
       get () {
         let neoCampaignKeys = Object.keys(this.neoCampaigns)
@@ -486,6 +493,8 @@ export default {
       collectionPeriod: '30',
       targetName: '',
       neoTargetType: 'media',
+      audienceSize: '-',
+      isNumber: false,
 
       neoAccounts: [],
       neoCampaigns: [],
@@ -907,6 +916,20 @@ export default {
       // 타겟 이름
       this.targetName = this.makeItem.name
 
+      // 타겟 모수
+      const displayCount = this.makeItem.display_count
+
+      if (displayCount === '규모가 적음') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else if (displayCount === '생성중') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else {
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+        this.isNumber = true
+      }
+
       // 사이트 방문자중 @
       if (detail === 'total') {
         // 전체 고객
@@ -941,6 +964,10 @@ export default {
       } else {
         console.log('nothing..', detail)
       }
+    },
+
+    downloadTemplate () {
+      window.open('/pickdata_account_target/neo_custom_target', '_blank')
     }
   }
 }

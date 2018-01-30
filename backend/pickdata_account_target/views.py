@@ -25,6 +25,7 @@ from django.conf import settings
 
 facebook_app_id = settings.FACEBOOK_APP_ID
 
+import csv
 import json
 import logging
 import traceback
@@ -36,6 +37,44 @@ class PickdataAccountTargetViewSet(viewsets.ModelViewSet):
     queryset = PickdataAccountTarget.objects.all()
     serializer_class = PickdataAccountTargetSerializer
 
+class TargetCheck(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            if str(facebook_app_id) == "284297631740545":
+                api_init_session(request)
+            else:
+                api_init_by_system_user()
+
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', None)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            print(fb_ad_account_id)
+            targetCheckData = self.makeDefaultTarget()
+
+            response_data['success'] = 'YES'
+            response_data['data'] = targetCheckData
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    def makeDefaultTarget(self):
+        return {
+            "visit_site": True,
+            "visit_specific_pages": True,
+            "neo_target": False,
+            "utm_target": True,
+            "purchase": False,
+            "add_to_cart": False,
+            "registration": False,
+            "conversion": True
+        }
 
 class TargetPick(APIView):
     def get(self, request, format=None):
@@ -206,6 +245,7 @@ class TargetChart(APIView):
             # print(len(adsets))
             # print([adset.adset_id for adset in adsets])
             approximate_count = custom_audience.get_custom_audience(target_audience_id).get('approximate_count')
+            name = custom_audience.get_custom_audience(target_audience_id).get('name')
 
             # print("placement insight start")
             placement_insights = adset_insight.get_adset_ids_placement_insights(act_account_id,
@@ -222,7 +262,7 @@ class TargetChart(APIView):
                                                                                  start_date=start_date,
                                                                                  end_date=end_date)
             # print(age_gender_insights)
-            age_gender_data, total_spend, total_conversion, cta = convert_chart_data.convert_agegender_chart_data(
+            age_gender_data, total_spend, total_conversion, cpa = convert_chart_data.convert_agegender_chart_data(
                 age_gender_insights)
             # print("age gender insight end")
 
@@ -232,7 +272,8 @@ class TargetChart(APIView):
             response_data['audience_count'] = approximate_count
             response_data['total_spend'] = total_spend
             response_data['total_conversion'] = total_conversion
-            response_data['cta'] = cta
+            response_data['cpa'] = cpa
+            response_data['name'] = name
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         except Exception as e:
@@ -241,6 +282,28 @@ class TargetChart(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+class NeoCustomTarget(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="neo_template.csv"'
+
+            writer = csv.writer(response)
+            writer.writerow(['EKAMS CODE'])
+
+            return response
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    def post(self, request, format=None):
+        try:
+            pass
+        except Exception as e:
+            raise
 
 class CustomTarget(APIView):
     def make_description(self, pixel_mapping_category, retention_days, description, option, type_name, params,
