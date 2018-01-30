@@ -26,6 +26,13 @@
           <div class="contents_title">타겟 이름</div>
           <div><input type="text" v-model="targetName"></div>
         </div>
+        <div class="target_data">
+          <div class="contents_title">타겟 모수</div>
+          <div>
+            <span>{{ this.audienceSize }}</span>
+            <span v-show="isNumber">명</span>
+          </div>
+        </div>
         <div class="target_type">
           <div class="contents_title">Neo 유형</div>
           <ul>
@@ -266,6 +273,7 @@
         </div>
       </div>
     </div>
+    <div v-if="makeType === 'modify'">* 설정 수정시 기존 생성된 타겟과 병합되어 모수가 중복될 수 있습니다. 특별한 상황이 아니면 설정의 수정을 지양해주세요.</div>
     <div class="btn_wrap">
       <button class="before_btn close_pop" @click="tabMove(0)">취소</button>
       <button class="next_btn" @click="createNeoTarget()" v-if="makeType === 'add'">타겟 만들기</button>
@@ -486,6 +494,8 @@ export default {
       collectionPeriod: '30',
       targetName: '',
       neoTargetType: 'media',
+      audienceSize: '-',
+      isNumber: false,
 
       neoAccounts: [],
       neoCampaigns: [],
@@ -906,6 +916,20 @@ export default {
 
       // 타겟 이름
       this.targetName = this.makeItem.name
+
+      // 타겟 모수
+      const displayCount = this.makeItem.display_count
+
+      if (displayCount === '규모가 적음') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else if (displayCount === '생성중') {
+        this.audienceSize = displayCount
+        this.isNumber = false
+      } else {
+        this.audienceSize = numberFormatter(this.makeItem.display_count)
+        this.isNumber = true
+      }
 
       // 사이트 방문자중 @
       if (detail === 'total') {
