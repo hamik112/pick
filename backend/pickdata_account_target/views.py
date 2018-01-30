@@ -334,12 +334,33 @@ class NeoCustomTarget(APIView):
 
             if fb_ad_account == None:
                 raise Exception('Not Exist fb_ad_account.')
-            print(request.FILES)
+
+            ekams_data = []
             if 'upload_file' in request.FILES:
                 upload_file = request.FILES['upload_file']
-                print(upload_file)
+                if not upload_file.name.endswith('.csv'):
+                    raise Exception('upload_file format error.')
+                if upload_file.multiple_chunks():
+                    raise Exception('upload_file file is too big.')
+
+                file_data = upload_file.read().decode('utf-8')
+
+                lines = file_data.split('\n')
+
+                for index, line in enumerate(lines):
+                    if index == 0:
+                        # Template header pass
+                        continue
+                    fields = line.split(',')
+                    ekams = {}
+                    ekams['id'] = index
+                    ekams['name'] = fields[0]
+                    ekams_data.append(ekams)
+            else:
+                raise Exception('Not Exist upload_file.')
 
             response_data['success'] = 'YES'
+            response_data['data'] = ekams_data
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         except Exception as e:
             print(traceback.format_exc())
