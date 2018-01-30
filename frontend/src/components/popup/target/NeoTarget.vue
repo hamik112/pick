@@ -254,7 +254,6 @@
                       <div>
                         <input type="file">
                       </div>
-                      <button></button>
                     </div>
                     <button class="upload_btn view_alert"><strong>업로드</strong></button>
                   </div>
