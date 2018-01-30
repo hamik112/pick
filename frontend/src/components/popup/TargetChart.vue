@@ -108,8 +108,8 @@ export default {
       const success = response.success
       if (success === 'YES') {
       	//genderData
-      	this.chartGenderData.series[0]['data'] = this.chartsRedatas(response.age_gender_data.data.male.percents, 3)
-      	this.chartGenderData.series[1]['data'] = this.chartsRedatas(response.age_gender_data.data.female.percents, 3)
+      	this.chartGenderData.series[0]['data'] = this.chartsRedatas(response.age_gender_data.data.male.percents)
+      	this.chartGenderData.series[1]['data'] = this.chartsRedatas(response.age_gender_data.data.female.percents)
       	//placementsData
       	this.chartPlacementData['legend'] = response.placement_data.legend
       	this.chartPlacementData['xAxis'] = response.placement_data.xAxis
