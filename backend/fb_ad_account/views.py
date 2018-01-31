@@ -365,7 +365,8 @@ class FbAdAccountDefaultTarget(APIView):
 
                 # print("pixel_categories : ", pixel_categories)
 
-                ad_account_name = ad_account_name + "_"
+                # ad_account_name = ad_account_name + "_"
+                ad_account_name = ""
 
                 visit_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'visit pages')
                 purchase_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'purchase')
