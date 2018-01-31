@@ -180,6 +180,7 @@ class FbAdAccountDetail(APIView):
                 response_data['neo_account_count'] = len(neo_account_list)
                 response_data['pixel_event_mappings'] = pixel_event_mapping_list
                 response_data['pixel_event_mapping_count'] = len(pixel_event_mapping_list)
+                response_data['fb_ad_account'] = FbAdAccountSerializer(fb_ad_account).data
 
         except Exception as e:
             logger.error(e)

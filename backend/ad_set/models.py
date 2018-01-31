@@ -91,7 +91,6 @@ class AdSet(models.Model):
             # print(traceback.format_exc())
             logger.error(traceback.format_exc())
             return None
-
     def get_adsets_by_ids(self, adset_ids):
         try:
             adsets = AdSet.objects.filter(adset_id__in=adset_ids)
@@ -111,5 +110,16 @@ class AdSet(models.Model):
             # print(traceback.format_exc())
             logger.error(traceback.format_exc())
             return None
+
+    def get_adsets_by_account_id_and_target_id(self, account_id, audience_id):
+        try:
+            adsets = AdSet.objects.filter(account_id=account_id, custom_audiences__contains=audience_id)
+
+            return adsets
+        except Exception as e:
+            # print(traceback.format_exc())
+            logger.error(traceback.format_exc())
+            return None
+
     class Meta:
         db_table = "ad_sets"

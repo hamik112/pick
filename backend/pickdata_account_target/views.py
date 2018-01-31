@@ -118,8 +118,9 @@ class TargetPick(APIView):
                 raise Exception("Not Existg FbAdAccount.")
 
             pickdata_targets = PickdataAccountTarget.get_list(PickdataAccountTarget, fb_ad_account_id)
-            dic_audience_targets = custom_audience.get_dic_custom_audiences_by_ids(
-                [pickdata_target.target_audience_id for pickdata_target in pickdata_targets])
+            pickdata_target_ids = [pickdata_target.target_audience_id for pickdata_target in pickdata_targets]
+
+            dic_audience_targets = custom_audience.get_dic_custom_audiences_by_ids(pickdata_target_ids)
 
             pixel_mapping_categories = PixelMappingCategory.objects.all()
 
@@ -174,6 +175,10 @@ class TargetPick(APIView):
                         display_count = audience_target.get('approximate_count')
                         targeting_complete = True
 
+                    adsets = AdSet.get_adsets_by_account_id_and_target_id(AdSet, fb_ad_account.act_account_id, audience_id)
+                    if len(adsets) > 0:
+                        demographic_complete = True
+
                     gen_obj['display_count'] = display_count
                     gen_obj['name'] = audience_target.get('name')
                     gen_obj['approximate_count'] = audience_target.get('approximate_count')
@@ -182,6 +187,7 @@ class TargetPick(APIView):
                     gen_obj['pixel_id'] = audience_target.get('pixel_id')
                     gen_obj['targeting_complete'] = targeting_complete
                     gen_obj['demographic_complete'] = demographic_complete
+
 
                     if target_type == "all":
                         group_target['total'].append(gen_obj)
@@ -249,18 +255,19 @@ class TargetChart(APIView):
 
             fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, pickdata_target.fb_ad_account_id)
             act_account_id = fb_ad_account.act_account_id
-
             target_audience_id = pickdata_target.target_audience_id
-            print(target_audience_id)
-            # TODO DELETE!!!
-            from random import randint
 
-            random_i = randint(0, 2)
-            print(random_i)
-            target_audience_id = [6081089433857, 6081089396457, 6090733823497][random_i]
-            act_account_id = ['act_894360037304328', 'act_894360037304328', 'act_107850179321216'][random_i]
+            # print(target_audience_id)
+            # from random import randint
+            #
+            # random_i = randint(0, 2)
+            # print(random_i)
+            # target_audience_id = [6081089433857, 6081089396457, 6090733823497][random_i]
+            # act_account_id = ['act_894360037304328', 'act_894360037304328', 'act_107850179321216'][random_i]
 
-            adsets = AdSet.get_adsets_by_target_id(AdSet, target_audience_id)
+            # adsets = AdSet.get_adsets_by_target_id(AdSet, target_audience_id)
+            adsets = AdSet.get_adsets_by_account_id_and_target_id(AdSet, act_account_id, target_audience_id)
+
             # for adset in adsets:
             #     print(adset.id)
             #     print(adset.adset_id)
