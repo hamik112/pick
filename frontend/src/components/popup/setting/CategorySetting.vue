@@ -60,6 +60,7 @@ export default {
   },
 
 	created () {
+    // 사용픽셀 리스트
 		this.$http.get('/fb_ad_accounts/ad_account_pixels', {
 			params: {
 			  act_account_id: this.currentFbAdAccount.id
@@ -67,14 +68,34 @@ export default {
 	  })
 		.then(res => {
 			const data = res.data.data
-      this.usingPixel.emptyText = data[0].name
-      this.usingPixel.emptyTextId = data[0].id
 
 			for(let i = 0; i < data.length; i++) {
 				this.usingPixel.textList.push(data[i].name)
         this.usingPixel.pixelId.push(data[i].id)
-			}
-		})
+      }
+
+      return this.usingPixel
+    })
+    .then(usingPixel => {
+      const fbAdAccountId = localStorage.getItem('fb_ad_account_id')
+
+      if(fbAdAccountId === 'undefined') {
+        // 설정전
+        this.usingPixel.emptyText = usingPixel.textList[0]
+        this.usingPixel.emptyTextId = usingPixel.pixelId[0]
+      } else {
+        // 설정후(=수정)
+        this.$http.get('/fb_ad_accounts/' + fbAdAccountId + '/')
+        .then(res => {
+          const data = res.data
+          this.categoryName = data.account_category_name
+
+          const usingPixelIndex = this.usingPixel.pixelId.indexOf(data.fb_ad_account.pixel_id.toString())
+          this.usingPixel.emptyText = this.usingPixel.textList[usingPixelIndex]
+          this.usingPixel.emptyTextId = data.fb_ad_account.pixel_id
+        })
+      }
+    })
   },
 
   data () {

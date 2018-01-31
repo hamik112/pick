@@ -73,13 +73,13 @@ $spinner-left-spin:  $spinner-fill-unfill-rotate-timing / $spinner-line-count; /
 $spinner-right-spin: $spinner-fill-unfill-rotate-timing / $spinner-line-count; // Changes these values can be interesting
 
 
+
 .Spinner {
 	margin:50px auto;
     height: 28px !important;
     width: 28px;
     /* Spins external container */
     animation: container-rotate #{$container-rotate-timing} linear infinite;
-
 }
 
 .Spinner-line {
@@ -87,6 +87,7 @@ $spinner-right-spin: $spinner-fill-unfill-rotate-timing / $spinner-line-count; /
     width: 100%;
     height: 100%;
     opacity: 0;
+    font-size:0;
 }
 
 .Spinner-line--1 {
