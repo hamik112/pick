@@ -266,7 +266,7 @@ def update_usage_time_top_customers(custom_audience_id, name, pixel_id, prefill=
 
 
 # URL포함 & 특정일 동안 미방문 고객
-def create_non_visition_customers(account_id, name, pixel_id, prefill=True, retention_days=30, contain_list=[]):
+def create_non_visition_customers(account_id, name, pixel_id, prefill=True, retention_days=30, exclusion_retention_days=1, contain_list=[]):
     try:
 
         ad_account = AdAccount(fbid=account_id)
@@ -290,7 +290,7 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": 15552000,
+                        "retention_seconds": retention_days * 24 * 60 * 60,
                         "filter": {
                             "operator": "and",
                             "filters": [
@@ -319,7 +319,7 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
                         "filter": {
                             "operator": "and",
                             "filters": [
@@ -342,7 +342,7 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
 
         params = {}
         params[CustomAudience.Field.name] = name
-        params[CustomAudience.Field.rule] = str(rule)
+        params[CustomAudience.Field.rule] = rule
         params[CustomAudience.Field.prefill] = prefill
 
         audience = ad_account.create_custom_audience(params=params)
@@ -356,7 +356,7 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
         msg['error'] = e._error
         raise Exception(msg)
 
-def update_non_visition_customers(custom_audience_id, name, pixel_id, prefill=True, retention_days=30, contain_list=[]):
+def update_non_visition_customers(custom_audience_id, name, pixel_id, prefill=True, retention_days=30, exclusion_retention_days=1, contain_list=[]):
     try:
         custom_audience = CustomAudience(custom_audience_id)
 
@@ -379,7 +379,7 @@ def update_non_visition_customers(custom_audience_id, name, pixel_id, prefill=Tr
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": 15552000,
+                        "retention_seconds": retention_days * 24 * 60 * 60,
                         "filter": {
                             "operator": "and",
                             "filters": [
@@ -408,7 +408,7 @@ def update_non_visition_customers(custom_audience_id, name, pixel_id, prefill=Tr
                                 "id": pixel_id
                             }
                         ],
-                        "retention_seconds": retention_days * 24 * 60 * 60,
+                        "retention_seconds": exclusion_retention_days * 24 * 60 * 60,
                         "filter": {
                             "operator": "and",
                             "filters": [
@@ -431,7 +431,7 @@ def update_non_visition_customers(custom_audience_id, name, pixel_id, prefill=Tr
 
         params = {}
         params[CustomAudience.Field.name] = name
-        params[CustomAudience.Field.rule] = str(rule)
+        params[CustomAudience.Field.rule] = rule
         params[CustomAudience.Field.prefill] = prefill
 
         audience = custom_audience.remote_update(params=params)

@@ -64,7 +64,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="account_wrap account_wrapper">
@@ -122,7 +122,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="account_wrap account_wrapper">
@@ -180,7 +180,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="account_wrap account_wrapper">
@@ -238,7 +238,7 @@
                 <ui-select :selectData="this.selectSub" data-key="selectSub" :onClick="selectOnClick"></ui-select>
               </div>
               <div class="account_date" v-if="subInput">
-                <input type="text" v-if="subInput"><span>일</span>
+                <input type="text" v-if="subInput" v-model="unvisitedPeriod"><span>일</span>
               </div>
             </div>
             <div class="account_wrap account_wrapper">
@@ -494,7 +494,8 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
+      collectionPeriod: 30,
+      unvisitedPeriod: 0,
       targetName: '',
       neoTargetType: 'media',
       audienceSize: '-',
@@ -580,6 +581,32 @@ export default {
     }
   },
 
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
+        this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    unvisitedPeriod (day) {
+      if(day >= this.collectionPeriod) {
+        alert('미방문 기간은 수집 기간보다 작아야합니다.')
+        this.unvisitedPeriod = this.collectionPeriod - 1
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
+        this.targetName = name.substr(0,48)
+      }
+    }
+  },
+
   methods: {
     dialogOpen (emptyText, type, mode) {
       this.dialogData['emptyText'] = emptyText
@@ -600,6 +627,7 @@ export default {
           pixel_id: this.findSelectKey('adAccountPixels'),
           name: this.targetName,
           retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
           neo_type: this.neoTargetType,
 
           detail: this.findSelectKey('selectCustomer'),
@@ -654,6 +682,7 @@ export default {
           pixel_id: this.findSelectKey('adAccountPixels'),
           name: this.targetName,
           retention_days: this.collectionPeriod,
+          exclusion_retention_days: this.unvisitedPeriod,
           neo_type: this.neoTargetType,
 
           detail: this.findSelectKey('selectCustomer'),
@@ -824,7 +853,15 @@ export default {
 
     // Create Target Dialog
     createNeoTarget () {
-      this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createNeoTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createNeoTarget')
+      }
     },
 
     // Delete Target Dialog
@@ -834,7 +871,15 @@ export default {
 
     // Update Target Dialog
     updateNeoTarget () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateNeoTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateNeoTarget')
+      }
     },
 
     // TODO 제거 또는 변경 필요
@@ -962,10 +1007,10 @@ export default {
         this.subInput = true
       } else if (detail === 'purchase') {
         // 구매 고객
-        this.selectCustomer.emptyText = '구매 고객'
+        this.selectCustomer.emptyText = '구매고객'
       } else if (detail === 'non_purchase') {
         // 미구매 고객
-        this.selectCustomer.emptyText = '미구매 고객'
+        this.selectCustomer.emptyText = '미 구매고객'
       } else if (detail === 'add_to_cart') {
         // 장바구니 이용 고객
         this.selectCustomer.emptyText = '장바구니 이용 고객'
@@ -974,7 +1019,7 @@ export default {
         this.selectCustomer.emptyText = '전환완료 고객'
       } else if (detail === 'non_conversion') {
         // 미전환 고객
-        this.selectCustomer.emptyText = '미전환 고객'
+        this.selectCustomer.emptyText = '미 전환 고객'
       } else if (detail === 'registration') {
         // 회원가입 고객
         this.selectCustomer.emptyText = '회원가입 고객'

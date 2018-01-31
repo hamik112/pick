@@ -11,18 +11,18 @@ def create_specific_page_total_visitor_customers(account_id, name, pixel_id, ret
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         rule = {}
@@ -110,18 +110,18 @@ def update_specific_page_total_visitor_customers(custom_audience_id, name, pixel
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         rule = {}
@@ -212,18 +212,18 @@ def create_usage_time_top_customers(account_id, name, pixel_id, prefill=True, re
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         max_percent = 100
@@ -334,18 +334,18 @@ def update_usage_time_top_customers(custom_audience_id, name, pixel_id, prefill=
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         max_percent = 100
@@ -458,18 +458,18 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         rule = {}
@@ -600,7 +600,7 @@ def create_non_visition_customers(account_id, name, pixel_id, prefill=True, rete
 
         params = {}
         params[CustomAudience.Field.name] = name
-        params[CustomAudience.Field.rule] = str(rule)
+        params[CustomAudience.Field.rule] = rule
         params[CustomAudience.Field.prefill] = prefill
 
         audience = ad_account.create_custom_audience(params=params)
@@ -621,18 +621,18 @@ def update_non_visition_customers(custom_audience_id, name, pixel_id, prefill=Tr
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         rule = {}
@@ -763,7 +763,7 @@ def update_non_visition_customers(custom_audience_id, name, pixel_id, prefill=Tr
 
         params = {}
         params[CustomAudience.Field.name] = name
-        params[CustomAudience.Field.rule] = str(rule)
+        params[CustomAudience.Field.rule] = rule
         params[CustomAudience.Field.prefill] = prefill
 
         audience = custom_audience.remote_update(params=params)
@@ -785,18 +785,18 @@ def create_specific_page_and_addtocart_customers(account_id, name, pixel_id, ret
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
         rule = {
@@ -871,18 +871,18 @@ def update_specific_page_and_addtocart_customers(custom_audience_id, name, pixel
         custom_audience = CustomAudience(custom_audience_id)
 
         contain_filters = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
         rule = {
@@ -960,18 +960,18 @@ def create_specific_page_and_purchase_customers(account_id, name, pixel_id, rete
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
         rule = {
@@ -1046,18 +1046,18 @@ def update_specific_page_and_purchase_customers(custom_audience_id, name, pixel_
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
         rule = {
@@ -1133,18 +1133,18 @@ def create_specific_page_and_non_purchase_customers(account_id, name, pixel_id, 
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         rule = {}
@@ -1259,18 +1259,18 @@ def update_specific_page_and_non_purchase_customers(custom_audience_id, name, pi
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         rule = {}
@@ -1386,18 +1386,18 @@ def create_specific_page_and_coversion_customers(account_id, name, pixel_id, ret
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
         rule = {
@@ -1472,18 +1472,18 @@ def update_specific_page_and_coversion_customers(custom_audience_id, name, pixel
         custom_audience = CustomAudience(custom_audience_id)
 
         contain_filters = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
         rule = {
@@ -1561,18 +1561,18 @@ def create_specific_page_and_non_coversion_customers(account_id, name, pixel_id,
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         rule = {}
@@ -1687,18 +1687,18 @@ def update_specific_page_and_non_coversion_customers(custom_audience_id, name, p
 
         contain_filters = []
         eq_filter = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             eq_filter.append({
                 "field": "url",
                 "operator": "eq",
-                "value": str
+                "value": value
             })
 
         rule = {}
@@ -1815,18 +1815,18 @@ def create_specific_page_and_registration_customers(account_id, name, pixel_id, 
         ad_account = AdAccount(fbid=account_id)
 
         contain_filters = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
         rule = {
@@ -1901,18 +1901,18 @@ def update_specific_page_and_registration_customers(custom_audience_id, name, pi
         custom_audience = CustomAudience(custom_audience_id)
 
         contain_filters = []
-        for str in contain_list:
+        for value in contain_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
-        for str in eq_list:
+        for value in eq_list:
             contain_filters.append({
                 "field": "url",
                 "operator": "i_contains",
-                "value": str
+                "value": value
             })
 
         rule = {

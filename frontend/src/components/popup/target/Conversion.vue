@@ -365,7 +365,13 @@ export default {
 
     // Update Target Dialog
     updateConversionTarget () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateConversion')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateConversion')
+      }
     },
 
     modifyConversionTarget () {

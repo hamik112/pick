@@ -252,8 +252,8 @@ export default {
 
   data () {
     return {
-      collectionPeriod: '30',
-      unvisitedPeriod: '',
+      collectionPeriod: 30,
+      unvisitedPeriod: 0,
       targetName: '',
       inputUtmName: '',
       audienceSize: '-',
@@ -335,6 +335,32 @@ export default {
         tab4: false,
         tab5: false,
         tab6: false
+      }
+    }
+  },
+
+  watch: {
+    collectionPeriod (day) {
+      if (day > 180) {
+        this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
+        this.collectionPeriod = 180
+      } else if (this.collectionPeriod === '0') {
+        alert('수집 기간은 최소 1일입니다.')
+        this.collectionPeriod = 1
+      }
+    },
+
+    unvisitedPeriod (day) {
+      if(day >= this.collectionPeriod) {
+        alert('미방문 기간은 수집 기간보다 작아야합니다.')
+        this.unvisitedPeriod = this.collectionPeriod - 1
+      }
+    },
+
+    targetName (name) {
+      if (name.length > 48) {
+        this.dialogOpen('타겟 이름은 최대 48자까지만 가능합니다.', 'alert')
+        this.targetName = name.substr(0,48)
       }
     }
   },
@@ -542,7 +568,15 @@ export default {
 
     // Create Target Dialog
     createUtmTarget () {
-      this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createUtmTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('입력한 내용으로 타겟을 생성하시겠습니까?', 'confirm', 'createUtmTarget')
+      }
     },
 
     // Delete Target Dialog
@@ -552,7 +586,15 @@ export default {
 
     // Update Target Dialog
     updateUtmTarget () {
-      this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateUtmTarget')
+      if (this.collectionPeriod.length === 0) {
+        this.dialogOpen('수집 기간을 입력해주세요.', 'alert')
+      } else if (this.unvisitedPeriod.length === 0) {
+        this.dialogOpen('미방문 기간을 입력해주세요.', 'alert')
+      } else if (this.targetName.length === 0) {
+        this.dialogOpen('타겟 이름을 입력해주세요.', 'alert')
+      } else {
+        this.dialogOpen('수정하시겠습니까?', 'confirm', 'updateUtmTarget')
+      }
     },
 
     modifyUtmTarget () {
@@ -598,10 +640,10 @@ export default {
         this.subInput = true
       } else if (detail === 'purchase') {
         // 구매 고객
-        this.selectCustomer.emptyText = '구매 고객'
+        this.selectCustomer.emptyText = '구매고객'
       } else if (detail === 'non_purchase') {
         // 미구매 고객
-        this.selectCustomer.emptyText = '미구매 고객'
+        this.selectCustomer.emptyText = '미 구매고객'
       } else if (detail === 'add_to_cart') {
         // 장바구니 이용 고객
         this.selectCustomer.emptyText = '장바구니 이용 고객'
@@ -610,7 +652,7 @@ export default {
         this.selectCustomer.emptyText = '전환완료 고객'
       } else if (detail === 'non_conversion') {
         // 미전환 고객
-        this.selectCustomer.emptyText = '미전환 고객'
+        this.selectCustomer.emptyText = '미 전환 고객'
       } else if (detail === 'registration') {
         // 회원가입 고객
         this.selectCustomer.emptyText = '회원가입 고객'
@@ -642,7 +684,7 @@ export default {
         this.gAddData.utm_content.push(data)
       })
 
-      params.customs.forEach(customs => {
+      params.customs.forEach(custom => {
         let data = { name: custom }
         this.gAddData.custom.push(data)
       })
