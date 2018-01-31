@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/': {
-        // target: 'http://beta.fb.pickdata.co.kr:8000',
-        target: 'http://dev.snack.emforce.co.kr:8080',
+        target: 'http://beta.fb.pickdata.co.kr:8000',
+        // target: 'http://dev.snack.emforce.co.kr:8080',
         changeOrigin: true,
         pathRewrite: {
           '^/': ''
