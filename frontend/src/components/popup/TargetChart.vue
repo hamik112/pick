@@ -79,8 +79,8 @@ import Select from '@/components/ui/Select'
 import Charts from '@/components/ui/Charts'
 import Calendar from '@/components/ui/Calendar'
 import Hover from '@/components/ui/Hover'
-import PartialLoading from '@/components/ui/partialLoading'
-import { numberToFixed,numberFormatter } from '@/components/utils/formatter'
+import PartialLoading from '@/components/ui/PartialLoading'
+import { numberToFixed, numberFormatter } from '@/components/utils/Formatter'
 
 export default {
   name: 'TargetChartPop',
