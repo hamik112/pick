@@ -475,7 +475,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="pagination">
+									<!-- TODO Paging 처리 예정 -->
+									<div class="pagination" v-show="false">
 										<ul>
 											<li><img src="../../assets/images/icon/paging_01.png" alt=""></li>
 											<li><img src="../../assets/images/icon/paging_03.png" alt=""></li>
