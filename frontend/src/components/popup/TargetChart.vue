@@ -50,14 +50,14 @@
 										<div>
 											<h2>인구 통계학적 특성</h2>
 											<div class="graph_type01">
-												<ui-PartialLoading  v-if="!chartOn" />
+												<ui-partial-loading  v-if="!chartOn" />
 												<ui-charts :chartData="this.chartGenderData" v-if="chartOn"></ui-charts>
 											</div>
 										</div>
 										<div>
 											<h2>노출위치</h2>
 											<div class="graph_type02">
-												<ui-PartialLoading v-if="!chartOn" />
+												<ui-partial-loading v-if="!chartOn" />
 												<ui-charts :chartData="this.chartPlacementData" v-if="chartOn"></ui-charts>
 											</div>
 										</div>
@@ -83,14 +83,14 @@ import PartialLoading from '@/components/ui/PartialLoading'
 import { numberToFixed, numberFormatter } from '@/components/utils/Formatter'
 
 export default {
-  name: 'TargetChartPop',
+	name: 'TargetChart',
 
   components: {
 		'ui-select': Select,
 		'ui-charts': Charts,
 		'ui-calendar': Calendar,
 		'ui-hover': Hover,
-		'ui-PartialLoading': PartialLoading
+		'ui-partial-loading': PartialLoading
   },
 
   props:{

@@ -149,8 +149,8 @@ import Conversion from '@/components/popup/target/Conversion'
 import Select from '@/components/ui/Select'
 
 export default {
-  name: 'TargetMake01',
-
+	name: 'CreateTarget',
+	
   components:{
     VisitSite,
     VisitSpecificPages,

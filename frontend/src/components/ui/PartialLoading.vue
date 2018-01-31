@@ -1,64 +1,58 @@
 <template>
-	<p class="Spinner"><!--
-    --><span class="Spinner-line Spinner-line--1"><!--
-        --><span class="Spinner-line-cog"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--left"></span><!--
-        --></span><!--
-        --><span class="Spinner-line-ticker"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--center"></span><!--
-        --></span><!--
-        --><span class="Spinner-line-cog"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--right"></span><!--
-        --></span><!--
-    --></span><!--
-    --><span class="Spinner-line Spinner-line--2"><!--
-        --><span class="Spinner-line-cog"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--left"></span><!--
-        --></span><!--
-        --><span class="Spinner-line-ticker"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--center"></span><!--
-        --></span><!--
-        --><span class="Spinner-line-cog"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--right"></span><!--
-        --></span><!--
-    --></span><!--
-    --><span class="Spinner-line Spinner-line--3"><!--
-        --><span class="Spinner-line-cog"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--left"></span><!--
-        --></span><!--
-        --><span class="Spinner-line-ticker"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--center"></span><!--
-        --></span><!--
-        --><span class="Spinner-line-cog"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--right"></span><!--
-        --></span><!--
-    --></span><!--
-    --><span class="Spinner-line Spinner-line--4"><!--
-        --><span class="Spinner-line-cog"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--left"></span><!--
-        --></span><!--
-        --><span class="Spinner-line-ticker"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--center"></span><!--
-        --></span><!--
-        --><span class="Spinner-line-cog"><!--
-            --><span class="Spinner-line-cog-inner Spinner-line-cog-inner--right"></span><!--
-        --></span><!--
-    --></span><!--
-
---></p><!--/spinner -->
+	<p class="Spinner">
+        <span class="Spinner-line Spinner-line--1">
+            <span class="Spinner-line-cog">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--left"></span>
+            </span>
+            <span class="Spinner-line-ticker">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--center"></span>
+            </span>
+            <span class="Spinner-line-cog">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--right"></span>
+            </span>
+        </span>
+        <span class="Spinner-line Spinner-line--2">
+            <span class="Spinner-line-cog">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--left"></span>
+            </span>
+            <span class="Spinner-line-ticker">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--center"></span>
+            </span>
+            <span class="Spinner-line-cog">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--right"></span>
+            </span>
+        </span>
+        <span class="Spinner-line Spinner-line--3">
+            <span class="Spinner-line-cog">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--left"></span>
+            </span>
+            <span class="Spinner-line-ticker">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--center"></span>
+            </span>
+            <span class="Spinner-line-cog">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--right"></span>
+            </span>
+        </span>
+        <span class="Spinner-line Spinner-line--4">
+            <span class="Spinner-line-cog">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--left"></span>
+            </span>
+            <span class="Spinner-line-ticker">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--center"></span>
+            </span>
+            <span class="Spinner-line-cog">
+                <span class="Spinner-line-cog-inner Spinner-line-cog-inner--right"></span>
+            </span>
+        </span>
+    </p>
 </template>
 
 <script>
 export default {
-
-  name: 'PartialLoading',
-
-  data () {
-    return {
-    }
-  }
+  name: 'PartialLoading'
 }
 </script>
+
 <style lang="scss" scoped>
 // CSS Spinner - Tweak away
 

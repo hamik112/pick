@@ -84,7 +84,7 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neoaccount">
-                          <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
+                          <ui-partial-loading v-if="loadShow"></ui-partial-loading>
                           <li v-for="(neoAccount, index) in neoAccounts" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoAccounts" :value="neoAccount.centeraccountid" class="result-checkbox" :data-type="'neoAccounts'" :data-id="neoAccount.centeraccountid" :id="'neoAccount-check-' + neoAccount.centeraccountid"><label :for="'neoAccount-check-' + neoAccount.centeraccountid"></label></div>
                             <div class="result_account">{{ neoAccount.advname }}</div>
@@ -142,7 +142,7 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neocampaign">
-                          <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
+                          <ui-partial-loading v-if="loadShow"></ui-partial-loading>
                           <li v-for="(neoCampaign, index) in neoCampaigns" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoCampaigns" :value="neoCampaign.campaignid" class="result-checkbox" :data-type="'neoCampaigns'" :data-id="neoCampaign.campaignid" :id="'neoCampaign-check-' + neoCampaign.campaignid"><label :for="'neoCampaign-check-' + neoCampaign.campaignid"></label></div>
                             <div class="result_account">{{ neoCampaign.advname }}</div>
@@ -200,7 +200,7 @@
                       </div>
                       <div class="result_tbody">
                         <ul id="list-neokeyword">
-                          <ui-PartialLoading v-if="loadShow"></ui-PartialLoading>
+                          <ui-partial-loading v-if="loadShow"></ui-partial-loading>
                           <li v-for="(neoKeyword, index) in neoKeywords" :key="index" v-if="!loadShow">
                             <div class="result_check"><input type="checkbox" v-model="selectedNeoKeywords" :value="neoKeyword.keywordid" class="result-checkbox" :data-type="'neoKeywords'" :data-id="neoKeyword.keywordid" :id="'neoKeyword-check-' + neoKeyword.keywordid"><label :for="'neoKeyword-check-' + neoKeyword.keywordid"></label></div>
                             <div class="result_account">{{ neoKeyword.advname }}</div>
@@ -288,7 +288,7 @@
 import { numberFormatter } from '@/components/utils/Formatter'
 import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
-import PartialLoading from '@/components/ui/partialLoading'
+import PartialLoading from '@/components/ui/PartialLoading'
 
 export default {
   name: 'NeoTarget',
@@ -296,7 +296,7 @@ export default {
   components: {
     'ui-select': Select,
     'ui-dialog': Dialog,
-    'ui-PartialLoading': PartialLoading
+    'ui-partial-loading': PartialLoading
   },
 
   props: {

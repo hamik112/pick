@@ -27,17 +27,7 @@
 
 <script>
 export default {
-	name: 'TargetNot',
-	
-  components:{
-
-	},
-	
-  data () {
-		return {
-			
-		}
-  }
+	name: 'NotAvailable'
 }
 </script>
 
