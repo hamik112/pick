@@ -249,16 +249,15 @@ class TargetChart(APIView):
 
             fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, pickdata_target.fb_ad_account_id)
             act_account_id = fb_ad_account.act_account_id
-
             target_audience_id = pickdata_target.target_audience_id
-            print(target_audience_id)
-            # TODO DELETE!!!
-            from random import randint
 
-            random_i = randint(0, 2)
-            print(random_i)
-            target_audience_id = [6081089433857, 6081089396457, 6090733823497][random_i]
-            act_account_id = ['act_894360037304328', 'act_894360037304328', 'act_107850179321216'][random_i]
+            # print(target_audience_id)
+            # from random import randint
+            #
+            # random_i = randint(0, 2)
+            # print(random_i)
+            # target_audience_id = [6081089433857, 6081089396457, 6090733823497][random_i]
+            # act_account_id = ['act_894360037304328', 'act_894360037304328', 'act_107850179321216'][random_i]
 
             adsets = AdSet.get_adsets_by_target_id(AdSet, target_audience_id)
             # for adset in adsets:
