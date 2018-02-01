@@ -6,26 +6,28 @@
           <div class="u_mask"></div>
           <div class="u_logo"><img src="../../assets/images/common/test_img.jpg" alt=""></div>
           <div class="u_info">
-            <pre id="ad_list_cate" href="javascript:void(0);" @click="onClick()" v-bind:class="{active: isActive}">{{ selectedFbAdAccount.name }}</pre>
-            <pre>{{ selectedFbAdAccount.account_id }}</pre>
-          </div>
-        </div>
-        <div class="user_ad_list">
-          <div class="ad_list_category" v-show="isShowList">
-            <div class="ad_search_wrap">
-              <input type="text" placeholder="광고주명을 입력하세요" class="ad_search_box" v-model="searchName">
-              <button class="ad_submit"></button>
+            <div class="u_info_box">
+              <pre id="ad_list_cate" href="javascript:void(0);" @click="onClick()" v-bind:class="{active: isActive}">{{ selectedFbAdAccount.name }}</pre>
+              <pre>{{ selectedFbAdAccount.account_id }}</pre>
             </div>
-            <div class="ad_search_list">
-              <ul>
-                <li v-for="fbAdAccount in fbAdAccountList" :key="fbAdAccount.id" @click="selectFbAdAccount(fbAdAccount)">
-                  <div class="list_image"></div>
-                  <div class="list_info">
-                    <strong>{{ fbAdAccount.name }}</strong>
-                    <div>계정번호 : {{ fbAdAccount.account_id }}</div>
-                  </div>
-                </li>
-              </ul>
+            <div class="user_ad_list">
+              <div class="ad_list_category" v-show="isShowList">
+                <div class="ad_search_wrap">
+                  <input type="text" placeholder="광고주명을 입력하세요" class="ad_search_box" v-model="searchName">
+                  <button class="ad_submit"></button>
+                </div>
+                <div class="ad_search_list">
+                  <ul>
+                    <li v-for="fbAdAccount in fbAdAccountList" :key="fbAdAccount.id" @click.stop="selectFbAdAccount(fbAdAccount)">
+                      <div class="list_image"></div>
+                      <div class="list_info">
+                        <strong>{{ fbAdAccount.name }}</strong>
+                        <div>계정번호 : {{ fbAdAccount.account_id }}</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -93,9 +95,22 @@ export default {
   },
 
   methods: {
-    onClick () {
+    onClick (e) {
       this.isActive = !this.isActive
       this.isShowList = !this.isShowList
+      document.addEventListener('click', this.dc)
+    },
+    dc(e) {
+      const check = this.$el.contains(e.target)
+      if(check === false) {
+        this.stopEvent()
+      }
+      this.isActive = check
+      this.isShowList = check
+
+    },
+    stopEvent() {
+      document.removeEventListener('click', this.dc)
     },
 
     // 페이스북 광고 계정 로드
@@ -124,12 +139,6 @@ export default {
             this.$eventBus.$emit('getTargetPick', this.selectedFbAdAccount)
           }
         } else {
-          const code = response.code
-          if (code === '999') {
-            console.log('login expired')
-            this.$router.push({name: 'Intro'})
-            return
-          }
           throw('success: ' + success)
         }
       })
@@ -143,7 +152,6 @@ export default {
       // 현재 페이스북 광고 계정 설정
       this.$store.state.currentFbAdAccount = fbAdAccount
       this.selectedFbAdAccount = fbAdAccount
-
       // 리스트 속성
       this.isActive = false
       this.isShowList = false
