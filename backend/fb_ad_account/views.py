@@ -128,11 +128,34 @@ class CheckAccountId(APIView):
             neo_account_list = []
             if fb_ad_account != None:
                 neo_account_list = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id=fb_ad_account.id)
-                pixel_evnet_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
+                pixel_event_mappings = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
+                pixel_event_dic = {pixel_event_mapping.pixel_mapping_category_id:pixel_event_mapping for pixel_event_mapping in pixel_event_mappings}
 
-                from pixel_mapping.serializers import PixelMappingMergeSerializer
+                # from pixel_mapping.serializers import PixelMappingMergeSerializer
+                # pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
+                list_pixel_event_mapping = []
+                pixel_categories = PixelMappingCategory.get_pixel_mapping_category_for_mapping_view(PixelMappingCategory)
+                for pixel_category in pixel_categories:
+                    data = {}
+                    pixel_category_id = pixel_category.id
+                    pixel_event_mapping = pixel_event_dic.get(pixel_category_id, None)
 
-                pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
+                    if pixel_event_mapping == None:
+                        data["id"] = None
+                        data["facebook_pixel_event_name"] = None
+                    else:
+                        data["id"] = pixel_category_id
+                        data["facebook_pixel_event_name"] = pixel_event_mapping.facebook_pixel_event_name
+
+                    data["fb_ad_account"] = dic_fb_ad_account
+                    data["pixel_mapping_category"] = {
+                        "id": pixel_category.id,
+                        "category_label_kr": pixel_category.category_label_kr,
+                        "category_label_en": pixel_category.category_label_en
+                    }
+
+                    list_pixel_event_mapping.append(data)
+
 
             response_data['success'] = 'YES'
             response_data['bool_default_pixel'] = bool_default_pixel
@@ -140,7 +163,7 @@ class CheckAccountId(APIView):
             response_data['bool_fb_ad_account'] = bool_fb_ad_account
             response_data['fb_ad_account'] = dic_fb_ad_account
             response_data['neo_account_list'] = neo_account_list
-            response_data['pixel_event_mappings'] = pixel_evnet_mapping_se.data
+            response_data['pixel_event_mappings'] = list_pixel_event_mapping
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
