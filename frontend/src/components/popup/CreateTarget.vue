@@ -6,7 +6,7 @@
 		  <div class="popup-widget" id="target_pop_01">
 			<div class="popup-contents clearfix">
 			  <div class="pop_title_wrap">
-				<div class="pop_title">타겟 만들기 (<span id="page-number">1</span>/2)</div>
+				<div class="pop_title">타겟 <span v-if="makeType !== 'modify'">만들기</span><span v-if="makeType === 'modify'">수정하기</span> (<span id="page-number">1</span>/2)</div>
 				<p class="popup-btn"><button type="button" id="close-btn" class="close_pop close-btn" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 			  </div>
 
@@ -150,7 +150,7 @@ import Select from '@/components/ui/Select'
 
 export default {
 	name: 'CreateTarget',
-	
+
   components:{
     VisitSite,
     VisitSpecificPages,

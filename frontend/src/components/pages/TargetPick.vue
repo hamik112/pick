@@ -46,7 +46,7 @@
 											</div>
 											<div class="target_info">
 												<p>{{ item.name }}</p>
-												<p><span class="opensans">{{ item.display_count }}</span></p>
+												<p><span class="opensans">{{ formatterDisplayCount(item.display_count) }}</span></p>
 											</div>
 											<div class="target_state">
 												<p>{{ item.description.pixel_mapping_category }}</p>
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+	import { numberFormatter } from '@/components/utils/Formatter'
+
 	// Popup
 	import TargetChart from '@/components/popup/TargetChart'
 	import CreateTarget from '@/components/popup/CreateTarget'
@@ -160,7 +162,6 @@
 
 		computed: {
 			computedIconTargetClass (item) {
-				console.log(item)
 				return this.itemObject.iconTargetClass
 			}
 		},
@@ -180,6 +181,13 @@
 		},
 
 		methods: {
+			formatterDisplayCount (displayCount) {
+				if (Number.isInteger(displayCount)) {
+					return numberFormatter(displayCount)
+				} else {
+					return displayCount
+				}
+			},
 			refreshTarget () {
 				this.selectTarget(this.selectData.emptyText)
 			},
@@ -261,7 +269,6 @@
 						this.targetCount.registrationCount = registrationCount
 						this.targetCount.conversionCount = conversionCount
 
-						console.log(addToCart)
 						this.isPick = true
 						this.isLoading = false
 					} else {
@@ -352,7 +359,6 @@
 			},
 
 			getAccountTarget (fbAdAccount) {
-				// console.log('getAccountTarget', fbAdAccount)
 				this.isPick = false
 				this.isLoading = true
 				this.loadingTitle = '타겟을 가져오는 중입니다.'
@@ -409,7 +415,6 @@
 						this.targetCount.registrationCount = registrationCount
 						this.targetCount.conversionCount = conversionCount
 
-						console.log(addToCart)
 						this.isPick = true
 						this.isLoading = false
 					} else {

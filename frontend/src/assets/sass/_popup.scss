@@ -309,6 +309,7 @@
 			}
 		}
 		.target_tbody{
+			.particula_inner{height:215px; overflow-y:scroll;}
 			.target_inner_tbody{padding:19px 17px; border:$Border_type01;/* min-height:245px;*/
 				/* url 버튼 */
 				.url_btn{display: inline-block; vertical-align: middle; margin:6px 0px;
