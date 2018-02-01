@@ -3,7 +3,7 @@
     <div class="login_wrap">
       <div class="login_logo"><a href=""><img src="../assets/images/common/login_logo.jpg" alt="" /></a></div>
       <div class="login_f_btn"><a href="javascript:" @click="login"><img src="../assets/images/common/login_f_btn.jpg" alt="" /></a></div>
-      <div class="login_prologue"><a href="#/pick">Click here to <strong>pickdata brand site</strong></a></div>
+      <div class="login_prologue"><a href="https://www.pickdata.co.kr/" target="_blank">Click here to <strong>pickdata brand site</strong></a></div>
     </div>
   </div>
 </template>
@@ -17,15 +17,22 @@ export default {
   name: 'Intro',
   created () {
     const me = this
+    const hostname = window.location.hostname
+
+    let fbAppId = '284297631740545'
+    if (hostname.indexOf('dev') > -1 || hostname.indexOf('beta') > -1) {
+      fbAppId = '1456607077970548'
+    }
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : '284297631740545',
+
+        appId      : fbAppId,
         cookie     : true,  // enable cookies to allow the server to access
         // the session
         xfbml      : true,  // parse social plugins on this page
         version    : 'v2.11' // use version 2.2
       });
-      me.fbCheckStatus();
+      // me.fbCheckStatus();
     };
     // Load the SDK asynchronously
     (function(d, s, id) {

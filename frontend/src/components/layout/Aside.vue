@@ -124,6 +124,12 @@ export default {
             this.$eventBus.$emit('getTargetPick', this.selectedFbAdAccount)
           }
         } else {
+          const code = response.code
+          if (code === '999') {
+            console.log('login expired')
+            this.$router.push({name: 'Intro'})
+            return
+          }
           throw('success: ' + success)
         }
       })

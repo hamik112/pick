@@ -73,6 +73,7 @@ class Signin(APIView):
 
             request.session['__user_id__'] = user.username
             request.session['__username__'] = user.name
+            request.session.modified = True
             response_data['success'] = 'YES'
         except Exception as e:
             logger.error(e)
