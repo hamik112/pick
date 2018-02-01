@@ -145,7 +145,8 @@ export default {
 
       //모드별 동작
       if(mode === 'mapping') {
-      	this.$emit('setPixelEventMapping', this.facebookPixelEventNames, this.pixelMappingCategoryIds)
+        this.$emit('setPixelEventMapping', this.facebookPixelEventNames, this.pixelMappingCategoryIds)
+        this.$router.push({name: 'TargetPick'})
       }
       this.nextStage = true
       this.dialogShow = false;
@@ -181,7 +182,7 @@ export default {
 				//컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
         this.dialogOpen('모든 항목이 매칭되지 않았습니다.', 'alert')
 			} else {
-				this.dialogOpen('현재 매칭된 상태로 Target Pick 설정을 진행할까요?', 'confirm', 'mapping')
+        this.dialogOpen('현재 매칭된 상태로 Target Pick 설정을 진행할까요?', 'confirm', 'mapping')
 			}
     },
 
