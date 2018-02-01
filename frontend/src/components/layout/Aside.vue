@@ -96,9 +96,13 @@ export default {
 
   methods: {
     onClick (e) {
-      this.isActive = !this.isActive
-      this.isShowList = !this.isShowList
-      document.addEventListener('click', this.dc)
+      if(this.isActive === false) {
+        document.addEventListener('click', this.dc)
+      }else{
+        this.isActive = false
+        this.isShowList = false
+        this.stopEvent()
+      }
     },
     dc(e) {
       const check = this.$el.contains(e.target)
