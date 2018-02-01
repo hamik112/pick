@@ -12,7 +12,7 @@
         <li v-for="(pixelMappingCategory, index) in pixelMappingCategories" :key="index" class="select_btn">
           <div class="select_title">{{ pixelMappingCategory.title }}</div>
           <div class="select_contents">
-            <div><ui-select :selectData="pixelMappingCategory.select" :data-key="index" :onClick="multiSelect"></ui-select></div>
+            <div><ui-select @exceptSelectedItems="exceptSelectedItems" :selectData="pixelMappingCategory.select" :data-key="index" :onClick="multiSelect"></ui-select></div>
           </div>
         </li>
       </ul>
@@ -72,6 +72,8 @@ export default {
           for(let i = 0; i < data.length; i++) {
             category.select.textList.push(data[i].name)
           }
+          // 셀렉트 박스 정렬
+          category.select.textList.sort()
         })
 
         return this.pixelMappingCategories
@@ -129,7 +131,7 @@ export default {
 			},
 			nextStage:false
 		}
-	},
+  },
 
   methods: {
   	dialogOpen(emptyText, type, mode) {
@@ -181,6 +183,46 @@ export default {
 			} else {
 				this.dialogOpen('현재 매칭된 상태로 Target Pick 설정을 진행할까요?', 'confirm', 'mapping')
 			}
+    },
+
+    // 선택한 항목을 셀렉트 박스에서 제외
+    exceptSelectedItems (selectedItem, unselectedItem) {
+      // console.log('선택됨: ' + selectedItem + ', 해제됨: ' + unselectedItem)
+
+      if(unselectedItem === this.defaultPixelEvent) {
+        // 이미 설정되어있는 항목들 셀렉트 박스에서 제거
+        this.pixelMappingCategories.forEach(category => {
+          // 이미 설정되어 있는 항목이 미지정이 아닌 경우에만 셀렉트 박스에서 제거
+          if (selectedItem !== '미지정') {
+            let index = category.select.textList.indexOf(selectedItem)
+            
+            // 중복 제거가 되는 것을 방지
+            if (index > -1) {
+              category.select.textList.splice(index, 1)
+            }
+          }
+        })
+      } else {
+        // 선택한 항목 셀렉트 박스에 추가, 해제된 항목 셀렉트 박스에서 제거
+        this.pixelMappingCategories.forEach(category => {
+          // 해제된 항목이 미지정이 아닌 경우에만 셀렉트 박스에 추가
+          if (unselectedItem !== '미지정') {
+            category.select.textList.push(unselectedItem)
+          }
+
+          if (selectedItem !== '미지정') {
+            // 선택된 항목이 미지정인 경우에는 셀렉트 박스에서 제거하지 않음
+            let index = category.select.textList.indexOf(selectedItem)
+
+            // 중복 제거가 되는 것을 방지
+            if(index > -1) {
+              category.select.textList.splice(index, 1)
+            }
+          }
+
+          category.select.textList.sort()
+        })
+      }
     }
   }
 }
