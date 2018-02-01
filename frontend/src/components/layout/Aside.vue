@@ -98,12 +98,22 @@ export default {
       this.isShowList = !this.isShowList
     },
 
+    findFbAdAccountByAccountId (fbAdAccounts, accountId) {
+      let result = fbAdAccounts[0]
+      if (typeof accountId === typeof undefined || accountId == null) {
+        return result
+      } else {
+        fbAdAccounts.forEach(function (fbAdAccount, index) {
+          if (fbAdAccount.account_id === localStorage.getItem('account_id')) {
+            result = fbAdAccount
+          }
+        })
+      }
+      return result
+    },
+
     // 페이스북 광고 계정 로드
     loadFbAdAccounts (res) {
-      if (res == null) {
-        console.log('DEBUG Call')
-      }
-
       // 페이스북 광고 계정 리스트 가져오기
       this.$http.get('/fb_ad_accounts/')
       .then(res => {
@@ -116,12 +126,14 @@ export default {
           if (data.length > 0) {
             // 페이스북 광고 계정 리스트
             this.fbAdAccounts = data
+            let defaultAccount = this.findFbAdAccountByAccountId(this.fbAdAccounts, localStorage.getItem('account_id'))
 
             // 현재 페이스북 광고 계정 설정
-            this.$store.state.currentFbAdAccount = data[0]
-            this.selectedFbAdAccount = data[0]
+            this.$store.state.currentFbAdAccount = defaultAccount
+            this.selectedFbAdAccount = defaultAccount
 
-            this.$eventBus.$emit('getTargetPick', this.selectedFbAdAccount)
+            // this.$eventBus.$emit('getTargetPick', this.selectedFbAdAccount)
+            this.selectFbAdAccount(defaultAccount)
           }
         } else {
           const code = response.code

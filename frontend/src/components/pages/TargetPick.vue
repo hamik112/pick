@@ -160,7 +160,6 @@
 
 		computed: {
 			computedIconTargetClass (item) {
-				console.log(item)
 				return this.itemObject.iconTargetClass
 			}
 		},
@@ -261,7 +260,6 @@
 						this.targetCount.registrationCount = registrationCount
 						this.targetCount.conversionCount = conversionCount
 
-						console.log(addToCart)
 						this.isPick = true
 						this.isLoading = false
 					} else {
@@ -352,7 +350,6 @@
 			},
 
 			getAccountTarget (fbAdAccount) {
-				// console.log('getAccountTarget', fbAdAccount)
 				this.isPick = false
 				this.isLoading = true
 				this.loadingTitle = '타겟을 가져오는 중입니다.'
@@ -409,7 +406,6 @@
 						this.targetCount.registrationCount = registrationCount
 						this.targetCount.conversionCount = conversionCount
 
-						console.log(addToCart)
 						this.isPick = true
 						this.isLoading = false
 					} else {
