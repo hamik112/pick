@@ -1237,7 +1237,7 @@ class CustomTarget(APIView):
                     elif detail == "conversion url":
                         step_name = request.data.get('step_name')
                         current_complete_url = request.data.get('current_complete_url')
-                        next_complete_url = request.data.get('current_complete_url')
+                        next_complete_url = request.data.get('next_complete_url')
 
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion url')
                         created_target = targeting_conversion.update_conversion_url_customers(custom_audience_id, name, pixel_id,retention_days=30, current_url=current_complete_url, next_url=next_complete_url)
@@ -2145,7 +2145,7 @@ class CustomTarget(APIView):
                     elif detail == "conversion url":
                         step_name = request.data.get('step_name')
                         current_complete_url = request.data.get('current_complete_url')
-                        next_complete_url = request.data.get('current_complete_url')
+                        next_complete_url = request.data.get('next_complete_url')
 
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                             PixelMappingCategory, 'conversion url')
