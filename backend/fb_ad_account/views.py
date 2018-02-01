@@ -209,8 +209,8 @@ class FbAdAccountDetail(APIView):
                 response_data['neo_account_list'] = neo_account_list
                 response_data['neo_account_count'] = len(neo_account_list)
 
-                response_data['pixel_event_mappings'] = pixel_evnet_mappings
-                response_data['pixel_event_mapping_count'] = len(pixel_evnet_mappings)
+                response_data['pixel_event_mappings'] = list_pixel_event_mapping
+                response_data['pixel_event_mapping_count'] = len(list_pixel_event_mapping)
 
 
                 response_data['fb_ad_account'] = FbAdAccountSerializer(fb_ad_account).data
