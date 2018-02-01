@@ -53,8 +53,8 @@ export default {
 						textList: ['미지정']
 					}
 				})
-			}
-		})
+      }
+    })
   },
 
   beforeUpdate () {
@@ -73,6 +73,38 @@ export default {
             category.select.textList.push(data[i].name)
           }
         })
+
+        return this.pixelMappingCategories
+      })
+      .then(pixelMappingCategories => {
+        const fbAdAccountId = localStorage.getItem('fb_ad_account_id')
+
+        if(fbAdAccountId !== 'undefined') {
+          this.$http.get('/fb_ad_accounts/' + fbAdAccountId + '/')
+          .then(res => {
+            const data = res.data
+            const pixelEventCount = data.pixel_event_mapping_count
+            const pixelEventMappings = data.pixel_event_mappings
+
+            // 카테고리 목록
+            let categoryTitles = []
+            pixelMappingCategories.forEach(category => {
+              categoryTitles.push(category.title)
+            })
+            
+            pixelEventMappings.forEach(pixelEvent => {
+              // 카테고리 목록의 인덱스 위치를 찾아서
+              const index = categoryTitles.indexOf(pixelEvent.pixel_mapping_category.category_label_kr)
+
+              // 해당 카테고리 인덱스에 픽셀 이벤트를 맵핑 (null이면 미지정, 아니면 해당 픽셀 이벤트를 맵핑)
+              if (pixelEvent.facebook_pixel_event_name === null) {
+                pixelMappingCategories[index].select.emptyText = '미지정'
+              } else {
+                pixelMappingCategories[index].select.emptyText = pixelEvent.facebook_pixel_event_name
+              }
+            })
+          })
+        }
       })
     }
   },

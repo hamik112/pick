@@ -150,7 +150,7 @@ import Select from '@/components/ui/Select'
 
 export default {
 	name: 'CreateTarget',
-	
+
   components:{
     VisitSite,
     VisitSpecificPages,
