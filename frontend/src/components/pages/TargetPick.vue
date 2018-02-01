@@ -46,7 +46,7 @@
 											</div>
 											<div class="target_info">
 												<p>{{ item.name }}</p>
-												<p><span class="opensans">{{ item.display_count }}</span></p>
+												<p><span class="opensans">{{ formatterDisplayCount(item.display_count) }}</span></p>
 											</div>
 											<div class="target_state">
 												<p>{{ item.description.pixel_mapping_category }}</p>
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+	import { numberFormatter } from '@/components/utils/Formatter'
+
 	// Popup
 	import TargetChart from '@/components/popup/TargetChart'
 	import CreateTarget from '@/components/popup/CreateTarget'
@@ -179,6 +181,13 @@
 		},
 
 		methods: {
+			formatterDisplayCount (displayCount) {
+				if (Number.isInteger(displayCount)) {
+					return numberFormatter(displayCount)
+				} else {
+					return displayCount
+				}
+			},
 			refreshTarget () {
 				this.selectTarget(this.selectData.emptyText)
 			},
