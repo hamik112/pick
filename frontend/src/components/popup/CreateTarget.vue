@@ -1,12 +1,15 @@
 <template>
   <div class="modal-mask">
+	<transition name="modal">
+      <ui-dialog :dialogData="dialogData" v-if="dialogShow" @ok="dialogOk()" @cancel="dialogCancel()"></ui-dialog>
+    </transition>
 	<div class="modal-wrapper">
 	  <div class="modal-container">
 		<div class="layer-pop-widget">
 		  <div class="popup-widget" id="target_pop_01">
 			<div class="popup-contents clearfix">
 			  <div class="pop_title_wrap">
-				<div class="pop_title">타겟 만들기 (<span id="page-number">1</span>/2)</div>
+				<div class="pop_title">타겟 <span v-if="makeType !== 'modify'">만들기</span><span v-if="makeType === 'modify'">수정하기</span> (<span id="page-number">1</span>/2)</div>
 				<p class="popup-btn"><button type="button" id="close-btn" class="close_pop close-btn" @click="$emit('close')"><img src="../../assets/images/target/white_close_i.png" alt=""></button></p>
 			  </div>
 
@@ -147,10 +150,11 @@ import Conversion from '@/components/popup/target/Conversion'
 
 // UI
 import Select from '@/components/ui/Select'
+import Dialog from '@/components/ui/Dialog'
 
 export default {
 	name: 'CreateTarget',
-	
+
   components:{
     VisitSite,
     VisitSpecificPages,
@@ -161,6 +165,7 @@ export default {
     Registration,
     Conversion,
     'ui-select': Select,
+    'ui-dialog': Dialog
   },
 
   props: {
@@ -313,6 +318,13 @@ export default {
         show:false
       }
 	  },
+	  nextStage:false,
+	  dialogShow: false,
+      dialogData: {
+        emptyText:'sample',
+        type:'confirm',
+        mode:'sample'
+      },
 
 	  //싱글 셀렉트
 	  adAccountPixels: {
@@ -325,6 +337,28 @@ export default {
   },
 
   methods: {
+  	dialogOpen (emptyText, type, mode) {
+      this.dialogData['emptyText'] = emptyText
+      this.dialogData['type'] = type
+      this.dialogData['mode'] = mode
+      this.dialogShow = true;
+    },
+    // 다이얼로그 확인 클릭시
+    dialogOk () {
+      const mode = this.dialogData.mode
+
+
+
+      // 모드별 동작
+      this.nextStage = true
+      this.dialogShow = false;
+    },
+    // 다이얼로그 취소 클릭시
+    dialogCancel () {
+      this.nextStage = false;
+      this.dialogShow = false;
+    },
+
 	moveModifyTab (item) {
 	  let categoryName = item.pixel_mapping_category.category_label_en
 	  categoryName = categoryName.replace(/\s/gi, "")

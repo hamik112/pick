@@ -129,9 +129,7 @@ class CheckAccountId(APIView):
             if fb_ad_account != None:
                 neo_account_list = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id=fb_ad_account.id)
                 pixel_evnet_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
-
                 from pixel_mapping.serializers import PixelMappingMergeSerializer
-
                 pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
 
             response_data['success'] = 'YES'
@@ -141,6 +139,7 @@ class CheckAccountId(APIView):
             response_data['fb_ad_account'] = dic_fb_ad_account
             response_data['neo_account_list'] = neo_account_list
             response_data['pixel_event_mappings'] = pixel_evnet_mapping_se.data
+
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -165,21 +164,55 @@ class FbAdAccountDetail(APIView):
                 account_category = AccountCategory.objects.get(pk=fb_ad_account.account_category_id)
 
                 if fb_ad_account != None:
+                    dic_fb_ad_account = {
+                        "fb_ad_account_id": fb_ad_account.id,
+                        "name": fb_ad_account.name,
+                        "account_status": fb_ad_account.account_status,
+                        "account_category_id": fb_ad_account.account_category_id,
+                        "pixel_id": fb_ad_account.pixel_id
+                    }
+
                     neo_account_list = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id=fb_ad_account.id)
-                    pixel_evnet_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
+                    pixel_evnet_mappings = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
+                    pixel_event_dic = {pixel_event_mapping.pixel_mapping_category_id: pixel_event_mapping for
+                                       pixel_event_mapping in pixel_evnet_mappings}
 
                     from pixel_mapping.serializers import PixelMappingMergeSerializer
 
-                    pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
-                    pixel_event_mapping_list = pixel_evnet_mapping_se.data
+                    list_pixel_event_mapping = []
+                    pixel_categories = PixelMappingCategory.get_pixel_mapping_category_for_mapping_view(
+                        PixelMappingCategory)
+                    for pixel_category in pixel_categories:
+                        data = {}
+                        pixel_category_id = pixel_category.id
+                        pixel_event_mapping = pixel_event_dic.get(pixel_category_id, None)
+
+                        if pixel_event_mapping == None:
+                            data["id"] = None
+                            data["facebook_pixel_event_name"] = None
+                        else:
+                            data["id"] = pixel_category_id
+                            data["facebook_pixel_event_name"] = pixel_event_mapping.facebook_pixel_event_name
+
+                        data["fb_ad_account"] = dic_fb_ad_account
+                        data["pixel_mapping_category"] = {
+                            "id": pixel_category.id,
+                            "category_label_kr": pixel_category.category_label_kr,
+                            "category_label_en": pixel_category.category_label_en
+                        }
+
+                        list_pixel_event_mapping.append(data)
 
                 response_data['success'] = 'YES'
                 response_data['account_category_id'] = fb_ad_account.account_category_id
                 response_data['account_category_name'] = account_category.category_label_kr
                 response_data['neo_account_list'] = neo_account_list
                 response_data['neo_account_count'] = len(neo_account_list)
-                response_data['pixel_event_mappings'] = pixel_event_mapping_list
-                response_data['pixel_event_mapping_count'] = len(pixel_event_mapping_list)
+
+                response_data['pixel_event_mappings'] = list_pixel_event_mapping
+                response_data['pixel_event_mapping_count'] = len(pixel_evnet_mappings)
+
+
                 response_data['fb_ad_account'] = FbAdAccountSerializer(fb_ad_account).data
 
         except Exception as e:

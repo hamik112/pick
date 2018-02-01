@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       '/': {
         target: 'http://beta.fb.pickdata.co.kr:8000',
-        // target: 'http://dev.snack.emforce.co.kr:8080',
+        // target: 'http://dev.fb.pickdata.co.kr:8080',
         changeOrigin: true,
         pathRewrite: {
           '^/': ''
@@ -22,7 +22,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'dev.snack.emforce.co.kr', // can be overwritten by process.env.HOST
+    host: 'dev.fb.pickdata.co.kr', // can be overwritten by process.env.HOST
     port: 8000, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
