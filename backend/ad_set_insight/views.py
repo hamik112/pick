@@ -150,19 +150,19 @@ class AdSetInsightByAccount(APIView):
                                         result.append(custom)
                     da['pickdata_custom_pixel_event'] = result
 
-            paginator = Paginator(target_insights, int(limit))
-            try:
-                contacts = paginator.page(int(page))
-            except PageNotAnInteger:
-                # If page is not an integer, deliver first page.
-                contacts = paginator.page(1)
-            except EmptyPage:
-                # If page is out of range (e.g. 9999), deliver last page of results.
-                contacts = paginator.page(paginator.num_pages)
+            # paginator = Paginator(target_insights, int(limit))
+            # try:
+            #     contacts = paginator.page(int(page))
+            # except PageNotAnInteger:
+            #     # If page is not an integer, deliver first page.
+            #     contacts = paginator.page(1)
+            # except EmptyPage:
+            #     # If page is out of range (e.g. 9999), deliver last page of results.
+            #     contacts = paginator.page(paginator.num_pages)
 
             response_data['success'] = 'YES'
             response_data['total_count'] = len(target_insights)
-            response_data['data'] = list(contacts)
+            response_data['data'] = target_insights
         except Exception as e:
             print(traceback.format_exc())
             response_data['success'] = 'NO'

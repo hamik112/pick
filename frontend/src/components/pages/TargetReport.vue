@@ -375,6 +375,7 @@
 												<div class="table_body">
 													<div class="table_body_inner" v-for="(item, index) in listData.data">
 														<ul class="body_th clearfix">
+															<input id="hidden-interest" type="text" :value="item.interest_list" ref="interest_copy">
 															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">{{ item.account_name }}</li>
 															<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">{{ item.campaign_name }}</li>
 															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">{{ item.report_date }}</li>
@@ -385,9 +386,9 @@
 																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
 																<div :id="'interest-sub-' + index" class="interest_view" v-if="item.interest_list.length != 0">
 																	<ul class="clearfix">
-																		<li v-for="elem in item.interest_list">{{ elem }}</li>
+																		<li v-for="elem in item.interest_list" >{{ elem }}</li>
 																	</ul>
-																	<div class="inter_clip_copy">클립보드로 복사하기</div>
+																	<div class="inter_clip_copy" v-on:click="clickCopy(index)">클립보드로 복사하기</div>
 																	<div class="inter_close" @click="tootip('close')">닫기</div>
 																</div>
 															</li>
@@ -478,12 +479,13 @@
 									<!-- TODO Paging 처리 예정 -->
 									<div class="pagination" v-show="false">
 										<ul>
-											<li><img src="../../assets/images/icon/paging_01.png" alt=""></li>
-											<li><img src="../../assets/images/icon/paging_03.png" alt=""></li>
-											<li class="now">1</li>
-											<li>2</li>
-											<li><img src="../../assets/images/icon/paging_04.png" alt=""></li>
-											<li><img src="../../assets/images/icon/paging_02.png" alt=""></li>
+											<li v-show="currentPage > 1"><img src="../../assets/images/icon/paging_01.png" alt=""></li>
+											<li v-show="currentPage > 1"><img src="../../assets/images/icon/paging_03.png" alt=""></li>
+											<!-- <li class="now">1</li> -->
+											<li v-for="n in pageNumber" v-on:click="clickPageNumber(n)"
+												v-bind:class="[currentPage === n ? 'now' : '']">{{ checkPageNumber(n) }}</li>
+											<li v-show="currentPage < pageNumber"><img src="../../assets/images/icon/paging_04.png" alt=""></li>
+											<li v-show="currentPage < pageNumber"><img src="../../assets/images/icon/paging_02.png" alt=""></li>
 										</ul>
 									</div>
 								</div>
@@ -527,7 +529,6 @@ export default {
 	},
 	created () {
 		this.loadFbAdAccounts()
-		// this.getGridData()
 	},
 
 	// mounted () {
@@ -577,6 +578,10 @@ export default {
 			listData:{
 				data: []
 			},
+
+			pageNumber: 1,
+			pageTotal: 0,
+			currentPage: 1,
 
 			tablesAutoWidth:4880,
 
@@ -744,6 +749,24 @@ export default {
 			return keyList[textList.indexOf(emptyText)]
 		},
 
+		getPageNumber () {
+			console.log('getPageNumber')
+			var limit = 25
+			var page_total = this.pageTotal
+			var page_number = page_total / limit
+			this.pageNumber = Math.round(page_number)
+		},
+
+		clickPageNumber (n) {
+			this.currentPage = n
+			this.getGridData()
+		},
+
+		checkPageNumber (n) {
+			console.log(n)
+			return n
+		},
+
 		getGridData () {
 			var date_range = []
 			this.range.forEach(date => {
@@ -762,19 +785,23 @@ export default {
 					account_id: this.findSelectKey('accountSelectData'),
 					category_name: this.findSelectKey('categorySelectData'),
 					since: date_range[0],
-					until: date_range[1]
+					until: date_range[1],
+					page: this.currentPage
 				}
 			})
 			.then(res => {
 				const response = res.data
 				const data = response.data
+				const total = response.total_count
 				const success = response.success
 				if (success === "YES") {
 					data.forEach(item => {
 						this.listData.data.push(item)
 					})
+					this.pageTotal = total
 					this.isReport = true
 					this.isLoading = false
+					this.getPageNumber()
 				} else {
 					throw('success: ' + success)
 					this.isReport = true
@@ -818,18 +845,20 @@ export default {
 			window.open(url, '_blank')
 		},
 
-		// currencyFormat (n) {
-		// 	return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		// 	// return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '￦1,');
-		// },
-
 		numberFormat (n) {
 			return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
+		},
 
+		clickCopy (index) {
+			var result
+			this.$refs.interest_copy[index].select();
+			result = document.execCommand('copy')
+			return result
+		}
 	}
 }
 </script>
 
 <style lang="css" scoped>
+#hidden-interest { float:left; height:0; }
 </style>
