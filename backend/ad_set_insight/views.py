@@ -189,10 +189,11 @@ class AdSetInsightByAccount(APIView):
                                                         ).order_by('adset_id')
 
         # Custom Event CUSTOM SORT/SUM
-        actions_insights = AdSetInsight.objects.filter(account_id=fb_account_id,date_stop__range=(since,until)).values('adset_id', 'date_stop', 'actions', 'video_10_sec_watched_actions', 'video_30_sec_watched_actions')
+        actions_insights = AdSetInsight.objects.filter(account_id=fb_account_id,date_stop__range=(since,until)).values('adset_id', 'date_stop', 'actions', 'video_10_sec_watched_actions', 'video_30_sec_watched_actions', 'carousel_actions')
         actions_insights_list = []
         video_10_sec_insights_list = []
         video_30_sec_insights_list = []
+        carousel_action_insights_list = []
         for action_insight in actions_insights:
             # action 전체
             report = {}
@@ -228,9 +229,21 @@ class AdSetInsightByAccount(APIView):
             video_10_sec_insights_list.append(video_10sec_report)
             video_30_sec_insights_list.append(video_30sec_report)
 
+            carousel_action_report = {}
+            carousel_action_report['adset_id'] = action_insight['adset_id']
+            carousel_action_report['date_stop'] = action_insight['date_stop']
+            if action_insight['carousel_actions'] != None:
+                actions = eval(action_insight['carousel_actions'])
+                carousel_action_report['carousel_actions'] = actions
+            else:
+                carousel_action_report['carousel_actions'] = None
+
+            carousel_action_insights_list.append(carousel_action_report)
+
         actions_insights_list = sorted(actions_insights_list, key=itemgetter('adset_id'))
         video_10_sec_insights_list = sorted(video_10_sec_insights_list, key=itemgetter('adset_id'))
         video_30_sec_insights_list = sorted(video_30_sec_insights_list, key=itemgetter('adset_id'))
+        carousel_action_insights_list = sorted(carousel_action_insights_list, key=itemgetter('adset_id'))
 
         # actions 안에 있는 모든 event
         report_dict = {}
@@ -264,6 +277,16 @@ class AdSetInsightByAccount(APIView):
                 else:
                     result += ''
                 report_dict_video_30_sec[key] = result
+
+        report_dict_carousel_actions = {}
+        for key, value in itertools.groupby(carousel_action_insights_list, key=itemgetter('adset_id')):
+            result = []
+            for i in value:
+                if i.get('carousel_actions') != None:
+                    result += i.get('carousel_actions')
+                else:
+                    result += ''
+                report_dict_carousel_actions[key] = result
 
         # Django model aggregation values
         pixel_group = []
@@ -413,6 +436,19 @@ class AdSetInsightByAccount(APIView):
                                 result['video_30_sec_watched_actions'] = sum(v_list)
                                 result['video_30_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
                                 result['video_30_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+
+                # Carousel 소재 링크 클릭 값
+                for key, items in report_dict_carousel_actions.items():
+                    if key == adset_id:
+                        if items != None:
+                            grouper = itemgetter("action_carousel_card_id", "action_carousel_card_name")
+                            r = []
+                            for key, grp in groupby(sorted(items, key = grouper), grouper):
+                                temp_dict = dict(zip(["action_carousel_card_id", "action_carousel_card_id"], key))
+                                temp_dict["value"] = sum(int(item["value"]) for item in grp)
+                                r.append(temp_dict)
+                            result['carousel_actions'] = r
+                            # TODO ID로 groupby를하고 id 랑  name이랑 매치. value 를 가져와서 id같은것들끼리 SUM?
 
                 target_insights.append(result)
 
