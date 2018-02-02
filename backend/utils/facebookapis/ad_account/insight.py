@@ -55,12 +55,101 @@ def get_adset_level_select_date_insights(act_account_id, select_date):
 
             return adset_insights
         except FacebookRequestError as e:
-            print(e)
-            msg = {}
-            msg['request_context'] = e._request_context
-            msg['error'] = e._error
-            raise Exception(msg)
+            try:
+                adset_insights = ad_account.get_insights(
+                    fields=insight_fields(), params=params
+                )
 
+                return adset_insights
+            except FacebookRequestError as e:
+                try:
+                    adset_insights = ad_account.get_insights(
+                        fields=insight_fields(), params=params
+                    )
+
+                    return adset_insights
+                except FacebookRequestError as e:
+                    try:
+                        adset_insights = ad_account.get_insights(
+                            fields=insight_fields(), params=params
+                        )
+
+                        return adset_insights
+                    except FacebookRequestError as e:
+                        print(e)
+                        msg = {}
+                        msg['request_context'] = e._request_context
+                        msg['error'] = e._error
+                        raise Exception(msg)
+
+def get_adset_level_select_date_carousel_insights(act_account_id, select_date):
+
+    try:
+        ad_account = AdAccount(act_account_id)
+
+        params = {
+            'level': 'adset',
+            'filtering': [
+                {
+                    'field': 'action_type',
+                    'operator': 'IN',
+                    'value': ['link_click']
+                }
+            ],
+            "action_breakdowns":
+                [
+                    'action_carousel_card_id',
+                    'action_carousel_card_name',
+                    'action_type'
+                ],
+            "time_range": {
+                "since": select_date,
+                "until": select_date
+            }
+        }
+
+        adset_insights = ad_account.get_insights(
+            fields=[
+                "date_start", "date_stop", "adset_id", "actions"
+            ], params=params
+        )
+
+        return adset_insights
+
+    except FacebookRequestError as e:
+        try:
+            adset_insights = ad_account.get_insights(
+                fields=insight_fields(), params=params
+            )
+
+            return adset_insights
+        except FacebookRequestError as e:
+            try:
+                adset_insights = ad_account.get_insights(
+                    fields=insight_fields(), params=params
+                )
+
+                return adset_insights
+            except FacebookRequestError as e:
+                try:
+                    adset_insights = ad_account.get_insights(
+                        fields=insight_fields(), params=params
+                    )
+
+                    return adset_insights
+                except FacebookRequestError as e:
+                    try:
+                        adset_insights = ad_account.get_insights(
+                            fields=insight_fields(), params=params
+                        )
+
+                        return adset_insights
+                    except FacebookRequestError as e:
+                        print(e)
+                        msg = {}
+                        msg['request_context'] = e._request_context
+                        msg['error'] = e._error
+                        raise Exception(msg)
 
 def insight_fields():
     fields = [

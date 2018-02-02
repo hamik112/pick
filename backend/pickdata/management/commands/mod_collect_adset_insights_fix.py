@@ -17,7 +17,7 @@ from django.conf import settings
 logger = logging.getLogger('mod_pickdata')
 
 '''
-ex) python manage.py mod_collect_adset_insights --settings=pickdata.settings.dev
+ex) python manage.py mod_collect_adset_insights_fix --settings=pickdata.settings.production
 '''
 
 
@@ -36,20 +36,32 @@ class Command(BaseCommand):
                 account_id = my_account.get('id')
                 account_name = my_account.get('name')
 
+                print("account_id : ", account_id)
+                print("account_name : ", account_name)
+
                 from datetime import date
                 from utils.common import date_formatter
                 start_dt = date(2018, 1, 1)
-                end_dt = date(2018, 1, 20)
+                end_dt = date(2018, 1, 31)
 
                 date_list = date_formatter.daterange(start_dt, end_dt)
 
                 for select_date in date_list:
                     select_date = select_date.strftime("%Y-%m-%d")
+                    print("select_date : ", select_date)
                     ad_set_insights = insight.get_adset_level_select_date_insights(account_id, select_date)
 
                     for adset_insight in ad_set_insights:
-                        self.insert_DB(adset_insight)
+                        self.insert_or_update_DB(adset_insight)
                         time.sleep(1)
+
+                    ad_set_carousel_insights = insight.get_adset_level_select_date_carousel_insights(account_id, select_date)
+
+                    for adset_carousel_insight in ad_set_carousel_insights:
+                        if adset_carousel_insight.get('actions', [{'value': '0', 'action_type': 'link_click'}]) != [{'value': '0', 'action_type': 'link_click'}]:
+                            self.insert_or_update_carousel_DB(adset_carousel_insight)
+                            time.sleep(1)
+
 
             # logger.info(len(adset_insight_list))
             # logger.info(no_insights)
@@ -60,7 +72,7 @@ class Command(BaseCommand):
             logger.error(traceback.format_exc())
             logger.error("collect adset insight fail")
 
-    def insert_DB(self, item):
+    def insert_or_update_DB(self, item):
 
         account_id = item.get('account_id')
         campaign_id = item.get('campaign_id')
@@ -128,77 +140,109 @@ class Command(BaseCommand):
         # ad_set_insight model
         adset_insight = AdSetInsight()
 
-        adset_insight.created_by = "Module"
-        adset_insight.updated_by = "Module"
+        params = {}
+        params["created_by"] = "Module"
+        params["updated_by"] = "Module"
 
         # age, gender 무시, insert 하지 않는다.
         # adset_insight.age = age
         # adset_insight.gender = gender
-        adset_insight.account_id = account_id
-        adset_insight.campaign_id = campaign_id
-        adset_insight.adset_id = adset_id
-        adset_insight.objective = campaign_objective
-        if ad_id == None:
-            adset_insight.ad_id = 0
-        else:
-            adset_insight.ad_id = ad_id
-        adset_insight.date_start = date_start
-        adset_insight.date_stop = date_stop
-        adset_insight.call_to_action_clicks = call_to_action_clicks
-        adset_insight.canvas_avg_view_percent = canvas_avg_view_percent
-        adset_insight.canvas_avg_view_time = canvas_avg_view_time
-        adset_insight.impressions = impressions
-        adset_insight.clicks = clicks
-        adset_insight.spend = spend
-        adset_insight.reach = reach
-        adset_insight.actions = actions
-        adset_insight.cost_per_10_sec_video_view = cost_per_10_sec_video_view
-        adset_insight.cost_per_action_type = cost_per_action_type
-        adset_insight.cost_per_estimated_ad_recallers = cost_per_estimated_ad_recallers
-        adset_insight.cost_per_inline_link_click = cost_per_inline_link_click
-        adset_insight.cost_per_inline_post_engagement = cost_per_inline_post_engagement
-        adset_insight.cost_per_outbound_click = cost_per_outbound_click
-        adset_insight.cost_per_total_action = cost_per_total_action
-        adset_insight.cost_per_unique_action_type = cost_per_unique_action_type
-        adset_insight.cost_per_unique_click = cost_per_unique_click
-        adset_insight.cost_per_unique_inline_link_click = cost_per_unique_inline_link_click
-        adset_insight.cost_per_unique_outbound_click = cost_per_unique_outbound_click
-        adset_insight.cpc = cpc
-        adset_insight.cpm = cpm
-        adset_insight.cpp = cpp
-        adset_insight.ctr = ctr
-        adset_insight.estimated_ad_recall_rate = estimated_ad_recall_rate
-        adset_insight.frequency = frequency
-        adset_insight.inline_link_click_ctr = inline_link_click_ctr
-        adset_insight.inline_link_clicks = inline_link_clicks
-        adset_insight.inline_post_engagement = inline_post_engagement
-        adset_insight.outbound_clicks = outbound_clicks
-        adset_insight.outbound_clicks_ctr = outbound_clicks_ctr
-        adset_insight.social_clicks = social_clicks
-        adset_insight.social_impressions = social_impressions
-        adset_insight.social_reach = social_reach
-        adset_insight.social_spend = social_spend
-        adset_insight.total_action_value = total_action_value
-        adset_insight.total_actions = total_actions
-        adset_insight.total_unique_actions = total_unique_actions
-        adset_insight.unique_actions = unique_actions
-        adset_insight.unique_clicks = unique_clicks
-        adset_insight.unique_ctr = unique_ctr
-        adset_insight.unique_inline_link_click_ctr = unique_inline_link_click_ctr
-        adset_insight.unique_inline_link_clicks = unique_inline_link_clicks
-        adset_insight.unique_link_clicks_ctr = unique_link_clicks_ctr
-        adset_insight.unique_outbound_clicks = unique_outbound_clicks
-        adset_insight.unique_outbound_clicks_ctr = unique_outbound_clicks_ctr
-        adset_insight.unique_social_clicks = unique_social_clicks
-        adset_insight.video_10_sec_watched_actions = video_10_sec_watched_actions
-        adset_insight.video_30_sec_watched_actions = video_30_sec_watched_actions
-        adset_insight.video_avg_percent_watched_actions = video_avg_percent_watched_actions
-        adset_insight.video_p100_watched_actions = video_p100_watched_actions
-        adset_insight.video_p25_watched_actions = video_p25_watched_actions
-        adset_insight.video_p50_watched_actions = video_p50_watched_actions
-        adset_insight.video_p75_watched_actions = video_p75_watched_actions
-        adset_insight.video_p95_watched_actions = video_p95_watched_actions
-        adset_insight.website_ctr = website_ctr
 
-        adset_insight.save()
+        params["account_id"] = account_id
+        params["campaign_id"] = campaign_id
+        # params["adset_id"] = adset_id
+        params["objective"] = campaign_objective
+        if ad_id == None:
+            params["ad_id"] = 0
+        else:
+            params["ad_id"] = ad_id
+
+        # adset_insight.date_start = date_start
+        # adset_insight.date_stop = date_stop
+
+        params["call_to_action_clicks"] = call_to_action_clicks
+        params["canvas_avg_view_percent"] = canvas_avg_view_percent
+        params["canvas_avg_view_time"] = canvas_avg_view_time
+        params["impressions"] = impressions
+        params["clicks"] = clicks
+        params["spend"] = spend
+        params["reach"] = reach
+        params["actions"] = actions
+        params["cost_per_10_sec_video_view"] = cost_per_10_sec_video_view
+        params["cost_per_action_type"] = cost_per_action_type
+        params["cost_per_estimated_ad_recallers"] = cost_per_estimated_ad_recallers
+        params["cost_per_inline_link_click"] = cost_per_inline_link_click
+        params["cost_per_inline_post_engagement"] = cost_per_inline_post_engagement
+        params["cost_per_outbound_click"] = cost_per_outbound_click
+        params["cost_per_total_action"] = cost_per_total_action
+        params["cost_per_unique_action_type"] = cost_per_unique_action_type
+        params["cost_per_unique_click"] = cost_per_unique_click
+        params["cost_per_unique_inline_link_click"] = cost_per_unique_inline_link_click
+        params["cost_per_unique_outbound_click"] = cost_per_unique_outbound_click
+        params["cpc"] = cpc
+        params["cpm"] = cpm
+        params["cpp"] = cpp
+        params["ctr"] = ctr
+        params["estimated_ad_recall_rate"] = estimated_ad_recall_rate
+        params["frequency"] = frequency
+        params["inline_link_click_ctr"] = inline_link_click_ctr
+        params["inline_link_clicks"] = inline_link_clicks
+        params["inline_post_engagement"] = inline_post_engagement
+        params["outbound_clicks"] = outbound_clicks
+        params["outbound_clicks_ctr"] = outbound_clicks_ctr
+        params["social_clicks"] = social_clicks
+        params["social_impressions"] = social_impressions
+        params["social_reach"] = social_reach
+        params["social_spend"] = social_spend
+        params["total_action_value"] = total_action_value
+        params["total_actions"] = total_actions
+        params["total_unique_actions"] = total_unique_actions
+        params["unique_actions"] = unique_actions
+        params["unique_clicks"] = unique_clicks
+        params["unique_ctr"] = unique_ctr
+        params["unique_inline_link_click_ctr"] = unique_inline_link_click_ctr
+        params["unique_inline_link_clicks"] = unique_inline_link_clicks
+        params["unique_link_clicks_ctr"] = unique_link_clicks_ctr
+        params["unique_outbound_clicks"] = unique_outbound_clicks
+        params["unique_outbound_clicks_ctr"] = unique_outbound_clicks_ctr
+        params["unique_social_clicks"] = unique_social_clicks
+        params["video_10_sec_watched_actions"] = video_10_sec_watched_actions
+        params["video_avg_percent_watched_actions"] = video_avg_percent_watched_actions
+        params["video_p100_watched_actions"] = video_p100_watched_actions
+        params["video_p25_watched_actions"] = video_p25_watched_actions
+        params["video_p50_watched_actions"] = video_p50_watched_actions
+        params["video_p75_watched_actions"] = video_p75_watched_actions
+        params["video_p95_watched_actions"] = video_p95_watched_actions
+        params["website_ctr"] = website_ctr
+
+        obj, created = AdSetInsight.objects.update_or_create(
+            adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+        )
+
+        # adset_insight.save()
         logger.info('DB INSERT COMPLETE')
+
+
+    def insert_or_update_carousel_DB(self, item):
+
+        adset_id = item.get('adset_id')
+        date_start = item.get('date_start')
+        date_stop = item.get('date_stop')
+        actions = item.get('actions')
+
+        # ad_set_insight model
+        adset_insight = AdSetInsight()
+
+        params = {}
+        params["created_by"] = "Module"
+        params["updated_by"] = "Module"
+
+        params['carousel_actions'] = actions
+
+
+        obj, created = AdSetInsight.objects.update_or_create(
+            adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+        )
+
+        # adset_insight.save()
+        logger.info('DB CAROUSEL INSERT COMPLETE')
