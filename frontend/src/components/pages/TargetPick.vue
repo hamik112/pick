@@ -361,6 +361,7 @@
             // default_pixel alert popup
 						this.pixelNone = true
 						this.isPick = false
+						this.isLoading = false
 					} else {
 						this.pixelNone = false
 
