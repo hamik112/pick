@@ -28,6 +28,9 @@ class LoginFilter(MiddlewareMixin):
         # else:
         #     # DEBUG 개발용
         #     pass
+        elif request.path == '/#/':
+            # 로그인 페이지 필터 제외
+            pass
         else:
             # 그 외 모든 요청시 로그인 체크
             try:
