@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="target_tbody">
-        <div class="target_inner_tbody clearfix">
+        <div class="target_inner_tbody particula_inner clearfix">
           <div class="target_generate">
             <div class="account_info">
               <div class="account_title">"아래 URL을 방문한 사람" 중</div>

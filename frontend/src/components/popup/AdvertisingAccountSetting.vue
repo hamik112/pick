@@ -80,6 +80,8 @@ import NeoAccountLinkage from '@/components/popup/setting/NeoAccountLinkage'
 import PixelEventMapping from '@/components/popup/setting/PixelEventMapping'
 
 export default {
+	name: 'AdvertisingAccountSetting',
+
 	components: {
 		CategorySetting,
 		NeoAccountLinkage,

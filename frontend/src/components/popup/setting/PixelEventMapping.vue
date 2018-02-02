@@ -12,7 +12,7 @@
         <li v-for="(pixelMappingCategory, index) in pixelMappingCategories" :key="index" class="select_btn">
           <div class="select_title">{{ pixelMappingCategory.title }}</div>
           <div class="select_contents">
-            <div><ui-select :selectData="pixelMappingCategory.select" :data-key="index" :onClick="multiSelect"></ui-select></div>
+            <div><ui-select @exceptSelectedItems="exceptSelectedItems" :selectData="pixelMappingCategory.select" :data-key="index" :onClick="multiSelect"></ui-select></div>
           </div>
         </li>
       </ul>
@@ -53,8 +53,8 @@ export default {
 						textList: ['미지정']
 					}
 				})
-			}
-		})
+      }
+    })
   },
 
   beforeUpdate () {
@@ -72,7 +72,41 @@ export default {
           for(let i = 0; i < data.length; i++) {
             category.select.textList.push(data[i].name)
           }
+          // 셀렉트 박스 정렬
+          category.select.textList.sort()
         })
+
+        return this.pixelMappingCategories
+      })
+      .then(pixelMappingCategories => {
+        const fbAdAccountId = localStorage.getItem('fb_ad_account_id')
+
+        if(fbAdAccountId !== 'undefined') {
+          this.$http.get('/fb_ad_accounts/' + fbAdAccountId + '/')
+          .then(res => {
+            const data = res.data
+            const pixelEventCount = data.pixel_event_mapping_count
+            const pixelEventMappings = data.pixel_event_mappings
+
+            // 카테고리 목록
+            let categoryTitles = []
+            pixelMappingCategories.forEach(category => {
+              categoryTitles.push(category.title)
+            })
+            
+            pixelEventMappings.forEach(pixelEvent => {
+              // 카테고리 목록의 인덱스 위치를 찾아서
+              const index = categoryTitles.indexOf(pixelEvent.pixel_mapping_category.category_label_kr)
+
+              // 해당 카테고리 인덱스에 픽셀 이벤트를 맵핑 (null이면 미지정, 아니면 해당 픽셀 이벤트를 맵핑)
+              if (pixelEvent.facebook_pixel_event_name === null) {
+                pixelMappingCategories[index].select.emptyText = '미지정'
+              } else {
+                pixelMappingCategories[index].select.emptyText = pixelEvent.facebook_pixel_event_name
+              }
+            })
+          })
+        }
       })
     }
   },
@@ -97,7 +131,7 @@ export default {
 			},
 			nextStage:false
 		}
-	},
+  },
 
   methods: {
   	dialogOpen(emptyText, type, mode) {
@@ -111,7 +145,8 @@ export default {
 
       //모드별 동작
       if(mode === 'mapping') {
-      	this.$emit('setPixelEventMapping', this.facebookPixelEventNames, this.pixelMappingCategoryIds)
+        this.$emit('setPixelEventMapping', this.facebookPixelEventNames, this.pixelMappingCategoryIds)
+        this.$router.push({name: 'TargetPick'})
       }
       this.nextStage = true
       this.dialogShow = false;
@@ -147,8 +182,48 @@ export default {
 				//컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
         this.dialogOpen('모든 항목이 매칭되지 않았습니다.', 'alert')
 			} else {
-				this.dialogOpen('현재 매칭된 상태로 Target Pick 설정을 진행할까요?', 'confirm', 'mapping')
+        this.dialogOpen('현재 매칭된 상태로 Target Pick 설정을 진행할까요?', 'confirm', 'mapping')
 			}
+    },
+
+    // 선택한 항목을 셀렉트 박스에서 제외
+    exceptSelectedItems (selectedItem, unselectedItem) {
+      // console.log('선택됨: ' + selectedItem + ', 해제됨: ' + unselectedItem)
+
+      if(unselectedItem === this.defaultPixelEvent) {
+        // 이미 설정되어있는 항목들 셀렉트 박스에서 제거
+        this.pixelMappingCategories.forEach(category => {
+          // 이미 설정되어 있는 항목이 미지정이 아닌 경우에만 셀렉트 박스에서 제거
+          if (selectedItem !== '미지정') {
+            let index = category.select.textList.indexOf(selectedItem)
+            
+            // 중복 제거가 되는 것을 방지
+            if (index > -1) {
+              category.select.textList.splice(index, 1)
+            }
+          }
+        })
+      } else {
+        // 선택한 항목 셀렉트 박스에 추가, 해제된 항목 셀렉트 박스에서 제거
+        this.pixelMappingCategories.forEach(category => {
+          // 해제된 항목이 미지정이 아닌 경우에만 셀렉트 박스에 추가
+          if (unselectedItem !== '미지정') {
+            category.select.textList.push(unselectedItem)
+          }
+
+          if (selectedItem !== '미지정') {
+            // 선택된 항목이 미지정인 경우에는 셀렉트 박스에서 제거하지 않음
+            let index = category.select.textList.indexOf(selectedItem)
+
+            // 중복 제거가 되는 것을 방지
+            if(index > -1) {
+              category.select.textList.splice(index, 1)
+            }
+          }
+
+          category.select.textList.sort()
+        })
+      }
     }
   }
 }

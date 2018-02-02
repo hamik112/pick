@@ -146,7 +146,7 @@ export default {
         this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
         this.collectionPeriod = 180
       } else if (this.collectionPeriod === '0') {
-        alert('수집 기간은 최소 1일입니다.')
+        this.dialogOpen('수집 기간은 최소 1일입니다.', 'alert')
         this.collectionPeriod = 1
       }
     },
@@ -224,7 +224,7 @@ export default {
             // success
             this.$eventBus.$emit('getAccountTarget')
           } else {
-            alert('장바구니 타겟 생성 실패')
+            this.dialogOpen('장바구니 타겟 생성 실패', 'alert')
             throw('success: ' + success)
           }
           this.$emit('close')

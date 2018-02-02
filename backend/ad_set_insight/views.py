@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.core.management.base import BaseCommand, CommandError
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core import serializers
 from django.conf import settings
 from django.shortcuts import render
 from django.db.models import Count, Min, Sum, Avg
@@ -149,6 +150,16 @@ class AdSetInsightByAccount(APIView):
                                         result.append(custom)
                     da['pickdata_custom_pixel_event'] = result
 
+            # paginator = Paginator(target_insights, int(limit))
+            # try:
+            #     contacts = paginator.page(int(page))
+            # except PageNotAnInteger:
+            #     # If page is not an integer, deliver first page.
+            #     contacts = paginator.page(1)
+            # except EmptyPage:
+            #     # If page is out of range (e.g. 9999), deliver last page of results.
+            #     contacts = paginator.page(paginator.num_pages)
+
             response_data['success'] = 'YES'
             response_data['total_count'] = len(target_insights)
             response_data['data'] = target_insights
@@ -263,151 +274,152 @@ class AdSetInsightByAccount(APIView):
             adset_id = insight['adset_id']
             try:
                 adset = AdSetModel.objects.get(adset_id=adset_id)
+
+                adset_name = adset.adset_name
+                objective = adset.campaign_objective
+                campaign_name = adset.campaign_name
+                targeting = adset.targeting
+                genders = adset.gender
+                genders = string_to_literal(genders)
+                g = ''
+                gender = ''.join(str(g) for g in genders)
+                if gender == '1':
+                    gender = 'male'
+                elif gender == '2':
+                    gender = 'female'
+                elif gender == '0':
+                    gender = 'all'
+                else:
+                    gender = ''
+
+                interests = adset.include_interests
+                interests = string_to_literal(interests)
+                custom_audiences = adset.custom_audiences
+                custom_audiences = string_to_literal(custom_audiences)
+
+                interest_list = []
+                if interests != []:
+                    for interest in interests:
+                        item = interest['name']
+                        interest_list.append(item)
+                else:
+                    pass
+
+                custom_audience_list = []
+                if custom_audiences != '[]':
+                    for audience in custom_audiences:
+                        item = audience['name']
+                        custom_audience_list.append(item)
+                else:
+                    pass
+
+                age_max = adset.age_max
+                age_min = adset.age_min
+                age = str(age_min) + '-' + str(age_max)
+                report_date = str(since) + ' ~ ' + str(until)
+                impressions = insight.get('impressions')
+                clicks = insight.get('clicks')
+                reach = insight.get('reach')
+                spend = insight.get('spend')
+                inline_link_clicks = insight.get('inline_link_clicks')
+                cpc = insight.get('cpc')
+                cpm = insight.get('cpm')
+                ctr = insight.get('ctr')
+                cpp = insight.get('cpp')
+                conversions = insight.get('conversions')
+                frequency = insight.get('frequency')
+                inline_link_click_ctr = insight.get('inline_link_click_ctr')
+
+
+                result['custom_audience'] = custom_audience_list
+                result['account_name'] = account_name
+                result['account_category'] = account_category_name
+                result['interest_num'] = len(interests)
+                result['interest_list'] = interest_list
+                result['age'] = age
+                result['gender'] = gender
+                result['adset_id'] = adset_id
+                result['adset_name'] = adset_name
+                result['campaign_name'] = campaign_name
+                result['objective'] = objective
+                result['report_date'] = report_date
+                result['impressions'] = impressions
+                result['reach'] = reach
+                result['spend'] = spend
+                result['clicks'] = clicks
+                result['inline_link_clicks'] = inline_link_clicks
+                result['cpc'] = round(cpc, 2)
+                result['ctr'] = round(ctr, 2)
+                result['cpp'] = round(cpp, 2)
+                result['conversions'] = conversions
+                result['frequency'] = round(frequency, 2)
+                result['inline_link_click_ctr'] = round(inline_link_click_ctr, 2)
+                result['pickdata_custom_pixel_event'] = []
+
+                # Custom Event 계산 추가
+                pixels = []
+                # 모든 action event total -
+                for key, items in report_dict.items():
+                    if key == adset_id:
+                        if items != None:
+                            action_sort = sorted(items, key=itemgetter('action_type'))
+                            for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
+                                if 'offsite_conversion.custom.' in key:
+                                    pixel_id = key[26:]
+                                    pixels.append(pixel_id)
+
+                                v_list = []
+                                for v in value:
+                                    v = list(v.values())
+                                    v.remove(key)
+                                    v_list += v
+
+                                v_list = list(map(int, v_list))
+                                key = key + '_event'
+                                result[key] = sum(v_list)
+
+                # actions field로는 video_view total 만 가져올수있으므로 따로 다시 기간 adset_id별로 분류+합 해야한다.
+
+                # 10_sec_video_view total
+                for key, items in report_dict_video_10_sec.items():
+                    if key == adset_id:
+                        if items != None:
+                            action_sort = sorted(items, key=itemgetter('action_type'))
+                            for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
+                                v_list = []
+                                for v in value:
+                                    v = list(v.values())
+                                    v.remove(key)
+                                    v_list += v
+
+                                v_list = list(map(int, v_list))
+                                result['video_10_sec_watched_actions'] = sum(v_list)
+                                result['video_10_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
+                                result['video_10_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+
+                # 30_sec_video_view total
+                for key, items in report_dict_video_30_sec.items():
+                    if key == adset_id:
+                        if items != None:
+                            action_sort = sorted(items, key=itemgetter('action_type'))
+                            for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
+                                v_list = []
+                                for v in value:
+                                    v = list(v.values())
+                                    v.remove(key)
+                                    v_list += v
+
+                                v_list = list(map(int, v_list))
+                                result['video_30_sec_watched_actions'] = sum(v_list)
+                                result['video_30_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
+                                result['video_30_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+
+                target_insights.append(result)
+
+                pixel_group += pixels
             except ObjectDoesNotExist:
                 pass
                 # raise CommandError('does not exist')
-            adset_name = adset.adset_name
-            objective = adset.campaign_objective
-            campaign_name = adset.campaign_name
-            targeting = adset.targeting
-            genders = adset.gender
-            genders = string_to_literal(genders)
-            g = ''
-            gender = ''.join(str(g) for g in genders)
-            if gender == '1':
-                gender = 'male'
-            elif gender == '2':
-                gender = 'female'
-            elif gender == '0':
-                gender = 'all'
-            else:
-                gender = ''
-
-            interests = adset.include_interests
-            interests = string_to_literal(interests)
-            custom_audiences = adset.custom_audiences
-            custom_audiences = string_to_literal(custom_audiences)
-
-            interest_list = []
-            if interests != []:
-                for interest in interests:
-                    item = interest['name']
-                    interest_list.append(item)
-            else:
-                pass
-
-            custom_audience_list = []
-            if custom_audiences != '[]':
-                for audience in custom_audiences:
-                    item = audience['name']
-                    custom_audience_list.append(item)
-            else:
-                pass
-
-            age_max = adset.age_max
-            age_min = adset.age_min
-            age = str(age_min) + '-' + str(age_max)
-            report_date = str(since) + ' ~ ' + str(until)
-            impressions = insight.get('impressions')
-            clicks = insight.get('clicks')
-            reach = insight.get('reach')
-            spend = insight.get('spend')
-            inline_link_clicks = insight.get('inline_link_clicks')
-            cpc = insight.get('cpc')
-            cpm = insight.get('cpm')
-            ctr = insight.get('ctr')
-            cpp = insight.get('cpp')
-            conversions = insight.get('conversions')
-            frequency = insight.get('frequency')
-            inline_link_click_ctr = insight.get('inline_link_click_ctr')
-
-
-            result['custom_audience'] = custom_audience_list
-            result['account_name'] = account_name
-            result['account_category'] = account_category_name
-            result['interest_num'] = len(interests)
-            result['interest_list'] = interest_list
-            result['age'] = age
-            result['gender'] = gender
-            result['adset_id'] = adset_id
-            result['adset_name'] = adset_name
-            result['campaign_name'] = campaign_name
-            result['objective'] = objective
-            result['report_date'] = report_date
-            result['impressions'] = impressions
-            result['reach'] = reach
-            result['spend'] = spend
-            result['clicks'] = clicks
-            result['inline_link_clicks'] = inline_link_clicks
-            result['cpc'] = round(cpc, 2)
-            result['ctr'] = round(ctr, 2)
-            result['cpp'] = round(cpp, 2)
-            result['conversions'] = conversions
-            result['frequency'] = round(frequency, 2)
-            result['inline_link_click_ctr'] = round(inline_link_click_ctr, 2)
-            result['pickdata_custom_pixel_event'] = []
-
-            # Custom Event 계산 추가
-            pixels = []
-            # 모든 action event total -
-            for key, items in report_dict.items():
-                if key == adset_id:
-                    if items != None:
-                        action_sort = sorted(items, key=itemgetter('action_type'))
-                        for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
-                            if 'offsite_conversion.custom.' in key:
-                                pixel_id = key[26:]
-                                pixels.append(pixel_id)
-
-                            v_list = []
-                            for v in value:
-                                v = list(v.values())
-                                v.remove(key)
-                                v_list += v
-
-                            v_list = list(map(int, v_list))
-                            key = key + '_event'
-                            result[key] = sum(v_list)
-
-            # actions field로는 video_view total 만 가져올수있으므로 따로 다시 기간 adset_id별로 분류+합 해야한다.
-
-            # 10_sec_video_view total
-            for key, items in report_dict_video_10_sec.items():
-                if key == adset_id:
-                    if items != None:
-                        action_sort = sorted(items, key=itemgetter('action_type'))
-                        for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
-                            v_list = []
-                            for v in value:
-                                v = list(v.values())
-                                v.remove(key)
-                                v_list += v
-
-                            v_list = list(map(int, v_list))
-                            result['video_10_sec_watched_actions'] = sum(v_list)
-                            result['video_10_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
-                            result['video_10_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
-
-            # 30_sec_video_view total
-            for key, items in report_dict_video_30_sec.items():
-                if key == adset_id:
-                    if items != None:
-                        action_sort = sorted(items, key=itemgetter('action_type'))
-                        for key, value in itertools.groupby(action_sort, key=itemgetter('action_type')):
-                            v_list = []
-                            for v in value:
-                                v = list(v.values())
-                                v.remove(key)
-                                v_list += v
-
-                            v_list = list(map(int, v_list))
-                            result['video_30_sec_watched_actions'] = sum(v_list)
-                            result['video_30_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
-                            result['video_30_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
-
-            target_insights.append(result)
-
-            pixel_group += pixels
         pixel_group = list(set(pixel_group))
 
         # pixel id, 이름 호출

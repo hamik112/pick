@@ -4,6 +4,7 @@
 		<transition name='modal'>
 			<target-chart v-if="chartModal" @close="chartModal = false" :chartItem="this.chartItem"></target-chart>
 			<create-target v-if="makeModal" :makeType="this.makeType" :makeItem="this.makeItem" @close="makeModal = false"></create-target>
+			<ui-dialog :dialogData="dialogData" v-if="dialogShow" @ok="dialogOk()" @cancel="dialogCancel()"></ui-dialog>
 		</transition>
 
 		<transition-group name='modal'>
@@ -46,7 +47,7 @@
 											</div>
 											<div class="target_info">
 												<p>{{ item.name }}</p>
-												<p><span class="opensans">{{ item.display_count }}</span></p>
+												<p><span class="opensans">{{ formatterDisplayCount(item.display_count) }}</span></p>
 											</div>
 											<div class="target_state">
 												<p>{{ item.description.pixel_mapping_category }}</p>
@@ -70,6 +71,8 @@
 </template>
 
 <script>
+	import { numberFormatter } from '@/components/utils/Formatter'
+
 	// Popup
 	import TargetChart from '@/components/popup/TargetChart'
 	import CreateTarget from '@/components/popup/CreateTarget'
@@ -80,6 +83,7 @@
 	import Select from '@/components/ui/Select'
 	import Calendar from '@/components/ui/Calendar'
 	import Loading from '@/components/ui/Loading'
+	import Dialog from '@/components/ui/Dialog'
 
 	export default {
 		name: 'TargetPick',
@@ -92,6 +96,7 @@
 			'ui-select': Select,
 			'ui-calendar': Calendar,
 			'ui-loading': Loading,
+			'ui-dialog': Dialog
 		},
 
 		data () {
@@ -102,6 +107,13 @@
 				makeModal: false,
 				makeType:'add',
 				makeItem: {},
+				nextStage:false,
+				dialogShow: false,
+			    dialogData: {
+				    emptyText:'sample',
+				    type:'confirm',
+				    mode:'sample'
+			    },
 
 				chartItem: {},
 
@@ -160,7 +172,6 @@
 
 		computed: {
 			computedIconTargetClass (item) {
-				console.log(item)
 				return this.itemObject.iconTargetClass
 			}
 		},
@@ -180,6 +191,34 @@
 		},
 
 		methods: {
+			dialogOpen (emptyText, type, mode) {
+		      this.dialogData['emptyText'] = emptyText
+		      this.dialogData['type'] = type
+		      this.dialogData['mode'] = mode
+		      this.dialogShow = true;
+		    },
+		    // 다이얼로그 확인 클릭시
+		    dialogOk () {
+		      const mode = this.dialogData.mode
+
+
+
+		      // 모드별 동작
+		      this.nextStage = true
+		      this.dialogShow = false;
+		    },
+		    // 다이얼로그 취소 클릭시
+		    dialogCancel () {
+		      this.nextStage = false;
+		      this.dialogShow = false;
+		    },
+			formatterDisplayCount (displayCount) {
+				if (Number.isInteger(displayCount)) {
+					return numberFormatter(displayCount)
+				} else {
+					return displayCount
+				}
+			},
 			refreshTarget () {
 				this.selectTarget(this.selectData.emptyText)
 			},
@@ -261,7 +300,6 @@
 						this.targetCount.registrationCount = registrationCount
 						this.targetCount.conversionCount = conversionCount
 
-						console.log(addToCart)
 						this.isPick = true
 						this.isLoading = false
 					} else {
@@ -289,7 +327,8 @@
 					this.makeType = type
 				} else if (item.description.type === 'default') {
 					// 기본 타겟 수정
-					alert('기본 타겟은 수정할 수 없습니다.')
+					//컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+		  			this.dialogOpen('기본 타겟은 수정할 수 없습니다.', 'alert')
 				} else if(item.description.type === 'custom') {
 					// 커스텀 타겟 수정
 					this[popupName] = true
@@ -352,7 +391,6 @@
 			},
 
 			getAccountTarget (fbAdAccount) {
-				// console.log('getAccountTarget', fbAdAccount)
 				this.isPick = false
 				this.isLoading = true
 				this.loadingTitle = '타겟을 가져오는 중입니다.'
@@ -409,7 +447,6 @@
 						this.targetCount.registrationCount = registrationCount
 						this.targetCount.conversionCount = conversionCount
 
-						console.log(addToCart)
 						this.isPick = true
 						this.isLoading = false
 					} else {

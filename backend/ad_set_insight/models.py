@@ -27,6 +27,7 @@ class AdSetInsight(models.Model):
     canvas_avg_view_percent = models.FloatField(default=0)
     canvas_avg_view_time = models.FloatField(default=0)
     actions = models.TextField(null=True)
+    carousel_actions = models.TextField(null=True)
     impressions = models.IntegerField(default=0)
     clicks = models.IntegerField(default=0)
     inline_link_clicks = models.IntegerField(default=0)
@@ -86,3 +87,4 @@ class AdSetInsight(models.Model):
 
     class Meta:
         db_table = "ad_set_insights"
+        unique_together = ("adset_id", "date_start", "date_stop")

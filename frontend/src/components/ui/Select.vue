@@ -21,6 +21,13 @@ export default {
     }
   },
 
+  watch: {
+    'selectData.emptyText': function(selectedItem, unselectedItem) {
+      // 선택한 항목 셀렉트 박스에서 제외
+      this.$emit('exceptSelectedItems', selectedItem, unselectedItem)
+    }
+  },
+
   props: {
     selectData: {
       type: Object,
