@@ -58,7 +58,7 @@ export default {
   },
 
   beforeUpdate () {
-    if(this.emptyTextId !== 0) {
+    if(this.emptyTextId !== 0 && this.isInit === false ) {
       // 픽셀 이벤트 목록
       this.$http.get('/fb_ad_accounts/pixel_events', {
         params: {
@@ -93,7 +93,7 @@ export default {
             pixelMappingCategories.forEach(category => {
               categoryTitles.push(category.title)
             })
-            
+
             pixelEventMappings.forEach(pixelEvent => {
               // 카테고리 목록의 인덱스 위치를 찾아서
               const index = categoryTitles.indexOf(pixelEvent.pixel_mapping_category.category_label_kr)
@@ -122,6 +122,7 @@ export default {
 			pixelMappingCategoryIds: [],
 			pixelMappingCategories: [],
 			defaultPixelEvent: '픽셀 이벤트를 선택해주세요.',
+      isInit: false,
 
 			dialogShow:false,
 			dialogData:{
@@ -135,6 +136,7 @@ export default {
 
   methods: {
   	dialogOpen(emptyText, type, mode) {
+      this.isInit = true
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type
       this.dialogData['mode'] = mode
@@ -169,6 +171,9 @@ export default {
     },
 
     setPixelEventMapping () {
+      this.facebookPixelEventNames = []
+      this.pixelMappingCategoryIds = []
+
 			for(let i = 0; i < this.pixelMappingCategories.length; i++) {
 				// 선택된 픽셀 이벤트
 				let selectedPixelEvent = this.pixelMappingCategories[i].select.emptyText
@@ -196,7 +201,7 @@ export default {
           // 이미 설정되어 있는 항목이 미지정이 아닌 경우에만 셀렉트 박스에서 제거
           if (selectedItem !== '미지정') {
             let index = category.select.textList.indexOf(selectedItem)
-            
+
             // 중복 제거가 되는 것을 방지
             if (index > -1) {
               category.select.textList.splice(index, 1)

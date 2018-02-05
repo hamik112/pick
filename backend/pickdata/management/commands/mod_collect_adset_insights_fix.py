@@ -41,8 +41,8 @@ class Command(BaseCommand):
 
                 from datetime import date
                 from utils.common import date_formatter
-                start_dt = date(2018, 1, 1)
-                end_dt = date(2018, 1, 31)
+                start_dt = date(2016, 1, 1)
+                end_dt = date(2018, 2, 1)
 
                 date_list = date_formatter.daterange(start_dt, end_dt)
 
@@ -215,9 +215,32 @@ class Command(BaseCommand):
         params["video_p95_watched_actions"] = video_p95_watched_actions
         params["website_ctr"] = website_ctr
 
-        obj, created = AdSetInsight.objects.update_or_create(
-            adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
-        )
+        try:
+            obj, created = AdSetInsight.objects.update_or_create(
+                adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+            )
+        except Exception:
+            try:
+                obj, created = AdSetInsight.objects.update_or_create(
+                    adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+                )
+            except Exception:
+                try:
+                    obj, created = AdSetInsight.objects.update_or_create(
+                        adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+                    )
+                except Exception:
+                    try:
+                        obj, created = AdSetInsight.objects.update_or_create(
+                            adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+                        )
+                    except Exception:
+                        try:
+                            obj, created = AdSetInsight.objects.update_or_create(
+                                adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+                            )
+                        except Exception:
+                            print(traceback.format_exc())
 
         # adset_insight.save()
         logger.info('DB INSERT COMPLETE')
@@ -239,10 +262,31 @@ class Command(BaseCommand):
 
         params['carousel_actions'] = actions
 
-
-        obj, created = AdSetInsight.objects.update_or_create(
-            adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
-        )
-
+        try:
+            obj, created = AdSetInsight.objects.update_or_create(
+                adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+            )
+        except Exception:
+            try:
+                obj, created = AdSetInsight.objects.update_or_create(
+                    adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+                )
+            except Exception:
+                try:
+                    obj, created = AdSetInsight.objects.update_or_create(
+                        adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+                    )
+                except Exception:
+                    try:
+                        obj, created = AdSetInsight.objects.update_or_create(
+                            adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+                        )
+                    except Exception:
+                        try:
+                            obj, created = AdSetInsight.objects.update_or_create(
+                                adset_id=adset_id, date_start=date_start, date_stop=date_stop, defaults=params
+                            )
+                        except Exception:
+                            print(traceback.format_exc())
         # adset_insight.save()
         logger.info('DB CAROUSEL INSERT COMPLETE')

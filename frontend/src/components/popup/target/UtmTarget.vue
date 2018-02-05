@@ -345,14 +345,14 @@ export default {
         this.dialogOpen('수집 기간은 최대 180일까지만 가능합니다.', 'alert')
         this.collectionPeriod = 180
       } else if (this.collectionPeriod === '0') {
-        alert('수집 기간은 최소 1일입니다.')
+        this.dialogOpen('수집 기간은 최소 1일입니다.', 'alert')
         this.collectionPeriod = 1
       }
     },
 
     unvisitedPeriod (day) {
       if(day >= this.collectionPeriod) {
-        alert('미방문 기간은 수집 기간보다 작아야합니다.')
+        this.dialogOpen('미방문 기간은 수집 기간보다 작아야합니다.', 'alert')
         this.unvisitedPeriod = this.collectionPeriod - 1
       }
     },
@@ -461,13 +461,13 @@ export default {
 
       // 모드별 동작
       this.nextStage = true
-      this.dialogShow = false;
+      this.dialogShow = false
     },
 
     // 다이얼로그 취소 클릭시
     dialogCancel () {
-      this.nextStage = false;
-      this.dialogShow = false;
+      this.nextStage = false
+      this.dialogShow = false
     },
 
     wTabs (num, obj) {
@@ -491,29 +491,30 @@ export default {
         number: gData.length + 1,
         name: utmName
       }
-
-      // const newData = utmName
-      //선택필드 탭 활성화
-      for(let i = 0; i < keyData.length; i++) {
-        if (keyData[i] === utmKey) {
-          this.wTabs(i, 'wTab')
-          break
+      if(utmName != '') {
+        // const newData = utmName
+        //선택필드 탭 활성화
+        for(let i = 0; i < keyData.length; i++) {
+          if (keyData[i] === utmKey) {
+            this.wTabs(i, 'wTab')
+            break
+          }
         }
-      }
-      //동일 이름 체크
-      for(let i = 0; i < gData.length; i++) {
-        if (gData[i].name === utmName) {
-          //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
-          this.dialogOpen('같은 UTM값이 존재합니다.', 'alert')
-          break
-          this.inputUtmName = ''
-          return false
+        //동일 이름 체크
+        for(let i = 0; i < gData.length; i++) {
+          if (gData[i].name === utmName) {
+            //컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
+            this.dialogOpen('같은 UTM값이 존재합니다.', 'alert')
+            this.inputUtmName = ''
+            return false
+          }
         }
+        gData.push(newData)
+        this.inputUtmName = ''
+      }else{
+        this.dialogOpen('UTM값을 먼저 입력해주세요.', 'alert')
+        return false
       }
-      gData.push(newData)
-      this.inputUtmName = ''
-
-      return false
     },
 
     deleteAnalyData (item, key){
