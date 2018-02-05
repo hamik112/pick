@@ -13,8 +13,7 @@ def get_account_pixel_events(account_id):
         ads_pixels = ad_account.get_ads_pixels(fields=[
             AdsPixel.Field.id,
             AdsPixel.Field.name,
-            AdsPixel.Field.code,
-            AdsPixel.Field.owner_ad_account
+            AdsPixel.Field.code
         ])
 
         account_pixel = None
@@ -163,8 +162,7 @@ def get_account_default_pixel(account_id):
         ads_pixels = ad_account.get_ads_pixels(fields=[
             AdsPixel.Field.id,
             AdsPixel.Field.name,
-            AdsPixel.Field.code,
-            AdsPixel.Field.owner_ad_account
+            AdsPixel.Field.code
         ])
 
         # print("ads_pixels : ", ads_pixels)
