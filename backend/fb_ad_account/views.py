@@ -101,8 +101,7 @@ class CheckAccountId(APIView):
             account_id = request.query_params.get('act_account_id', None)
 
             # print(ad_accounts.get_ad_account(account_id))
-
-            default_pixel = ads_pixels.get_account_default_pixel(account_id)
+            # default_pixel = ads_pixels.get_account_default_pixel(account_id)
             pixels = ads_pixels.get_account_pixels(account_id)
 
             if len(pixels) > 0:
@@ -134,7 +133,7 @@ class CheckAccountId(APIView):
 
             response_data['success'] = 'YES'
             response_data['bool_default_pixel'] = bool_default_pixel
-            response_data['default_pixel'] = default_pixel
+            response_data['default_pixel'] = pixels
             response_data['bool_fb_ad_account'] = bool_fb_ad_account
             response_data['fb_ad_account'] = dic_fb_ad_account
             response_data['neo_account_list'] = neo_account_list
