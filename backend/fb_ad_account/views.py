@@ -102,7 +102,7 @@ class CheckAccountId(APIView):
 
             # print(ad_accounts.get_ad_account(account_id))
 
-            default_pixel = ads_pixels.get_account_default_pixel(account_id)
+            # default_pixel = ads_pixels.get_account_default_pixel(account_id)
             pixels = ads_pixels.get_account_pixels(account_id)
 
             if len(pixels) > 0:
