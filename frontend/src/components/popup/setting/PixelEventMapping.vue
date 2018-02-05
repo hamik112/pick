@@ -75,7 +75,7 @@ export default {
           // 셀렉트 박스 정렬
           category.select.textList.sort()
         })
-
+        this.isInit = true
         return this.pixelMappingCategories
       })
       .then(pixelMappingCategories => {
@@ -136,7 +136,6 @@ export default {
 
   methods: {
   	dialogOpen(emptyText, type, mode) {
-      this.isInit = true
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type
       this.dialogData['mode'] = mode
