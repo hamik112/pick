@@ -447,7 +447,7 @@
 																		<ul>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환완료') }}</li>
 																			<!-- cost_per_action_type?-->
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">전환완료가치</li>
+																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ (convTotal / item.spend).toFixed(2) }}</li>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 1단계') }}</li>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 2단계') }}</li>
 																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 3단계') }}</li>
@@ -479,13 +479,13 @@
 									<!-- TODO Paging 처리 예정 -->
 									<div class="pagination" v-show="false">
 										<ul>
-											<li v-show="currentPage > 1"><img src="../../assets/images/icon/paging_01.png" alt=""></li>
-											<li v-show="currentPage > 1"><img src="../../assets/images/icon/paging_03.png" alt=""></li>
+											<li v-show="currentPage > 1" v-on:click="clickPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt=""></li>
+											<li v-show="currentPage > 1" v-on:click="clickPreviousPage(currentPage)"><img src="../../assets/images/icon/paging_03.png" alt=""></li>
 											<!-- <li class="now">1</li> -->
-											<li v-for="n in pageNumber" v-on:click="clickPageNumber(n)"
+											<li v-for="n in pageNumber" v-on:click="clickPage(n)"
 												v-bind:class="[currentPage === n ? 'now' : '']">{{ checkPageNumber(n) }}</li>
-											<li v-show="currentPage < pageNumber"><img src="../../assets/images/icon/paging_04.png" alt=""></li>
-											<li v-show="currentPage < pageNumber"><img src="../../assets/images/icon/paging_02.png" alt=""></li>
+											<li v-show="currentPage < pageNumber" v-on:click="clickNextPage(currentPage)"><img src="../../assets/images/icon/paging_04.png" alt=""></li>
+											<li v-show="currentPage < pageNumber" v-on:click="clickPage(pageNumber)"><img src="../../assets/images/icon/paging_02.png" alt=""></li>
 										</ul>
 									</div>
 								</div>
@@ -504,6 +504,7 @@
 import Select from '@/components/ui/Select'
 import Calendar from '@/components/ui/Calendar'
 import Loading from '@/components/ui/Loading'
+import { numberToFixed, numberFormatter } from '@/components/utils/Formatter'
 
 export default {
 	name: 'TargetReport',
@@ -582,6 +583,8 @@ export default {
 			pageNumber: 1,
 			pageTotal: 0,
 			currentPage: 1,
+			firstPage: 1,
+			convTotal: 0,
 
 			tablesAutoWidth:4880,
 
@@ -750,21 +753,30 @@ export default {
 		},
 
 		getPageNumber () {
-			console.log('getPageNumber')
 			var limit = 25
 			var page_total = this.pageTotal
 			var page_number = page_total / limit
 			this.pageNumber = Math.round(page_number)
 		},
 
-		clickPageNumber (n) {
+		clickPage (n) {
 			this.currentPage = n
 			this.getGridData()
 		},
 
 		checkPageNumber (n) {
-			console.log(n)
 			return n
+		},
+
+		clickNextPage (p) {
+			// const pageRange = Array.from({length: this.pageNumber}, (v, k) => k+1)
+			this.currentPage = p + 1
+			this.getGridData()
+		},
+
+		clickPreviousPage (p) {
+			this.currentPage = p - 1
+			this.getGridData()
 		},
 
 		getGridData () {
@@ -821,6 +833,11 @@ export default {
 				const name = elem.custom_name
 				if (name == type) {
 					value = elem.value
+					if (type == '전환완료') {
+						this.convTotal = elem.value
+					} else {
+						pass
+					}
 				}
 				else {
 					// return 0
