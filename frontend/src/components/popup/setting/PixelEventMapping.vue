@@ -58,7 +58,7 @@ export default {
   },
 
   beforeUpdate () {
-    if(this.emptyTextId !== 0) {
+    if(this.emptyTextId !== 0 && this.isInit === false ) {
       // 픽셀 이벤트 목록
       this.$http.get('/fb_ad_accounts/pixel_events', {
         params: {
@@ -122,6 +122,7 @@ export default {
 			pixelMappingCategoryIds: [],
 			pixelMappingCategories: [],
 			defaultPixelEvent: '픽셀 이벤트를 선택해주세요.',
+      isInit: false,
 
 			dialogShow:false,
 			dialogData:{
@@ -135,6 +136,7 @@ export default {
 
   methods: {
   	dialogOpen(emptyText, type, mode) {
+      this.isInit = true
       this.dialogData['emptyText'] = emptyText
       this.dialogData['type'] = type
       this.dialogData['mode'] = mode
@@ -171,7 +173,7 @@ export default {
     setPixelEventMapping () {
       this.facebookPixelEventNames = []
       this.pixelMappingCategoryIds = []
-      
+
 			for(let i = 0; i < this.pixelMappingCategories.length; i++) {
 				// 선택된 픽셀 이벤트
 				let selectedPixelEvent = this.pixelMappingCategories[i].select.emptyText
