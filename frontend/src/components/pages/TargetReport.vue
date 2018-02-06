@@ -477,15 +477,15 @@
 										</div>
 									</div>
 									<!-- TODO Paging 처리 예정 -->
-									<div class="pagination" v-show="false">
+									<div class="pagination" v-show="true">
 										<ul>
-											<li v-show="currentPage > 1" v-on:click="clickPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt=""></li>
+											<li v-show="currentPage > 1" v-on:click="clickFirstPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt=""></li>
 											<li v-show="currentPage > 1" v-on:click="clickPreviousPage(currentPage)"><img src="../../assets/images/icon/paging_03.png" alt=""></li>
 											<!-- <li class="now">1</li> -->
-											<li v-for="n in pageNumber" v-on:click="clickPage(n)"
+											<li v-for="(n,index) in pageRange.pageNumber" v-if="(n >= pageRange.minPaging)&&(n <= pageRange.maxPaging)" v-on:click="clickPage(n)"
 												v-bind:class="[currentPage === n ? 'now' : '']">{{ checkPageNumber(n) }}</li>
-											<li v-show="currentPage < pageNumber" v-on:click="clickNextPage(currentPage)"><img src="../../assets/images/icon/paging_04.png" alt=""></li>
-											<li v-show="currentPage < pageNumber" v-on:click="clickPage(pageNumber)"><img src="../../assets/images/icon/paging_02.png" alt=""></li>
+											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickNextPage(currentPage)"><img src="../../assets/images/icon/paging_04.png" alt=""></li>
+											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickLastPage(pageRange.pageNumber)"><img src="../../assets/images/icon/paging_02.png" alt=""></li>
 										</ul>
 									</div>
 								</div>
@@ -538,6 +538,16 @@ export default {
 
 	data () {
 		return {
+			pageRange: {
+				//페이지 번호
+				pageNumber:1,
+				//최소 페이징
+				minPaging:0,
+				//최대 페이징
+				maxPaging:10,
+				//노출 페이징 갯수
+				showPaging:10
+			},
 			categorySelectData: {
 				emptyText: '전체',
 				textList: [
@@ -580,7 +590,6 @@ export default {
 				data: []
 			},
 
-			pageNumber: 1,
 			pageTotal: 0,
 			currentPage: 1,
 			firstPage: 1,
@@ -753,15 +762,32 @@ export default {
 		},
 
 		getPageNumber () {
-			var limit = 25
+			var limit = 5
 			var page_total = this.pageTotal
 			var page_number = page_total / limit
-			this.pageNumber = Math.round(page_number)
+			this.pageRange.pageNumber = Math.round(page_number)
 		},
-
 		clickPage (n) {
 			this.currentPage = n
-			this.getGridData()
+			this.getGridData('paging')
+		},
+		clickFirstPage (n) {
+			this.currentPage = n
+			this.pageRange.minPaging = 1
+			this.pageRange.maxPaging = 10
+			this.getGridData('paging')
+		},
+		clickLastPage(n) {
+			const nString = String(n)
+			const nlength = nString.length
+			const nLast = nString.substring(nlength - 1)
+			const nCal = n - Number(nLast)
+
+			this.currentPage = n
+			this.pageRange.minPaging = nCal + 1
+			this.pageRange.maxPaging = n
+
+			this.getGridData('paging')
 		},
 
 		checkPageNumber (n) {
@@ -769,27 +795,47 @@ export default {
 		},
 
 		clickNextPage (p) {
-			// const pageRange = Array.from({length: this.pageNumber}, (v, k) => k+1)
 			this.currentPage = p + 1
-			this.getGridData()
+			// const pageRange = Array.from({length: this.pageNumber}, (v, k) => k+1)
+			if(this.pageRange.maxPaging < this.currentPage) {
+				this.pageRange.minPaging = this.currentPage
+				this.pageRange.maxPaging = this.pageRange.minPaging + this.pageRange.showPaging - 1
+				if(this.pageRange.maxPaging > this.pageRange.pageNumber) {
+					this.pageRange.maxPaging = this.pageRange.pageNumber
+				}
+			}
+			this.getGridData('paging')
 		},
 
 		clickPreviousPage (p) {
 			this.currentPage = p - 1
-			this.getGridData()
+			if(this.pageRange.minPaging > this.currentPage) {
+				if(this.currentPage < this.pageRange.showPaging + 1) {
+					this.pageRange.minPaging = this.pageRange.minPaging - this.pageRange.showPaging - 1
+					this.pageRange.maxPaging = this.pageRange.minPaging + this.pageRange.showPaging
+				}else{
+					this.pageRange.minPaging = this.pageRange.minPaging - this.pageRange.showPaging
+					this.pageRange.maxPaging = this.pageRange.minPaging + this.pageRange.showPaging - 1
+				}
+			}
+			this.getGridData('paging')
 		},
 
-		getGridData () {
+		getGridData (type) {
 			var date_range = []
 			this.range.forEach(date => {
 				date_range.push(date.toISOString().split('T')[0])
 			})
 
 			this.listData.data = []
-			this.isReport = false
-			this.isLoading = true
-			this.loadingTitle = '인사이트를 가져오는 중입니다.'
-			this.loadingDescription = '조금만 기다려 주시면, 인사이트를 가져옵니다.'
+			if(type == 'paging') {
+				//부분 로딩 추가 예정
+			}else{
+				this.isReport = false
+				this.isLoading = true
+				this.loadingTitle = '인사이트를 가져오는 중입니다.'
+				this.loadingDescription = '조금만 기다려 주시면, 인사이트를 가져옵니다.'
+			}
 
 			let url = '/ad_set_insights'
 			this.$http.get(url, {
