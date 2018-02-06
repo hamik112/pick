@@ -52,7 +52,7 @@ class AdSetInsightByAccount(APIView):
             category_name = request.query_params.get('category_name', 'all')
             page = request.query_params.get('page', '1')
             start = request.query_params.get('start', '0')
-            limit = request.query_params.get('limit', '25')
+            limit = request.query_params.get('limit', '5')
 
             since = request.query_params.get('since', '')
             until = request.query_params.get('until', '')
@@ -150,19 +150,19 @@ class AdSetInsightByAccount(APIView):
                                         result.append(custom)
                     da['pickdata_custom_pixel_event'] = result
 
-            # paginator = Paginator(target_insights, int(limit))
-            # try:
-            #     contacts = paginator.page(int(page))
-            # except PageNotAnInteger:
-            #     # If page is not an integer, deliver first page.
-            #     contacts = paginator.page(1)
-            # except EmptyPage:
-            #     # If page is out of range (e.g. 9999), deliver last page of results.
-            #     contacts = paginator.page(paginator.num_pages)
+            paginator = Paginator(target_insights, int(limit))
+            try:
+                contacts = paginator.page(int(page))
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                contacts = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                contacts = paginator.page(paginator.num_pages)
 
             response_data['success'] = 'YES'
             response_data['total_count'] = len(target_insights)
-            response_data['data'] = target_insights
+            response_data['data'] = list(contacts)
         except Exception as e:
             print(traceback.format_exc())
             response_data['success'] = 'NO'

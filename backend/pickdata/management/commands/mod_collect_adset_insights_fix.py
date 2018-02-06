@@ -18,16 +18,46 @@ logger = logging.getLogger('mod_pickdata')
 
 '''
 ex) python manage.py mod_collect_adset_insights_fix --settings=pickdata.settings.production
+ex) python manage.py mod_collect_adset_insights_fix --date_from=2018-02-01 --date_to=2018-02-05 --settings=pickdata.settings.production
 '''
 
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
         self.stdout.write("--- collect collect adset insight module start ---")
+        # parser.add_argument('date_from', nargs='+', default='None', type=str)
+        # parser.add_argument('date_to', nargs='+', default='None', type=str)
+        parser.add_argument('--date_from', nargs='+', default=None, type=str)
+        parser.add_argument('--date_to', nargs='+', default=None, type=str)
 
     def handle(self, *args, **options):
         self.stdout.write("--- collect collect adset insight module handle ---")
         try:
+            date_from = None
+            date_to = None
+
+            if options['date_from']:
+                date_from = options['date_from'][0]
+            if options['date_to']:
+                date_to = options['date_to'][0]
+
+            import datetime
+            from utils.common import date_formatter
+
+            if date_from == None or date_to == None:
+                now = datetime.datetime.now()
+                yesterday = now - datetime.timedelta(days=1)
+                before_sevevday = now - datetime.timedelta(days=8)
+
+                start_dt = before_sevevday.date()
+                end_dt = yesterday.date()
+            else:
+                start_datetime = date_formatter.str_to_datetime(date_from)
+                to_datetime = date_formatter.str_to_datetime(date_to)
+
+                start_dt = start_datetime.date()
+                end_dt = to_datetime.date()
+
             api_init.api_init_by_system_user()
 
             my_accounts = ad_accounts.get_my_ad_accounts()
@@ -38,17 +68,15 @@ class Command(BaseCommand):
 
                 print("account_id : ", account_id)
                 print("account_name : ", account_name)
-
-                from datetime import date
-                from utils.common import date_formatter
-                start_dt = date(2016, 1, 1)
-                end_dt = date(2018, 2, 1)
+                logger.info(account_id)
+                logger.info(account_name)
 
                 date_list = date_formatter.daterange(start_dt, end_dt)
 
                 for select_date in date_list:
                     select_date = select_date.strftime("%Y-%m-%d")
                     print("select_date : ", select_date)
+                    logger.info(select_date)
                     ad_set_insights = insight.get_adset_level_select_date_insights(account_id, select_date)
 
                     for adset_insight in ad_set_insights:
@@ -61,7 +89,6 @@ class Command(BaseCommand):
                         if adset_carousel_insight.get('actions', [{'value': '0', 'action_type': 'link_click'}]) != [{'value': '0', 'action_type': 'link_click'}]:
                             self.insert_or_update_carousel_DB(adset_carousel_insight)
                             time.sleep(1)
-
 
             # logger.info(len(adset_insight_list))
             # logger.info(no_insights)
