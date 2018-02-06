@@ -766,7 +766,7 @@ export default {
 		},
 
 		getPageNumber () {
-			var limit = 5
+			var limit = 25
 			var page_total = this.pageTotal
 			var page_number = page_total / limit
 			this.pageRange.pageNumber = Math.round(page_number)
@@ -835,7 +835,7 @@ export default {
 			if(type == 'paging') {
 				//부분 로딩 추가 예정
 				this.loadShow = true
-			}else{
+			} else{
 				this.isReport = false
 				this.loadShow = false
 				this.isLoading = true
