@@ -477,8 +477,8 @@
 										</div>
 									</div>
 									<!-- TODO Paging 처리 예정 -->
-									<div class="pagination" v-show="true">
-										<ul>
+									<div class="pagination">
+										<ul v-if="this.listData.data.length != 0">
 											<li v-show="currentPage > 1" v-on:click="clickFirstPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 											<li v-show="currentPage > 1" v-on:click="clickPreviousPage(currentPage)"><img src="../../assets/images/icon/paging_03.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 											<!-- <li class="now">1</li> -->
