@@ -404,7 +404,7 @@
 																		<ul>
 																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
 																			<li>{{ item.inline_link_click_ctr }}</li>
-																			<li>￦{{ (item.spend / item.inline_link_clicks).toFixed(0) }}</li>
+																			<li>￦{{ numberFormat((item.spend / item.inline_link_clicks).toFixed(0)) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -429,12 +429,12 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_vtr }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">￦{{ item.video_10_sec_watched_cpv }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_vtr }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">￦{{ item.video_30_sec_watched_cpv }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ numberFormat(item.video_10_sec_watched_actions) }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ checkObject(item.video_10_sec_watched_vtr) }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">￦{{ numberFormat(item.video_10_sec_watched_cpv) }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ numberFormat(item.video_30_sec_watched_actions) }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ checkObject(item.video_30_sec_watched_vtr) }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">￦{{ numberFormat(item.video_30_sec_watched_cpv) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -462,10 +462,10 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.post_event }}</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.like_event }}</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.comment_event }}</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.post_reaction_event }}</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ numberFormat(item.post_event) }}</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ numberFormat(item.like_event) }}</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ numberFormat(item.comment_event) }}</li>
+																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ numberFormat(item.post_reaction_event) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -918,7 +918,16 @@ export default {
 		},
 
 		numberFormat (n) {
-			return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			if (typeof n === typeof undefined || n == null) {
+				return 0
+			}
+			return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		},
+
+		checkObject (n) {
+			if (typeof n === typeof undefined || n == null) {
+				return 0
+			}
 		},
 
 		clickCopy (index) {
