@@ -393,10 +393,10 @@
 																</div>
 															</li>
 															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
-															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">￦{{ numberFormat(item.spend) }}</li>
-															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
-															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
-															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
+															<li class="line-9 box-align" v-if="sortSelectData.listData[8].setting.show">￦{{ numberFormat(item.spend) }}</li>
+															<li class="line-10 box-align" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
+															<li class="line-11 box-align" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
+															<li class="line-12 box-align" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
 															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
 																	<dt></dt>
