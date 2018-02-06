@@ -404,7 +404,7 @@
 																		<ul>
 																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
 																			<li>{{ item.inline_link_click_ctr }}</li>
-																			<li>{{ item.cpc }}</li>
+																			<li>￦{{ (item.spend / item.inline_link_clicks).toFixed(0) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -431,10 +431,10 @@
 																		<ul>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_vtr }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_cpv }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">￦{{ item.video_10_sec_watched_cpv }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
 																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_vtr }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_cpv }}</li>
+																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">￦{{ item.video_30_sec_watched_cpv }}</li>
 																		</ul>
 																	</dd>
 																</dl>
