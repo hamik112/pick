@@ -479,17 +479,18 @@
 									<!-- TODO Paging 처리 예정 -->
 									<div class="pagination" v-show="true">
 										<ul>
-											<li v-show="currentPage > 1" v-on:click="clickFirstPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt=""></li>
-											<li v-show="currentPage > 1" v-on:click="clickPreviousPage(currentPage)"><img src="../../assets/images/icon/paging_03.png" alt=""></li>
+											<li v-show="currentPage > 1" v-on:click="clickFirstPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
+											<li v-show="currentPage > 1" v-on:click="clickPreviousPage(currentPage)"><img src="../../assets/images/icon/paging_03.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 											<!-- <li class="now">1</li> -->
 											<li v-for="(n,index) in pageRange.pageNumber" v-if="(n >= pageRange.minPaging)&&(n <= pageRange.maxPaging)" v-on:click="clickPage(n)"
-												v-bind:class="[currentPage === n ? 'now' : '']">{{ checkPageNumber(n) }}</li>
-											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickNextPage(currentPage)"><img src="../../assets/images/icon/paging_04.png" alt=""></li>
-											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickLastPage(pageRange.pageNumber)"><img src="../../assets/images/icon/paging_02.png" alt=""></li>
+												v-bind:class="[currentPage === n ? 'now' : '']"><span v-if="!loadShow">{{ checkPageNumber(n) }}</span><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
+											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickNextPage(currentPage)"><img src="../../assets/images/icon/paging_04.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
+											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickLastPage(pageRange.pageNumber)"><img src="../../assets/images/icon/paging_02.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 										</ul>
 									</div>
 								</div>
 							</div>
+
 							<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
 						</div>
 					</div>
@@ -504,6 +505,7 @@
 import Select from '@/components/ui/Select'
 import Calendar from '@/components/ui/Calendar'
 import Loading from '@/components/ui/Loading'
+import PartialLoading from '@/components/ui/PartialLoading'
 import { numberToFixed, numberFormatter } from '@/components/utils/Formatter'
 
 export default {
@@ -512,7 +514,8 @@ export default {
 	components: {
 		'ui-select': Select,
 		'ui-calendar': Calendar,
-		'ui-loading': Loading
+		'ui-loading': Loading,
+		'ui-partial-loading': PartialLoading
 	},
 
 	beforeMount () {
@@ -538,6 +541,7 @@ export default {
 
 	data () {
 		return {
+			loadShow:false,
 			pageRange: {
 				//페이지 번호
 				pageNumber:1,
@@ -830,8 +834,10 @@ export default {
 			this.listData.data = []
 			if(type == 'paging') {
 				//부분 로딩 추가 예정
+				this.loadShow = true
 			}else{
 				this.isReport = false
+				this.loadShow = false
 				this.isLoading = true
 				this.loadingTitle = '인사이트를 가져오는 중입니다.'
 				this.loadingDescription = '조금만 기다려 주시면, 인사이트를 가져옵니다.'
@@ -859,15 +865,18 @@ export default {
 					this.pageTotal = total
 					this.isReport = true
 					this.isLoading = false
+					this.loadShow = false
 					this.getPageNumber()
 				} else {
 					throw('success: ' + success)
 					this.isReport = true
 					this.isLoading = false
+					this.loadShow = false
 				}
 			})
 			.catch(err => {
 				this.isLoading = false
+				this.loadShow = false
 				console.error('/ad_set_insights', err)
 			})
 		},
