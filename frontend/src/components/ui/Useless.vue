@@ -1,5 +1,5 @@
 <template>
-  <div id="container" v-show="isShow">
+  <div id="container">
     <div id="container_wrap">
       <div id="section_list_4" class="clearfix">
         <div class="Useless_wrap">
@@ -16,29 +16,10 @@
 export default {
   name: 'Useless',
 
-  props: {
-    isShow: {
-      type: Boolean,
-      default () {
-        return false
-      }
-    },
-    titleText: {
-      type: String,
-      default () {
-        return '다른 광고 계정을 선택해 주세요'
-      }
-    },
-    descriptionText: {
-      type: String,
-      default () {
-        return '해당 광고 계정은 픽셀을 보유하고 있지 않거나 사용이 불가능합니다.'
-      }
-    }
-  },
-
   data () {
     return {
+      titleText: '다른 광고 계정을 선택해 주세요',
+      descriptionText: '해당 광고 계정은 픽셀을 보유하고 있지 않거나 사용이 불가능합니다.'
     }
   }
 }

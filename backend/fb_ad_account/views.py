@@ -133,7 +133,6 @@ class CheckAccountId(APIView):
                 from pixel_mapping.serializers import PixelMappingMergeSerializer
                 pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
                 custom_target_details = generate_custom_target_details(fb_ad_account.id)
-                print("custom_target_details : ", custom_target_details)
 
             response_data['success'] = 'YES'
             response_data['bool_default_pixel'] = bool_default_pixel
