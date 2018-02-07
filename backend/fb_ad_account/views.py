@@ -1051,4 +1051,6 @@ def generate_custom_target_details(fb_ad_account_id):
         return custom_target_details
 
     except Exception as e:
+        print(traceback.format_exc())
+        logger.info(traceback.format_exc())
         raise Exception(e)
