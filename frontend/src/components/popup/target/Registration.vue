@@ -133,23 +133,7 @@ export default {
       },
       nextStage:false,
 
-      selectCustomer: {
-        emptyText: '전체 고객',
-        textList: [
-          '전체 고객',
-          '이용 시간 상위 고객', // 셀렉트박스 표시 (5/15/25 %)
-          '미 구매 고객',
-          '전환 완료 고객',
-          '미 전환 고객'
-        ],
-        keyList: [
-          'total',
-          'usage_time_top',
-          'non_purchase',
-          'conversion',
-          'non_conversion'
-        ]
-      },
+      selectCustomer: this.$store.state.registrationDetails,
       selectSub: {
         emptyText: '5%',
         textList: [
