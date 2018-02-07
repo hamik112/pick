@@ -974,6 +974,8 @@ export default {
 		checkObject (n) {
 			if (typeof n === typeof undefined || n == null) {
 				return 0
+			} else {
+				return n
 			}
 		},
 
