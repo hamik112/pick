@@ -165,10 +165,9 @@
 				},
 
 				isPick: false,
-				isLoading: false,
-				loadingTitle: '',
-				loadingDescription: ''
-
+				isLoading: true,
+				loadingTitle: '광고계정을 가져오는 중입니다.',
+				loadingDescription: '조금만 기다려 주시면, 광고계정을 가져옵니다.'
 			}
 		},
 
