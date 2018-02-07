@@ -279,31 +279,7 @@ export default {
       },
       nextStage: false,
 
-      selectCustomer: {
-        emptyText: '전체 고객',
-        textList: [
-          '전체 고객',
-          '이용 시간 상위 고객', // 셀렉트박스 표시 (5/15/25 %)
-          '특정일 동안 미방문 고객', // 숫자 입력 텍스트필드 표시
-          '구매고객',
-          '미 구매고객',
-          '장바구니 이용 고객',
-          '전환완료 고객',
-          '미 전환 고객',
-          '회원가입 고객'
-        ],
-        keyList: [
-          'total',
-          'usage_time_top', // 셀렉트박스 표시 (5/15/25 %)
-          'non_visit', // 숫자 입력 텍스트필드 표시
-          'purchase',
-          'non_purchase',
-          'add_to_cart',
-          'conversion',
-          'non_conversion',
-          'registration'
-        ],
-      },
+      selectCustomer: this.$store.state.defaultDetails,
       selectSub: {
         emptyText: '5%',
         textList: [

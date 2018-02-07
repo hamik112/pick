@@ -126,17 +126,7 @@ export default {
         mode:'sample'
       },
 
-      selectCustomer: {
-        emptyText: '전체 고객',
-        textList: [
-          '전체 고객',
-          '미구매 고객'
-        ],
-        keyList: [
-          'total',
-          'non_purchase'
-        ]
-      }
+      selectCustomer: this.$store.state.addtocartDetails
     }
   },
 
