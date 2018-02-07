@@ -47,7 +47,7 @@ class Command(BaseCommand):
             if date_from == None or date_to == None:
                 now = datetime.datetime.now()
                 yesterday = now - datetime.timedelta(days=1)
-                before_sevevday = now - datetime.timedelta(days=8)
+                before_sevevday = now - datetime.timedelta(days=7)
 
                 start_dt = before_sevevday.date()
                 end_dt = yesterday.date()

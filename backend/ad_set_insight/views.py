@@ -52,7 +52,7 @@ class AdSetInsightByAccount(APIView):
             category_name = request.query_params.get('category_name', 'all')
             page = request.query_params.get('page', '1')
             start = request.query_params.get('start', '0')
-            limit = request.query_params.get('limit', '5')
+            limit = request.query_params.get('limit', '25')
 
             since = request.query_params.get('since', '')
             until = request.query_params.get('until', '')

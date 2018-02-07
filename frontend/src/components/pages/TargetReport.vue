@@ -59,8 +59,8 @@
 															<span>광고비</span>
 															<span class="sort_type_01">
 																<div>
-																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('spend','ASC')" class="asc_sort sort_btn"></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('spend','DESC')" class="desc_sort sort_btn"></a></p>
 																</div>
 															</span>
 														</li>
@@ -68,8 +68,8 @@
 															<span>노출</span>
 															<span class="sort_type_01">
 																<div>
-																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('impressions','ASC')" class="asc_sort sort_btn"></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('impressions','DESC')" class="desc_sort sort_btn"></a></p>
 																</div>
 															</span>
 														</li>
@@ -77,8 +77,8 @@
 															<span>도달</span>
 															<span class="sort_type_01">
 																<div>
-																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('reach','ASC')" class="asc_sort sort_btn"></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('reach','DESC')" class="desc_sort sort_btn"></a></p>
 																</div>
 															</span>
 														</li>
@@ -86,8 +86,8 @@
 															<span>도달빈도</span>
 															<span class="sort_type_01">
 																<div>
-																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																	<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('frequency','ASC')" class="asc_sort sort_btn"></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('frequency','DESC')" class="desc_sort sort_btn"></a></p>
 																</div>
 															</span>
 														</li>
@@ -100,8 +100,8 @@
 																			<span>링크클릭</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -109,8 +109,8 @@
 																			<span>CTR</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -118,8 +118,8 @@
 																			<span>CPC</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('linkCpc','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('linkCpc','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -136,8 +136,8 @@
 																			<span>1번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick1','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick1','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -145,8 +145,8 @@
 																			<span>2번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick2','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick2','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -154,8 +154,8 @@
 																			<span>3번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick3','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick3','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -163,8 +163,8 @@
 																			<span>4번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick4','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick4','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -172,8 +172,8 @@
 																			<span>5번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick5','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick5','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -181,8 +181,8 @@
 																			<span>6번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick6','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick6','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -199,8 +199,8 @@
 																			<span>10초 이상 View</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -208,8 +208,8 @@
 																			<span>10초 이상 VTR</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -217,8 +217,8 @@
 																			<span>10초 이상 CPV</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -226,8 +226,8 @@
 																			<span>30초 이상 View</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_actions','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_actions','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -235,8 +235,8 @@
 																			<span>30초 이상 VTR</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_vtr','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_vtr','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -244,8 +244,8 @@
 																			<span>30초 이상 CPV</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_cpv','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_cpv','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -262,8 +262,8 @@
 																			<span>전환 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -271,8 +271,8 @@
 																			<span>전환 완료 가치</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResultWorth','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResultWorth','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -280,8 +280,8 @@
 																			<span>1단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult1','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult1','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -289,8 +289,8 @@
 																			<span>2단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult2','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult2','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -298,8 +298,8 @@
 																			<span>3단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult3','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult3','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -307,8 +307,8 @@
 																			<span>4단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult4','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult4','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -316,8 +316,8 @@
 																			<span>5단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult5','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult5','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -334,8 +334,8 @@
 																			<span>공유</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('post_event','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('post_event','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -343,8 +343,8 @@
 																			<span>좋아요</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('like_event','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('like_event','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -352,8 +352,8 @@
 																			<span>댓글</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -361,8 +361,8 @@
 																			<span>공감</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -393,10 +393,10 @@
 																</div>
 															</li>
 															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
-															<li class="line-9" v-if="sortSelectData.listData[8].setting.show">￦{{ numberFormat(item.spend) }}</li>
-															<li class="line-10" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
-															<li class="line-11" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
-															<li class="line-12" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
+															<li class="line-9 box-align" v-if="sortSelectData.listData[8].setting.show">￦{{ numberFormat(item.spend) }}</li>
+															<li class="line-10 box-align" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
+															<li class="line-11 box-align" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
+															<li class="line-12 box-align" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
 															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
 																	<dt></dt>
@@ -404,7 +404,7 @@
 																		<ul>
 																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
 																			<li>{{ item.inline_link_click_ctr }}</li>
-																			<li>{{ item.cpc }}</li>
+																			<li>￦{{ numberFormat((item.spend / item.inline_link_clicks).toFixed(0)) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -429,12 +429,12 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_vtr }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_10_sec_watched_cpv }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_actions }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_vtr }}</li>
-																			<li class="line-15" v-if="sortSelectData.listData[14].setting.show">{{ item.video_30_sec_watched_cpv }}</li>
+																			<li class="line-15">{{ item.video_10_sec_watched_actions }}</li>
+																			<li class="line-15">{{ item.video_10_sec_watched_vtr }}</li>
+																			<li class="line-15">￦{{ item.video_10_sec_watched_cpv }}</li>
+																			<li class="line-15">{{ item.video_30_sec_watched_actions }}</li>
+																			<li class="line-15">{{ item.video_30_sec_watched_vtr }}</li>
+																			<li class="line-15">￦{{ item.video_30_sec_watched_cpv }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -445,14 +445,14 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환완료') }}</li>
+																			<li class="line-16">{{ getCustomMappingEvent(item, '전환완료') }}</li>
 																			<!-- cost_per_action_type?-->
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ (convTotal / item.spend).toFixed(2) }}</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 1단계') }}</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 2단계') }}</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 3단계') }}</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 4단계') }}</li>
-																			<li class="line-16" v-if="sortSelectData.listData[15].setting.show">{{ getCustomMappingEvent(item, '전환 5단계') }}</li>
+																			<li class="line-16">{{ (convTotal / item.spend).toFixed(2) }}</li>
+																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 1단계') }}</li>
+																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 2단계') }}</li>
+																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 3단계') }}</li>
+																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 4단계') }}</li>
+																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 5단계') }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -462,10 +462,10 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.post_event }}</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.like_event }}</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.comment_event }}</li>
-																			<li class="line-17" v-if="sortSelectData.listData[16].setting.show">{{ item.post_reaction_event }}</li>
+																			<li class="line-17">{{ item.post_event }}</li>
+																			<li class="line-17">{{ item.like_event }}</li>
+																			<li class="line-17">{{ item.comment_event }}</li>
+																			<li class="line-17">{{ item.post_reaction_event }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -477,19 +477,20 @@
 										</div>
 									</div>
 									<!-- TODO Paging 처리 예정 -->
-									<div class="pagination" v-show="false">
+									<div class="pagination">
 										<ul>
-											<li v-show="currentPage > 1" v-on:click="clickPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt=""></li>
-											<li v-show="currentPage > 1" v-on:click="clickPreviousPage(currentPage)"><img src="../../assets/images/icon/paging_03.png" alt=""></li>
+											<li v-show="currentPage > 1" v-on:click="clickFirstPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
+											<li v-show="currentPage > 1" v-on:click="clickPreviousPage(currentPage)"><img src="../../assets/images/icon/paging_03.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 											<!-- <li class="now">1</li> -->
-											<li v-for="n in pageNumber" v-on:click="clickPage(n)"
-												v-bind:class="[currentPage === n ? 'now' : '']">{{ checkPageNumber(n) }}</li>
-											<li v-show="currentPage < pageNumber" v-on:click="clickNextPage(currentPage)"><img src="../../assets/images/icon/paging_04.png" alt=""></li>
-											<li v-show="currentPage < pageNumber" v-on:click="clickPage(pageNumber)"><img src="../../assets/images/icon/paging_02.png" alt=""></li>
+											<li v-for="(n,index) in pageRange.pageNumber" v-if="(n >= pageRange.minPaging)&&(n <= pageRange.maxPaging)" v-on:click="clickPage(n)"
+												v-bind:class="[currentPage === n ? 'now' : '']"><span v-if="!loadShow">{{ checkPageNumber(n) }}</span><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
+											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickNextPage(currentPage)"><img src="../../assets/images/icon/paging_04.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
+											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickLastPage(pageRange.pageNumber)"><img src="../../assets/images/icon/paging_02.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 										</ul>
 									</div>
 								</div>
 							</div>
+
 							<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
 						</div>
 					</div>
@@ -504,6 +505,7 @@
 import Select from '@/components/ui/Select'
 import Calendar from '@/components/ui/Calendar'
 import Loading from '@/components/ui/Loading'
+import PartialLoading from '@/components/ui/PartialLoading'
 import { numberToFixed, numberFormatter } from '@/components/utils/Formatter'
 
 export default {
@@ -512,7 +514,8 @@ export default {
 	components: {
 		'ui-select': Select,
 		'ui-calendar': Calendar,
-		'ui-loading': Loading
+		'ui-loading': Loading,
+		'ui-partial-loading': PartialLoading
 	},
 
 	beforeMount () {
@@ -523,6 +526,7 @@ export default {
 		this.sortTableAutoWidth()
 		this.wResize()
 		window.addEventListener('resize', this.wResize)
+		this.getGridData()
 	},
 
 	beforeDestroy () {
@@ -538,6 +542,17 @@ export default {
 
 	data () {
 		return {
+			loadShow:false,
+			pageRange: {
+				//페이지 번호
+				pageNumber:1,
+				//최소 페이징
+				minPaging:0,
+				//최대 페이징
+				maxPaging:10,
+				//노출 페이징 갯수
+				showPaging:10
+			},
 			categorySelectData: {
 				emptyText: '전체',
 				textList: [
@@ -580,7 +595,6 @@ export default {
 				data: []
 			},
 
-			pageNumber: 1,
 			pageTotal: 0,
 			currentPage: 1,
 			firstPage: 1,
@@ -696,6 +710,29 @@ export default {
 			this.tablesAutoWidth = listWidth
 			listEl.style.width = this.tablesAutoWidth + 'px'
 		},
+
+		listSort(key, type) {
+			const item = this.listData.data
+			//숫자 형식 소팅(String,Text 형식 지원 X)
+			const byNum = item.slice(0)
+			const $el = event.target
+			const $btns = document.querySelectorAll('.sort_btn')
+
+			byNum.sort(function(a,b) {
+				if(type == 'ASC') {
+						return a[key] - b[key]
+				}else{
+						return b[key] - a[key]
+				}
+			})
+			this.listData.data = byNum
+			//sort arrow element class Add and Remove Actions
+			for (var i = 0; i < $btns.length; i++) {
+			   $btns[i].classList.remove('on');
+			}
+			$el.classList.add('on')
+		},
+
 		disabledDate (time) {
 			return time < this.min || time > this.max
 		},
@@ -756,12 +793,29 @@ export default {
 			var limit = 25
 			var page_total = this.pageTotal
 			var page_number = page_total / limit
-			this.pageNumber = Math.round(page_number)
+			this.pageRange.pageNumber = Math.round(page_number)
 		},
-
 		clickPage (n) {
 			this.currentPage = n
-			this.getGridData()
+			this.getGridData('paging')
+		},
+		clickFirstPage (n) {
+			this.currentPage = n
+			this.pageRange.minPaging = 1
+			this.pageRange.maxPaging = 10
+			this.getGridData('paging')
+		},
+		clickLastPage(n) {
+			const nString = String(n)
+			const nlength = nString.length
+			const nLast = nString.substring(nlength - 1)
+			const nCal = n - Number(nLast)
+
+			this.currentPage = n
+			this.pageRange.minPaging = nCal + 1
+			this.pageRange.maxPaging = n
+
+			this.getGridData('paging')
 		},
 
 		checkPageNumber (n) {
@@ -769,27 +823,49 @@ export default {
 		},
 
 		clickNextPage (p) {
-			// const pageRange = Array.from({length: this.pageNumber}, (v, k) => k+1)
 			this.currentPage = p + 1
-			this.getGridData()
+			// const pageRange = Array.from({length: this.pageNumber}, (v, k) => k+1)
+			if(this.pageRange.maxPaging < this.currentPage) {
+				this.pageRange.minPaging = this.currentPage
+				this.pageRange.maxPaging = this.pageRange.minPaging + this.pageRange.showPaging - 1
+				if(this.pageRange.maxPaging > this.pageRange.pageNumber) {
+					this.pageRange.maxPaging = this.pageRange.pageNumber
+				}
+			}
+			this.getGridData('paging')
 		},
 
 		clickPreviousPage (p) {
 			this.currentPage = p - 1
-			this.getGridData()
+			if(this.pageRange.minPaging > this.currentPage) {
+				if(this.currentPage < this.pageRange.showPaging + 1) {
+					this.pageRange.minPaging = this.pageRange.minPaging - this.pageRange.showPaging - 1
+					this.pageRange.maxPaging = this.pageRange.minPaging + this.pageRange.showPaging
+				}else{
+					this.pageRange.minPaging = this.pageRange.minPaging - this.pageRange.showPaging
+					this.pageRange.maxPaging = this.pageRange.minPaging + this.pageRange.showPaging - 1
+				}
+			}
+			this.getGridData('paging')
 		},
 
-		getGridData () {
+		getGridData (type) {
 			var date_range = []
 			this.range.forEach(date => {
 				date_range.push(date.toISOString().split('T')[0])
 			})
 
 			this.listData.data = []
-			this.isReport = false
-			this.isLoading = true
-			this.loadingTitle = '인사이트를 가져오는 중입니다.'
-			this.loadingDescription = '조금만 기다려 주시면, 인사이트를 가져옵니다.'
+			if(type == 'paging') {
+				//부분 로딩 추가 예정
+				this.loadShow = true
+			} else{
+				this.isReport = false
+				this.loadShow = false
+				this.isLoading = true
+				this.loadingTitle = '인사이트를 가져오는 중입니다.'
+				this.loadingDescription = '조금만 기다려 주시면, 인사이트를 가져옵니다.'
+			}
 
 			let url = '/ad_set_insights'
 			this.$http.get(url, {
@@ -813,15 +889,18 @@ export default {
 					this.pageTotal = total
 					this.isReport = true
 					this.isLoading = false
+					this.loadShow = false
 					this.getPageNumber()
 				} else {
 					throw('success: ' + success)
 					this.isReport = true
 					this.isLoading = false
+					this.loadShow = false
 				}
 			})
 			.catch(err => {
 				this.isLoading = false
+				this.loadShow = false
 				console.error('/ad_set_insights', err)
 			})
 		},
@@ -863,7 +942,16 @@ export default {
 		},
 
 		numberFormat (n) {
-			return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			if (typeof n === typeof undefined || n == null) {
+				return 0
+			}
+			return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		},
+
+		checkObject (n) {
+			if (typeof n === typeof undefined || n == null) {
+				return 0
+			}
 		},
 
 		clickCopy (index) {

@@ -15,7 +15,7 @@ import { setUserId, setUserName, setUserImage } from '../utils/auth'
 
 export default {
   name: 'Intro',
-  created () {
+  mounted () {
     const me = this
     const hostname = window.location.hostname
 

@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^targetpick', views.TargetPick.as_view()),
     url(r'^neo_custom_target$', views.NeoCustomTarget.as_view()),
     url(r'^custom_target$', views.CustomTarget.as_view()),
+    url(r'^custom_target_defatils$', views.CustomTargetDetails.as_view()),
     url(r'^target_chart$', views.TargetChart.as_view())
 ]
