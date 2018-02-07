@@ -12,7 +12,8 @@
 			<not-available v-if="pixelNone" @close="pixelNone = false" key="pixel"></not-available>
 		</transition-group>
 
-		<div id="container" v-show="isPick">
+		<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
+		<div id="container" v-if="isPick && !isLoading">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
 					<div class="tab-contents-widget">
@@ -59,14 +60,13 @@
 										<li class="target_last"><a href="javascript:void(0);" @click="popupOpenBtn('makeModal','add')"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
 									</ul>
 								</div>
-
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
+		<ui-useless v-else-if="!isPick && !isLoading"></ui-useless>
 	</div>
 </template>
 
@@ -84,6 +84,7 @@
 	import Calendar from '@/components/ui/Calendar'
 	import Loading from '@/components/ui/Loading'
 	import Dialog from '@/components/ui/Dialog'
+	import Useless from '@/components/ui/Useless.vue'
 
 	export default {
 		name: 'TargetPick',
@@ -96,7 +97,8 @@
 			'ui-select': Select,
 			'ui-calendar': Calendar,
 			'ui-loading': Loading,
-			'ui-dialog': Dialog
+			'ui-dialog': Dialog,
+			'ui-useless': Useless
 		},
 
 		data () {
