@@ -132,7 +132,7 @@ class CheckAccountId(APIView):
                 pixel_evnet_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
                 from pixel_mapping.serializers import PixelMappingMergeSerializer
                 pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
-                custom_target_details = generate_custom_target_details(fb_ad_account.id)
+                # custom_target_details = generate_custom_target_details(fb_ad_account.id)
 
             response_data['success'] = 'YES'
             response_data['bool_default_pixel'] = bool_default_pixel
@@ -141,7 +141,7 @@ class CheckAccountId(APIView):
             response_data['fb_ad_account'] = dic_fb_ad_account
             response_data['neo_account_list'] = neo_account_list
             response_data['pixel_event_mappings'] = pixel_evnet_mapping_se.data
-            response_data['custom_target_details'] = custom_target_details
+            # response_data['custom_target_details'] = custom_target_details
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -1047,6 +1047,8 @@ def generate_custom_target_details(fb_ad_account_id):
             "registration_details": registration_details,
             "conversion_details": conversion_details
         }
+
+
 
         return custom_target_details
 
