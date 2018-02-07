@@ -12,7 +12,8 @@
 			<not-available v-if="pixelNone" @close="pixelNone = false" key="pixel"></not-available>
 		</transition-group>
 
-		<div id="container" v-show="isPick">
+		<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
+		<div id="container" v-if="isPick && !isLoading">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
 					<div class="tab-contents-widget">
@@ -59,14 +60,13 @@
 										<li class="target_last"><a href="javascript:void(0);" @click="popupOpenBtn('makeModal','add')"><img src="../../assets/images/common/target_add.jpg" alt=""></a></li>
 									</ul>
 								</div>
-
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<ui-loading :isShow="isLoading" :titleText="loadingTitle" :descriptionText="loadingDescription"></ui-loading>
+		<ui-useless v-else-if="!isPick && !isLoading"></ui-useless>
 	</div>
 </template>
 
@@ -84,6 +84,7 @@
 	import Calendar from '@/components/ui/Calendar'
 	import Loading from '@/components/ui/Loading'
 	import Dialog from '@/components/ui/Dialog'
+	import Useless from '@/components/ui/Useless.vue'
 
 	export default {
 		name: 'TargetPick',
@@ -96,7 +97,8 @@
 			'ui-select': Select,
 			'ui-calendar': Calendar,
 			'ui-loading': Loading,
-			'ui-dialog': Dialog
+			'ui-dialog': Dialog,
+			'ui-useless': Useless
 		},
 
 		data () {
@@ -344,6 +346,24 @@
 				//매뉴 온오프 or 리스트 필터
 				this.targetOn = type
 			},
+			convertSelectData (data) {
+				let emptyText = ''
+				let textList = []
+				let keyList = []
+
+				data.forEach(function (item, index) {
+					if (index === 0) {
+						emptyText = item['name']
+					}
+					textList.push(item['name'])
+					keyList.push(item['value'])
+				})
+				return {
+					"emptyText": emptyText,
+					"textList": textList,
+					"keyList": keyList
+				}
+			},
 			getTargetPick (fbAdAccount) {
 				this.isPick = false
 				this.isLoading = true
@@ -356,6 +376,14 @@
 				.then(res => {
 					const bool_default_pixel = res.data.bool_default_pixel
 					const bool_fb_ad_account = res.data.bool_fb_ad_account
+
+					if (typeof res.data.custom_target_details != typeof undefined || res.data.custom_target_details != null) {
+						this.$store.state.defaultDetails = this.convertSelectData(res.data.custom_target_details.default_details)
+						this.$store.state.purchaseDetails = this.convertSelectData(res.data.custom_target_details.purchase_details)
+						this.$store.state.registrationDetails = this.convertSelectData(res.data.custom_target_details.registration_details)
+						this.$store.state.addtocartDetails = this.convertSelectData(res.data.custom_target_details.addtocart_details)
+						this.$store.state.conversionDetails = this.convertSelectData(res.data.custom_target_details.conversion_details)
+					}
 
 					if (bool_default_pixel == false) {
             // default_pixel alert popup

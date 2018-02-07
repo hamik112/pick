@@ -132,19 +132,7 @@ export default {
       },
       nextStage:false,
 
-      selectCustomer: {
-        emptyText: '전체 고객',
-        textList: [
-          '전체 고객',
-          '특정 구매횟수 이상 구매 고객', // 셀렉트박스 표시 (5/15/25 %)
-          '특정 구매금액 이상 구매 고객', // 숫자 입력 텍스트필드 표시
-        ],
-        keyList: [
-          'total',
-          'purchase_count',
-          'purchase_amount'
-        ]
-      }
+      selectCustomer: this.$store.state.purchaseDetails
     }
   },
 

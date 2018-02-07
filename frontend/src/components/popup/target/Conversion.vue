@@ -122,6 +122,10 @@ export default {
   },
 
   created () {
+    const textCheck = (this.selectConversionUser.emptyText).replace(/\s/gi, "")
+    if(textCheck === '특정단계완료(URL)'){
+      this.subConversionInput = true
+    }
     this.$eventBus.$on('modifyConversionTarget', this.modifyConversionTarget)
   },
 
@@ -149,27 +153,7 @@ export default {
         mode:'sample'
       },
 
-      selectConversionUser: {
-        emptyText: '미 전환 고객',
-        textList: [
-          '미 전환 고객',
-          '전환 1단계 완료 고객',
-          '전환 2단계 완료 고객',
-          '전환 3단계 완료 고객',
-          '전환 4단계 완료 고객',
-          '전환 5단계 완료 고객',
-          '특정 단계 완료(URL)'//단계완료 이탈 입력박스
-        ],
-        keyList: [
-          'non_conversion',
-          'conversion 1step',
-          'conversion 2step',
-          'conversion 3step',
-          'conversion 4step',
-          'conversion 5step',
-          'conversion url'
-        ]
-      }
+      selectConversionUser: this.$store.state.conversionDetails
     }
   },
 

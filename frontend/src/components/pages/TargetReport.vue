@@ -118,8 +118,8 @@
 																			<span>CPC</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('linkCpc','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('linkCpc','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -262,8 +262,8 @@
 																			<span>전환 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -404,7 +404,7 @@
 																		<ul>
 																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
 																			<li>{{ item.inline_link_click_ctr }}</li>
-																			<li>￦{{ numberFormat((item.spend / item.inline_link_clicks).toFixed(0)) }}</li>
+																			<li>￦{{ item.inline_link_click_cpc }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -429,12 +429,12 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-15">{{ item.video_10_sec_watched_actions }}</li>
-																			<li class="line-15">{{ item.video_10_sec_watched_vtr }}</li>
-																			<li class="line-15">￦{{ item.video_10_sec_watched_cpv }}</li>
-																			<li class="line-15">{{ item.video_30_sec_watched_actions }}</li>
-																			<li class="line-15">{{ item.video_30_sec_watched_vtr }}</li>
-																			<li class="line-15">￦{{ item.video_30_sec_watched_cpv }}</li>
+																			<li class="line-15">{{ numberFormat(item.video_10_sec_watched_actions) }}</li>
+																			<li class="line-15">{{ checkObject(item.video_10_sec_watched_vtr) }}</li>
+																			<li class="line-15">￦{{ numberFormat(item.video_10_sec_watched_cpv) }}</li>
+																			<li class="line-15">{{ numberFormat(item.video_30_sec_watched_actions) }}</li>
+																			<li class="line-15">{{ checkObject(item.video_30_sec_watched_vtr) }}</li>
+																			<li class="line-15">￦{{ numberFormat(item.video_30_sec_watched_cpv) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -447,7 +447,8 @@
 																		<ul>
 																			<li class="line-16">{{ getCustomMappingEvent(item, '전환완료') }}</li>
 																			<!-- cost_per_action_type?-->
-																			<li class="line-16">{{ (convTotal / item.spend).toFixed(2) }}</li>
+																			<!-- <li class="line-16">{{ (convTotal / item.spend).toFixed(2) }}</li> -->
+																			<li class="line-16">{{ getCustomMappingEvent(item, '전환완료가치') }}</li>
 																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 1단계') }}</li>
 																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 2단계') }}</li>
 																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 3단계') }}</li>
@@ -462,10 +463,10 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-17">{{ item.post_event }}</li>
-																			<li class="line-17">{{ item.like_event }}</li>
-																			<li class="line-17">{{ item.comment_event }}</li>
-																			<li class="line-17">{{ item.post_reaction_event }}</li>
+																			<li class="line-17">{{ numberFormat(item.post_event) }}</li>
+																			<li class="line-17">{{ numberFormat(item.like_event) }}</li>
+																			<li class="line-17">{{ numberFormat(item.comment_event) }}</li>
+																			<li class="line-17">{{ numberFormat(item.post_reaction_event) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -598,7 +599,15 @@ export default {
 			pageTotal: 0,
 			currentPage: 1,
 			firstPage: 1,
+
+			linkCpc: 0,
 			convTotal: 0,
+			convResultWorth: 0,
+			convResult1: 0,
+			convResult2: 0,
+			convResult3: 0,
+			convResult4: 0,
+			convResult5: 0,
 
 			tablesAutoWidth:4880,
 
@@ -914,14 +923,28 @@ export default {
 					value = elem.value
 					if (type == '전환완료') {
 						this.convTotal = elem.value
+					} else if (type == '전환완료가치') {
+						value = (convTotal / item.spend).toFixed(2)
+						this.convResultWorth = value
+					} else if (type == '전환 1단계') {
+						this.convResult1 = elem.value
+					} else if (type == '전환 2단계') {
+						this.convResult2 = elem.value
+					} else if (type == '전환 3단계') {
+						this.convResult3 = elem.value
+					} else if (type == '전환 4단계') {
+						this.convResult4 = elem.value
+					} else if (type == '전환 5단계') {
+						this.convResult5 = elem.value
 					} else {
-						pass
+						// pass
 					}
 				}
 				else {
 					// return 0
 				}
 			})
+			// this.convValues.push(value)
 			return value
 		},
 

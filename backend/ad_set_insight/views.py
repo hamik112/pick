@@ -377,6 +377,10 @@ class AdSetInsightByAccount(APIView):
                 result['conversions'] = conversions
                 result['frequency'] = round(frequency, 2)
                 result['inline_link_click_ctr'] = round(inline_link_click_ctr, 2)
+                if inline_link_clicks != 0:
+                    result['inline_link_click_cpc'] = round(spend/inline_link_clicks, 0)
+                else:
+                    result['inline_link_click_cpc'] = 0
                 result['pickdata_custom_pixel_event'] = []
 
                 # Custom Event 계산 추가
@@ -417,8 +421,14 @@ class AdSetInsightByAccount(APIView):
 
                                 v_list = list(map(int, v_list))
                                 result['video_10_sec_watched_actions'] = sum(v_list)
-                                result['video_10_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
-                                result['video_10_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+                                if (impressions != 0):
+                                    result['video_10_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
+                                else:
+                                    result['video_10_sec_watched_vtr'] = 0
+                                if (spend != 0):
+                                    result['video_10_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+                                else:
+                                    result['video_10_sec_watched_cpv'] = 0
 
                 # 30_sec_video_view total
                 for key, items in report_dict_video_30_sec.items():
@@ -434,8 +444,16 @@ class AdSetInsightByAccount(APIView):
 
                                 v_list = list(map(int, v_list))
                                 result['video_30_sec_watched_actions'] = sum(v_list)
-                                result['video_30_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
-                                result['video_30_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+                                # result['video_30_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
+                                # result['video_30_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+                                if (impressions != 0):
+                                    result['video_30_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
+                                else:
+                                    result['video_30_sec_watched_vtr'] = 0
+                                if (spend != 0):
+                                    result['video_30_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+                                else:
+                                    result['video_30_sec_watched_cpv'] = 0
 
                 # Carousel 소재 링크 클릭 값
                 for key, items in report_dict_carousel_actions.items():
