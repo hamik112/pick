@@ -262,7 +262,7 @@
 																			<span>전환 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','ASC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','ASC')" class="asc_sort sort_btn"></a></p>
 																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
