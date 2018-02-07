@@ -95,10 +95,7 @@ export default {
 
   props:{
   	chartItem: {
-  		type:Object,
-  		default () {
-  			return {}
-  		}
+  		type:Object
   	}
   },
 
@@ -121,7 +118,8 @@ export default {
 			},
 			//chartGenderData
 			chartGenderData: {
-				legend: ['모든남성 50%(3,250)','모든 여성 50%(3,250)'],
+				//legend: ['모든남성 50%(3,250)','모든 여성 50%(3,250)'],
+				legend: ['모든 남성','모든 여성'],
 				xAxis: ['13-17세','18-24세','25-34세','35-44세','45-54세','55-64세','65세이상'],
 				yAxis: {
 					'type':'value',
@@ -131,7 +129,8 @@ export default {
 
 				series:[
 					{
-						name:'모든남성 50%(3,250)',
+						//name:'모든남성 50%(3,250)',
+						name:'모든 남성',
 						type:'bar',
 						data:[],
 						barWidth: '10%',
@@ -149,7 +148,8 @@ export default {
 					},
 
 					{
-						name:'모든 여성 50%(3,250)',
+						//name:'모든 여성 50%(3,250)',
+						name:'모든 여성',
 						type:'bar',
 						data:[],
 						barWidth: '10%',
@@ -177,7 +177,8 @@ export default {
 
 				yAxis: {
 					'type':'value',
-					'name':'K'
+					//'name':'K'
+					'name':''
 				},
 
 				//순차적 데이터
@@ -192,7 +193,9 @@ export default {
 								label : {
 									show: true,
 									position: 'insideRight',
-									formatter: '{c}K'
+									//formatter: '{c}K'
+									formatter: '{c}'
+
 								},
 								color: '#267aa9'
 							}
@@ -208,7 +211,8 @@ export default {
 								label: {
 									show: true,
 									position: 'insideLeft',
-									formatter: '{c}K'
+									//formatter: '{c}K'
+									formatter: '{c}'
 								},
 
 								color:'#45ceb4'
