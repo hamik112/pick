@@ -85,7 +85,6 @@ def get_roi_report(request):
     response_data = {}
     try:
         fb_ad_account_id = request.GET.get('fb_ad_account_id', 0)
-        # adv_id = request.GET.get('adv_id', 0)
         neo_report_type = request.GET.get('type', '')
 
         if fb_ad_account_id == 0:
@@ -95,31 +94,48 @@ def get_roi_report(request):
 
         neo_accounts = NeoAccount.get_list_by_fb_ad_account_id(NeoAccount, fb_ad_account_id)
 
-        adv_id = None
+        adv_ids = {}
         account_ids = []
 
         for neo_account in neo_accounts:
             adv_id = neo_account.get('neo_adv_id')
-            account_ids.append(neo_account.get('neo_account_id'))
+            account_id = neo_account.get('neo_account_id')
+            account_ids.append(account_id)
 
-        if adv_id == None:
+            if adv_ids.get(adv_id, None) == None:
+                adv_ids[adv_id] = []
+
+            adv_account_list = adv_ids.get(adv_id) + [account_id]
+            adv_ids[adv_id] = adv_account_list
+
+        if len(adv_ids) == 0:
             raise Exception ('No NeoAccount.')
 
-        adv = McCenterAdvertiser.get_advertiser(McCenterAdvertiser, adv_id)
+        advs = McCenterAdvertiser.get_advertisers_by_ids(McCenterAdvertiser, [adv_id for adv_id in adv_ids])
 
-        adv_info = {
-            "adv_id": adv_id,
-            "adv_name": adv.advertisername
-        }
+        advs_info = {}
+
+        # adv_info = {
+        #     "adv_id": adv_id,
+        #     "adv_name": adv.advertisername
+        # }
+
+        for adv in advs:
+            advs_info[adv.advertiserid] = {
+                "name": adv.advertisername,
+                "neo_account_ids": adv_ids.get(adv.advertiserid, [])
+            }
+
+        # print(advs_info)
 
         if neo_report_type == "account":
-            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
+            roi_report = McRoiReport.get_media_roi_report(McRoiReport,advs_info, day=day)
         elif neo_report_type == "campaign":
-            roi_report = McRoiReport.get_campaign_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
+            roi_report = McRoiReport.get_campaign_roi_report(McRoiReport, advs_info, day=day)
         elif neo_report_type == "keyword":
-            roi_report = McRoiReport.get_keyword_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
+            roi_report = McRoiReport.get_keyword_roi_report(McRoiReport, advs_info, day=day)
         else:
-            roi_report = McRoiReport.get_media_roi_report(McRoiReport, adv_id, account_ids, day=day, adv_info=adv_info)
+            roi_report = McRoiReport.get_media_roi_report(McRoiReport, advs_info, day=day)
 
         # print(roi_report)
 
