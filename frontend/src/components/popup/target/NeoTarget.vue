@@ -478,6 +478,7 @@ export default {
       this.modifyNeoTargetType('keyword')
     })
     .catch(err => {
+      this.loadShow = false
       console.error('/neo_db/get_roi_report type: keyword', err)
     })
 
