@@ -924,7 +924,7 @@ export default {
 					if (type == '전환완료') {
 						this.convTotal = elem.value
 					} else if (type == '전환완료가치') {
-						value = (convTotal / item.spend).toFixed(2)
+						value = (this.convTotal / item.spend).toFixed(2)
 						this.convResultWorth = value
 					} else if (type == '전환 1단계') {
 						this.convResult1 = elem.value
