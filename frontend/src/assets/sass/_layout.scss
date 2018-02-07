@@ -270,14 +270,20 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 											&:last-child{border-right:0px;}
 											.sort_type_01{position:absolute; top:40%; right:10%;
 												p{
+													a { display:block; width:9px; height:6px; }
 													&:first-child{padding-bottom:1px;}
 												}
 											}
 											.sort_type_02{position:absolute; top:30%; right:10%;
 												p{
+													a { display:block; width:9px; height:6px; }
 													&:first-child{padding-bottom:1px;}
 												}
 											}
+											.asc_sort { background:url(assets/images/icon/report_up.png) no-repeat left top; }
+											.desc_sort { background:url(assets/images/icon/report_down.png) no-repeat left top; }
+											.asc_sort.on { background:url(assets/images/icon/report_up_on.png) no-repeat left top; }
+											.desc_sort.on { background:url(assets/images/icon/report_down_on.png) no-repeat left top; }
 										}
 										.th_sub{line-height:1.2; padding:0px; width:auto;
 											dl{
