@@ -59,8 +59,8 @@
 															<span>광고비</span>
 															<span class="sort_type_01">
 																<div>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('spend','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('spend','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('spend','ASC')" class="asc_sort sort_btn"></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('spend','DESC')" class="desc_sort sort_btn"></a></p>
 																</div>
 															</span>
 														</li>
@@ -68,8 +68,8 @@
 															<span>노출</span>
 															<span class="sort_type_01">
 																<div>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('impressions','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('impressions','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('impressions','ASC')" class="asc_sort sort_btn"></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('impressions','DESC')" class="desc_sort sort_btn"></a></p>
 																</div>
 															</span>
 														</li>
@@ -77,8 +77,8 @@
 															<span>도달</span>
 															<span class="sort_type_01">
 																<div>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('reach','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('reach','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('reach','ASC')" class="asc_sort sort_btn"></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('reach','DESC')" class="desc_sort sort_btn"></a></p>
 																</div>
 															</span>
 														</li>
@@ -86,8 +86,8 @@
 															<span>도달빈도</span>
 															<span class="sort_type_01">
 																<div>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('frequency','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('frequency','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('frequency','ASC')" class="asc_sort sort_btn"></a></p>
+																	<p><a href="javascript:void(0)" v-on:click="listSort('frequency','DESC')" class="desc_sort sort_btn"></a></p>
 																</div>
 															</span>
 														</li>
@@ -100,8 +100,8 @@
 																			<span>링크클릭</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -109,8 +109,8 @@
 																			<span>CTR</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -118,8 +118,8 @@
 																			<span>CPC</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -136,8 +136,8 @@
 																			<span>1번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick1','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick1','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick1','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick1','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -145,8 +145,8 @@
 																			<span>2번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick2','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick2','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick2','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick2','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -154,8 +154,8 @@
 																			<span>3번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick3','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick3','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick3','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick3','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -163,8 +163,8 @@
 																			<span>4번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick4','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick4','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick4','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick4','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -172,8 +172,8 @@
 																			<span>5번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick5','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick5','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick5','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick5','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -181,8 +181,8 @@
 																			<span>6번</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick6','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick6','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick6','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick6','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -199,8 +199,8 @@
 																			<span>10초 이상 View</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -208,8 +208,8 @@
 																			<span>10초 이상 VTR</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -217,8 +217,8 @@
 																			<span>10초 이상 CPV</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -226,8 +226,8 @@
 																			<span>30초 이상 View</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_actions','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_actions','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_actions','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_actions','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -235,8 +235,8 @@
 																			<span>30초 이상 VTR</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_vtr','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_vtr','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_vtr','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_vtr','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -244,8 +244,8 @@
 																			<span>30초 이상 CPV</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_cpv','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_cpv','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_cpv','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_cpv','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -262,8 +262,8 @@
 																			<span>전환 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','ASC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -271,8 +271,8 @@
 																			<span>전환 완료 가치</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResultWorth','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResultWorth','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResultWorth','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResultWorth','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -280,8 +280,8 @@
 																			<span>1단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult1','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult1','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult1','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult1','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -289,8 +289,8 @@
 																			<span>2단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult2','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult2','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult2','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult2','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -298,8 +298,8 @@
 																			<span>3단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult3','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult3','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult3','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult3','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -307,8 +307,8 @@
 																			<span>4단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult4','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult4','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult4','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult4','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -316,8 +316,8 @@
 																			<span>5단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult5','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult5','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult5','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult5','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -334,8 +334,8 @@
 																			<span>공유</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('post_event','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('post_event','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('post_event','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('post_event','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -343,8 +343,8 @@
 																			<span>좋아요</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('like_event','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('like_event','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('like_event','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('like_event','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -352,8 +352,8 @@
 																			<span>댓글</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -361,8 +361,8 @@
 																			<span>공감</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','ASC')"><img src="../../assets/images/icon/report_up.png" alt=""></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','DESC')"><img src="../../assets/images/icon/report_down.png" alt=""></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -724,6 +724,9 @@ export default {
 			const item = this.listData.data
 			//숫자 형식 소팅(String,Text 형식 지원 X)
 			const byNum = item.slice(0)
+			const $el = event.target
+			const $btns = document.querySelectorAll('.sort_btn')
+
 			byNum.sort(function(a,b) {
 				if(type == 'ASC') {
 						return a[key] - b[key]
@@ -732,8 +735,11 @@ export default {
 				}
 			})
 			this.listData.data = byNum
-			//Event Arrow On Off
-
+			//sort arrow element class Add and Remove Actions
+			for (var i = 0; i < $btns.length; i++) {
+			   $btns[i].classList.remove('on');
+			}
+			$el.classList.add('on')
 		},
 
 		disabledDate (time) {

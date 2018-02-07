@@ -1,3 +1,8 @@
 export default {
-  currentFbAdAccount: ''
+  currentFbAdAccount: '',
+  defaultDetails: [],
+  purchaseDetails: [],
+  registrationDetails: [],
+  addtocartDetails: [],
+  conversionDetails: []
 }

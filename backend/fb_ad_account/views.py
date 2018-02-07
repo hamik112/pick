@@ -132,7 +132,7 @@ class CheckAccountId(APIView):
                 pixel_evnet_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, fb_ad_account_id=fb_ad_account.id)
                 from pixel_mapping.serializers import PixelMappingMergeSerializer
                 pixel_evnet_mapping_se = PixelMappingMergeSerializer(pixel_evnet_mapping, many=True)
-                # custom_target_details = generate_custom_target_details(fb_ad_account.id)
+                custom_target_details = generate_custom_target_details(fb_ad_account.id)
 
             response_data['success'] = 'YES'
             response_data['bool_default_pixel'] = bool_default_pixel
@@ -141,7 +141,7 @@ class CheckAccountId(APIView):
             response_data['fb_ad_account'] = dic_fb_ad_account
             response_data['neo_account_list'] = neo_account_list
             response_data['pixel_event_mappings'] = pixel_evnet_mapping_se.data
-            # response_data['custom_target_details'] = custom_target_details
+            response_data['custom_target_details'] = custom_target_details
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -886,7 +886,7 @@ def generate_custom_target_details(fb_ad_account_id):
             pixel_categories[pixel_mapping.pixel_mapping_category_id] = pixel_mapping
 
         is_visit_pixel, is_purchase_pixel, is_addtocart_pixel, is_registration_pixel, is_conversion_pixel, \
-        is_step1_pixel, is_step2_pixel, is_step2_pixel, is_step3_pixel, is_step4_pixel, is_step5_pixel = False
+        is_step1_pixel, is_step2_pixel, is_step2_pixel, is_step3_pixel, is_step4_pixel, is_step5_pixel = (False,)*11
 
         if purchase_pixel_mapping_category.id in pixel_categories:
             is_purchase_pixel = True
@@ -1048,10 +1048,7 @@ def generate_custom_target_details(fb_ad_account_id):
             "conversion_details": conversion_details
         }
 
-
-
         return custom_target_details
-
     except Exception as e:
         print(traceback.format_exc())
         logger.info(traceback.format_exc())
