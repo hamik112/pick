@@ -262,8 +262,8 @@
 																			<span>전환 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convTotal','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -271,8 +271,8 @@
 																			<span>전환 완료 가치</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResultWorth','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResultWorth','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total_cost','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total_cost','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -280,8 +280,8 @@
 																			<span>1단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult1','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult1','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_first','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_first','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -289,8 +289,8 @@
 																			<span>2단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult2','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult2','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_second','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_second','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -298,8 +298,8 @@
 																			<span>3단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult3','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult3','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_third','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_third','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -307,8 +307,8 @@
 																			<span>4단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult4','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult4','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fourth','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fourth','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -316,8 +316,8 @@
 																			<span>5단계 완료</span>
 																			<span class="sort_type_02">
 																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult5','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('convResult5','DESC')" class="desc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fifth','ASC')" class="asc_sort sort_btn"></a></p>
+																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fifth','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -445,15 +445,14 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-16">{{ getCustomMappingEvent(item, '전환완료') }}</li>
+																			<li class="line-16">{{ item.pickdata_custom_conv_total }}</li>
 																			<!-- cost_per_action_type?-->
-																			<!-- <li class="line-16">{{ (convTotal / item.spend).toFixed(2) }}</li> -->
-																			<li class="line-16">{{ getCustomMappingEvent(item, '전환완료가치') }}</li>
-																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 1단계') }}</li>
-																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 2단계') }}</li>
-																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 3단계') }}</li>
-																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 4단계') }}</li>
-																			<li class="line-16">{{ getCustomMappingEvent(item, '전환 5단계') }}</li>
+																			<li class="line-16">{{ item.pickdata_custom_conv_total_cost }}</li>
+																			<li class="line-16">{{ item.pickdata_custom_conv_first }}</li>
+																			<li class="line-16">{{ item.pickdata_custom_conv_second }}</li>
+																			<li class="line-16">{{ item.pickdata_custom_conv_third }}</li>
+																			<li class="line-16">{{ item.pickdata_custom_conv_fourth }}</li>
+																			<li class="line-16">{{ item.pickdata_custom_conv_fifth }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -599,15 +598,6 @@ export default {
 			pageTotal: 0,
 			currentPage: 1,
 			firstPage: 1,
-
-			linkCpc: 0,
-			convTotal: 0,
-			convResultWorth: 0,
-			convResult1: 0,
-			convResult2: 0,
-			convResult3: 0,
-			convResult4: 0,
-			convResult5: 0,
 
 			tablesAutoWidth:4880,
 
@@ -914,39 +904,39 @@ export default {
 			})
 		},
 
-		getCustomMappingEvent (item, type) {
-			const pixel_event = item.pickdata_custom_pixel_event
-			let value = 0
-			pixel_event.forEach(elem => {
-				const name = elem.custom_name
-				if (name == type) {
-					value = elem.value
-					if (type == '전환완료') {
-						this.convTotal = elem.value
-					} else if (type == '전환완료가치') {
-						value = (convTotal / item.spend).toFixed(2)
-						this.convResultWorth = value
-					} else if (type == '전환 1단계') {
-						this.convResult1 = elem.value
-					} else if (type == '전환 2단계') {
-						this.convResult2 = elem.value
-					} else if (type == '전환 3단계') {
-						this.convResult3 = elem.value
-					} else if (type == '전환 4단계') {
-						this.convResult4 = elem.value
-					} else if (type == '전환 5단계') {
-						this.convResult5 = elem.value
-					} else {
-						// pass
-					}
-				}
-				else {
-					// return 0
-				}
-			})
-			// this.convValues.push(value)
-			return value
-		},
+		// getCustomMappingEvent (item, type) {
+		// 	const pixel_event = item.pickdata_custom_pixel_event
+		// 	let value = 0
+		// 	pixel_event.forEach(elem => {
+		// 		const name = elem.custom_name
+		// 		if (name == type) {
+		// 			value = elem.value
+		// 			if (type == '전환완료') {
+		// 				this.convTotal = elem.value
+		// 			} else if (type == '전환완료가치') {
+		// 				value = (this.convTotal / item.spend).toFixed(2)
+		// 				this.convResultWorth = value
+		// 			} else if (type == '전환 1단계') {
+		// 				this.convValues.convResult1 = elem.value
+		// 			} else if (type == '전환 2단계') {
+		// 				this.convValues.convResult2 = elem.value
+		// 			} else if (type == '전환 3단계') {
+		// 				this.convValues.convResult3 = elem.value
+		// 			} else if (type == '전환 4단계') {
+		// 				this.convValues.convResult4 = elem.value
+		// 			} else if (type == '전환 5단계') {
+		// 				this.convValues.convResult5 = elem.value
+		// 			} else {
+		// 				// pass
+		// 			}
+		// 		}
+		// 		else {
+		// 			// return 0
+		// 		}
+		// 	})
+		// 	// this.convValues.push(value)
+		// 	return value
+		// },
 
 		downloadReport () {
 			console.log('download')
@@ -974,6 +964,8 @@ export default {
 		checkObject (n) {
 			if (typeof n === typeof undefined || n == null) {
 				return 0
+			} else {
+				return n
 			}
 		},
 
