@@ -344,6 +344,24 @@
 				//매뉴 온오프 or 리스트 필터
 				this.targetOn = type
 			},
+			convertSelectData (data) {
+				let emptyText = ''
+				let textList = []
+				let keyList = []
+
+				data.forEach(function (item, index) {
+					if (index === 0) {
+						emptyText = item['name']
+					}
+					textList.push(item['name'])
+					keyList.push(item['value'])
+				})
+				return {
+					"emptyText": emptyText,
+					"textList": textList,
+					"keyList": keyList
+				}
+			},
 			getTargetPick (fbAdAccount) {
 				this.isPick = false
 				this.isLoading = true
@@ -356,6 +374,14 @@
 				.then(res => {
 					const bool_default_pixel = res.data.bool_default_pixel
 					const bool_fb_ad_account = res.data.bool_fb_ad_account
+
+					if (typeof res.data.custom_target_details != typeof undefined || res.data.custom_target_details != null) {
+						this.$store.state.defaultDetails = this.convertSelectData(res.data.custom_target_details.default_details)
+						this.$store.state.purchaseDetails = this.convertSelectData(res.data.custom_target_details.purchase_details)
+						this.$store.state.registrationDetails = this.convertSelectData(res.data.custom_target_details.registration_details)
+						this.$store.state.addtocartDetails = this.convertSelectData(res.data.custom_target_details.addtocart_details)
+						this.$store.state.conversionDetails = this.convertSelectData(res.data.custom_target_details.conversion_details)
+					}
 
 					if (bool_default_pixel == false) {
             // default_pixel alert popup
