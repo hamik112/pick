@@ -39,6 +39,7 @@ class PickdataAccountTargetViewSet(viewsets.ModelViewSet):
     queryset = PickdataAccountTarget.objects.all()
     serializer_class = PickdataAccountTargetSerializer
 
+
 class TargetCheck(APIView):
     def get(self, request, format=None):
         response_data = {}
@@ -92,11 +93,13 @@ class TargetCheck(APIView):
     def checkPixelMapping(self, fb_ad_account, key_string):
         try:
             pixel_mapping_category = PixelMappingCategory.objects.get(category_label_en=key_string)
-            pixel_mappings = PixelMapping.objects.filter(fb_ad_account=fb_ad_account, pixel_mapping_category=pixel_mapping_category)
+            pixel_mappings = PixelMapping.objects.filter(fb_ad_account=fb_ad_account,
+                                                         pixel_mapping_category=pixel_mapping_category)
             return True if len(pixel_mappings) > 0 else False
         except Exception as e:
             print(traceback.format_exc())
             return False
+
 
 class TargetPick(APIView):
     def get(self, request, format=None):
@@ -175,7 +178,8 @@ class TargetPick(APIView):
                         display_count = audience_target.get('approximate_count')
                         targeting_complete = True
 
-                    adsets = AdSet.get_adsets_by_account_id_and_target_id(AdSet, fb_ad_account.act_account_id, audience_id)
+                    adsets = AdSet.get_adsets_by_account_id_and_target_id(AdSet, fb_ad_account.act_account_id,
+                                                                          audience_id)
                     if len(adsets) > 0:
                         demographic_complete = True
 
@@ -187,7 +191,6 @@ class TargetPick(APIView):
                     gen_obj['pixel_id'] = audience_target.get('pixel_id')
                     gen_obj['targeting_complete'] = targeting_complete
                     gen_obj['demographic_complete'] = demographic_complete
-
 
                     if target_type == "all":
                         group_target['total'].append(gen_obj)
@@ -311,6 +314,7 @@ class TargetChart(APIView):
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+
 class NeoCustomTarget(APIView):
     def get(self, request, format=None):
         response_data = {}
@@ -374,6 +378,209 @@ class NeoCustomTarget(APIView):
             response_data['success'] = 'NO'
             response_data['msg'] = e.args
             return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+class CustomTargetDetails(APIView):
+    def get(self, request, format=None):
+        response_data = {}
+        try:
+            fb_ad_account_id = request.query_params.get('fb_ad_account_id', None)
+            fb_ad_account = FbAdAccount.find_by_fb_ad_account_id(FbAdAccount, fb_ad_account_id)
+
+            if fb_ad_account == None:
+                raise Exception('Not Exist fb_ad_account.')
+
+            # pixel_category
+            visit_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'visit pages')
+            purchase_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'purchase')
+            addtocart_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'add to cart')
+            registration_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'registration')
+            conversion_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion complete')
+
+            step1_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 1step')
+            step2_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 2step')
+            step3_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 3step')
+            step4_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 4step')
+            step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                PixelMappingCategory, 'conversion 5step')
+
+            pixel_mappings = PixelMapping.objects.filter(fb_ad_account_id=fb_ad_account_id)
+
+            pixel_categories = {}
+
+            for pixel_mapping in pixel_mappings:
+                pixel_categories[pixel_mapping.pixel_mapping_category_id] = pixel_mapping
+
+            is_visit_pixel, is_purchase_pixel, is_addtocart_pixel, is_registration_pixel, is_conversion_pixel, \
+            is_step1_pixel, is_step2_pixel, is_step2_pixel, is_step3_pixel, is_step4_pixel, is_step5_pixel = False
+
+            if purchase_pixel_mapping_category.id in pixel_categories:
+                is_purchase_pixel = True
+            if addtocart_pixel_mapping_category.id in pixel_categories:
+                is_addtocart_pixel = True
+            if registration_pixel_mapping_category.id in pixel_categories:
+                is_registration_pixel = True
+            if conversion_pixel_mapping_category.id in pixel_categories:
+                is_conversion_pixel = True
+            if step1_pixel_mapping_category.id in pixel_categories:
+                is_step1_pixel = True
+            if step2_pixel_mapping_category.id in pixel_categories:
+                is_step2_pixel = True
+            if step3_pixel_mapping_category.id in pixel_categories:
+                is_step3_pixel = True
+            if step4_pixel_mapping_category.id in pixel_categories:
+                is_step4_pixel = True
+            if step5_pixel_mapping_category.id in pixel_categories:
+                is_step5_pixel = True
+
+            total_detail = {
+                "name": "전체 고객",
+                "value": "total"
+            }
+
+            usage_time_top_detail = {
+                "name": "이용 시간 상위 고객",
+                "value": "usage_time_top"
+            }
+
+            non_visit_detail = {
+                "name": "특정일 동안 미방문 고객",
+                "value": "non_visit"
+            }
+
+            purchase_detail = {
+                "name": "구매고객",
+                "value": "purchase"
+            }
+
+            non_purchase_detail = {
+                "name": "미 구매고객",
+                "value": "non_purchase"
+            }
+
+            add_to_cart_detail = {
+                "name": "장바구니 이용 고객",
+                "value": ""
+            }
+
+            conversion_detail = {
+                "name": "전환완료 고객",
+                "value": "conversion"
+            }
+
+            non_conversion_detail = {
+                "name": "미 전환 고객",
+                "value": "non_conversion"
+            }
+
+            registration_detail = {
+                "name": "회원가입 고객",
+                "value": "registration"
+            }
+
+            purchase_count_detail = {
+                "name": "특정 구매횟수 이상 구매 고객",
+                "value": "purchase_count"
+            }
+
+            purchase_amount_detail = {
+                "name": "특정 구매금액 이상 구매 고객",
+                "value": "purchase_amount"
+            }
+
+            target_type = request.query_params.get('target_type', None)
+
+            return_details = []
+
+            if target_type == "visit_site" or target_type == "visit_specific_pages" or target_type == "neo_target" or \
+                            target_type == "utm_target":
+                return_details.append(total_detail)
+                return_details.append(usage_time_top_detail)
+                return_details.append(non_visit_detail)
+                if is_purchase_pixel:
+                    return_details.append(purchase_detail)
+                    return_details.append(non_purchase_detail)
+                if is_addtocart_pixel:
+                    return_details.append(add_to_cart_detail)
+                if is_conversion_pixel:
+                    return_details.append(conversion_detail)
+                    return_details.append(non_conversion_detail)
+                if is_registration_pixel:
+                    return_details.append(registration_detail)
+            elif target_type == "purchase":
+                return_details.append(total_detail)
+                if is_purchase_pixel:
+                    return_details.append(purchase_count_detail)
+                    return_details.append(purchase_amount_detail)
+            elif target_type == "add_to_cart":
+                return_details.append(total_detail)
+                if is_purchase_pixel:
+                    return_details.append(purchase_detail)
+            elif target_type == "registration":
+                return_details.append(total_detail)
+                return_details.append(usage_time_top_detail)
+                if is_purchase_pixel:
+                    return_details.append(purchase_detail)
+                if is_conversion_pixel:
+                    return_details.append(conversion_detail)
+                    return_details.append(non_conversion_detail)
+            elif target_type == "conversion":
+                if is_conversion_pixel:
+                    return_details.append(conversion_detail)
+                    return_details.append(non_conversion_detail)
+                if is_step1_pixel:
+                    return_details.append({
+                        "name": "전환 1단계 완료 고객",
+                        "value": "conversion 1step"
+                    })
+                if is_step2_pixel:
+                    return_details.append({
+                        "name": "전환 2단계 완료 고객",
+                        "value": "conversion 2step"
+                    })
+                if is_step3_pixel:
+                    return_details.append({
+                        "name": "전환 3단계 완료 고객",
+                        "value": "conversion 3step"
+                    })
+                if is_step4_pixel:
+                    return_details.append({
+                        "name": "전환 4단계 완료 고객",
+                        "value": "conversion 4step"
+                    })
+                if is_step5_pixel:
+                    return_details.append({
+                        "name": "전환 5단계 완료 고객",
+                        "value": "conversion 5step"
+                    })
+
+                return_details.append({
+                    "name": "특정 단계 완료(URL)",
+                    "value": "conversion url"
+                })
+
+            else:
+                raise Exception("No valid target_type.")
+
+            response_data['success'] = 'YES'
+            response_data['data'] = return_details
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except Exception as e:
+            print(traceback.format_exc())
+            response_data['success'] = 'NO'
+            response_data['msg'] = e.args
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 class CustomTarget(APIView):
     def make_description(self, pixel_mapping_category, retention_days, description, option, type_name, params,
@@ -1079,7 +1286,7 @@ class CustomTarget(APIView):
 
                             created_target = targeting_addtocart.update_addtocart_and_non_purchase_customers(
                                 custom_audience_id, name, pixel_id, retention_days=retention_days,
-                                addtocart_evnet_name=addtocart_event_name, puchase_event_name=purchase_event_name)
+                                addtocart_evnet_name=addtocart_event_name, purchase_event_name=purchase_event_name)
                             description = self.make_description("장바구니", retention_days, "미구매고객", "", "custom",
                                                                 request.data)
                         else:
@@ -1168,69 +1375,110 @@ class CustomTarget(APIView):
                 # non_conversion, conversion 1step, conversion 2step, conversion 3step, conversion 4step, conversion 5step, conversion url
 
                 if conversion_pixel_mapping_category.id in pixel_categories:
-                    conversion_event_name = pixel_categories.get(conversion_pixel_mapping_category.id).facebook_pixel_event_name
+                    conversion_event_name = pixel_categories.get(
+                        conversion_pixel_mapping_category.id).facebook_pixel_event_name
 
-                    complete_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion complete')
-                    step1_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 1step')
-                    step2_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 2step')
-                    step3_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 3step')
-                    step4_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 4step')
-                    step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 5step')
+                    complete_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                        PixelMappingCategory, 'conversion complete')
+                    step1_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                        PixelMappingCategory, 'conversion 1step')
+                    step2_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                        PixelMappingCategory, 'conversion 2step')
+                    step3_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                        PixelMappingCategory, 'conversion 3step')
+                    step4_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                        PixelMappingCategory, 'conversion 4step')
+                    step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                        PixelMappingCategory, 'conversion 5step')
 
                     if detail == "non_conversion":
-                        pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory,'conversion complete')
-                        created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name, pixel_id, retention_days=30, conversion_event_name=conversion_event_name)
-                        description = self.make_description("단계별 전환", retention_days, "미전환고객", "", "custom", request.data)
+                        pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                            PixelMappingCategory, 'conversion complete')
+                        created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name,
+                                                                                          pixel_id, retention_days=30,
+                                                                                          conversion_event_name=conversion_event_name)
+                        description = self.make_description("단계별 전환", retention_days, "미전환고객", "", "custom",
+                                                            request.data)
 
                     elif detail == "conversion 1step":
                         if step1_pixel_mapping_category.id in pixel_categories:
-                            conversion_step1_event_name = pixel_categories.get(step1_pixel_mapping_category.id).facebook_pixel_event_name
+                            conversion_step1_event_name = pixel_categories.get(
+                                step1_pixel_mapping_category.id).facebook_pixel_event_name
 
-                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 1step')
-                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name, pixel_id, retention_days=30, conversion_event_name=conversion_step1_event_name)
-                            description = self.make_description("단계별 전환", retention_days, "1단계전환고객", "", "custom", request.data)
+                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                                PixelMappingCategory, 'conversion 1step')
+                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name,
+                                                                                              pixel_id,
+                                                                                              retention_days=30,
+                                                                                              conversion_event_name=conversion_step1_event_name)
+                            description = self.make_description("단계별 전환", retention_days, "1단계전환고객", "", "custom",
+                                                                request.data)
                         else:
                             raise Exception("Not mapping Conversion Step1 Category.")
 
                     elif detail == "conversion 2step":
                         if step2_pixel_mapping_category.id in pixel_categories:
-                            conversion_step2_event_name = pixel_categories.get(step2_pixel_mapping_category.id).facebook_pixel_event_name
+                            conversion_step2_event_name = pixel_categories.get(
+                                step2_pixel_mapping_category.id).facebook_pixel_event_name
 
-                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 2step')
-                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name, pixel_id, retention_days=30,conversion_event_name=conversion_step2_event_name)
-                            description = self.make_description("단계별 전환", retention_days, "2단계전환고객", "", "custom",request.data)
+                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                                PixelMappingCategory, 'conversion 2step')
+                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name,
+                                                                                              pixel_id,
+                                                                                              retention_days=30,
+                                                                                              conversion_event_name=conversion_step2_event_name)
+                            description = self.make_description("단계별 전환", retention_days, "2단계전환고객", "", "custom",
+                                                                request.data)
                         else:
                             raise Exception("Not mapping Conversion Step2 Category.")
 
 
                     elif detail == "conversion 3step":
                         if step3_pixel_mapping_category.id in pixel_categories:
-                            conversion_step3_event_name = pixel_categories.get(step3_pixel_mapping_category.id).facebook_pixel_event_name
+                            conversion_step3_event_name = pixel_categories.get(
+                                step3_pixel_mapping_category.id).facebook_pixel_event_name
 
-                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 3step')
-                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name, pixel_id, retention_days=30, conversion_event_name=conversion_step3_event_name)
-                            description = self.make_description("단계별 전환", retention_days, "3단계전환고객", "", "custom", request.data)
+                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                                PixelMappingCategory, 'conversion 3step')
+                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name,
+                                                                                              pixel_id,
+                                                                                              retention_days=30,
+                                                                                              conversion_event_name=conversion_step3_event_name)
+                            description = self.make_description("단계별 전환", retention_days, "3단계전환고객", "", "custom",
+                                                                request.data)
                         else:
                             raise Exception("Not mapping Conversion Step3 Category.")
 
 
                     elif detail == "conversion 4step":
                         if step4_pixel_mapping_category.id in pixel_categories:
-                            conversion_step4_event_name = pixel_categories.get(step4_pixel_mapping_category.id).facebook_pixel_event_name
+                            conversion_step4_event_name = pixel_categories.get(
+                                step4_pixel_mapping_category.id).facebook_pixel_event_name
 
-                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 4step')
-                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name, pixel_id, retention_days=30, conversion_event_name=conversion_step4_event_name)
-                            description = self.make_description("단계별 전환", retention_days, "4단계전환고객", "", "custom", request.data)
+                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                                PixelMappingCategory, 'conversion 4step')
+                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name,
+                                                                                              pixel_id,
+                                                                                              retention_days=30,
+                                                                                              conversion_event_name=conversion_step4_event_name)
+                            description = self.make_description("단계별 전환", retention_days, "4단계전환고객", "", "custom",
+                                                                request.data)
                         else:
                             raise Exception("Not mapping Conversion Step4 Category.")
 
                     elif detail == "conversion 5step":
                         if step5_pixel_mapping_category.id in pixel_categories:
-                            conversion_step5_event_name = pixel_categories.get(step5_pixel_mapping_category.id).facebook_pixel_event_name
+                            conversion_step5_event_name = pixel_categories.get(
+                                step5_pixel_mapping_category.id).facebook_pixel_event_name
 
-                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion 5step')
-                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name, pixel_id, retention_days=30, conversion_event_name=conversion_step5_event_name)
-                            description = self.make_description("단계별 전환", retention_days, "5단계전환고객", "", "custom", request.data)
+                            pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                                PixelMappingCategory, 'conversion 5step')
+                            created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name,
+                                                                                              pixel_id,
+                                                                                              retention_days=30,
+                                                                                              conversion_event_name=conversion_step5_event_name)
+                            description = self.make_description("단계별 전환", retention_days, "5단계전환고객", "", "custom",
+                                                                request.data)
                         else:
                             raise Exception("Not mapping Conversion Step5 Category.")
 
@@ -1239,10 +1487,16 @@ class CustomTarget(APIView):
                         current_complete_url = request.data.get('current_complete_url')
                         next_complete_url = request.data.get('next_complete_url')
 
-                        pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'conversion url')
-                        created_target = targeting_conversion.update_conversion_url_customers(custom_audience_id, name, pixel_id,retention_days=30, current_url=current_complete_url, next_url=next_complete_url)
+                        pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                            PixelMappingCategory, 'conversion url')
+                        created_target = targeting_conversion.update_conversion_url_customers(custom_audience_id, name,
+                                                                                              pixel_id,
+                                                                                              retention_days=30,
+                                                                                              current_url=current_complete_url,
+                                                                                              next_url=next_complete_url)
 
-                        description = self.make_description("단계별 전환", retention_days, "특정단계URL고객", step_name, "custom", request.data)
+                        description = self.make_description("단계별 전환", retention_days, "특정단계URL고객", step_name, "custom",
+                                                            request.data)
                     else:
                         raise Exception("No valid detail parameter")
 
@@ -1951,7 +2205,7 @@ class CustomTarget(APIView):
 
                             created_target = targeting_addtocart.create_addtocart_and_non_purchase_customers(
                                 fb_ad_account.act_account_id, name, pixel_id, retention_days=retention_days,
-                                addtocart_evnet_name=addtocart_event_name, puchase_event_name=purchase_event_name)
+                                addtocart_evnet_name=addtocart_event_name, purchase_event_name=purchase_event_name)
                             description = self.make_description("장바구니", retention_days, "미구매고객", "", "custom",
                                                                 request.data)
                         else:

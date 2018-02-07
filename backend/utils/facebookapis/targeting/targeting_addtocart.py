@@ -103,7 +103,7 @@ def update_addtocart_customers(custom_audience_id, name, pixel_id, retention_day
 
 # 장바구니 전체 고객 & 미 구매 고객
 def create_addtocart_and_non_purchase_customers(account_id, name, pixel_id, retention_days=30, prefill=True,
-                                                addtocart_evnet_name="AddToCart", puchase_event_name="Purchase"):
+                                                addtocart_evnet_name="AddToCart", purchase_event_name="Purchase"):
     try:
         ad_account = AdAccount(fbid=account_id)
 
@@ -150,7 +150,7 @@ def create_addtocart_and_non_purchase_customers(account_id, name, pixel_id, rete
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": puchase_event_name
+                                    "value": purchase_event_name
                                 }
                             ]
                         }
@@ -176,7 +176,7 @@ def create_addtocart_and_non_purchase_customers(account_id, name, pixel_id, rete
         raise Exception(msg)
 
 def update_addtocart_and_non_purchase_customers(custom_audience_id, name, pixel_id, retention_days=30, prefill=True,
-                                                addtocart_evnet_name="AddToCart", puchase_event_name="Purchase"):
+                                                addtocart_evnet_name="AddToCart", purchase_event_name="Purchase"):
     try:
         custom_audience = CustomAudience(custom_audience_id)
 
@@ -223,7 +223,7 @@ def update_addtocart_and_non_purchase_customers(custom_audience_id, name, pixel_
                                 {
                                     "field": "event",
                                     "operator": "eq",
-                                    "value": puchase_event_name
+                                    "value": purchase_event_name
                                 }
                             ]
                         }
