@@ -626,6 +626,7 @@ export default {
 
 			isReport: true,
 			isLoading: false,
+			beforeSortType:'',
 			loadingTitle: '',
 			loadingDescription: ''
 		}
@@ -714,20 +715,26 @@ export default {
 			const item = this.listData.data
 			//숫자 형식 소팅(String,Text 형식 지원 X)
 			const byNum = item.slice(0)
+			const me = this
 			const $el = event.target
 			const $btns = document.querySelectorAll('.sort_btn')
+			const onCheck = event.target.classList.contains('on')
+			const beforeType = this.beforeType
 
-			byNum.sort(function(a,b) {
-				if(type == 'ASC') {
-						return a[key] - b[key]
-				}else{
-						return b[key] - a[key]
-				}
-			})
+			if(beforeType !== type || onCheck === false) {
+				byNum.sort(function(a,b) {
+					if(type == 'ASC') {
+							return me.checkObject(parseFloat(a[key])) - me.checkObject(parseFloat(b[key]))
+					}else{
+							return me.checkObject(parseFloat(b[key])) - me.checkObject(parseFloat(a[key]))
+					}
+				})
+			}
+			this.beforeType = type
 			this.listData.data = byNum
 			//sort arrow element class Add and Remove Actions
 			for (var i = 0; i < $btns.length; i++) {
-			   $btns[i].classList.remove('on');
+			   $btns[i].classList.remove('on')
 			}
 			$el.classList.add('on')
 		},
@@ -799,7 +806,7 @@ export default {
 				this.currentPage = n
 				this.getGridData('paging')
 			}else{
-				return false;
+				return false
 			}
 		},
 		clickFirstPage (n) {
