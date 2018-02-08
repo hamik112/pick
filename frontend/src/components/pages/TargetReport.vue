@@ -795,8 +795,12 @@ export default {
 			this.pageRange.pageNumber = Math.round(page_number)
 		},
 		clickPage (n) {
-			this.currentPage = n
-			this.getGridData('paging')
+			if(this.currentPage !== n) {
+				this.currentPage = n
+				this.getGridData('paging')
+			}else{
+				return false;
+			}
 		},
 		clickFirstPage (n) {
 			this.currentPage = n

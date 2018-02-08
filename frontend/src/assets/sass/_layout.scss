@@ -239,27 +239,27 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 						.report_contents_inner_wrap{ width:100%; overflow-x:scroll; min-height:500px;
 							.contents_inner{ border-top:2px solid #333;
 								.depth1{width:350px!important;
-									li{width:116px!important; height:73px; line-height:73px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
+									li{width:116px!important; height:50px; line-height:50px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
 										&:last-child{border-right:0px;}
 									}
 								}
 								.depth2{width:490px!important;
-									li{width:81px!important; height:73px; line-height:73px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
+									li{width:81px!important; height:50px; line-height:50px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
 										&:last-child{border-right:0px;}
 									}
 								}
 								.depth3{width:1000px!important;
-									li{width:166px!important; height:73px; line-height:73px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
+									li{width:166px!important; height:50px; line-height:50px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
 										&:last-child{border-right:0px;}
 									}
 								}
 								.depth4{width:1200px!important;
-									li{width:171px!important; height:73px; line-height:73px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
+									li{width:171px!important; height:50px; line-height:50px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
 										&:last-child{border-right:0px;}
 									}
 								}
 								.depth5{width:400px!important;
-									li{width:100px!important; height:73px; line-height:73px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
+									li{width:100px!important; height:50px; line-height:50px; float:left; text-align:right; padding-right:10px; border-right: 1px solid #ededed;
 										&:last-child{border-right:0px;}
 									}
 								}
@@ -301,7 +301,7 @@ aside{position:absolute; top:66px; left:0px; z-index:2; width: 165px; height:100
 									.table_body_inner{
 										.box-align{-webkit-box-align:end!important; padding-right:10px;}
 										.body_th{
-											> li{ float:left; overflow:hidden; width:120px; height:73px; text-align:center; border-right:1px solid #ededed; border-bottom:1px solid #ededed; display:inline-block; vertical-align:middle; letter-spacing:0px; display: -webkit-box; justify-content: center; align-items: center; -webkit-line-clamp:3; -webkit-box-orient:vertical; font-size:13px;
+											> li{ float:left; overflow:hidden; width:120px; height:50px; text-align:center; border-right:1px solid #ededed; border-bottom:1px solid #ededed; display:inline-block; vertical-align:middle; letter-spacing:0px; display: -webkit-box; justify-content: center; align-items: center; -webkit-line-clamp:3; -webkit-box-orient:vertical; font-size:13px;
 												&:last-child{border-right:0px;}
 												&.line-8 {
 													span {
