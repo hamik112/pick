@@ -3,7 +3,7 @@
 		<transition name="modal">
 		  <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
 		</transition>
-		<div class="left_area"><a href="#/"><img src="../../assets/images/common/main_logo.jpg" alt="pickdata" /></a></div>
+		<div class="left_area"><a href="#/pick"><img src="../../assets/images/common/main_logo.jpg" alt="pickdata" /></a></div>
 		<div class="right_area">
 			<div class="user">
 				<p class="user_mask"></p>
