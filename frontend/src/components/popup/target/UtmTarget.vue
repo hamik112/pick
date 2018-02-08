@@ -63,7 +63,7 @@
                   </div>
                 </div>
                 <div class="url_input">
-                  <input id="utm_name" type="text" v-model="inputUtmName" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
+                  <input id="utm_name" type="text" v-model="inputUtmName" autocomplete="off" placeholder="값 입력 후 엔터를 치면 아래에 입력됩니다.">
                 </div>
               </form>
             </div>
