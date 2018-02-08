@@ -1391,10 +1391,20 @@ class CustomTarget(APIView):
                     step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                         PixelMappingCategory, 'conversion 5step')
 
-                    if detail == "non_conversion":
+                    if detail == "conversion":
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                             PixelMappingCategory, 'conversion complete')
                         created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name,
+                                                                                          pixel_id, retention_days=30,
+                                                                                          conversion_event_name=conversion_event_name)
+                        description = self.make_description("단계별 전환", retention_days, "전환고객", "", "custom",
+                                                            request.data)
+
+
+                    elif detail == "non_conversion":
+                        pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                            PixelMappingCategory, 'conversion complete')
+                        created_target = targeting_conversion.update_non_conversion_customers(custom_audience_id, name,
                                                                                           pixel_id, retention_days=30,
                                                                                           conversion_event_name=conversion_event_name)
                         description = self.make_description("단계별 전환", retention_days, "미전환고객", "", "custom",
@@ -2309,10 +2319,21 @@ class CustomTarget(APIView):
                     step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                         PixelMappingCategory, 'conversion 5step')
 
-                    if detail == "non_conversion":
+                    if detail == "conversion":
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                             PixelMappingCategory, 'conversion complete')
                         created_target = targeting_conversion.create_conversion_customers(fb_ad_account.act_account_id,
+                                                                                          name, pixel_id,
+                                                                                          retention_days=30,
+                                                                                          conversion_event_name=conversion_event_name)
+                        description = self.make_description("단계별 전환", retention_days, "전환고객", "", "custom",
+                                                            request.data)
+
+
+                    elif detail == "non_conversion":
+                        pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
+                            PixelMappingCategory, 'conversion complete')
+                        created_target = targeting_conversion.create_non_conversion_customers(fb_ad_account.act_account_id,
                                                                                           name, pixel_id,
                                                                                           retention_days=30,
                                                                                           conversion_event_name=conversion_event_name)

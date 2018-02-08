@@ -257,6 +257,8 @@ export default {
   	chartsDatas() {
   		this.chartOn = false
   		const targetId = this.chartItem.id
+
+			/*
 			const dateVal = ''
 			if (document.getElementById('chartDate') != null){
 				const dateVal = document.getElementById('chartDate').value.replace(/\s/gi, "")
@@ -274,16 +276,22 @@ export default {
 			let endDate = firstDate
 
 	  	if(dateVal != '') {
-			const dateSplit = dateVal.split('~')
-			firstDate = dateSplit[0]
-			endDate = dateSplit[1]
-		}
+				const dateSplit = dateVal.split('~')
+				firstDate = dateSplit[0]
+				endDate = dateSplit[1]
+			}
+			*/
+
+			var date_range = []
+			this.range.forEach(date => {
+				date_range.push(date.toISOString().split('T')[0])
+			})
 
 	  	this.$http.get('/pickdata_account_target/target_chart', {
 	  		params: {
 				pickdata_target_id:targetId,
-				start_date:firstDate,
-				end_date:endDate
+				start_date:date_range[0],
+				end_date:date_range[1]
 			}
 	    })
 	    .then(res => {
