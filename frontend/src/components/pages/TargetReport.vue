@@ -799,7 +799,7 @@ export default {
 			var limit = 25
 			var page_total = this.pageTotal
 			var page_number = page_total / limit
-			this.pageRange.pageNumber = Math.round(page_number)
+			this.pageRange.pageNumber = Math.ceil(page_number)
 		},
 		clickPage (n) {
 			if(this.currentPage !== n) {
