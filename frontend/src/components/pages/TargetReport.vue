@@ -404,7 +404,7 @@
 																		<ul>
 																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
 																			<li>{{ item.inline_link_click_ctr }}</li>
-																			<li>￦{{ item.inline_link_click_cpc }}</li>
+																			<li>￦{{ numberFormat(item.inline_link_click_cpc) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -445,14 +445,14 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-16">{{ item.pickdata_custom_conv_total }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_total) }}</li>
 																			<!-- cost_per_action_type?-->
 																			<li class="line-16">{{ item.pickdata_custom_conv_total_cost }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_first }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_second }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_third }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_fourth }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_fifth }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_first) }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_second) }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_third) }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fourth) }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fifth) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
