@@ -863,6 +863,7 @@ export default {
 				//부분 로딩 추가 예정
 				this.loadShow = true
 			} else{
+				this.currentPage = 1
 				this.isReport = false
 				this.loadShow = false
 				this.isLoading = true
@@ -890,10 +891,10 @@ export default {
 						this.listData.data.push(item)
 					})
 					this.pageTotal = total
+					this.getPageNumber()
 					this.isReport = true
 					this.isLoading = false
 					this.loadShow = false
-					this.getPageNumber()
 				} else {
 					throw('success: ' + success)
 					this.isReport = true

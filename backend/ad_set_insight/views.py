@@ -46,7 +46,7 @@ class AdSetInsightByAccount(APIView):
             api_init_by_system_user()
             # TODO Session token
 
-            # ad_set_insights = None
+            target_insights = None
 
             fb_account_id = request.query_params.get('account_id', '0')
             category_name = request.query_params.get('category_name', 'all')
@@ -75,7 +75,7 @@ class AdSetInsightByAccount(APIView):
                     accounts = FbAdAccount.objects.filter(account_category_id=category_id)
 
                 target_insights = []
-                pixel_mapping_category_list = []
+                # pixel_mapping_category_list = []
                 for account in accounts:
                     fb_account_id = account.ad_account_id
                     account_name = account.name
@@ -83,6 +83,7 @@ class AdSetInsightByAccount(APIView):
                     account_category_name = account_category.category_label_kr
                     account_category_name_en = account_category.category_label_en
                     # 픽셀매핑
+                    pixel_mapping_category_list = []
                     pixel_mapping = PixelMapping.get_list_by_fb_ad_account_id(PixelMapping, account.id)
                     for pm in pixel_mapping:
                         pixel_dict = {}
@@ -93,56 +94,56 @@ class AdSetInsightByAccount(APIView):
                         pixel_mapping_category_list.append(pixel_dict)
 
                     target_insight = self.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
+                    # target_insights += target_insight
+
+                    # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
+                    for da in target_insight:
+                        result = []
+                        spend = da.get('spend')
+                        for key, items in da.items():
+                            if '_event' in key:
+                                if type(items) is dict:
+                                    for pix in pixel_mapping_category_list:
+                                        if items['name'] == pix['fb_event']:
+                                            custom = {}
+                                            # custom_name => 정해진 pixel_mapping 이벤트의 이름
+                                            custom['custom_name'] = pix['name']
+                                            # fb_event => 실제 fb_event (유저가 매핑하는 대로 dynamic하게 바뀜)
+                                            custom['value'] = items['value']
+                                            logger.info(custom)
+                                            result.append(custom)
+                                            # 각 pixel_mapping 화면용
+                                            if pix['name'] == '전환 완료':
+                                                da['pickdata_custom_conv_total'] = items['value']
+                                                da['pickdata_custom_conv_total_cost'] = round(items['value']/spend, 0)
+                                            if pix['name'] == '전환 1단계':
+                                                da['pickdata_custom_conv_first'] = items['value']
+                                            if pix['name'] == '전환 2단계':
+                                                da['pickdata_custom_conv_second'] = items['value']
+                                            if pix['name'] == '전환 3단계':
+                                                da['pickdata_custom_conv_third'] = items['value']
+                                            if pix['name'] == '전환 4단계':
+                                                da['pickdata_custom_conv_fourth'] = items['value']
+                                            if pix['name'] == '전환 5단계':
+                                                da['pickdata_custom_conv_fifth'] = items['value']
+                                            if pix['name'] == '전환단계 URL':
+                                                da['pickdata_custom_conv_url'] = items['value']
+                                            if pix['name'] == '회원가입':
+                                                da['pickdata_custom_conv_register'] = items['value']
+                                            if pix['name'] == '장바구니':
+                                                da['pickdata_custom_conv_cart'] = items['value']
+                                            if pix['name'] == '구매':
+                                                da['pickdata_custom_conv_purchase'] = items['value']
+                                            if pix['name'] == 'UTM타겟':
+                                                da['pickdata_custom_conv_utm'] = items['value']
+                                            if pix['name'] == 'NEO타겟':
+                                                da['pickdata_custom_conv_neo'] = items['value']
+                                            if pix['name'] == '특정페이지 방문':
+                                                da['pickdata_custom_conv_visit_page'] = items['value']
+                                            if pix['name'] == '사이트 방문':
+                                                da['pickdata_custom_conv_visit_site'] = items['value']
+                        da['pickdata_custom_pixel_event'] = result
                     target_insights += target_insight
-
-                # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
-                for da in target_insights:
-                    result = []
-                    spend = da.get('spend')
-                    for key, items in da.items():
-                        if '_event' in key:
-                            if type(items) is dict:
-                                for pix in pixel_mapping_category_list:
-                                    if items['name'] == pix['fb_event']:
-                                        custom = {}
-                                        # custom_name => 정해진 pixel_mapping 이벤트의 이름
-                                        custom['custom_name'] = pix['name']
-                                        # fb_event => 실제 fb_event (유저가 매핑하는 대로 dynamic하게 바뀜)
-                                        custom['value'] = items['value']
-                                        logger.info(custom)
-                                        result.append(custom)
-                                        # 각 pixel_mapping 화면용
-                                        if pix['name'] == '전환 완료':
-                                            da['pickdata_custom_conv_total'] = items['value']
-                                            da['pickdata_custom_conv_total_cost'] = round(items['value']/spend, 0)
-                                        if pix['name'] == '전환 1단계':
-                                            da['pickdata_custom_conv_first'] = items['value']
-                                        if pix['name'] == '전환 2단계':
-                                            da['pickdata_custom_conv_second'] = items['value']
-                                        if pix['name'] == '전환 3단계':
-                                            da['pickdata_custom_conv_third'] = items['value']
-                                        if pix['name'] == '전환 4단계':
-                                            da['pickdata_custom_conv_fourth'] = items['value']
-                                        if pix['name'] == '전환 5단계':
-                                            da['pickdata_custom_conv_fifth'] = items['value']
-                                        if pix['name'] == '전환단계 URL':
-                                            da['pickdata_custom_conv_url'] = items['value']
-                                        if pix['name'] == '회원가입':
-                                            da['pickdata_custom_conv_register'] = items['value']
-                                        if pix['name'] == '장바구니':
-                                            da['pickdata_custom_conv_cart'] = items['value']
-                                        if pix['name'] == '구매':
-                                            da['pickdata_custom_conv_purchase'] = items['value']
-                                        if pix['name'] == 'UTM타겟':
-                                            da['pickdata_custom_conv_utm'] = items['value']
-                                        if pix['name'] == 'NEO타겟':
-                                            da['pickdata_custom_conv_neo'] = items['value']
-                                        if pix['name'] == '특정페이지 방문':
-                                            da['pickdata_custom_conv_visit_page'] = items['value']
-                                        if pix['name'] == '사이트 방문':
-                                            da['pickdata_custom_conv_visit_site'] = items['value']
-
-                    da['pickdata_custom_pixel_event'] = result
 
             else:
                 # 광고계정 별 인사이트
@@ -166,7 +167,7 @@ class AdSetInsightByAccount(APIView):
                     pixel_mapping_category_list.append(pixel_dict)
 
                 target_insights = self.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
-
+                # print(pixel_mapping_category_list)
                 # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
                 for da in target_insights:
                     result = []
