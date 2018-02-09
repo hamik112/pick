@@ -678,25 +678,6 @@ class ReportExcelDownload(APIView):
                     # print(target_insight)
                     target_insights += target_insight
 
-                # TODO 전체 데이터 모아서, 픽셀매핑 필요
-                # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
-                for da in target_insights:
-                    result = []
-                    for key, items in da.items():
-                        if '_event' in key:
-                            if type(items) is dict:
-                                # result = []
-                                for pix in pixel_mapping_category_list:
-                                    if items['name'] == pix['fb_event']:
-                                        # print(pix['fb_event'])
-                                        custom = {}
-                                        custom['custom_name'] = pix['name']
-                                        custom['fb_event'] = items['name']
-                                        custom['value'] = items['value']
-                                        logger.info(custom)
-                                        result.append(custom)
-                    da['pickdata_custom_pixel_event'] = result
-
             else:
                 # 광고계정 별 인사이트
                 account = FbAdAccount.find_by_ad_account_id(FbAdAccount, 'act_'+fb_account_id)
@@ -719,24 +700,6 @@ class ReportExcelDownload(APIView):
                     pixel_mapping_category_list.append(pixel_dict)
 
                 target_insights = insights.targetInsight(fb_account_id, since, until, date_diff, account_name, account_category_name)
-
-                # Pixel Mapping (FB 이벤트명과 Pickdata DB 저장된 CUSTOM EVENT 이름 매핑)
-                for da in target_insights:
-                    result = []
-                    for key, items in da.items():
-                        if '_event' in key:
-                            if type(items) is dict:
-                                # result = []
-                                for pix in pixel_mapping_category_list:
-                                    if items['name'] == pix['fb_event']:
-                                        # print(pix['fb_event'])
-                                        custom = {}
-                                        custom['custom_name'] = pix['name']
-                                        custom['fb_event'] = items['name']
-                                        custom['value'] = items['value']
-                                        logger.info(custom)
-                                        result.append(custom)
-                    da['pickdata_custom_pixel_event'] = result
 
             # 인사이트 다운로드
             file_path = 'logs/'
