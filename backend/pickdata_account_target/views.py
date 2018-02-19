@@ -2307,6 +2307,10 @@ class CustomTarget(APIView):
                 print("conversion detail")
                 print(detail)
                 print(string_all_trim(detail))
+
+                print(conversion_pixel_mapping_category.id)
+                print(pixel_categories)
+
                 # non_conversion, conversion 1step, conversion 2step, conversion 3step, conversion 4step, conversion 5step, conversion url
 
                 if conversion_pixel_mapping_category.id in pixel_categories:
