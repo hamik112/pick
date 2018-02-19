@@ -263,6 +263,7 @@ class AdSetInsightByAccount(APIView):
         video_10_sec_insights_list = []
         video_30_sec_insights_list = []
         carousel_action_insights_list = []
+
         for action_insight in actions_insights:
             # action 전체
             report = {}
@@ -298,6 +299,7 @@ class AdSetInsightByAccount(APIView):
             video_10_sec_insights_list.append(video_10sec_report)
             video_30_sec_insights_list.append(video_30sec_report)
 
+            # carousel_actions
             carousel_action_report = {}
             carousel_action_report['adset_id'] = action_insight['adset_id']
             carousel_action_report['date_stop'] = action_insight['date_stop']
@@ -490,6 +492,19 @@ class AdSetInsightByAccount(APIView):
                                 key = key + '_event'
                                 result[key] = sum(v_list)
 
+                                # 3초 video_view vtr/ cpv 값
+                                if key == 'video_view_event':
+                                    video_view = sum(v_list)
+                                    if (impressions != 0):
+                                        result['video_3_sec_watched_vtr'] = round(sum(v_list)/impressions*100, 2)
+                                    else:
+                                        result['video_3_sec_watched_vtr'] = 0
+                                    if (spend != 0):
+                                        result['video_3_sec_watched_cpv'] = round(sum(v_list)/spend, 2)
+                                    else:
+                                        result['video_3_sec_watched_cpv'] = 0
+
+
                 # actions field로는 video_view total 만 가져올수있으므로 따로 다시 기간 adset_id별로 분류+합 해야한다.
 
                 # 10_sec_video_view total
@@ -551,6 +566,11 @@ class AdSetInsightByAccount(APIView):
                                 temp_dict["value"] = sum(int(item["value"]) for item in grp)
                                 r.append(temp_dict)
                             result['carousel_actions'] = r
+                            # carousel 유무
+                            if r != []:
+                                result['is_carousel'] = True
+                            else:
+                                result['is_carousel'] = False
                             # TODO ID로 groupby를하고 id 랑  name이랑 매치. value 를 가져와서 id같은것들끼리 SUM?
 
                 target_insights.append(result)

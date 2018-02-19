@@ -128,7 +128,7 @@
 															</dl>
 														</li>
 														<li class="line-14 depth2 report-line" v-if="sortSelectData.listData[13].setting.show">
-															<span>슬라이드 소재 클릭 지표</span>
+															<span>슬라이드 소재</span>
 														</li>
 														<li class="line-15 th_sub depth3 report-line" v-if="sortSelectData.listData[14].setting.show">
 															<dl>
@@ -322,15 +322,15 @@
 																	</dd>
 																</dl>
 															</li>
-															<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show">-</li>
+															<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show">{{ checkCarousel(item.is_carousel) }}</li>
 															<li class="line-15 depth3" v-if="sortSelectData.listData[14].setting.show">
 																<dl>
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-15">{{ numberFormat(item.video_10_sec_watched_actions) }}</li>
-																			<li class="line-15">{{ checkObject(item.video_10_sec_watched_vtr) }}</li>
-																			<li class="line-15">￦{{ numberFormat(item.video_10_sec_watched_cpv) }}</li>
+																			<li class="line-15">{{ numberFormat(item.video_view_event) }}</li>
+																			<li class="line-15">{{ checkObject(item.video_3_sec_watched_vtr) }}</li>
+																			<li class="line-15">￦{{ numberFormat(item.video_3_sec_watched_cpv) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -500,7 +500,7 @@ export default {
 
 			show: false,
 			time: new Date(),
-			range: [new Date(),new Date()],
+			range: [new Date().setDate(new Date().getDate() - 1),new Date().setDate(new Date().getDate() - 1)],
 			emptyTime: '',
 			emptyRange: [],
 			local: {
@@ -882,6 +882,14 @@ export default {
 			this.$refs.interest_copy[index].select();
 			result = document.execCommand('copy')
 			return result
+		},
+
+		checkCarousel (carousel) {
+			if (carousel === true) {
+				return 'O'
+			} else {
+				return 'X'
+			}
 		}
 	}
 }
