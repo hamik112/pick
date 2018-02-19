@@ -1373,6 +1373,9 @@ class CustomTarget(APIView):
             # 단계별 전환
             elif target_type == "conversion":
                 detail = request.data.get('detail', '')
+                print("conversion detail")
+                print(detail)
+                print(string_all_trim(detail))
                 # non_conversion, conversion 1step, conversion 2step, conversion 3step, conversion 4step, conversion 5step, conversion url
 
                 if conversion_pixel_mapping_category.id in pixel_categories:
