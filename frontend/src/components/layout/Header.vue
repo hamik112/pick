@@ -8,7 +8,7 @@
 			<div class="user">
 				<p class="user_mask"></p>
 				<p class="user_image"><img v-bind:src="userImage" alt=""></p>
-				<p>{{ userName }}</p>
+				<p>{{ userEmail }}</p>
 			</div>
 			<div class="user_setup">
 				<p id="set_up"><router-link v-bind:to="{ path: '/setting' }"><img src="../../assets/images/icon/set_up_btn.png" alt="톱니바퀴" /></router-link></p>
@@ -33,7 +33,7 @@ export default {
 	},
 
 	mounted () {
-		this.userName = getUserEmail()
+		this.userEmail = getUserEmail()
 		this.userImage = getUserImage()
 	},
 
@@ -51,14 +51,14 @@ export default {
 			},
 			nextStage:false,
 			setupOn: false,
-			userName: '',
+			userEmail: '',
 			userImage: ''
 		}
 	},
 
 	methods: {
 		setUserInfo () {
-			this.userName = getUserName()
+			this.userEmail = getUserEmail()
 			this.userImage = getUserImage()
 		},
 		dialogOpen(emptyText, type, mode) {
