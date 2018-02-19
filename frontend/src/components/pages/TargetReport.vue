@@ -404,7 +404,7 @@
 																		<ul>
 																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
 																			<li>{{ item.inline_link_click_ctr }}</li>
-																			<li>￦{{ item.inline_link_click_cpc }}</li>
+																			<li>￦{{ numberFormat(item.inline_link_click_cpc) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -445,14 +445,14 @@
 																	<dt></dt>
 																	<dd>
 																		<ul>
-																			<li class="line-16">{{ item.pickdata_custom_conv_total }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_total) }}</li>
 																			<!-- cost_per_action_type?-->
 																			<li class="line-16">{{ item.pickdata_custom_conv_total_cost }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_first }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_second }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_third }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_fourth }}</li>
-																			<li class="line-16">{{ item.pickdata_custom_conv_fifth }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_first) }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_second) }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_third) }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fourth) }}</li>
+																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fifth) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
@@ -626,6 +626,7 @@ export default {
 
 			isReport: true,
 			isLoading: false,
+			beforeSortType:'',
 			loadingTitle: '',
 			loadingDescription: ''
 		}
@@ -714,20 +715,26 @@ export default {
 			const item = this.listData.data
 			//숫자 형식 소팅(String,Text 형식 지원 X)
 			const byNum = item.slice(0)
+			const me = this
 			const $el = event.target
 			const $btns = document.querySelectorAll('.sort_btn')
+			const onCheck = event.target.classList.contains('on')
+			const beforeType = this.beforeType
 
-			byNum.sort(function(a,b) {
-				if(type == 'ASC') {
-						return a[key] - b[key]
-				}else{
-						return b[key] - a[key]
-				}
-			})
+			if(beforeType !== type || onCheck === false) {
+				byNum.sort(function(a,b) {
+					if(type == 'ASC') {
+							return me.checkObject(parseFloat(a[key])) - me.checkObject(parseFloat(b[key]))
+					}else{
+							return me.checkObject(parseFloat(b[key])) - me.checkObject(parseFloat(a[key]))
+					}
+				})
+			}
+			this.beforeType = type
 			this.listData.data = byNum
 			//sort arrow element class Add and Remove Actions
 			for (var i = 0; i < $btns.length; i++) {
-			   $btns[i].classList.remove('on');
+			   $btns[i].classList.remove('on')
 			}
 			$el.classList.add('on')
 		},
@@ -792,14 +799,14 @@ export default {
 			var limit = 25
 			var page_total = this.pageTotal
 			var page_number = page_total / limit
-			this.pageRange.pageNumber = Math.round(page_number)
+			this.pageRange.pageNumber = Math.ceil(page_number)
 		},
 		clickPage (n) {
 			if(this.currentPage !== n) {
 				this.currentPage = n
 				this.getGridData('paging')
 			}else{
-				return false;
+				return false
 			}
 		},
 		clickFirstPage (n) {
@@ -863,6 +870,7 @@ export default {
 				//부분 로딩 추가 예정
 				this.loadShow = true
 			} else{
+				this.currentPage = 1
 				this.isReport = false
 				this.loadShow = false
 				this.isLoading = true
@@ -890,10 +898,10 @@ export default {
 						this.listData.data.push(item)
 					})
 					this.pageTotal = total
+					this.getPageNumber()
 					this.isReport = true
 					this.isLoading = false
 					this.loadShow = false
-					this.getPageNumber()
 				} else {
 					throw('success: ' + success)
 					this.isReport = true

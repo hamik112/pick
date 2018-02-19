@@ -1,6 +1,7 @@
 const USER_ID = 'userid'
 const USER_NAME = 'username'
 const USER_IMAGE = 'userimage'
+const USER_EMAIL = 'useremail'
 
 export function setUserId (userId) {
   localStorage.setItem(USER_ID, userId)
@@ -36,6 +37,18 @@ export function getUserImage () {
 
 export function clearUserImage () {
   localStorage.removeItem(USER_IMAGE)
+}
+
+export function setUserEmail (userEmail) {
+  localStorage.setItem(USER_EMAIL, userEmail)
+}
+
+export function getUserEmail () {
+  return localStorage.getItem(USER_EMAIL)
+}
+
+export function clearUserEmail () {
+  localStorage.removeItem(USER_EMAIL)
 }
 
 export function isLoggedIn () {

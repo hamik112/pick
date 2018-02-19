@@ -1,9 +1,9 @@
 <template>
 	<header>
 		<transition name="modal">
-		  <ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
+			<ui-dialog :dialogData="dialogData" v-if='dialogShow' @ok='dialogOk' @cancel="dialogCancel"></ui-dialog>
 		</transition>
-		<div class="left_area"><a href="#/"><img src="../../assets/images/common/main_logo.jpg" alt="pickdata" /></a></div>
+		<div class="left_area"><a href="#/pick"><img src="../../assets/images/common/main_logo.jpg" alt="pickdata" /></a></div>
 		<div class="right_area">
 			<div class="user">
 				<p class="user_mask"></p>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { getUserName, getUserImage } from '../../utils/auth'
+import { getUserEmail, getUserImage } from '../../utils/auth'
 import Dialog from '@/components/ui/Dialog'
 
 export default {
@@ -27,20 +27,29 @@ export default {
 	components:{
 		'ui-dialog': Dialog
 	},
+
+	created () {
+		this.$eventBus.$on('pickdataLogin', this.setUserInfo)
+	},
+
 	mounted () {
-		this.userName = getUserName()
+		this.userName = getUserEmail()
 		this.userImage = getUserImage()
+	},
+
+	beforeDestroy () {
+		this.$eventBus.$off('pickdataLogin', this.setUserInfo)
 	},
 
 	data () {
 		return {
-		  dialogShow:false,
-	      dialogData:{
-	        emptyText:'sample',
-	        type:'confirm',
-	        mode:'sample'
-	      },
-	      nextStage:false,
+			dialogShow:false,
+			dialogData:{
+				emptyText:'sample',
+				type:'confirm',
+				mode:'sample'
+			},
+			nextStage:false,
 			setupOn: false,
 			userName: '',
 			userImage: ''
@@ -48,28 +57,32 @@ export default {
 	},
 
 	methods: {
+		setUserInfo () {
+			this.userName = getUserName()
+			this.userImage = getUserImage()
+		},
 		dialogOpen(emptyText, type, mode) {
-	      this.dialogData['emptyText'] = emptyText
-	      this.dialogData['type'] = type
-	      this.dialogData['mode'] = mode
-	      this.dialogShow = true;
-	    },
-	    dialogOk() {
-	      const mode = this.dialogData.mode
-	      //모드별 동작
-	      if(mode == 'logout') {
-	      	this.logout()
-	      }
-	      this.nextStage = true
-	      this.dialogShow = false;
-	    },
-	    dialogCancel() {
-	      this.nextStage = false;
-	      this.dialogShow = false;
-	    },
+			this.dialogData['emptyText'] = emptyText
+			this.dialogData['type'] = type
+			this.dialogData['mode'] = mode
+			this.dialogShow = true;
+		},
+		dialogOk() {
+			const mode = this.dialogData.mode
+			//모드별 동작
+			if(mode == 'logout') {
+				this.logout()
+			}
+			this.nextStage = true
+			this.dialogShow = false;
+		},
+		dialogCancel() {
+			this.nextStage = false;
+			this.dialogShow = false;
+		},
 		logoutBtn () {
 			//컨펌,얼럿 텍스트 - 메세지창 타입(confirm,alert) - 독립적모드이름(alert 메세지시 사용 X)
-      		this.dialogOpen('픽데이터에서 로그아웃 하시겠습니까?', 'confirm', 'logout')
+			this.dialogOpen('픽데이터에서 로그아웃 하시겠습니까?', 'confirm', 'logout')
 		},
 		logout() {
 			this.$http.get('/users/signout')

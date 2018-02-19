@@ -1,18 +1,13 @@
-from ad_set.models import AdSet
+import logging
+import time
+import traceback
+
+from django.core.management.base import BaseCommand
+
 from ad_set_insight.models import AdSetInsight
 from utils.facebookapis import api_init
 from utils.facebookapis.ad_account import ad_accounts
 from utils.facebookapis.ad_account import insight
-from utils.facebookapis.ad_account import ad_sets as ad_sets_api
-from utils.common import date_formatter
-from facebookads.exceptions import FacebookRequestError
-
-import logging
-import traceback
-import time
-
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
 
 logger = logging.getLogger('mod_pickdata')
 
