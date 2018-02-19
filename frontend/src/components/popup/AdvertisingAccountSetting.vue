@@ -140,6 +140,25 @@ export default {
 			this.isActive = steps
 		},
 
+		convertSelectData (data) {
+			let emptyText = ''
+			let textList = []
+			let keyList = []
+
+			data.forEach(function (item, index) {
+				if (index === 0) {
+					emptyText = item['name']
+				}
+				textList.push(item['name'])
+				keyList.push(item['value'])
+			})
+			return {
+				"emptyText": emptyText,
+				"textList": textList,
+				"keyList": keyList
+			}
+		},
+
 		setPixelEventMapping (facebookPixelEventNames, pixelMappingCategoryIds) {
 			this.facebookPixelEventNames = facebookPixelEventNames
 			this.pixelMappingCategoryIds = pixelMappingCategoryIds
@@ -195,7 +214,7 @@ export default {
 				})
 			})
 			.then(() => {
-				const account_id = localStorage.getItem('fb_ad_account_id')
+				const account_id = localStorage.getItem('account_id')
 				let url = '/fb_ad_accounts/confirm_ad_account?act_account_id=act_' + account_id
 				this.$http.get(url)
 				.then(res => {
