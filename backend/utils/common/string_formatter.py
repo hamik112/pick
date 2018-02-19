@@ -12,3 +12,9 @@ def string_to_literal(data):
 		return ast.literal_eval(data)
 	except Exception:
 		return []
+
+def string_all_trim(str):
+	import re
+	pattern = re.compile(r'\s+')
+
+	return re.sub(pattern, '', str)

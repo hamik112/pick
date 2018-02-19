@@ -18,6 +18,7 @@ from utils.facebookapis.api_init import (api_init, api_init_by_system_user, api_
 from utils.facebookapis.targeting import custom_audience
 from utils.facebookapis.ad_account import custom_audiences as custom_audience_api
 from utils.common.string_formatter import string_to_literal
+from utils.common.string_formatter import string_all_trim
 from utils.common import convert_chart_data
 
 from utils.facebookapis.targeting import targeting_visitor, targeting_specific_page_visitor, targeting_url, \
@@ -1391,7 +1392,7 @@ class CustomTarget(APIView):
                     step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                         PixelMappingCategory, 'conversion 5step')
 
-                    if detail == "conversion":
+                    if string_all_trim(detail) == "conversion":
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                             PixelMappingCategory, 'conversion complete')
                         created_target = targeting_conversion.update_conversion_customers(custom_audience_id, name,
@@ -1401,7 +1402,7 @@ class CustomTarget(APIView):
                                                             request.data)
 
 
-                    elif detail == "non_conversion":
+                    elif string_all_trim(detail) == "non_conversion":
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                             PixelMappingCategory, 'conversion complete')
                         created_target = targeting_conversion.update_non_conversion_customers(custom_audience_id, name,
@@ -1410,7 +1411,7 @@ class CustomTarget(APIView):
                         description = self.make_description("단계별 전환", retention_days, "미전환고객", "", "custom",
                                                             request.data)
 
-                    elif detail == "conversion 1step":
+                    elif string_all_trim(detail) == "conversion1step":
                         if step1_pixel_mapping_category.id in pixel_categories:
                             conversion_step1_event_name = pixel_categories.get(
                                 step1_pixel_mapping_category.id).facebook_pixel_event_name
@@ -1426,7 +1427,7 @@ class CustomTarget(APIView):
                         else:
                             raise Exception("Not mapping Conversion Step1 Category.")
 
-                    elif detail == "conversion 2step":
+                    elif string_all_trim(detail) == "conversion2step":
                         if step2_pixel_mapping_category.id in pixel_categories:
                             conversion_step2_event_name = pixel_categories.get(
                                 step2_pixel_mapping_category.id).facebook_pixel_event_name
@@ -1443,7 +1444,7 @@ class CustomTarget(APIView):
                             raise Exception("Not mapping Conversion Step2 Category.")
 
 
-                    elif detail == "conversion 3step":
+                    elif string_all_trim(detail) == "conversion3step":
                         if step3_pixel_mapping_category.id in pixel_categories:
                             conversion_step3_event_name = pixel_categories.get(
                                 step3_pixel_mapping_category.id).facebook_pixel_event_name
@@ -1460,7 +1461,7 @@ class CustomTarget(APIView):
                             raise Exception("Not mapping Conversion Step3 Category.")
 
 
-                    elif detail == "conversion 4step":
+                    elif string_all_trim(detail) == "conversion4step":
                         if step4_pixel_mapping_category.id in pixel_categories:
                             conversion_step4_event_name = pixel_categories.get(
                                 step4_pixel_mapping_category.id).facebook_pixel_event_name
@@ -1476,7 +1477,7 @@ class CustomTarget(APIView):
                         else:
                             raise Exception("Not mapping Conversion Step4 Category.")
 
-                    elif detail == "conversion 5step":
+                    elif string_all_trim(detail) == "conversion5step":
                         if step5_pixel_mapping_category.id in pixel_categories:
                             conversion_step5_event_name = pixel_categories.get(
                                 step5_pixel_mapping_category.id).facebook_pixel_event_name
@@ -1492,7 +1493,7 @@ class CustomTarget(APIView):
                         else:
                             raise Exception("Not mapping Conversion Step5 Category.")
 
-                    elif detail == "conversion url":
+                    elif string_all_trim(detail) == "conversionurl":
                         step_name = request.data.get('step_name')
                         current_complete_url = request.data.get('current_complete_url')
                         next_complete_url = request.data.get('next_complete_url')
@@ -2319,7 +2320,7 @@ class CustomTarget(APIView):
                     step5_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                         PixelMappingCategory, 'conversion 5step')
 
-                    if detail == "conversion":
+                    if string_all_trim(detail) == "conversion":
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                             PixelMappingCategory, 'conversion complete')
                         created_target = targeting_conversion.create_conversion_customers(fb_ad_account.act_account_id,
@@ -2330,7 +2331,7 @@ class CustomTarget(APIView):
                                                             request.data)
 
 
-                    elif detail == "non_conversion":
+                    elif string_all_trim(detail) == "non_conversion":
                         pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(
                             PixelMappingCategory, 'conversion complete')
                         created_target = targeting_conversion.create_non_conversion_customers(fb_ad_account.act_account_id,
@@ -2340,7 +2341,7 @@ class CustomTarget(APIView):
                         description = self.make_description("단계별 전환", retention_days, "미전환고객", "", "custom",
                                                             request.data)
 
-                    elif detail == "conversion 1step":
+                    elif string_all_trim(detail) == "conversion1step":
                         if step1_pixel_mapping_category.id in pixel_categories:
                             conversion_step1_event_name = pixel_categories.get(
                                 step1_pixel_mapping_category.id).facebook_pixel_event_name
@@ -2355,7 +2356,7 @@ class CustomTarget(APIView):
                         else:
                             raise Exception("Not mapping Conversion Step1 Category.")
 
-                    elif detail == "conversion 2step":
+                    elif string_all_trim(detail) == "conversion2step":
                         if step2_pixel_mapping_category.id in pixel_categories:
                             conversion_step2_event_name = pixel_categories.get(
                                 step2_pixel_mapping_category.id).facebook_pixel_event_name
@@ -2371,7 +2372,7 @@ class CustomTarget(APIView):
                             raise Exception("Not mapping Conversion Step2 Category.")
 
 
-                    elif detail == "conversion 3step":
+                    elif string_all_trim(detail) == "conversion3step":
                         if step3_pixel_mapping_category.id in pixel_categories:
                             conversion_step3_event_name = pixel_categories.get(
                                 step3_pixel_mapping_category.id).facebook_pixel_event_name
@@ -2387,7 +2388,7 @@ class CustomTarget(APIView):
                             raise Exception("Not mapping Conversion Step3 Category.")
 
 
-                    elif detail == "conversion 4step":
+                    elif string_all_trim(detail) == "conversion4step":
                         if step4_pixel_mapping_category.id in pixel_categories:
                             conversion_step4_event_name = pixel_categories.get(
                                 step4_pixel_mapping_category.id).facebook_pixel_event_name
@@ -2402,7 +2403,7 @@ class CustomTarget(APIView):
                         else:
                             raise Exception("Not mapping Conversion Step4 Category.")
 
-                    elif detail == "conversion 5step":
+                    elif string_all_trim(detail) == "conversion5step":
                         if step5_pixel_mapping_category.id in pixel_categories:
                             conversion_step5_event_name = pixel_categories.get(
                                 step5_pixel_mapping_category.id).facebook_pixel_event_name
@@ -2417,7 +2418,7 @@ class CustomTarget(APIView):
                         else:
                             raise Exception("Not mapping Conversion Step5 Category.")
 
-                    elif detail == "conversion url":
+                    elif string_all_trim(detail) == "conversionurl":
                         step_name = request.data.get('step_name')
                         current_complete_url = request.data.get('current_complete_url')
                         next_complete_url = request.data.get('next_complete_url')
