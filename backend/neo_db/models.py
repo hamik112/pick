@@ -9,9 +9,7 @@ from __future__ import unicode_literals
 
 from django.db import connections
 from django.db import models
-from django.db.models import Count
 from utils.common import date_formatter
-
 
 class McCenterAdvertiser(models.Model):
     advertiserid = models.AutoField(db_column='advertiserId', primary_key=True)  # Field name made lowercase.
