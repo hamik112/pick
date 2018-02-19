@@ -11,7 +11,7 @@
 <script>
 
 import axios from 'axios'
-import { setUserId, setUserName, setUserImage } from '../utils/auth'
+import { setUserId, setUserName, setUserImage, setUserEmail } from '../utils/auth'
 
 export default {
   name: 'Intro',
@@ -94,6 +94,7 @@ export default {
             setUserId(resp.id)
             setUserName(resp.name)
             setUserImage(resp.picture.data.url)
+            setUserEmail(resp.email)
             me.$eventBus.$emit('pickdataLogin', resp)
             me.$router.push({name: 'TargetPick'})
           } else {

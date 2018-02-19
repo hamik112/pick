@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { getUserName, getUserImage } from '../../utils/auth'
+import { getUserEmail, getUserImage } from '../../utils/auth'
 import Dialog from '@/components/ui/Dialog'
 
 export default {
@@ -33,7 +33,7 @@ export default {
 	},
 
 	mounted () {
-		this.userName = getUserName()
+		this.userName = getUserEmail()
 		this.userImage = getUserImage()
 	},
 
