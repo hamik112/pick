@@ -140,6 +140,25 @@ export default {
 			this.isActive = steps
 		},
 
+		convertSelectData (data) {
+			let emptyText = ''
+			let textList = []
+			let keyList = []
+
+			data.forEach(function (item, index) {
+				if (index === 0) {
+					emptyText = item['name']
+				}
+				textList.push(item['name'])
+				keyList.push(item['value'])
+			})
+			return {
+				"emptyText": emptyText,
+				"textList": textList,
+				"keyList": keyList
+			}
+		},
+
 		setPixelEventMapping (facebookPixelEventNames, pixelMappingCategoryIds) {
 			this.facebookPixelEventNames = facebookPixelEventNames
 			this.pixelMappingCategoryIds = pixelMappingCategoryIds
@@ -192,6 +211,23 @@ export default {
 							}
 						})
 					}
+				})
+			})
+			.then(() => {
+				const account_id = localStorage.getItem('account_id')
+				let url = '/fb_ad_accounts/confirm_ad_account?act_account_id=act_' + account_id
+				this.$http.get(url)
+				.then(res => {
+					if (typeof res.data.custom_target_details != typeof undefined || res.data.custom_target_details != null) {
+						this.$store.state.defaultDetails = this.convertSelectData(res.data.custom_target_details.default_details)
+						this.$store.state.purchaseDetails = this.convertSelectData(res.data.custom_target_details.purchase_details)
+						this.$store.state.registrationDetails = this.convertSelectData(res.data.custom_target_details.registration_details)
+						this.$store.state.addtocartDetails = this.convertSelectData(res.data.custom_target_details.addtocart_details)
+						this.$store.state.conversionDetails = this.convertSelectData(res.data.custom_target_details.conversion_details)
+					}
+				})
+				.catch(err => {
+					console.error('/pickdata_account_target/targetpick', err)
 				})
 			})
 			.then(() => {
