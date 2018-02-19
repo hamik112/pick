@@ -127,68 +127,8 @@
 																</dd>
 															</dl>
 														</li>
-														<li class="line-14 th_sub depth2 report-line" v-if="sortSelectData.listData[13].setting.show">
-															<dl>
-																<dt>슬라이드 소재 클릭 지표</dt>
-																<dd>
-																	<ul class="clearfix">
-																		<li v-if="sortSelectData.listData[13].setting.show">
-																			<span>1번</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick1','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick1','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[13].setting.show">
-																			<span>2번</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick2','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick2','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[13].setting.show">
-																			<span>3번</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick3','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick3','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[13].setting.show">
-																			<span>4번</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick4','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick4','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[13].setting.show">
-																			<span>5번</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick5','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick5','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[13].setting.show">
-																			<span>6번</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick6','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('sClick6','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																	</ul>
-																</dd>
-															</dl>
+														<li class="line-14 depth2 report-line" v-if="sortSelectData.listData[13].setting.show">
+															<span>슬라이드 소재 클릭 지표</span>
 														</li>
 														<li class="line-15 th_sub depth3 report-line" v-if="sortSelectData.listData[14].setting.show">
 															<dl>
@@ -196,7 +136,7 @@
 																<dd>
 																	<ul class="clearfix">
 																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>10초 이상 View</span>
+																			<span>3초 이상 View</span>
 																			<span class="sort_type_02">
 																				<div>
 																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','ASC')" class="asc_sort sort_btn"></a></p>
@@ -205,7 +145,7 @@
 																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>10초 이상 VTR</span>
+																			<span>3초 이상 VTR</span>
 																			<span class="sort_type_02">
 																				<div>
 																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','ASC')" class="asc_sort sort_btn"></a></p>
@@ -214,38 +154,11 @@
 																			</span>
 																		</li>
 																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>10초 이상 CPV</span>
+																			<span>3초 이상 CPV</span>
 																			<span class="sort_type_02">
 																				<div>
 																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','ASC')" class="asc_sort sort_btn"></a></p>
 																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>30초 이상 View</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_actions','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_actions','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>30초 이상 VTR</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_vtr','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_vtr','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>30초 이상 CPV</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_cpv','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_30_sec_watched_cpv','DESC')" class="desc_sort sort_btn"></a></p>
 																				</div>
 																			</span>
 																		</li>
@@ -409,21 +322,7 @@
 																	</dd>
 																</dl>
 															</li>
-															<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show">
-																<dl>
-																	<dt></dt>
-																	<dd>
-																		<ul>
-																			<li>-</li>
-																			<li>-</li>
-																			<li>-</li>
-																			<li>-</li>
-																			<li>-</li>
-																			<li>-</li>
-																		</ul>
-																	</dd>
-																</dl>
-															</li>
+															<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show">-</li>
 															<li class="line-15 depth3" v-if="sortSelectData.listData[14].setting.show">
 																<dl>
 																	<dt></dt>
@@ -432,9 +331,6 @@
 																			<li class="line-15">{{ numberFormat(item.video_10_sec_watched_actions) }}</li>
 																			<li class="line-15">{{ checkObject(item.video_10_sec_watched_vtr) }}</li>
 																			<li class="line-15">￦{{ numberFormat(item.video_10_sec_watched_cpv) }}</li>
-																			<li class="line-15">{{ numberFormat(item.video_30_sec_watched_actions) }}</li>
-																			<li class="line-15">{{ checkObject(item.video_30_sec_watched_vtr) }}</li>
-																			<li class="line-15">￦{{ numberFormat(item.video_30_sec_watched_cpv) }}</li>
 																		</ul>
 																	</dd>
 																</dl>
