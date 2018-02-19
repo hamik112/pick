@@ -886,9 +886,9 @@ export default {
 
 		checkCarousel (carousel) {
 			if (carousel === true) {
-				return 'O'
+				return '사용'
 			} else {
-				return 'X'
+				return '-'
 			}
 		}
 	}
