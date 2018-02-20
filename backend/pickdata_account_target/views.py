@@ -287,9 +287,6 @@ class TargetChart(APIView):
             if str(facebook_app_id) != "284297631740545":
                 approximate_count = custom_audience.get_custom_audience(pickdata_target.target_audience_id).get('approximate_count')
                 name = custom_audience.get_custom_audience(pickdata_target.target_audience_id).get('name')
-                from random import randint
-                random_i = randint(0, 2)
-                name = [][random_i]
 
             # print("placement insight start")
             placement_insights = adset_insight.get_adset_ids_placement_insights(act_account_id,
