@@ -39,5 +39,14 @@ class User(models.Model):
             # TODO return []
             return None
 
+    def find_username_by_request(self, request):
+        username = None
+        if '__user_id__' in request.session:
+            login_session_username = str(request.session['__user_id__'])
+            user = User.objects.get(username=login_session_username)
+            username = user.name
+
+        return username
+
     class Meta:
         db_table = "users"
