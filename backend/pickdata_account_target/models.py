@@ -57,7 +57,7 @@ class PickdataAccountTarget(models.Model):
         try:
             created_account_target = PickdataAccountTarget()
 
-            created_account_target.updated_by = username
+            created_account_target.created_by = username
             created_account_target.updated_by = username
 
             created_account_target.fb_ad_account = fb_ad_account
@@ -77,7 +77,6 @@ class PickdataAccountTarget(models.Model):
 
     def update(self, pickdata_account_target, fb_ad_account, target_audience_id, pixel_mapping_category, description, target_status=0, username="TEST"):
         try:
-            pickdata_account_target.updated_by = username
             pickdata_account_target.updated_by = username
 
             pickdata_account_target.fb_ad_account = fb_ad_account

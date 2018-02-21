@@ -6,6 +6,7 @@ from pixel_mapping_category.models import PixelMappingCategory
 from pixel_mapping_category.serializers import PixelMappingCategorySerializer
 from neo_account.models import NeoAccount
 from pixel_mapping.models import PixelMapping
+from user.models import User
 
 from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
@@ -1532,9 +1533,10 @@ class CustomTarget(APIView):
                 raise Exception("No valid target_type.")
 
             # pickdata Database Update Call
+            username = User.find_username_by_request(User, request)
             target = PickdataAccountTarget.update(PickdataAccountTarget, pickdata_account_target, fb_ad_account,
                                                   created_target.get('id'),
-                                                  pixel_mapping_category, json.dumps(description), username='test')
+                                                  pixel_mapping_category, json.dumps(description), username=username)
             serializer = PickdataAccountTargetSerializer(target)
 
             response_data['success'] = 'YES'
@@ -2458,8 +2460,9 @@ class CustomTarget(APIView):
             else:
                 raise Exception("No valid target_type.")
 
+            username = User.find_username_by_request(User, request)
             target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, created_target.get('id'),
-                                                  pixel_mapping_category, json.dumps(description), username='test')
+                                                  pixel_mapping_category, json.dumps(description), username=username)
             serializer = PickdataAccountTargetSerializer(target)
 
             response_data['success'] = 'YES'
