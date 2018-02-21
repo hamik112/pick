@@ -11,7 +11,7 @@ from pixel_mapping.models import PixelMapping
 from pixel_mapping_category.models import PixelMappingCategory
 from pickdata_account_target.models import PickdataAccountTarget
 from account_category.models import AccountCategory
-
+from user.models import User
 
 from utils.facebookapis.ad_account import ads_pixels
 from utils.facebookapis.targeting import targeting_visitor
@@ -70,6 +70,7 @@ class FbAdAccountList(APIView):
             else:
                 api_init_by_system_user()
             ad_account = ad_accounts.get_ad_account(act_account_id)
+            username = User.find_username_by_request(User, request)
 
             ad_account_id = ad_account.get('account_id')
             act_account_id = ad_account.get('id')
@@ -77,7 +78,7 @@ class FbAdAccountList(APIView):
 
             account_statsus = ad_account.get('account_status')
 
-            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id, pixel_id)
+            fb_ad_account = FbAdAccount.create(FbAdAccount, ad_account_id, act_account_id, name, account_statsus, account_category_id, pixel_id, username=username)
 
             response_data['success'] = 'YES'
             response_data['data'] = FbAdAccountSerializer(fb_ad_account).data
@@ -382,6 +383,7 @@ class FbAdAccountDefaultTarget(APIView):
             else:
                 api_init_by_system_user()
 
+
             # default_pixel = ads_pixels.get_account_default_pixel(act_account_id)
             #
             # if default_pixel == None:
@@ -403,6 +405,7 @@ class FbAdAccountDefaultTarget(APIView):
 
                 # ad_account_name = ad_account_name + "_"
                 ad_account_name = ""
+                username = User.find_username_by_request(User, request)
 
                 visit_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'visit pages')
                 purchase_pixel_mapping_category = PixelMappingCategory.get_pixel_mapping_category_by_label(PixelMappingCategory, 'purchase')
@@ -434,7 +437,7 @@ class FbAdAccountDefaultTarget(APIView):
 
                 if check_target:
                     target_audience = targeting_visitor.create_total_customers(act_account_id, name, pixel_id)
-                    target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description, username='test')
+                    target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description, username=username)
                     # print(target_audience)
 
                 #### 기본 2
@@ -451,7 +454,7 @@ class FbAdAccountDefaultTarget(APIView):
                 if check_target:
 
                     target_audience = targeting_visitor.create_non_visition_customers(act_account_id, name, pixel_id)
-                    target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description, username='test')
+                    target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description, username=username)
                     # print(target_audience)
 
                 #### 기본 3
@@ -468,7 +471,7 @@ class FbAdAccountDefaultTarget(APIView):
 
                 if check_target:
                     target_audience = targeting_visitor.create_usage_time_top_customers(act_account_id, name, pixel_id, input_percent=5)
-                    target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description, username='test')
+                    target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, target_audience.get('id'), visit_pixel_mapping_category, description, username=username)
                     # print(target_audience)
 
 
@@ -489,7 +492,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account, visit_pixel_mapping_category, str(description))
                     if check_target:
                         target_audience = targeting_visitor.create_visitor_and_non_purchase_customers(act_account_id, name, pixel_id, purchase_event_name=purchase_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), visit_pixel_mapping_category, description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), visit_pixel_mapping_category, description, username=username)
                         # print(target_audience)
 
                     #### A-2
@@ -505,7 +508,7 @@ class FbAdAccountDefaultTarget(APIView):
                     if check_target:
                         # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=1, purchase_event_name=purchase_event_name)
                         target_audience = targeting_purchase.create_purchase_customers(act_account_id, name, pixel_id, retention_days=1, purchase_event_name=purchase_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description, username=username)
                         # print(target_audience)
 
                     #### A-3
@@ -521,7 +524,7 @@ class FbAdAccountDefaultTarget(APIView):
                     if check_target:
                         # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=7, purchase_event_name=purchase_event_name)
                         target_audience = targeting_purchase.create_purchase_customers(act_account_id, name, pixel_id,retention_days=7,purchase_event_name=purchase_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description, username=username)
                         # print(target_audience)
 
                     #### A-4
@@ -537,7 +540,7 @@ class FbAdAccountDefaultTarget(APIView):
                     if check_target:
                         # target_audience = targeting_visitor.create_visitor_and_purchase_customers(act_account_id, name, pixel_id, retention_days=30, purchase_event_name=purchase_event_name)
                         target_audience = targeting_purchase.create_purchase_customers(act_account_id, name, pixel_id,retention_days=30,purchase_event_name=purchase_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), purchase_pixel_mapping_category,description, username=username)
                         # print(target_audience)
 
                 #### B
@@ -558,7 +561,7 @@ class FbAdAccountDefaultTarget(APIView):
                     if check_target:
                         # target_audience = targeting_visitor.create_visitor_and_addtocart_customers(act_account_id, name, pixel_id, retention_days=1, addtocart_evnet_name=addtocart_event_name)
                         target_audience = targeting_addtocart.create_addtocart_customers(act_account_id, name, pixel_id, retention_days=1, addtocart_event_name=addtocart_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username=username)
                         # print(target_audience)
 
                     #### B-2
@@ -574,7 +577,7 @@ class FbAdAccountDefaultTarget(APIView):
                     if check_target:
                         # target_audience = targeting_visitor.create_visitor_and_addtocart_customers(act_account_id, name, pixel_id, retention_days=7, addtocart_evnet_name=addtocart_event_name)
                         target_audience = targeting_addtocart.create_addtocart_customers(act_account_id, name,pixel_id,retention_days=7,addtocart_event_name=addtocart_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username=username)
                         # print(target_audience)
 
                     if purchase_pixel_mapping_category.id in pixel_categories:
@@ -590,7 +593,7 @@ class FbAdAccountDefaultTarget(APIView):
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
                            target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=1, addtocart_evnet_name=addtocart_event_name, puchase_event_name=purchase_event_name)
-                           target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username='test')
+                           target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username=username)
                            print(target_audience)
 
                         #### B-4
@@ -605,7 +608,7 @@ class FbAdAccountDefaultTarget(APIView):
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
                             target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=3, addtocart_evnet_name=addtocart_event_name, puchase_event_name=purchase_event_name)
-                            target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username='test')
+                            target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username=username)
                             print(target_audience)
 
                         #### B-5
@@ -620,7 +623,7 @@ class FbAdAccountDefaultTarget(APIView):
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,addtocart_pixel_mapping_category,str(description))
                         if check_target:
                             target_audience = targeting_addtocart.create_addtocart_and_non_purchase_customers(act_account_id, name, pixel_id, retention_days=7, addtocart_evnet_name=addtocart_event_name, puchase_event_name=purchase_event_name)
-                            target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username='test')
+                            target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),addtocart_pixel_mapping_category, description, username=username)
                             print(target_audience)
 
 
@@ -641,7 +644,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,visit_pixel_mapping_category,str(description))
                     if check_target:
                         target_audience = targeting_visitor.create_visitor_and_non_coversion_customers(act_account_id, name, pixel_id, conversion_event_name=conversion_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),visit_pixel_mapping_category, description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),visit_pixel_mapping_category, description, username=username)
                         # print(target_audience)
 
                     #### C-2
@@ -657,7 +660,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,conversion_pixel_mapping_category,str(description))
                     if check_target:
                         target_audience = targeting_conversion.create_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=conversion_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), conversion_pixel_mapping_category,description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), conversion_pixel_mapping_category,description, username=username)
                         # print(target_audience)
 
                     #### C-3
@@ -672,7 +675,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,conversion_pixel_mapping_category,str(description))
                     if check_target:
                         target_audience = targeting_visitor.create_visitor_and_non_coversion_customers(act_account_id, name, pixel_id, conversion_event_name=conversion_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), conversion_pixel_mapping_category,description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), conversion_pixel_mapping_category,description, username=username)
                         # print(target_audience)
 
 
@@ -694,7 +697,7 @@ class FbAdAccountDefaultTarget(APIView):
                     if check_target:
                         # target_audience = targeting_visitor.create_visitor_and_registration_customers(act_account_id, name, pixel_id, registration_event_name=registration_event_name)
                         target_audience = targeting_registration.create_regestration_customers(act_account_id,name, pixel_id,registration_event_name=registration_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),registration_pixel_mapping_category, description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),registration_pixel_mapping_category, description, username=username)
                         # print(target_audience)
 
                     if purchase_pixel_mapping_category.id in pixel_categories:
@@ -710,7 +713,7 @@ class FbAdAccountDefaultTarget(APIView):
                         check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,registration_pixel_mapping_category,str(description))
                         if check_target:
                             target_audience = targeting_registration.create_regestration_and_non_purchase_customers(act_account_id, name, pixel_id, regestration_event_name=registration_event_name, purchase_event_name=purchase_event_name)
-                            target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),registration_pixel_mapping_category, description, username='test')
+                            target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),registration_pixel_mapping_category, description, username=username)
                             # print(target_audience)
 
                 # E
@@ -729,7 +732,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step1_pixel_mapping_category,str(description))
                     if check_target:
                         target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step1_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),step1_pixel_mapping_category, description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),step1_pixel_mapping_category, description, username=username)
                         # print(target_audience)
 
 
@@ -749,7 +752,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step2_pixel_mapping_category,str(description))
                     if check_target:
                         target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step2_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),step2_pixel_mapping_category, description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'),step2_pixel_mapping_category, description, username=username)
                         # print(target_audience)
 
                 # G
@@ -768,7 +771,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step3_pixel_mapping_category,str(description))
                     if check_target:
                         target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step3_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), step3_pixel_mapping_category,description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), step3_pixel_mapping_category,description, username=username)
                         # print(target_audience)
 
                 # H
@@ -788,7 +791,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step4_pixel_mapping_category,str(description))
                     if check_target:
                         target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step4_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), step4_pixel_mapping_category,description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), step4_pixel_mapping_category,description, username=username)
                         # print(target_audience)
 
                 # H
@@ -808,7 +811,7 @@ class FbAdAccountDefaultTarget(APIView):
                     check_target = PickdataAccountTarget.check_by_description(PickdataAccountTarget, fb_ad_account,step5_pixel_mapping_category,str(description))
                     if check_target:
                         target_audience = targeting_step.create_step_conversion_customers(act_account_id, name, pixel_id, conversion_event_name=step_event_name)
-                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), step5_pixel_mapping_category,description, username='test')
+                        target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account,target_audience.get('id'), step5_pixel_mapping_category,description, username=username)
                         # print(target_audience)
 
             response_data['success'] = 'YES'

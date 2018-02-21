@@ -23,12 +23,12 @@
 									</div>
 									<div class="target_chart_top clearfix">
 										<div class="use_limit clearfix">
-											<div>
+											<div class="clearfix">
 												<span>{{ chartName }}</span>
 												<ui-hover></ui-hover>
 											</div>
 											<strong v-if="!chartOn">-</strong>
-											<strong v-if="chartOn">{{ total.audience }}명</strong>
+											<strong class="clearfix" v-if="chartOn">{{ total.audience }}명</strong>
 										</div>
 										<div class="expense_price">
 											<p>총 지출 금액(원)</p>

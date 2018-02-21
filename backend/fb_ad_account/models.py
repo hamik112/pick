@@ -22,7 +22,7 @@ class FbAdAccount(models.Model):
         try:
             fb_ad_account = self.objects.get(act_account_id=act_account_id)
 
-            fb_ad_account.created_by = username
+            # fb_ad_account.created_by = username
             fb_ad_account.updated_by = username
             fb_ad_account.ad_account_id = ad_account_id
             fb_ad_account.act_account_id = act_account_id

@@ -5,6 +5,7 @@ from .serializers import PixelMappingSerializer, PixelMappingMergeSerializer
 from django.http import HttpResponse
 
 from fb_ad_account.models import FbAdAccount
+from user.models import User
 
 import json
 import os
@@ -56,7 +57,7 @@ class PixelMappingView(APIView):
             facebook_pixel_event_names = request.data.get('facebook_pixel_event_names', [])
             pixel_mapping_category_ids = request.data.get('pixel_mapping_category_ids', [])
 
-            username = request.data.get('username', 'TEST')
+            username = User.find_username_by_request(User, request)
 
             created_cnt = PixelMapping.create_or_update(PixelMapping, fb_ad_account, facebook_pixel_event_names=facebook_pixel_event_names, pixel_mapping_category_ids=pixel_mapping_category_ids, username=username)
 

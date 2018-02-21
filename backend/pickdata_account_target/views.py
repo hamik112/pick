@@ -6,6 +6,7 @@ from pixel_mapping_category.models import PixelMappingCategory
 from pixel_mapping_category.serializers import PixelMappingCategorySerializer
 from neo_account.models import NeoAccount
 from pixel_mapping.models import PixelMapping
+from user.models import User
 
 from .models import PickdataAccountTarget
 from .serializers import PickdataAccountTargetSerializer
@@ -191,6 +192,10 @@ class TargetPick(APIView):
                     gen_obj['operation_status'] = audience_target.get('operation_status')
                     gen_obj['pixel_id'] = audience_target.get('pixel_id')
                     gen_obj['targeting_complete'] = targeting_complete
+
+                    if str(facebook_app_id) != "284297631740545":
+                        demographic_complete = True
+                        
                     gen_obj['demographic_complete'] = demographic_complete
 
                     if target_type == "all":
@@ -261,13 +266,13 @@ class TargetChart(APIView):
             act_account_id = fb_ad_account.act_account_id
             target_audience_id = pickdata_target.target_audience_id
 
-            # print(target_audience_id)
-            # from random import randint
-            #
-            # random_i = randint(0, 2)
-            # print(random_i)
-            # target_audience_id = [6081089433857, 6081089396457, 6090733823497][random_i]
-            # act_account_id = ['act_894360037304328', 'act_894360037304328', 'act_107850179321216'][random_i]
+            if str(facebook_app_id) != "284297631740545":
+                from random import randint
+                random_i = randint(0, 2)
+                target_audience_id = [6081089433857, 6081089396457, 6090733823497][random_i]
+                act_account_id = ['act_894360037304328', 'act_894360037304328', 'act_107850179321216'][random_i]
+                start_date = None
+                end_date = None
 
             # adsets = AdSet.get_adsets_by_target_id(AdSet, target_audience_id)
             adsets = AdSet.get_adsets_by_account_id_and_target_id(AdSet, act_account_id, target_audience_id)
@@ -279,6 +284,10 @@ class TargetChart(APIView):
             # print([adset.adset_id for adset in adsets])
             approximate_count = custom_audience.get_custom_audience(target_audience_id).get('approximate_count')
             name = custom_audience.get_custom_audience(target_audience_id).get('name')
+
+            if str(facebook_app_id) != "284297631740545":
+                approximate_count = custom_audience.get_custom_audience(pickdata_target.target_audience_id).get('approximate_count')
+                name = custom_audience.get_custom_audience(pickdata_target.target_audience_id).get('name')
 
             # print("placement insight start")
             placement_insights = adset_insight.get_adset_ids_placement_insights(act_account_id,
@@ -1524,9 +1533,10 @@ class CustomTarget(APIView):
                 raise Exception("No valid target_type.")
 
             # pickdata Database Update Call
+            username = User.find_username_by_request(User, request)
             target = PickdataAccountTarget.update(PickdataAccountTarget, pickdata_account_target, fb_ad_account,
                                                   created_target.get('id'),
-                                                  pixel_mapping_category, json.dumps(description), username='test')
+                                                  pixel_mapping_category, json.dumps(description), username=username)
             serializer = PickdataAccountTargetSerializer(target)
 
             response_data['success'] = 'YES'
@@ -2450,8 +2460,9 @@ class CustomTarget(APIView):
             else:
                 raise Exception("No valid target_type.")
 
+            username = User.find_username_by_request(User, request)
             target = PickdataAccountTarget.create(PickdataAccountTarget, fb_ad_account, created_target.get('id'),
-                                                  pixel_mapping_category, json.dumps(description), username='test')
+                                                  pixel_mapping_category, json.dumps(description), username=username)
             serializer = PickdataAccountTargetSerializer(target)
 
             response_data['success'] = 'YES'

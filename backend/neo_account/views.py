@@ -2,6 +2,7 @@ from django.http import HttpResponse
 
 from rest_framework.views import APIView
 from neo_account.models import NeoAccount
+from user.models import User
 
 import traceback
 import logging
@@ -37,8 +38,9 @@ class NeoAccountView(APIView):
             fb_ad_account_id = request.data.get('fb_ad_account_id', 0)
             neo_adv_ids = request.data.get('neo_adv_ids', [])
             neo_account_ids = request.data.get('neo_account_ids', [])
+            useranme = User.find_username_by_request(User, request)
 
-            create_cnt = NeoAccount.create_list(NeoAccount, fb_ad_account_id, neo_adv_ids, neo_account_ids)
+            create_cnt = NeoAccount.create_list(NeoAccount, fb_ad_account_id, neo_adv_ids, neo_account_ids, useranme=useranme)
 
             response_data['success'] = 'YES'
             response_data['count'] = create_cnt
