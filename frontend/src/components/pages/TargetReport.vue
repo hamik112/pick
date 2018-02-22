@@ -1,5 +1,5 @@
 <template>
-	<div id="main_wrap" class="clearfix">
+	<div id="main_wrap">
 		<div id="container">
 			<div id="container_wrap">
 				<div class="list-tab-widget">
@@ -43,347 +43,361 @@
 										</button>
 									</div>
 									<div class="target_report_contents">
-										<div class="report_contents_inner_wrap">
-											<div id="report-list" class="contents_inner">
-												<div class="table_head">
-													<ul id="report-list-head" class="head_th clearfix">
-														<li class="line-1 report-line" v-if="sortSelectData.listData[0].setting.show">광고주</li>
-														<li class="line-2 normal_depth report-line" v-if="sortSelectData.listData[1].setting.show">캠페인명</li>
-														<li class="line-3 report-line" v-if="sortSelectData.listData[2].setting.show">기간</li>
-														<li class="line-4 normal_depth report-line" v-if="sortSelectData.listData[3].setting.show">광고세트</li>
-														<li class="line-5 report-line" v-if="sortSelectData.listData[4].setting.show">연령</li>
-														<li class="line-6 report-line" v-if="sortSelectData.listData[5].setting.show">성별</li>
-														<li class="line-7 report-line" v-if="sortSelectData.listData[6].setting.show">관심사 개수</li>
-														<li class="line-8 normal_depth report-line" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
-														<li class="line-9 report-line" v-if="sortSelectData.listData[8].setting.show">
-															<span>광고비</span>
-															<span class="sort_type_01">
-																<div>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('spend','ASC')" class="asc_sort sort_btn"></a></p>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('spend','DESC')" class="desc_sort sort_btn"></a></p>
-																</div>
-															</span>
-														</li>
-														<li class="line-10 report-line" v-if="sortSelectData.listData[9].setting.show">
-															<span>노출</span>
-															<span class="sort_type_01">
-																<div>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('impressions','ASC')" class="asc_sort sort_btn"></a></p>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('impressions','DESC')" class="desc_sort sort_btn"></a></p>
-																</div>
-															</span>
-														</li>
-														<li class="line-11 report-line" v-if="sortSelectData.listData[10].setting.show">
-															<span>도달</span>
-															<span class="sort_type_01">
-																<div>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('reach','ASC')" class="asc_sort sort_btn"></a></p>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('reach','DESC')" class="desc_sort sort_btn"></a></p>
-																</div>
-															</span>
-														</li>
-														<li class="line-12 report-line" v-if="sortSelectData.listData[11].setting.show">
-															<span>도달빈도</span>
-															<span class="sort_type_01">
-																<div>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('frequency','ASC')" class="asc_sort sort_btn"></a></p>
-																	<p><a href="javascript:void(0)" v-on:click="listSort('frequency','DESC')" class="desc_sort sort_btn"></a></p>
-																</div>
-															</span>
-														</li>
-														<li class="line-13 th_sub depth1 report-line" v-if="sortSelectData.listData[12].setting.show">
-															<dl>
-																<dt>사이트 유입 지표</dt>
-																<dd>
-																	<ul class="clearfix">
-																		<li v-if="sortSelectData.listData[12].setting.show">
-																			<span>링크클릭</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[12].setting.show">
-																			<span>CTR</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[12].setting.show">
-																			<span>CPC</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																	</ul>
-																</dd>
-															</dl>
-														</li>
-														<li class="line-14 depth2 report-line" v-if="sortSelectData.listData[13].setting.show">
-															<span>슬라이드 소재</span>
-														</li>
-														<li class="line-15 th_sub depth3 report-line" v-if="sortSelectData.listData[14].setting.show">
-															<dl>
-																<dt>영상캠페인 지표</dt>
-																<dd>
-																	<ul class="clearfix">
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 View</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 VTR</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[14].setting.show">
-																			<span>3초 이상 CPV</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																	</ul>
-																</dd>
-															</dl>
-														</li>
-														<li class="line-16 th_sub depth4 report-line" v-if="sortSelectData.listData[15].setting.show">
-															<dl>
-																<dt>전환 지표</dt>
-																<dd>
-																	<ul class="clearfix">
-																		<li v-if="sortSelectData.listData[15].setting.show">
-																			<span>전환 완료</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[15].setting.show">
-																			<span>전환 완료 가치</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total_cost','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total_cost','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[15].setting.show">
-																			<span>1단계 완료</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_first','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_first','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[15].setting.show">
-																			<span>2단계 완료</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_second','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_second','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[15].setting.show">
-																			<span>3단계 완료</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_third','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_third','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[15].setting.show">
-																			<span>4단계 완료</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fourth','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fourth','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[15].setting.show">
-																			<span>5단계 완료</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fifth','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fifth','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																	</ul>
-																</dd>
-															</dl>
-														</li>
-														<li class="line-17 th_sub depth5 report-line" v-if="sortSelectData.listData[16].setting.show">
-															<dl>
-																<dt>페이지 참여 지표</dt>
-																<dd>
-																	<ul class="clearfix">
-																		<li v-if="sortSelectData.listData[16].setting.show">
-																			<span>공유</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('post_event','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('post_event','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[16].setting.show">
-																			<span>좋아요</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('like_event','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('like_event','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[16].setting.show">
-																			<span>댓글</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																		<li v-if="sortSelectData.listData[16].setting.show">
-																			<span>공감</span>
-																			<span class="sort_type_02">
-																				<div>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','ASC')" class="asc_sort sort_btn"></a></p>
-																					<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','DESC')" class="desc_sort sort_btn"></a></p>
-																				</div>
-																			</span>
-																		</li>
-																	</ul>
-																</dd>
-															</dl>
-														</li>
-													</ul>
+										<div id="report-list-wrap" v-on:scroll="listScrollFixed" class="report_contents_inner_wrap">
+											<div id="report-list-inner">
+												<div id="report-list" class="contents_inner">
+													<div class="table_head">
+														<ul id="report-list-head-1" class="head_th table_default clearfix">
+															<li class="line-1 report-line left_default" v-if="sortSelectData.listData[0].setting.show">광고주</li>
+															<li class="line-2 normal_depth report-line left_default" v-if="sortSelectData.listData[1].setting.show">캠페인명</li>
+														</ul>
+													</div>
+													<div class="table_body">
+														<div class="table_body_inner" v-for="(item, index) in listData.data">
+															<ul class="body_th clearfix">
+																<li class="line-1" v-if="sortSelectData.listData[0].setting.show">{{ item.account_name }}</li>
+																<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">{{ item.campaign_name }}</li>
+															</ul>
+														</div>
+													</div>
 												</div>
-												<div class="table_body">
-													<div class="table_body_inner" v-for="(item, index) in listData.data">
-														<ul class="body_th clearfix">
-															<input id="hidden-interest" type="text" :value="item.interest_list" ref="interest_copy">
-															<li class="line-1" v-if="sortSelectData.listData[0].setting.show">{{ item.account_name }}</li>
-															<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">{{ item.campaign_name }}</li>
-															<li class="line-3" v-if="sortSelectData.listData[2].setting.show">{{ item.report_date }}</li>
-															<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">{{ item.adset_name }}</li>
-															<li class="line-5" v-if="sortSelectData.listData[4].setting.show">{{ item.age }} 세</li>
-															<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
-															<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
-																<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
-																<div :id="'interest-sub-' + index" class="interest_view" v-if="item.interest_list.length != 0">
-																	<ul class="clearfix">
-																		<li v-for="elem in item.interest_list" >{{ elem }}</li>
-																	</ul>
-																	<div class="inter_clip_copy" v-on:click="clickCopy(index)">클립보드로 복사하기</div>
-																	<div class="inter_close" @click="tootip('close')">닫기</div>
-																</div>
+												<div id="report-list-2" class="contents_inner">
+													<div class="table_head">
+														<ul id="report-list-head-2" class="head_th table_default clearfix">
+															<li class="line-3 report-line" v-if="sortSelectData.listData[2].setting.show">기간</li>
+															<li class="line-4 normal_depth report-line" v-if="sortSelectData.listData[3].setting.show">광고세트</li>
+															<li class="line-5 report-line" v-if="sortSelectData.listData[4].setting.show">연령</li>
+															<li class="line-6 report-line" v-if="sortSelectData.listData[5].setting.show">성별</li>
+															<li class="line-7 report-line" v-if="sortSelectData.listData[6].setting.show">관심사 개수</li>
+															<li class="line-8 normal_depth report-line" v-if="sortSelectData.listData[7].setting.show">맞춤타겟 이름</li>
+															<li class="line-9 report-line" v-if="sortSelectData.listData[8].setting.show">
+																<span>광고비</span>
+																<span class="sort_type_01">
+																	<div>
+																		<p><a href="javascript:void(0)" v-on:click="listSort('spend','ASC')" class="asc_sort sort_btn"></a></p>
+																		<p><a href="javascript:void(0)" v-on:click="listSort('spend','DESC')" class="desc_sort sort_btn"></a></p>
+																	</div>
+																</span>
 															</li>
-															<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
-															<li class="line-9 box-align" v-if="sortSelectData.listData[8].setting.show">￦{{ numberFormat(item.spend) }}</li>
-															<li class="line-10 box-align" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
-															<li class="line-11 box-align" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
-															<li class="line-12 box-align" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
-															<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
+															<li class="line-10 report-line" v-if="sortSelectData.listData[9].setting.show">
+																<span>노출</span>
+																<span class="sort_type_01">
+																	<div>
+																		<p><a href="javascript:void(0)" v-on:click="listSort('impressions','ASC')" class="asc_sort sort_btn"></a></p>
+																		<p><a href="javascript:void(0)" v-on:click="listSort('impressions','DESC')" class="desc_sort sort_btn"></a></p>
+																	</div>
+																</span>
+															</li>
+															<li class="line-11 report-line" v-if="sortSelectData.listData[10].setting.show">
+																<span>도달</span>
+																<span class="sort_type_01">
+																	<div>
+																		<p><a href="javascript:void(0)" v-on:click="listSort('reach','ASC')" class="asc_sort sort_btn"></a></p>
+																		<p><a href="javascript:void(0)" v-on:click="listSort('reach','DESC')" class="desc_sort sort_btn"></a></p>
+																	</div>
+																</span>
+															</li>
+															<li class="line-12 report-line" v-if="sortSelectData.listData[11].setting.show">
+																<span>도달빈도</span>
+																<span class="sort_type_01">
+																	<div>
+																		<p><a href="javascript:void(0)" v-on:click="listSort('frequency','ASC')" class="asc_sort sort_btn"></a></p>
+																		<p><a href="javascript:void(0)" v-on:click="listSort('frequency','DESC')" class="desc_sort sort_btn"></a></p>
+																	</div>
+																</span>
+															</li>
+															<li class="line-13 th_sub depth1 report-line" v-if="sortSelectData.listData[12].setting.show">
 																<dl>
-																	<dt></dt>
+																	<dt>사이트 유입 지표</dt>
 																	<dd>
-																		<ul>
-																			<li>{{ numberFormat(item.inline_link_clicks) }}</li>
-																			<li>{{ item.inline_link_click_ctr }}</li>
-																			<li>￦{{ numberFormat(item.inline_link_click_cpc) }}</li>
+																		<ul class="clearfix">
+																			<li v-if="sortSelectData.listData[12].setting.show">
+																				<span>링크클릭</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_clicks','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[12].setting.show">
+																				<span>CTR</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_ctr','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[12].setting.show">
+																				<span>CPC</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('inline_link_click_cpc','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
 																		</ul>
 																	</dd>
 																</dl>
 															</li>
-															<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show">{{ checkCarousel(item.is_carousel) }}</li>
-															<li class="line-15 depth3" v-if="sortSelectData.listData[14].setting.show">
+															<li class="line-14 depth2 report-line" v-if="sortSelectData.listData[13].setting.show">
+																<span>슬라이드 소재</span>
+															</li>
+															<li class="line-15 th_sub depth3 report-line" v-if="sortSelectData.listData[14].setting.show">
 																<dl>
-																	<dt></dt>
+																	<dt>영상캠페인 지표</dt>
 																	<dd>
-																		<ul>
-																			<li class="line-15">{{ numberFormat(item.video_view_event) }}</li>
-																			<li class="line-15">{{ checkObject(item.video_3_sec_watched_vtr) }}</li>
-																			<li class="line-15">￦{{ numberFormat(item.video_3_sec_watched_cpv) }}</li>
+																		<ul class="clearfix">
+																			<li v-if="sortSelectData.listData[14].setting.show">
+																				<span>3초 이상 View</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_actions','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[14].setting.show">
+																				<span>3초 이상 VTR</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_vtr','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[14].setting.show">
+																				<span>3초 이상 CPV</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('video_10_sec_watched_cpv','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
 																		</ul>
 																	</dd>
 																</dl>
 															</li>
-
-															<li class="line-16 depth4" v-if="sortSelectData.listData[15].setting.show">
+															<li class="line-16 th_sub depth4 report-line" v-if="sortSelectData.listData[15].setting.show">
 																<dl>
-																	<dt></dt>
+																	<dt>전환 지표</dt>
 																	<dd>
-																		<ul>
-																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_total) }}</li>
-																			<!-- cost_per_action_type?-->
-																			<li class="line-16">{{ item.pickdata_custom_conv_total_cost }}</li>
-																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_first) }}</li>
-																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_second) }}</li>
-																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_third) }}</li>
-																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fourth) }}</li>
-																			<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fifth) }}</li>
+																		<ul class="clearfix">
+																			<li v-if="sortSelectData.listData[15].setting.show">
+																				<span>전환 완료</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[15].setting.show">
+																				<span>전환 완료 가치</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total_cost','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_total_cost','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[15].setting.show">
+																				<span>1단계 완료</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_first','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_first','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[15].setting.show">
+																				<span>2단계 완료</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_second','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_second','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[15].setting.show">
+																				<span>3단계 완료</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_third','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_third','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[15].setting.show">
+																				<span>4단계 완료</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fourth','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fourth','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[15].setting.show">
+																				<span>5단계 완료</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fifth','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('pickdata_custom_conv_fifth','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
 																		</ul>
 																	</dd>
 																</dl>
 															</li>
-															<li class="line-17 depth5" v-if="sortSelectData.listData[16].setting.show">
+															<li class="line-17 th_sub depth5 report-line" v-if="sortSelectData.listData[16].setting.show">
 																<dl>
-																	<dt></dt>
+																	<dt>페이지 참여 지표</dt>
 																	<dd>
-																		<ul>
-																			<li class="line-17">{{ numberFormat(item.post_event) }}</li>
-																			<li class="line-17">{{ numberFormat(item.like_event) }}</li>
-																			<li class="line-17">{{ numberFormat(item.comment_event) }}</li>
-																			<li class="line-17">{{ numberFormat(item.post_reaction_event) }}</li>
+																		<ul class="clearfix">
+																			<li v-if="sortSelectData.listData[16].setting.show">
+																				<span>공유</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('post_event','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('post_event','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[16].setting.show">
+																				<span>좋아요</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('like_event','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('like_event','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[16].setting.show">
+																				<span>댓글</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('comment_event','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
+																			<li v-if="sortSelectData.listData[16].setting.show">
+																				<span>공감</span>
+																				<span class="sort_type_02">
+																					<div>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','ASC')" class="asc_sort sort_btn"></a></p>
+																						<p><a href="javascript:void(0)" v-on:click="listSort('post_reaction_event','DESC')" class="desc_sort sort_btn"></a></p>
+																					</div>
+																				</span>
+																			</li>
 																		</ul>
 																	</dd>
 																</dl>
 															</li>
 														</ul>
 													</div>
+													<div class="table_body">
+														<div class="table_body_inner" v-for="(item, index) in listData.data">
+															<ul class="body_th clearfix">
+																<input id="hidden-interest" type="text" :value="item.interest_list" ref="interest_copy">
+																<li class="line-3" v-if="sortSelectData.listData[2].setting.show">{{ item.report_date }}</li>
+																<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">{{ item.adset_name }}</li>
+																<li class="line-5" v-if="sortSelectData.listData[4].setting.show">{{ item.age }} 세</li>
+																<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
+																<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
+																	<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
+																	<div :id="'interest-sub-' + index" class="interest_view" v-if="item.interest_list.length != 0">
+																		<ul class="clearfix">
+																			<li v-for="elem in item.interest_list" >{{ elem }}</li>
+																		</ul>
+																		<div class="inter_clip_copy" v-on:click="clickCopy(index)">클립보드로 복사하기</div>
+																		<div class="inter_close" @click="tootip('close')">닫기</div>
+																	</div>
+																</li>
+																<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
+																<li class="line-9 box-align" v-if="sortSelectData.listData[8].setting.show">￦{{ numberFormat(item.spend) }}</li>
+																<li class="line-10 box-align" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
+																<li class="line-11 box-align" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
+																<li class="line-12 box-align" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
+																<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
+																	<dl>
+																		<dt></dt>
+																		<dd>
+																			<ul>
+																				<li>{{ numberFormat(item.inline_link_clicks) }}</li>
+																				<li>{{ item.inline_link_click_ctr }}</li>
+																				<li>￦{{ numberFormat(item.inline_link_click_cpc) }}</li>
+																			</ul>
+																		</dd>
+																	</dl>
+																</li>
+																<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show">{{ checkCarousel(item.is_carousel) }}</li>
+																<li class="line-15 depth3" v-if="sortSelectData.listData[14].setting.show">
+																	<dl>
+																		<dt></dt>
+																		<dd>
+																			<ul>
+																				<li class="line-15">{{ numberFormat(item.video_view_event) }}</li>
+																				<li class="line-15">{{ checkObject(item.video_3_sec_watched_vtr) }}</li>
+																				<li class="line-15">￦{{ numberFormat(item.video_3_sec_watched_cpv) }}</li>
+																			</ul>
+																		</dd>
+																	</dl>
+																</li>
+
+																<li class="line-16 depth4" v-if="sortSelectData.listData[15].setting.show">
+																	<dl>
+																		<dt></dt>
+																		<dd>
+																			<ul>
+																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_total) }}</li>
+																				<!-- cost_per_action_type?-->
+																				<li class="line-16">{{ item.pickdata_custom_conv_total_cost }}</li>
+																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_first) }}</li>
+																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_second) }}</li>
+																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_third) }}</li>
+																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fourth) }}</li>
+																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fifth) }}</li>
+																			</ul>
+																		</dd>
+																	</dl>
+																</li>
+																<li class="line-17 depth5" v-if="sortSelectData.listData[16].setting.show">
+																	<dl>
+																		<dt></dt>
+																		<dd>
+																			<ul>
+																				<li class="line-17">{{ numberFormat(item.post_event) }}</li>
+																				<li class="line-17">{{ numberFormat(item.like_event) }}</li>
+																				<li class="line-17">{{ numberFormat(item.comment_event) }}</li>
+																				<li class="line-17">{{ numberFormat(item.post_reaction_event) }}</li>
+																			</ul>
+																		</dd>
+																	</dl>
+																</li>
+															</ul>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
+
 									</div>
 									<!-- TODO Paging 처리 예정 -->
-									<div class="pagination">
+									<!-- <div class="pagination">
 										<ul>
 											<li v-show="currentPage > 1" v-on:click="clickFirstPage(firstPage)"><img src="../../assets/images/icon/paging_01.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 											<li v-show="currentPage > 1" v-on:click="clickPreviousPage(currentPage)"><img src="../../assets/images/icon/paging_03.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
-											<!-- <li class="now">1</li> -->
 											<li v-for="(n,index) in pageRange.pageNumber" v-if="(n >= pageRange.minPaging)&&(n <= pageRange.maxPaging)" v-on:click="clickPage(n)"
 												v-bind:class="[currentPage === n ? 'now' : '']"><span v-if="!loadShow">{{ checkPageNumber(n) }}</span><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickNextPage(currentPage)"><img src="../../assets/images/icon/paging_04.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 											<li v-show="currentPage < pageRange.pageNumber" v-on:click="clickLastPage(pageRange.pageNumber)"><img src="../../assets/images/icon/paging_02.png" alt="" v-if="!loadShow"><img src="../../assets/images/icon/loading.gif" alt="로딩중" class="loading-img" v-if="loadShow" style="width:100%"></li>
 										</ul>
-									</div>
+									</div> -->
 								</div>
 							</div>
 
@@ -419,15 +433,16 @@ export default {
 	},
 
 	mounted () {
-		this.sortTableAutoWidth()
 		this.wResize()
 		window.addEventListener('resize', this.wResize)
-		this.getGridData()
+		this.sortTableAutoWidth()
+		// this.getGridData()
 	},
 
 	beforeDestroy () {
 		window.removeEventListener('resize', this.wResize)
 	},
+
 	created () {
 		this.loadFbAdAccounts()
 	},
@@ -495,7 +510,8 @@ export default {
 			currentPage: 1,
 			firstPage: 1,
 
-			tablesAutoWidth:4880,
+			tablesScrollLeft:0,
+			tablesScrollTop:0,
 
 
 			show: false,
@@ -527,12 +543,12 @@ export default {
 			loadingDescription: ''
 		}
 	},
-
 	methods: {
 		wResize (){
 			const wSize = window.innerWidth - 185
 			const el = document.getElementById('report-widget')
 			el.style = "width:" + wSize + 'px'
+
 		},
 
 		tootip (index) {
@@ -594,17 +610,78 @@ export default {
 		},
 
 		sortTableAutoWidth (){
-			const listEl = document.getElementById('report-list')
-			const ulEl = document.getElementById('report-list-head')
-			const liEl = ulEl.getElementsByClassName('report-line')
-			let listWidth = 0
+			const listEl = document.getElementById('report-list-inner')
+			const repEl1 = document.getElementById('report-list')
+			const repEl2 = document.getElementById('report-list-2')
+			const defaultEl = repEl1.getElementsByClassName('report-line')
+			const liEl = listEl.getElementsByClassName('report-line')
+			const fors = [defaultEl,liEl]
 
-			for(let i = 0; i < liEl.length; i++) {
-				listWidth += liEl[i].offsetWidth
-			}
+			new Promise(function(resolve, reject) {
+				let listWidth = 0
+				let listWidth2 = 0
 
-			this.tablesAutoWidth = listWidth
-			listEl.style.width = this.tablesAutoWidth + 'px'
+				for(let idx = 0; idx < fors.length; idx++) {
+					for(let i = 0; i < fors[idx].length; i++) {
+						if(idx == 0) {
+							listWidth += fors[idx][i].offsetWidth
+						}else{
+							listWidth2 += fors[idx][i].offsetWidth
+							console.log(fors[idx][15].offsetWidth);
+						}
+					}
+				}
+				console.log("abc", document.getElementsByClassName('line-16')[0].offsetWidth)
+				resolve([listWidth, listWidth2])
+			})
+			.then(widths => {
+				let listWidth = widths[0]
+				let listWidth2 = widths[1]
+
+				repEl1.style.width = listWidth + 'px'
+				repEl2.style.width = listWidth2 + 'px'
+
+				console.log("def", document.getElementsByClassName('line-16')[0].offsetWidth)
+			})
+
+
+			// const listEl = document.getElementById('report-list-inner')
+			// const repEl1 = document.getElementById('report-list')
+			// const repEl2 = document.getElementById('report-list-2')
+			// const defaultEl = repEl1.getElementsByClassName('report-line')
+			// const liEl = listEl.getElementsByClassName('report-line')
+			// const fors = [defaultEl,liEl]
+			// let listWidth = 0
+			// let listWidth2 = 0
+
+			// console.log(document.getElementsByClassName('line-16')[0].offsetWidth)
+
+			// for(let idx = 0; idx < fors.length; idx++) {
+			// 	for(let i = 0; i < fors[idx].length; i++) {
+			// 		if(idx == 0) {
+			// 			listWidth += fors[idx][i].offsetWidth
+			// 		}else{
+			// 			listWidth2 += fors[idx][i].offsetWidth
+			// 			console.log(fors[idx][15].offsetWidth);
+			// 		}
+			// 	}
+			// }
+
+			// repEl1.style.width = listWidth + 'px'
+			// repEl2.style.width = listWidth2 + 'px'
+
+
+		},
+
+		listScrollFixed() {
+			// const listEl = document.getElementById('report-list-wrap')
+			// const scrollLeftGap = listEl.scrollLeft
+			// if(scrollLeftGap != this.tablesScrollLeft) {
+			// 	let leftDefaultEl = document.getElementById("left-default")
+			// 	leftDefaultEl.style.left = scrollLeftGap
+			// 	this.tablesScrollLeft = scrollLeftGap
+			// }
+
 		},
 
 		listSort(key, type) {
@@ -896,5 +973,10 @@ export default {
 </script>
 
 <style lang="css" scoped>
+html { overflow:hidden; }
 #hidden-interest { float:left; height:0; }
+
+
+/*그리드 왼쪽 고정*/
+.left_default { }
 </style>
