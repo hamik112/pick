@@ -43,7 +43,7 @@
 										</button>
 									</div>
 									<div class="target_report_contents">
-										<div id="report-list-wrap" v-on:scroll="listScrollFixed" class="report_contents_inner_wrap">
+										<div id="report-list-wrap" class="report_contents_inner_wrap">
 											<div id="report-list-inner">
 												<div id="report-list" class="contents_inner">
 													<div class="table_head">
@@ -610,79 +610,18 @@ export default {
 		},
 
 		sortTableAutoWidth (){
-			const listEl = document.getElementById('report-list-inner')
 			const repEl1 = document.getElementById('report-list')
 			const repEl2 = document.getElementById('report-list-2')
 			const defaultEl = repEl1.getElementsByClassName('report-line')
-			const liEl = listEl.getElementsByClassName('report-line')
-			const fors = [defaultEl,liEl]
+			let listWidth = 0
 
-			new Promise(function(resolve, reject) {
-				let listWidth = 0
-				let listWidth2 = 0
+			for(let i = 0; i < defaultEl.length; i++) {
+				listWidth += defaultEl[i].offsetWidth
+			}
 
-				for(let idx = 0; idx < fors.length; idx++) {
-					for(let i = 0; i < fors[idx].length; i++) {
-						if(idx == 0) {
-							listWidth += fors[idx][i].offsetWidth
-						}else{
-							listWidth2 += fors[idx][i].offsetWidth
-							console.log(fors[idx][15].offsetWidth);
-						}
-					}
-				}
-				console.log("abc", document.getElementsByClassName('line-16')[0].offsetWidth)
-				resolve([listWidth, listWidth2])
-			})
-			.then(widths => {
-				let listWidth = widths[0]
-				let listWidth2 = widths[1]
-
-				repEl1.style.width = listWidth + 'px'
-				repEl2.style.width = listWidth2 + 'px'
-
-				console.log("def", document.getElementsByClassName('line-16')[0].offsetWidth)
-			})
-
-
-			// const listEl = document.getElementById('report-list-inner')
-			// const repEl1 = document.getElementById('report-list')
-			// const repEl2 = document.getElementById('report-list-2')
-			// const defaultEl = repEl1.getElementsByClassName('report-line')
-			// const liEl = listEl.getElementsByClassName('report-line')
-			// const fors = [defaultEl,liEl]
-			// let listWidth = 0
-			// let listWidth2 = 0
-
-			// console.log(document.getElementsByClassName('line-16')[0].offsetWidth)
-
-			// for(let idx = 0; idx < fors.length; idx++) {
-			// 	for(let i = 0; i < fors[idx].length; i++) {
-			// 		if(idx == 0) {
-			// 			listWidth += fors[idx][i].offsetWidth
-			// 		}else{
-			// 			listWidth2 += fors[idx][i].offsetWidth
-			// 			console.log(fors[idx][15].offsetWidth);
-			// 		}
-			// 	}
-			// }
-
-			// repEl1.style.width = listWidth + 'px'
-			// repEl2.style.width = listWidth2 + 'px'
-
-
+			repEl2.style.paddingLeft = listWidth + 'px'
 		},
 
-		listScrollFixed() {
-			// const listEl = document.getElementById('report-list-wrap')
-			// const scrollLeftGap = listEl.scrollLeft
-			// if(scrollLeftGap != this.tablesScrollLeft) {
-			// 	let leftDefaultEl = document.getElementById("left-default")
-			// 	leftDefaultEl.style.left = scrollLeftGap
-			// 	this.tablesScrollLeft = scrollLeftGap
-			// }
-
-		},
 
 		listSort(key, type) {
 			const item = this.listData.data
