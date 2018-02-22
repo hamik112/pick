@@ -55,8 +55,8 @@
 													<div class="table_body">
 														<div class="table_body_inner" v-for="(item, index) in listData.data">
 															<ul class="body_th clearfix">
-																<li class="line-1" v-if="sortSelectData.listData[0].setting.show">{{ item.account_name }}</li>
-																<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show">{{ item.campaign_name }}</li>
+																<li class="line-1" v-if="sortSelectData.listData[0].setting.show"><div class="line-inner">{{ item.account_name }}</div></li>
+																<li class="line-2 normal_depth" v-if="sortSelectData.listData[1].setting.show"><div class="line-inner">{{ item.campaign_name }}</div></li>
 															</ul>
 														</div>
 													</div>
@@ -304,80 +304,90 @@
 														<div class="table_body_inner" v-for="(item, index) in listData.data">
 															<ul class="body_th clearfix">
 																<input id="hidden-interest" type="text" :value="item.interest_list" ref="interest_copy">
-																<li class="line-3" v-if="sortSelectData.listData[2].setting.show">{{ item.report_date }}</li>
-																<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show">{{ item.adset_name }}</li>
-																<li class="line-5" v-if="sortSelectData.listData[4].setting.show">{{ item.age }} 세</li>
-																<li class="line-6" v-if="sortSelectData.listData[5].setting.show">{{ item.gender }}</li>
+																<li class="line-3" v-if="sortSelectData.listData[2].setting.show"><div class="line-inner">{{ item.report_date }}</div></li>
+																<li class="line-4 normal_depth" v-if="sortSelectData.listData[3].setting.show"><div class="line-inner">{{ item.adset_name }}</div></li>
+																<li class="line-5" v-if="sortSelectData.listData[4].setting.show"><div class="line-inner">{{ item.age }} 세</div></li>
+																<li class="line-6" v-if="sortSelectData.listData[5].setting.show"><div class="line-inner">{{ item.gender }}</div></li>
 																<li class="interest line-7" v-if="sortSelectData.listData[6].setting.show">
-																	<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
-																	<div :id="'interest-sub-' + index" class="interest_view" v-if="item.interest_list.length != 0">
-																		<ul class="clearfix">
-																			<li v-for="elem in item.interest_list" >{{ elem }}</li>
-																		</ul>
-																		<div class="inter_clip_copy" v-on:click="clickCopy(index)">클립보드로 복사하기</div>
-																		<div class="inter_close" @click="tootip('close')">닫기</div>
+																	<div class="line-inner">
+																		<span :class="'interest-sub-' + index" @click="tootip(index)">{{ item.interest_num }} 개</span>
+																		<div :id="'interest-sub-' + index" class="interest_view" v-if="item.interest_list.length != 0">
+																			<ul class="clearfix">
+																				<li v-for="elem in item.interest_list" >{{ elem }}</li>
+																			</ul>
+																			<div class="inter_clip_copy" v-on:click="clickCopy(index)">클립보드로 복사하기</div>
+																			<div class="inter_close" @click="tootip('close')">닫기</div>
+																		</div>
 																	</div>
 																</li>
-																<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><span v-for="ca in item.custom_audience">{{ ca }}</span></li>
-																<li class="line-9 box-align" v-if="sortSelectData.listData[8].setting.show">￦{{ numberFormat(item.spend) }}</li>
-																<li class="line-10 box-align" v-if="sortSelectData.listData[9].setting.show">{{ numberFormat(item.impressions) }}</li>
-																<li class="line-11 box-align" v-if="sortSelectData.listData[10].setting.show">{{ numberFormat(item.reach) }}</li>
-																<li class="line-12 box-align" v-if="sortSelectData.listData[11].setting.show">{{ numberFormat(item.frequency) }}</li>
+																<li class="line-8 normal_depth" v-if="sortSelectData.listData[7].setting.show"><div class="line-inner"><span v-for="ca in item.custom_audience">{{ ca }}</span></div></li>
+																<li class="line-9 box-align" v-if="sortSelectData.listData[8].setting.show"><div class="line-inner">￦{{ numberFormat(item.spend) }}</div></li>
+																<li class="line-10 box-align" v-if="sortSelectData.listData[9].setting.show"><div class="line-inner">{{ numberFormat(item.impressions) }}</div></li>
+																<li class="line-11 box-align" v-if="sortSelectData.listData[10].setting.show"><div class="line-inner">{{ numberFormat(item.reach) }}</div></li>
+																<li class="line-12 box-align" v-if="sortSelectData.listData[11].setting.show"><div class="line-inner">{{ numberFormat(item.frequency) }}</div></li>
 																<li class="line-13 depth1" v-if="sortSelectData.listData[12].setting.show">
-																	<dl>
-																		<dt></dt>
-																		<dd>
-																			<ul>
-																				<li>{{ numberFormat(item.inline_link_clicks) }}</li>
-																				<li>{{ item.inline_link_click_ctr }}</li>
-																				<li>￦{{ numberFormat(item.inline_link_click_cpc) }}</li>
-																			</ul>
-																		</dd>
-																	</dl>
+																	<div class="line-inner">
+																		<dl>
+																			<dt></dt>
+																			<dd>
+																				<ul>
+																					<li>{{ numberFormat(item.inline_link_clicks) }}</li>
+																					<li>{{ item.inline_link_click_ctr }}</li>
+																					<li>￦{{ numberFormat(item.inline_link_click_cpc) }}</li>
+																				</ul>
+																			</dd>
+																		</dl>
+																	</div>
 																</li>
-																<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show">{{ checkCarousel(item.is_carousel) }}</li>
+																<li class="line-14 depth2" v-if="sortSelectData.listData[13].setting.show"><div class="line-inner">{{ checkCarousel(item.is_carousel) }}</div></li>
 																<li class="line-15 depth3" v-if="sortSelectData.listData[14].setting.show">
-																	<dl>
-																		<dt></dt>
-																		<dd>
-																			<ul>
-																				<li class="line-15">{{ numberFormat(item.video_view_event) }}</li>
-																				<li class="line-15">{{ checkObject(item.video_3_sec_watched_vtr) }}</li>
-																				<li class="line-15">￦{{ numberFormat(item.video_3_sec_watched_cpv) }}</li>
-																			</ul>
-																		</dd>
-																	</dl>
+																	<div class="line-inner">
+																		<dl>
+																			<dt></dt>
+																			<dd>
+																				<ul>
+																					<li class="line-15">{{ numberFormat(item.video_view_event) }}</li>
+																					<li class="line-15">{{ checkObject(item.video_3_sec_watched_vtr) }}</li>
+																					<li class="line-15">￦{{ numberFormat(item.video_3_sec_watched_cpv) }}</li>
+																				</ul>
+																			</dd>
+																		</dl>
+																	</div>
 																</li>
 
 																<li class="line-16 depth4" v-if="sortSelectData.listData[15].setting.show">
-																	<dl>
-																		<dt></dt>
-																		<dd>
-																			<ul>
-																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_total) }}</li>
-																				<!-- cost_per_action_type?-->
-																				<li class="line-16">{{ item.pickdata_custom_conv_total_cost }}</li>
-																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_first) }}</li>
-																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_second) }}</li>
-																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_third) }}</li>
-																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fourth) }}</li>
-																				<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fifth) }}</li>
-																			</ul>
-																		</dd>
-																	</dl>
+																	<div class="line-inner">
+																		<dl>
+																			<dt></dt>
+																			<dd>
+																				<ul>
+																					<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_total) }}</li>
+																					<!-- cost_per_action_type?-->
+																					<li class="line-16">{{ item.pickdata_custom_conv_total_cost }}</li>
+																					<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_first) }}</li>
+																					<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_second) }}</li>
+																					<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_third) }}</li>
+																					<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fourth) }}</li>
+																					<li class="line-16">{{ numberFormat(item.pickdata_custom_conv_fifth) }}</li>
+																				</ul>
+																			</dd>
+																		</dl>
+																	</div>
 																</li>
 																<li class="line-17 depth5" v-if="sortSelectData.listData[16].setting.show">
-																	<dl>
-																		<dt></dt>
-																		<dd>
-																			<ul>
-																				<li class="line-17">{{ numberFormat(item.post_event) }}</li>
-																				<li class="line-17">{{ numberFormat(item.like_event) }}</li>
-																				<li class="line-17">{{ numberFormat(item.comment_event) }}</li>
-																				<li class="line-17">{{ numberFormat(item.post_reaction_event) }}</li>
-																			</ul>
-																		</dd>
-																	</dl>
+																	<div class="line-inner">
+																		<dl>
+																			<dt></dt>
+																			<dd>
+																				<ul>
+																					<li class="line-17">{{ numberFormat(item.post_event) }}</li>
+																					<li class="line-17">{{ numberFormat(item.like_event) }}</li>
+																					<li class="line-17">{{ numberFormat(item.comment_event) }}</li>
+																					<li class="line-17">{{ numberFormat(item.post_reaction_event) }}</li>
+																				</ul>
+																			</dd>
+																		</dl>
+																	</div>
 																</li>
 															</ul>
 														</div>
